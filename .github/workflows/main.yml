@@ -15,7 +15,7 @@ jobs:
         id: git-cliff
         uses: ./
         with:
-          config: fixtures/cliff.toml
+          config: cliff.toml
           args: --verbose --strip 'footer' --exclude-path '.github/**'
         env:
           OUTPUT: fixtures/CHANGELOG.md
