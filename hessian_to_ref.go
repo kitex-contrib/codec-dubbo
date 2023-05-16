@@ -15,9 +15,9 @@
 package hessian2
 
 import (
-	"fmt"
+	"encoding/json"
+	"log"
 	"strings"
-	"time"
 )
 
 type JavaBean interface {
@@ -63,45 +63,45 @@ func (vc *VirtualClass) JavaFields() map[string]interface{} {
 	return vc.fields
 }
 
-func convJavaType(v interface{}) (t string, r interface{}) {
-	t = "Object"
-	r = fmt.Sprintf("%v", v)
-	switch v.(type) {
-	case string:
-		t = "String"
-		r = fmt.Sprintf(`"%s"`, v)
-	case int, int32, uint, uint32:
-		t = "Integer"
-	case int8, uint8:
-		t = "Byte"
-	case int16, uint16:
-		t = "Short"
-	case int64, uint64:
-		t = "Long"
-		r = fmt.Sprintf("%vL", v)
-	case float32:
-		t = "Float"
-		r = fmt.Sprintf("%vF", v)
-	case float64:
-		t = "Double"
-	case bool:
-		t = "Bool"
-	case time.Time:
-		t = "Date"
-		r = fmt.Sprintf(`new Date("%s")`, v)
-	}
-	return
-}
-
 func (vc *VirtualClass) String() string {
-	classMsg := "\nclass " + vc.className + " {"
-	if vc.classPackage != "" {
-		classMsg = "\npackage " + vc.classPackage + "" + classMsg
+	m := make(map[string]interface{})
+	m["class_package"] = vc.classPackage
+	m["class_name"] = vc.className
+	fields := make(map[string]interface{})
+	for k, v := range vc.fields {
+		switch v2 := v.(type) {
+		case map[interface{}]interface{}:
+			tm := make(map[string]interface{})
+			for mk, mv := range v2 {
+				tm[mk.(string)] = mv
+				switch mv2 := mv.(type) {
+				case *VirtualClass:
+					tm[mk.(string)] = mv2.String()
+				default:
+					tm[mk.(string)] = mv2.(string)
+				}
+			}
+			v = tm
+		case []interface{}:
+			tl := make([]string, len(v2))
+			for li, lv := range v2 {
+				switch lv2 := lv.(type) {
+				case *VirtualClass:
+					tl[li] = lv2.String()
+				default:
+					tl[li] = lv2.(string)
+				}
+			}
+			v = tl
+		default:
+			v = v2
+		}
+		fields[k] = v
 	}
-	for key, value := range vc.JavaFields() {
-		t, r := convJavaType(value)
-		classMsg += fmt.Sprintf("\n\tprivate %s %s = %s;", t, key, r)
+	m["class_fields"] = fields
+	data, err := json.Marshal(m)
+	if err != nil {
+		log.Fatalln(err)
 	}
-	classMsg += "\n}"
-	return classMsg
+	return string(data)
 }

@@ -52,7 +52,7 @@ type Decoder struct {
 	chunkLength int
 	isLastChunk bool
 
-	refs      []JavaBean
+	refs      []interface{}
 	types     []string
 	classDefs []*ObjectDefinition
 
@@ -86,7 +86,7 @@ func (d *Decoder) readBuffer() bool {
 	return true
 }
 
-func (d *Decoder) ReadNull() {
+func (d *Decoder) readNull() {
 	tag := d.read()
 	if tag != 'N' {
 		panic(d.expect("null", tag))
@@ -103,13 +103,13 @@ func (d *Decoder) readTag() byte {
 	}
 }
 
-func (d *Decoder) ReadBoolean() (value bool) {
+func (d *Decoder) readBoolean() bool {
 	tag := d.readTag()
 	switch tag {
 	case 'T':
-		value = true
+		return true
 	case 'F':
-		value = false
+		return false
 		// direct integer
 	case 0x80, 0x81, 0x82, 0x83,
 		0x84, 0x85, 0x86, 0x87,
@@ -127,96 +127,95 @@ func (d *Decoder) ReadBoolean() (value bool) {
 		0xb4, 0xb5, 0xb6, 0xb7,
 		0xb8, 0xb9, 0xba, 0xbb,
 		0xbc, 0xbd, 0xbe, 0xbf:
-		value = tag != BC_INT_ZERO
+		return tag != BC_INT_ZERO
 		// INT_BYTE = 0
 	case 0xc8:
-		value = d.read() != 0
+		return d.read() != 0
 		// INT_BYTE != 0
 	case 0xc0, 0xc1, 0xc2, 0xc3,
 		0xc4, 0xc5, 0xc6, 0xc7,
 		0xc9, 0xca, 0xcb,
 		0xcc, 0xcd, 0xce, 0xcf:
 		d.read()
-		value = true
+		return true
 		// INT_SHORT = 0
 	case 0xd4:
-		value = (256*int16(d.read()) + int16(d.read())) != 0
+		return (256*int16(d.read()) + int16(d.read())) != 0
 		// INT_SHORT != 0
 	case 0xd0, 0xd1, 0xd2, 0xd3,
 		0xd5, 0xd6, 0xd7:
 		d.read()
 		d.read()
-		value = true
+		return true
 	case 'I':
-		value = d.parseInt() != 0
+		return d.parseInt() != 0
 	case 0xd8, 0xd9, 0xda, 0xdb,
 		0xdc, 0xdd, 0xde, 0xdf,
 		0xe0, 0xe1, 0xe2, 0xe3,
 		0xe4, 0xe5, 0xe6, 0xe7,
 		0xe8, 0xe9, 0xea, 0xeb,
 		0xec, 0xed, 0xee, 0xef:
-		value = tag != BC_LONG_ZERO
+		return tag != BC_LONG_ZERO
 		// LONG_BYTE = 0
 	case 0xf8:
-		value = d.read() != 0
+		return d.read() != 0
 		// LONG_BYTE != 0
 	case 0xf0, 0xf1, 0xf2, 0xf3,
 		0xf4, 0xf5, 0xf6, 0xf7,
 		0xf9, 0xfa, 0xfb,
 		0xfc, 0xfd, 0xfe, 0xff:
 		d.read()
-		value = true
+		return true
 		// INT_SHORT = 0
 	case 0x3c:
-		value = (256*int16(d.read()) + int16(d.read())) != 0
+		return (256*int16(d.read()) + int16(d.read())) != 0
 		// INT_SHORT != 0
 	case 0x38, 0x39, 0x3a, 0x3b,
 		0x3d, 0x3e, 0x3f:
 		d.read()
 		d.read()
-		value = true
+		return true
 	case BC_LONG_INT:
 		v := 0x1000000*int64(d.read()) + 0x10000*int64(d.read()) + 0x100*int64(d.read()) + int64(d.read())
-		value = v != 0
+		return v != 0
 	case 'L':
-		value = d.parseLong() != 0
+		return d.parseLong() != 0
 	case BC_DOUBLE_ZERO:
-		value = false
+		return false
 
 	case BC_DOUBLE_ONE:
-		value = true
+		return true
 
 	case BC_DOUBLE_BYTE:
-		value = d.read() != 0
+		return d.read() != 0
 	case BC_DOUBLE_SHORT:
-		value = (0x100*int16(d.read()) + int16(d.read())) != 0
+		return (0x100*int16(d.read()) + int16(d.read())) != 0
 	case BC_DOUBLE_MILL:
-		value = d.parseInt() != 0
+		return d.parseInt() != 0
 	case 'D':
-		value = d.parseDouble() != 0.0
+		return d.parseDouble() != 0.0
 	case 'N':
-		value = false
+		return false
 	default:
 		panic(d.expect("boolean", tag))
 	}
-	return
 }
 
-func (d *Decoder) ReadShort() int16 {
-	return int16(d.ReadInt())
+func (d *Decoder) readShort() int16 {
+	return int16(d.readInt())
 }
 
-func (d *Decoder) ReadInt() (value int) {
+func (d *Decoder) readInt() int {
 	tag := d.read()
 	switch tag {
 	case 'N':
-		value = 0
+		return 0
 
 	case 'F':
-		value = 0
+		return 0
 
 	case 'T':
-		value = 1
+		return 1
 
 		// direct integer
 	case 0x80, 0x81, 0x82, 0x83,
@@ -238,23 +237,23 @@ func (d *Decoder) ReadInt() (value int) {
 		0xb4, 0xb5, 0xb6, 0xb7,
 		0xb8, 0xb9, 0xba, 0xbb,
 		0xbc, 0xbd, 0xbe, 0xbf:
-		value = int(tag) - BC_INT_ZERO
+		return int(tag) - BC_INT_ZERO
 
 		/* byte int */
 	case 0xc0, 0xc1, 0xc2, 0xc3,
 		0xc4, 0xc5, 0xc6, 0xc7,
 		0xc8, 0xc9, 0xca, 0xcb,
 		0xcc, 0xcd, 0xce, 0xcf:
-		value = ((int(tag) - BC_INT_BYTE_ZERO) << 8) + int(d.read())
+		return ((int(tag) - BC_INT_BYTE_ZERO) << 8) + int(d.read())
 
 		/* short int */
 	case 0xd0, 0xd1, 0xd2, 0xd3,
 		0xd4, 0xd5, 0xd6, 0xd7:
-		value = ((int(tag) - BC_INT_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read())
+		return ((int(tag) - BC_INT_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read())
 
 	case 'I',
 		BC_LONG_INT:
-		value = (int(d.read()) << 24) + (int(d.read()) << 16) + (int(d.read()) << 8) + int(d.read())
+		return (int(d.read()) << 24) + (int(d.read()) << 16) + (int(d.read()) << 8) + int(d.read())
 
 		// direct long
 	case 0xd8, 0xd9, 0xda, 0xdb,
@@ -264,66 +263,65 @@ func (d *Decoder) ReadInt() (value int) {
 		0xe4, 0xe5, 0xe6, 0xe7,
 		0xe8, 0xe9, 0xea, 0xeb,
 		0xec, 0xed, 0xee, 0xef:
-		value = int(tag) - BC_LONG_ZERO
+		return int(tag) - BC_LONG_ZERO
 
 		/* byte long */
 	case 0xf0, 0xf1, 0xf2, 0xf3,
 		0xf4, 0xf5, 0xf6, 0xf7,
 		0xf8, 0xf9, 0xfa, 0xfb,
 		0xfc, 0xfd, 0xfe, 0xff:
-		value = ((int(tag) - BC_LONG_BYTE_ZERO) << 8) + int(d.read())
+		return ((int(tag) - BC_LONG_BYTE_ZERO) << 8) + int(d.read())
 
 		/* short long */
 	case 0x38, 0x39, 0x3a, 0x3b,
 		0x3c, 0x3d, 0x3e, 0x3f:
-		value = ((int(tag) - BC_LONG_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read())
+		return ((int(tag) - BC_LONG_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read())
 
 	case 'L':
-		value = int(d.parseLong())
+		return int(d.parseLong())
 
 	case BC_DOUBLE_ZERO:
-		value = 0
+		return 0
 
 	case BC_DOUBLE_ONE:
-		value = 1
+		return 1
 
 		//case LONG_BYTE:
 	case BC_DOUBLE_BYTE:
 		if d.offset < d.length {
-			value = int(d.buffer[d.offset])
+			return int(d.buffer[d.offset])
 			d.offset++
 		} else {
-			value = int(d.read())
+			return int(d.read())
 		}
 
 		//case INT_SHORT:
 		//case LONG_SHORT:
 	case BC_DOUBLE_SHORT:
-		value = int(256*int16(d.read()) + int16(d.read()))
+		return int(256*int16(d.read()) + int16(d.read()))
 
 	case BC_DOUBLE_MILL:
-		value = d.parseInt() / 1000
+		return d.parseInt() / 1000
 
 	case 'D':
-		value = int(d.parseDouble())
+		return int(d.parseDouble())
 
 	default:
-		panic(d.expect("integer", tag))
 	}
-	return
+	panic(d.expect("integer", tag))
 }
 
-func (d *Decoder) ReadLong() (value int64) {
+func (d *Decoder) readLong() int64 {
 	tag := d.read()
 	switch tag {
 	case 'N':
-		value = 0
+		return 0
 
 	case 'F':
-		value = 0
+		return 0
 
 	case 'T':
-		value = 1
+		return 1
 
 		// direct integer
 	case 0x80, 0x81, 0x82, 0x83,
@@ -345,36 +343,36 @@ func (d *Decoder) ReadLong() (value int64) {
 		0xb4, 0xb5, 0xb6, 0xb7,
 		0xb8, 0xb9, 0xba, 0xbb,
 		0xbc, 0xbd, 0xbe, 0xbf:
-		value = int64(tag) - BC_INT_ZERO
+		return int64(tag) - BC_INT_ZERO
 
 		/* byte int */
 	case 0xc0, 0xc1, 0xc2, 0xc3,
 		0xc4, 0xc5, 0xc6, 0xc7,
 		0xc8, 0xc9, 0xca, 0xcb,
 		0xcc, 0xcd, 0xce, 0xcf:
-		value = ((int64(tag) - BC_INT_BYTE_ZERO) << 8) + int64(d.read())
+		return ((int64(tag) - BC_INT_BYTE_ZERO) << 8) + int64(d.read())
 
 		/* short int */
 	case 0xd0, 0xd1, 0xd2, 0xd3,
 		0xd4, 0xd5, 0xd6, 0xd7:
-		value = ((int64(tag) - BC_INT_SHORT_ZERO) << 16) + 256*int64(d.read()) + int64(d.read())
+		return ((int64(tag) - BC_INT_SHORT_ZERO) << 16) + 256*int64(d.read()) + int64(d.read())
 
 		//case LONG_BYTE:
 	case BC_DOUBLE_BYTE:
 		if d.offset < d.length {
-			value = int64(d.buffer[d.offset])
+			return int64(d.buffer[d.offset])
 			d.offset++
 		} else {
-			value = int64(d.read())
+			return int64(d.read())
 		}
 
 		//case INT_SHORT:
 		//case LONG_SHORT:
 	case BC_DOUBLE_SHORT:
-		value = 256*int64(d.read()) + int64(d.read())
+		return 256*int64(d.read()) + int64(d.read())
 
 	case 'I', BC_LONG_INT:
-		value = int64(d.parseInt())
+		return int64(d.parseInt())
 
 		// direct long
 	case 0xd8, 0xd9, 0xda, 0xdb,
@@ -384,56 +382,55 @@ func (d *Decoder) ReadLong() (value int64) {
 		0xe4, 0xe5, 0xe6, 0xe7,
 		0xe8, 0xe9, 0xea, 0xeb,
 		0xec, 0xed, 0xee, 0xef:
-		value = int64(tag) - BC_LONG_ZERO
+		return int64(tag) - BC_LONG_ZERO
 
 		/* byte long */
 	case 0xf0, 0xf1, 0xf2, 0xf3,
 		0xf4, 0xf5, 0xf6, 0xf7,
 		0xf8, 0xf9, 0xfa, 0xfb,
 		0xfc, 0xfd, 0xfe, 0xff:
-		value = ((int64(tag) - BC_LONG_BYTE_ZERO) << 8) + int64(d.read())
+		return ((int64(tag) - BC_LONG_BYTE_ZERO) << 8) + int64(d.read())
 
 		/* short long */
 	case 0x38, 0x39, 0x3a, 0x3b,
 		0x3c, 0x3d, 0x3e, 0x3f:
-		value = ((int64(tag) - BC_LONG_SHORT_ZERO) << 16) + 256*int64(d.read()) + int64(d.read())
+		return ((int64(tag) - BC_LONG_SHORT_ZERO) << 16) + 256*int64(d.read()) + int64(d.read())
 
 	case 'L':
-		value = d.parseLong()
+		return d.parseLong()
 
 	case BC_DOUBLE_ZERO:
-		value = 0
+		return 0
 
 	case BC_DOUBLE_ONE:
-		value = 1
+		return 1
 
 	case BC_DOUBLE_MILL:
-		value = int64(d.parseInt() / 1000)
+		return int64(d.parseInt() / 1000)
 
 	case 'D':
-		value = int64(d.parseDouble())
+		return int64(d.parseDouble())
 
 	default:
-		panic(d.expect("long", tag))
 	}
-	return
+	panic(d.expect("long", tag))
 }
 
-func (d *Decoder) ReadFloat() float32 {
-	return float32(d.ReadDouble())
+func (d *Decoder) readFloat() float32 {
+	return float32(d.readDouble())
 }
 
-func (d *Decoder) ReadDouble() (value float64) {
+func (d *Decoder) readDouble() float64 {
 	tag := d.read()
 	switch tag {
 	case 'N':
-		value = 0
+		return 0
 
 	case 'F':
-		value = 0
+		return 0
 
 	case 'T':
-		value = 1
+		return 1
 
 		// direct integer
 	case 0x80, 0x81, 0x82, 0x83,
@@ -455,22 +452,22 @@ func (d *Decoder) ReadDouble() (value float64) {
 		0xb4, 0xb5, 0xb6, 0xb7,
 		0xb8, 0xb9, 0xba, 0xbb,
 		0xbc, 0xbd, 0xbe, 0xbf:
-		value = float64(tag) - 0x90
+		return float64(tag) - 0x90
 
 		/* byte int */
 	case 0xc0, 0xc1, 0xc2, 0xc3,
 		0xc4, 0xc5, 0xc6, 0xc7,
 		0xc8, 0xc9, 0xca, 0xcb,
 		0xcc, 0xcd, 0xce, 0xcf:
-		value = float64((int64(tag)-BC_INT_BYTE_ZERO)<<8) + float64(d.read())
+		return float64((int64(tag)-BC_INT_BYTE_ZERO)<<8) + float64(d.read())
 
 		/* short int */
 	case 0xd0, 0xd1, 0xd2, 0xd3,
 		0xd4, 0xd5, 0xd6, 0xd7:
-		value = float64((int64(tag)-BC_INT_SHORT_ZERO)<<16) + 256*float64(d.read()) + float64(d.read())
+		return float64((int64(tag)-BC_INT_SHORT_ZERO)<<16) + 256*float64(d.read()) + float64(d.read())
 
 	case 'I', BC_LONG_INT:
-		value = float64(d.parseInt())
+		return float64(d.parseInt())
 
 		// direct long
 	case 0xd8, 0xd9, 0xda, 0xdb,
@@ -480,53 +477,52 @@ func (d *Decoder) ReadDouble() (value float64) {
 		0xe4, 0xe5, 0xe6, 0xe7,
 		0xe8, 0xe9, 0xea, 0xeb,
 		0xec, 0xed, 0xee, 0xef:
-		value = float64(tag) - BC_LONG_ZERO
+		return float64(tag) - BC_LONG_ZERO
 
 		/* byte long */
 	case 0xf0, 0xf1, 0xf2, 0xf3,
 		0xf4, 0xf5, 0xf6, 0xf7,
 		0xf8, 0xf9, 0xfa, 0xfb,
 		0xfc, 0xfd, 0xfe, 0xff:
-		value = float64((int64(tag)-BC_LONG_BYTE_ZERO)<<8) + float64(d.read())
+		return float64((int64(tag)-BC_LONG_BYTE_ZERO)<<8) + float64(d.read())
 
 		/* short long */
 	case 0x38, 0x39, 0x3a, 0x3b,
 		0x3c, 0x3d, 0x3e, 0x3f:
-		value = float64((int64(tag)-BC_LONG_SHORT_ZERO)<<16) + 256*float64(d.read()) + float64(d.read())
+		return float64((int64(tag)-BC_LONG_SHORT_ZERO)<<16) + 256*float64(d.read()) + float64(d.read())
 
 	case 'L':
-		value = float64(d.parseLong())
+		return float64(d.parseLong())
 
 	case BC_DOUBLE_ZERO:
-		value = 0
+		return 0
 
 	case BC_DOUBLE_ONE:
-		value = 1
+		return 1
 
 	case BC_DOUBLE_BYTE:
 		if d.offset < d.length {
-			value = float64(d.buffer[d.offset])
+			return float64(d.buffer[d.offset])
 			d.offset++
 		} else {
-			value = float64(d.read())
+			return float64(d.read())
 		}
 
 	case BC_DOUBLE_SHORT:
-		value = 256*float64(d.read()) + float64(d.read())
+		return 256*float64(d.read()) + float64(d.read())
 
 	case BC_DOUBLE_MILL:
-		value = float64(d.parseInt() / 1000)
+		return float64(d.parseInt() / 1000)
 
 	case 'D':
-		value = d.parseDouble()
+		return d.parseDouble()
 
 	default:
-		panic(d.expect("double", tag))
 	}
-	return
+	panic(d.expect("double", tag))
 }
 
-func (d *Decoder) ReadUTCDate() int64 {
+func (d *Decoder) readUTCDate() int64 {
 	tag := d.read()
 	if tag == BC_DATE {
 		return d.parseLong()
@@ -537,7 +533,7 @@ func (d *Decoder) ReadUTCDate() int64 {
 	}
 }
 
-func (d *Decoder) ReadChar() rune {
+func (d *Decoder) readChar() rune {
 	if d.chunkLength > 0 {
 		d.chunkLength--
 		if d.chunkLength == 0 && d.isLastChunk {
@@ -572,7 +568,7 @@ func (d *Decoder) ReadChar() rune {
 	}
 }
 
-func (d *Decoder) ReadStringToBuffer(buffer []rune, offset int, length int) int {
+func (d *Decoder) readStringToBuffer(buffer []rune, offset int, length int) int {
 	if d.chunkLength == EndOfData {
 		d.chunkLength = 0
 		return 0xff
@@ -664,7 +660,7 @@ func (d *Decoder) ReadStringToBuffer(buffer []rune, offset int, length int) int 
 	}
 }
 
-func (d *Decoder) ReadString() *string {
+func (d *Decoder) readString() *string {
 	tag := d.read()
 	var val string
 	switch tag {
@@ -835,7 +831,7 @@ func (d *Decoder) ReadString() *string {
 	}
 }
 
-func (d *Decoder) ReadBytes() []byte {
+func (d *Decoder) readBytes() []byte {
 	tag := d.read()
 
 	switch tag {
@@ -924,7 +920,7 @@ func (d *Decoder) ReadBytes() []byte {
 	}
 }
 
-func (d *Decoder) ReadByte() byte {
+func (d *Decoder) readByte() byte {
 	if d.chunkLength > 0 {
 		d.chunkLength--
 		if d.chunkLength == 0 && d.isLastChunk {
@@ -999,7 +995,7 @@ func (d *Decoder) ReadByte() byte {
 	}
 }
 
-func (d *Decoder) ReadBytes2(buffer []byte, offset int, length int) int {
+func (d *Decoder) readBytes2(buffer []byte, offset int, length int) int {
 	if d.chunkLength == EndOfData {
 		d.chunkLength = 0
 		return -1
@@ -1248,7 +1244,7 @@ func (d *Decoder) ReadObject() interface{} {
 			length := int(tag) - 0x20
 			d.chunkLength = 0
 
-			data := make([]byte, 0, length)
+			data := make([]byte, length)
 
 			for i := 0; i < length; i++ {
 				data[i] = d.read()
@@ -1274,54 +1270,54 @@ func (d *Decoder) ReadObject() interface{} {
 
 	case BC_LIST_VARIABLE:
 		{
-			// TODO
-			return nil
+			typ := d.readType()
+			return d.readList(-1, &typ)
 		}
 
 	case BC_LIST_VARIABLE_UNTYPED:
 		{
-			// TODO
-			return nil
+			return d.readList(-1, nil)
 		}
 
 	case BC_LIST_FIXED:
 		{
-			// TODO
-			return nil
+			typ := d.readType()
+			length := d.readInt()
+			return d.readList(length, &typ)
 		}
 
 	case BC_LIST_FIXED_UNTYPED:
 		{
-			// TODO
-			return nil
+			length := d.readInt()
+			return d.readList(length, nil)
 		}
 
 		// compact fixed list
 	case 0x70, 0x71, 0x72, 0x73,
 		0x74, 0x75, 0x76, 0x77:
 		{
-			// TODO
-			return nil
+			typ := d.readType()
+			length := int(tag) - 0x70
+			return d.readList(length, &typ)
 		}
 
 		// compact fixed untyped list
 	case 0x78, 0x79, 0x7a, 0x7b,
 		0x7c, 0x7d, 0x7e, 0x7f:
 		{
-			// TODO
-			return nil
+			length := int(tag) - 0x78
+			return d.readList(length, nil)
 		}
 
 	case 'H':
 		{
-			// TODO
-			return nil
+			return d.readMap(nil)
 		}
 
 	case 'M':
 		{
-			// TODO
-			return nil
+			typ := d.readType()
+			return d.readMap(&typ)
 		}
 
 	case 'C':
@@ -1349,7 +1345,7 @@ func (d *Decoder) ReadObject() interface{} {
 
 	case 'O':
 		{
-			ref := d.ReadInt()
+			ref := d.readInt()
 
 			if len(d.classDefs) <= ref {
 
@@ -1363,7 +1359,7 @@ func (d *Decoder) ReadObject() interface{} {
 
 	case BC_REF:
 		{
-			ref := d.ReadInt()
+			ref := d.readInt()
 
 			return d.refs[ref]
 		}
@@ -1377,14 +1373,33 @@ func (d *Decoder) ReadObject() interface{} {
 	}
 }
 
+func (d *Decoder) readList(length int, typ *string) []interface{} {
+	list := make([]interface{}, length)
+	d.AddRef(list)
+	for i := range list {
+		list[i] = d.ReadObject()
+	}
+	return list
+}
+
+func (d *Decoder) readMap(typ *string) map[interface{}]interface{} {
+	m := make(map[interface{}]interface{})
+	d.AddRef(m)
+	for !d.IsEnd() {
+		m[d.ReadObject()] = d.ReadObject()
+	}
+	d.readEnd()
+	return m
+}
+
 func (d *Decoder) readObjectDefinition(i interface{}) {
-	typ := d.ReadString()
-	length := d.ReadInt()
+	typ := d.readString()
+	length := d.readInt()
 
 	fieldNames := make([]string, length)
 
 	for i := 0; i < length; i++ {
-		name := d.ReadString()
+		name := d.readString()
 
 		fieldNames[i] = *name
 	}
@@ -1394,7 +1409,7 @@ func (d *Decoder) readObjectDefinition(i interface{}) {
 }
 
 func (d *Decoder) readObjectInstance(cl interface{}, def *ObjectDefinition) interface{} {
-	vc := def.vc
+	vc := NewVirtualClass(def.typ, def.fieldNames)
 	for _, key := range def.fieldNames {
 		v := d.ReadObject()
 		vc.fields[key] = v
@@ -1402,23 +1417,23 @@ func (d *Decoder) readObjectInstance(cl interface{}, def *ObjectDefinition) inte
 	return vc
 }
 
-func (d *Decoder) ReadRef() interface{} {
+func (d *Decoder) readRef() interface{} {
 	value := d.parseInt()
 	return d.refs[value]
 }
 
-func (d *Decoder) ReadListStart() byte {
+func (d *Decoder) readListStart() byte {
 	return d.read()
 }
 
-func (d *Decoder) ReadMapStart() byte {
+func (d *Decoder) readMapStart() byte {
 	return d.read()
 }
 
 func (d *Decoder) IsEnd() bool {
 	var code byte
 	if d.offset < d.length {
-		code = d.buffer[d.length] & 0xFF
+		code = d.buffer[d.offset]
 	} else {
 		code = d.read()
 		if code != 0xff {
@@ -1428,7 +1443,7 @@ func (d *Decoder) IsEnd() bool {
 	return code == 0xff || code == 'Z'
 }
 
-func (d *Decoder) ReadEnd() {
+func (d *Decoder) readEnd() {
 	code := d.readTag()
 	if code == 'Z' {
 		return
@@ -1439,26 +1454,26 @@ func (d *Decoder) ReadEnd() {
 	panic(d.error("unknown code:" + d.codeName(code)))
 }
 
-func (d *Decoder) ReadMapEnd() {
+func (d *Decoder) readMapEnd() {
 	code := d.readTag()
 	if code != 'Z' {
 		panic(d.error("expected end of map ('Z') at '" + d.codeName(code) + "'"))
 	}
 }
 
-func (d *Decoder) ReadListEnd() {
+func (d *Decoder) readListEnd() {
 	code := d.readTag()
 	if code != 'Z' {
 		panic(d.error("expected end of list ('Z') at '" + d.codeName(code) + "'"))
 	}
 }
 
-func (d *Decoder) AddRef(ref JavaBean) int {
+func (d *Decoder) AddRef(ref interface{}) int {
 	d.refs = append(d.refs, ref)
 	return len(d.refs) - 1
 }
 
-func (d *Decoder) SetRef(idx int, ref JavaBean) {
+func (d *Decoder) SetRef(idx int, ref interface{}) {
 	d.refs[idx] = ref
 }
 
@@ -1484,7 +1499,7 @@ func (d *Decoder) ResetBuffer() {
 	}
 }
 
-func (d *Decoder) ReadType() string {
+func (d *Decoder) readType() string {
 	code := d.readTag()
 	d.offset--
 
@@ -1501,7 +1516,7 @@ func (d *Decoder) ReadType() string {
 
 		0x30, 0x31, 0x32, 0x33, BC_STRING_CHUNK, 'S':
 		{
-			typ := d.ReadString()
+			typ := d.readString()
 
 			d.types = append(d.types, *typ)
 
@@ -1510,7 +1525,7 @@ func (d *Decoder) ReadType() string {
 
 	default:
 		{
-			ref := d.ReadInt()
+			ref := d.readInt()
 
 			if len(d.types) <= ref {
 				panic(fmt.Errorf("type ref #%d is greater than the number of valid types (%d)", ref, len(d.types)))
