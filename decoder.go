@@ -40,6 +40,10 @@ func NewDecoder(in io.Reader) *Decoder {
 	}
 }
 
+func NewDecoderWithByteArray(buf []byte) *Decoder {
+	return NewDecoder(bytes.NewBuffer(buf))
+}
+
 type Decoder struct {
 	in io.Reader
 

@@ -38,7 +38,7 @@ func NewVirtualClass(typ string, fieldNames []string) *VirtualClass {
 	className := typ
 	if idx > 0 {
 		classPackage = typ[:idx]
-		className = typ[idx:]
+		className = strings.Trim(typ[idx:], ".")
 	}
 	fields := make(map[string]interface{})
 	for _, key := range fieldNames {
