@@ -1389,7 +1389,7 @@ func (d *Decoder) parseUTF8Char() rune {
 		return rune(ch)
 	} else if (ch & 0xe0) == 0xc0 {
 		ch1 := d.read()
-		v := ((ch & 0x1f) << 6) + (ch1 & 0x3f)
+		v := (int(ch&0x1f) << 6) + int(ch1&0x3f)
 
 		return rune(v)
 	} else if (ch & 0xf0) == 0xe0 {
