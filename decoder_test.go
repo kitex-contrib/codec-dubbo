@@ -36,13 +36,13 @@ func TestDecoder(t *testing.T) {
 	switch vc := obj.(type) {
 	case *VirtualClass:
 		if vc.JavaClassPackage() != "a.b.c" {
-			t.Errorf("包名解析错误, 期望: %s", "a.b.c")
+			t.Errorf("Java Package name decode error, expect: %s", "a.b.c")
 		}
 		if vc.JavaClassName() != "Test" {
-			t.Errorf("类名解析错误, 期望: %s", "Test")
+			t.Errorf("Java Class name decode error, expect: %s", "Test")
 		}
 
 	default:
-		t.Error("解析错误")
+		t.Error("Decode error")
 	}
 }
