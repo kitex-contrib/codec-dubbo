@@ -69,7 +69,7 @@ type Decoder struct {
 // read Get next byte
 func (d *Decoder) read() byte {
 	if d.length <= d.offset && !d.readBuffer() {
-		return 0xFF
+		return CHAR_END_MARK
 	}
 	r := d.buffer[d.offset]
 	d.offset++
@@ -109,7 +109,7 @@ func (d *Decoder) readTag() byte {
 // readNull Try to read a null value
 func (d *Decoder) readNull() {
 	tag := d.read()
-	if tag != 'N' {
+	if tag != BC_NULL {
 		panic(d.expect("null", tag))
 	}
 }
@@ -118,60 +118,60 @@ func (d *Decoder) readNull() {
 func (d *Decoder) readBoolean() bool {
 	tag := d.readTag()
 	switch {
-	case tag == 'T':
+	case tag == BC_TRUE:
 		return true
 
-	case tag == 'F':
+	case tag == BC_FALSE:
 		return false
 
 	// direct integer
-	case tag >= 0x80 && tag <= 0xbf:
+	case tag >= DIRECT_INT && tag <= DIRECT_INT_MAX:
 		return tag != BC_INT_ZERO
 
 	// INT_BYTE = 0
-	case tag == 0xc8:
+	case tag == BC_INT_BYTE_ZERO:
 		return d.read() != 0
 
 	// INT_BYTE != 0
-	case (tag >= 0xc0 && tag <= 0xc7) ||
-		(tag >= 0xc9 && tag <= 0xcf):
+	case (tag >= BYTE_INT && tag <= BYTE_INT_MAX) ||
+		(tag >= BYTE_INT_LIMIT && tag <= BYTE_INT_LIMIT_MAX):
 		d.read()
 		return true
 
 	// INT_SHORT = 0
-	case tag == 0xd4:
+	case tag == BC_INT_SHORT_ZERO:
 		return (256*int16(d.read()) + int16(d.read())) != 0
 
 	// INT_SHORT != 0
-	case (tag >= 0xd0 && tag <= 0xd3) ||
-		(tag >= 0xd5 && tag <= 0xd7):
+	case (tag >= SHORT_INT && tag <= SHORT_INT_MAX) ||
+		(tag >= SHORT_INT_LIMIT && tag <= SHORT_INT_LIMIT_MAX):
 		d.read()
 		d.read()
 		return true
 
-	case tag == 'I':
+	case tag == BC_INT:
 		return d.parseInt() != 0
 
-	case tag >= 0xd8 && tag <= 0xef:
+	case tag >= DIRECT_LONG && tag <= DIRECT_LONG_MAX:
 		return tag != BC_LONG_ZERO
 
 	// LONG_BYTE = 0
-	case tag == 0xf8:
+	case tag == BC_LONG_BYTE_ZERO:
 		return d.read() != 0
 
 	// LONG_BYTE != 0
-	case (tag >= 0xf0 && tag <= 0xf7) ||
-		(tag >= 0xf9):
+	case (tag >= BYTE_LONG && tag <= BYTE_LONG_MAX) ||
+		(tag >= BYTE_LONG_LIMIT):
 		d.read()
 		return true
 
 	// INT_SHORT = 0
-	case tag == 0x3c:
+	case tag == BC_LONG_SHORT_ZERO:
 		return (256*int16(d.read()) + int16(d.read())) != 0
 
 	// INT_SHORT != 0
-	case (tag >= 0x38 && tag <= 0x3b) ||
-		(tag >= 0x3d && tag <= 0x3f):
+	case (tag >= SHORT_LONG && tag <= SHORT_LONG_MAX) ||
+		(tag >= SHORT_LONG_LIMIT && tag <= SHORT_LONG_LIMIT_MAX):
 		d.read()
 		d.read()
 		return true
@@ -180,7 +180,7 @@ func (d *Decoder) readBoolean() bool {
 		v := 0x1000000*int64(d.read()) + 0x10000*int64(d.read()) + 0x100*int64(d.read()) + int64(d.read())
 		return v != 0
 
-	case tag == 'L':
+	case tag == BC_LONG:
 		return d.parseLong() != 0
 
 	case tag == BC_DOUBLE_ZERO:
@@ -198,10 +198,10 @@ func (d *Decoder) readBoolean() bool {
 	case tag == BC_DOUBLE_MILL:
 		return d.parseInt() != 0
 
-	case tag == 'D':
+	case tag == BC_DOUBLE:
 		return d.parseDouble() != 0.0
 
-	case tag == 'N':
+	case tag == BC_NULL:
 		return false
 
 	default:
@@ -218,43 +218,43 @@ func (d *Decoder) readShort() int16 {
 func (d *Decoder) readInt() int {
 	tag := d.read()
 	switch {
-	case tag == 'N':
+	case tag == BC_NULL:
 		return 0
 
-	case tag == 'F':
+	case tag == BC_FALSE:
 		return 0
 
-	case tag == 'T':
+	case tag == BC_TRUE:
 		return 1
 
 	// direct integer
-	case tag >= 0x80 && tag <= 0xbf:
+	case tag >= DIRECT_INT && tag <= DIRECT_INT_MAX:
 		return int(tag) - BC_INT_ZERO
 
 	/* byte int */
-	case tag >= 0xc0 && tag <= 0xcf:
+	case tag >= BYTE_INT && tag <= BYTE_INT_LIMIT_MAX:
 		return ((int(tag) - BC_INT_BYTE_ZERO) << 8) + int(d.read())
 
 	/* short int */
-	case tag >= 0xd0 && tag <= 0xd7:
+	case tag >= SHORT_INT && tag <= SHORT_INT_LIMIT_MAX:
 		return ((int(tag) - BC_INT_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read())
 
-	case tag == 'I' || tag == BC_LONG_INT:
+	case tag == BC_INT || tag == BC_LONG_INT:
 		return (int(d.read()) << 24) + (int(d.read()) << 16) + (int(d.read()) << 8) + int(d.read())
 
 	// direct long
-	case tag >= 0xd8 && tag <= 0xef:
+	case tag >= DIRECT_LONG && tag <= DIRECT_LONG_MAX:
 		return int(tag) - BC_LONG_ZERO
 
 	/* byte long */
-	case tag >= 0xf0:
+	case tag >= BYTE_LONG:
 		return ((int(tag) - BC_LONG_BYTE_ZERO) << 8) + int(d.read())
 
 	/* short long */
-	case tag >= 0x38 && tag <= 0x3f:
+	case tag >= SHORT_LONG && tag <= SHORT_LONG_LIMIT_MAX:
 		return ((int(tag) - BC_LONG_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read())
 
-	case tag == 'L':
+	case tag == BC_LONG:
 		return int(d.parseLong())
 
 	case tag == BC_DOUBLE_ZERO:
@@ -281,7 +281,7 @@ func (d *Decoder) readInt() int {
 	case tag == BC_DOUBLE_MILL:
 		return d.parseInt() / 1000
 
-	case tag == 'D':
+	case tag == BC_DOUBLE:
 		return int(d.parseDouble())
 
 	default:
@@ -293,25 +293,25 @@ func (d *Decoder) readInt() int {
 func (d *Decoder) readLong() int64 {
 	tag := d.read()
 	switch {
-	case tag == 'N':
+	case tag == BC_NULL:
 		return 0
 
-	case tag == 'F':
+	case tag == BC_FALSE:
 		return 0
 
-	case tag == 'T':
+	case tag == BC_TRUE:
 		return 1
 
 	// direct integer
-	case tag >= 0x80 && tag <= 0xbf:
+	case tag >= DIRECT_INT && tag <= DIRECT_INT_MAX:
 		return int64(tag) - BC_INT_ZERO
 
 	/* byte int */
-	case tag >= 0xc0 && tag <= 0xcf:
+	case tag >= BYTE_INT && tag <= BYTE_INT_LIMIT_MAX:
 		return ((int64(tag) - BC_INT_BYTE_ZERO) << 8) + int64(d.read())
 
 	/* short int */
-	case tag >= 0xd0 && tag <= 0xd7:
+	case tag >= SHORT_INT && tag <= SHORT_INT_LIMIT_MAX:
 		return ((int64(tag) - BC_INT_SHORT_ZERO) << 16) + 256*int64(d.read()) + int64(d.read())
 
 	//case LONG_BYTE:
@@ -329,22 +329,22 @@ func (d *Decoder) readLong() int64 {
 	case tag == BC_DOUBLE_SHORT:
 		return 256*int64(d.read()) + int64(d.read())
 
-	case tag == 'I' || tag == BC_LONG_INT:
+	case tag == BC_INT || tag == BC_LONG_INT:
 		return int64(d.parseInt())
 
 	// direct long
-	case tag >= 0xd8 && tag <= 0xef:
+	case tag >= DIRECT_LONG && tag <= DIRECT_LONG_MAX:
 		return int64(tag) - BC_LONG_ZERO
 
 	/* byte long */
-	case tag >= 0xf0:
+	case tag >= BYTE_LONG:
 		return ((int64(tag) - BC_LONG_BYTE_ZERO) << 8) + int64(d.read())
 
 	/* short long */
-	case tag >= 0x38 && tag <= 0x3f:
+	case tag >= SHORT_LONG && tag <= SHORT_LONG_LIMIT_MAX:
 		return ((int64(tag) - BC_LONG_SHORT_ZERO) << 16) + 256*int64(d.read()) + int64(d.read())
 
-	case tag == 'L':
+	case tag == BC_LONG:
 		return d.parseLong()
 
 	case tag == BC_DOUBLE_ZERO:
@@ -356,7 +356,7 @@ func (d *Decoder) readLong() int64 {
 	case tag == BC_DOUBLE_MILL:
 		return int64(d.parseInt() / 1000)
 
-	case tag == 'D':
+	case tag == BC_DOUBLE:
 		return int64(d.parseDouble())
 
 	default:
@@ -373,43 +373,43 @@ func (d *Decoder) readFloat() float32 {
 func (d *Decoder) readDouble() float64 {
 	tag := d.read()
 	switch {
-	case tag == 'N':
+	case tag == BC_NULL:
 		return 0
 
-	case tag == 'F':
+	case tag == BC_FALSE:
 		return 0
 
-	case tag == 'T':
+	case tag == BC_TRUE:
 		return 1
 
 	// direct integer
-	case tag >= 0x80 && tag <= 0xbf:
-		return float64(tag) - 0x90
+	case tag >= DIRECT_INT && tag <= DIRECT_INT_MAX:
+		return float64(tag) - BC_INT_ZERO
 
 	/* byte int */
-	case tag >= 0xc0 && tag <= 0xcf:
+	case tag >= BYTE_INT && tag <= BYTE_INT_LIMIT_MAX:
 		return float64((int64(tag)-BC_INT_BYTE_ZERO)<<8) + float64(d.read())
 
 	/* short int */
-	case tag >= 0xd0 && tag <= 0xd7:
+	case tag >= SHORT_INT && tag <= SHORT_INT_LIMIT_MAX:
 		return float64((int64(tag)-BC_INT_SHORT_ZERO)<<16) + 256*float64(d.read()) + float64(d.read())
 
-	case tag == 'I' || tag == BC_LONG_INT:
+	case tag == BC_INT || tag == BC_LONG_INT:
 		return float64(d.parseInt())
 
 	// direct long
-	case tag >= 0xd8 && tag <= 0xef:
+	case tag >= DIRECT_LONG && tag <= DIRECT_LONG_MAX:
 		return float64(tag) - BC_LONG_ZERO
 
 	/* byte long */
-	case tag >= 0xf0:
+	case tag >= BYTE_LONG:
 		return float64((int64(tag)-BC_LONG_BYTE_ZERO)<<8) + float64(d.read())
 
 	/* short long */
-	case tag >= 0x38 && tag <= 0x3f:
+	case tag >= SHORT_LONG && tag <= SHORT_LONG_LIMIT_MAX:
 		return float64((int64(tag)-BC_LONG_SHORT_ZERO)<<16) + 256*float64(d.read()) + float64(d.read())
 
-	case tag == 'L':
+	case tag == BC_LONG:
 		return float64(d.parseLong())
 
 	case tag == BC_DOUBLE_ZERO:
@@ -433,7 +433,7 @@ func (d *Decoder) readDouble() float64 {
 	case tag == BC_DOUBLE_MILL:
 		return float64(d.parseInt() / 1000)
 
-	case tag == 'D':
+	case tag == BC_DOUBLE:
 		return d.parseDouble()
 
 	default:
@@ -464,17 +464,17 @@ func (d *Decoder) readChar() rune {
 		return d.parseUTF8Char()
 	} else if d.chunkLength == EndOfData {
 		d.chunkLength = 0
-		return rune(0xff)
+		return rune(CHAR_END_MARK)
 	}
 
 	tag := d.read()
 
 	switch tag {
-	case 'N':
-		return rune(0xff)
+	case BC_NULL:
+		return rune(CHAR_END_MARK)
 
-	case 'S', BC_STRING_CHUNK:
-		d.isLastChunk = tag == 'S'
+	case BC_STRING, BC_STRING_CHUNK:
+		d.isLastChunk = tag == BC_STRING
 		d.chunkLength = (int(d.read()) << 8) + int(d.read())
 		d.chunkLength--
 		value := d.parseUTF8Char()
@@ -493,25 +493,25 @@ func (d *Decoder) readChar() rune {
 func (d *Decoder) readStringToBuffer(buffer []rune, offset int, length int) int {
 	if d.chunkLength == EndOfData {
 		d.chunkLength = 0
-		return 0xff
+		return CHAR_END_MARK
 	} else if d.chunkLength == 0 {
 		tag := d.read()
 
 		switch {
-		case tag == 'N':
-			return 0xff
+		case tag == BC_NULL:
+			return CHAR_END_MARK
 
-		case tag == 'S' || tag == BC_STRING_CHUNK:
-			d.isLastChunk = tag == 'S'
+		case tag == BC_STRING || tag == BC_STRING_CHUNK:
+			d.isLastChunk = tag == BC_STRING
 			d.chunkLength = (int(d.read()) << 8) + int(d.read())
 
-		case tag <= 0x1f:
+		case tag <= STRING_DIRECT_MAX:
 			d.isLastChunk = true
 			d.chunkLength = int(tag)
 
-		case tag >= 0x30 && tag <= 0x33:
+		case tag >= BC_STRING_SHORT && tag <= BC_STRING_SHORT_MAX:
 			d.isLastChunk = true
-			d.chunkLength = (int(tag)-0x30)*256 + int(d.read())
+			d.chunkLength = (int(tag)-BC_STRING_SHORT)*256 + int(d.read())
 
 		default:
 			panic(d.expect("string", tag))
@@ -538,17 +538,17 @@ func (d *Decoder) readStringToBuffer(buffer []rune, offset int, length int) int 
 			tag := d.read()
 
 			switch {
-			case tag == 'S' || tag == BC_STRING_CHUNK:
-				d.isLastChunk = tag == 'S'
+			case tag == BC_STRING || tag == BC_STRING_CHUNK:
+				d.isLastChunk = tag == BC_STRING
 				d.chunkLength = (int(d.read()) << 8) + int(d.read())
 
-			case tag <= 0x1f:
+			case tag <= STRING_DIRECT_MAX:
 				d.isLastChunk = true
 				d.chunkLength = int(tag)
 
-			case tag >= 0x30 && tag <= 0x33:
+			case tag >= BC_STRING_SHORT && tag <= BC_STRING_SHORT_MAX:
 				d.isLastChunk = true
-				d.chunkLength = (int(tag)-0x30)*256 + int(d.read())
+				d.chunkLength = (int(tag)-BC_STRING_SHORT)*256 + int(d.read())
 
 			default:
 				panic(d.expect("string", tag))
@@ -570,52 +570,52 @@ func (d *Decoder) readString() *string {
 	tag := d.read()
 	var val string
 	switch {
-	case tag == 'N':
+	case tag == BC_NULL:
 		return nil
 
-	case tag == 'T':
+	case tag == BC_TRUE:
 		val = "true"
 		return &val
 
-	case tag == 'F':
+	case tag == BC_FALSE:
 		val = "false"
 		return &val
 
 	// direct integer
-	case tag >= 0x80 && tag <= 0xbf:
-		val = strconv.Itoa(int(tag) - 0x90)
+	case tag >= DIRECT_INT && tag <= DIRECT_INT_MAX:
+		val = strconv.Itoa(int(tag) - BC_INT_ZERO)
 		return &val
 
 	/* byte int */
-	case tag >= 0xc0 && tag <= 0xcf:
+	case tag >= BYTE_INT && tag <= BYTE_INT_LIMIT_MAX:
 		val = strconv.Itoa(((int(tag) - BC_INT_BYTE_ZERO) << 8) + int(d.read()))
 		return &val
 
 	/* short int */
-	case tag >= 0xd0 && tag <= 0xd7:
+	case tag >= SHORT_INT && tag <= SHORT_INT_LIMIT_MAX:
 		val = strconv.Itoa(((int(tag) - BC_INT_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read()))
 		return &val
 
-	case tag == 'I' || tag == BC_LONG_INT:
+	case tag == BC_INT || tag == BC_LONG_INT:
 		val = strconv.Itoa(d.parseInt())
 		return &val
 
 	// direct long
-	case tag >= 0xd8 && tag <= 0xef:
+	case tag >= DIRECT_LONG && tag <= DIRECT_LONG_MAX:
 		val = strconv.Itoa(int(tag) - BC_LONG_ZERO)
 		return &val
 
 	/* byte long */
-	case tag >= 0xf0:
+	case tag >= BYTE_LONG:
 		val = strconv.Itoa(((int(tag) - BC_LONG_BYTE_ZERO) << 8) + int(d.read()))
 		return &val
 
 	/* short long */
-	case tag >= 0x38 && tag <= 0x3f:
+	case tag >= SHORT_LONG && tag <= SHORT_LONG_LIMIT_MAX:
 		val = strconv.Itoa(((int(tag) - BC_LONG_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read()))
 		return &val
 
-	case tag == 'L':
+	case tag == BC_LONG:
 		val = fmt.Sprintf("%d", d.parseLong())
 		return &val
 
@@ -642,18 +642,18 @@ func (d *Decoder) readString() *string {
 			return &val
 		}
 
-	case tag == 'D':
+	case tag == BC_DOUBLE:
 		val = fmt.Sprintf("%v", d.parseDouble())
 		return &val
 
-	case tag == 'S' || tag == BC_STRING_CHUNK:
-		d.isLastChunk = tag == 'S'
+	case tag == BC_STRING || tag == BC_STRING_CHUNK:
+		d.isLastChunk = tag == BC_STRING
 		d.chunkLength = (int(d.read()) << 8) + int(d.read())
 		d.sbuf.Reset()
 		var ch rune
 		for {
 			ch = d.parseChar()
-			if ch == 0xff {
+			if ch == CHAR_END_MARK {
 				break
 			}
 			d.sbuf.WriteRune(ch)
@@ -662,14 +662,14 @@ func (d *Decoder) readString() *string {
 		return &val
 
 	// 0-byte string
-	case tag <= 0x1f:
+	case tag <= STRING_DIRECT_MAX:
 		d.isLastChunk = true
 		d.chunkLength = int(tag)
 		d.sbuf.Reset()
 		var ch rune
 		for {
 			ch = d.parseChar()
-			if ch == 0xff {
+			if ch == CHAR_END_MARK {
 				break
 			}
 			d.sbuf.WriteRune(ch)
@@ -678,14 +678,14 @@ func (d *Decoder) readString() *string {
 		val = d.sbuf.String()
 		return &val
 
-	case tag >= 0x30 && tag <= 0x33:
+	case tag >= BC_STRING_SHORT && tag <= BC_STRING_SHORT_MAX:
 		d.isLastChunk = true
-		d.chunkLength = (int(tag)-0x30)*256 + int(d.read())
+		d.chunkLength = (int(tag)-BC_STRING_SHORT)*256 + int(d.read())
 		d.sbuf.Reset()
 		var ch rune
 		for {
 			ch = d.parseChar()
-			if ch == 0xff {
+			if ch == CHAR_END_MARK {
 				break
 			}
 			d.sbuf.WriteRune(ch)
@@ -704,7 +704,7 @@ func (d *Decoder) readBytes() []byte {
 	tag := d.read()
 
 	switch {
-	case tag == 'N':
+	case tag == BC_NULL:
 		return nil
 
 	case tag == BC_BINARY || tag == BC_BINARY_CHUNK:
@@ -715,7 +715,7 @@ func (d *Decoder) readBytes() []byte {
 		var data byte
 		for {
 			data = d.parseByte()
-			if data == 0xFF {
+			if data == CHAR_END_MARK {
 				break
 			}
 			bos.WriteByte(data)
@@ -723,10 +723,10 @@ func (d *Decoder) readBytes() []byte {
 
 		return bos.Bytes()
 
-	case tag >= 0x20 && tag <= 0x2f:
+	case tag >= BC_BINARY_DIRECT && tag <= INT_DIRECT_MAX:
 		{
 			d.isLastChunk = true
-			d.chunkLength = int(tag) - 0x20
+			d.chunkLength = int(tag) - BC_BINARY_DIRECT
 
 			buffer := make([]byte, 0, d.chunkLength)
 
@@ -744,10 +744,10 @@ func (d *Decoder) readBytes() []byte {
 			return buffer
 		}
 
-	case tag >= 0x34 && tag <= 0x37:
+	case tag >= BC_BINARY_SHORT && tag <= BC_BINARY_SHORT_MAX:
 		{
 			d.isLastChunk = true
-			d.chunkLength = (int(tag)-0x34)*256 + int(d.read())
+			d.chunkLength = (int(tag)-BC_BINARY_SHORT)*256 + int(d.read())
 
 			buffer := make([]byte, 0, d.chunkLength)
 
@@ -781,18 +781,18 @@ func (d *Decoder) readByte() byte {
 		return d.read()
 	} else if d.chunkLength == EndOfData {
 		d.chunkLength = 0
-		return 0xFF
+		return CHAR_END_MARK
 	}
 
 	tag := d.read()
 
 	switch {
-	case tag == 'N':
-		return 0xFF
+	case tag == BC_NULL:
+		return CHAR_END_MARK
 
-	case tag == 'B' || tag == BC_BINARY_CHUNK:
+	case tag == BC_BINARY || tag == BC_BINARY_CHUNK:
 		{
-			d.isLastChunk = tag == 'B'
+			d.isLastChunk = tag == BC_BINARY
 			d.chunkLength = (int(d.read()) << 8) + int(d.read())
 
 			value := d.parseByte()
@@ -806,10 +806,10 @@ func (d *Decoder) readByte() byte {
 			return value
 		}
 
-	case tag >= 0x20 && tag <= 0x2f:
+	case tag >= BC_BINARY_DIRECT && tag <= INT_DIRECT_MAX:
 		{
 			d.isLastChunk = true
-			d.chunkLength = int(tag) - 0x20
+			d.chunkLength = int(tag) - BC_BINARY_DIRECT
 
 			value := d.parseByte()
 
@@ -822,10 +822,10 @@ func (d *Decoder) readByte() byte {
 			return value
 		}
 
-	case tag >= 0x34 && tag <= 0x37:
+	case tag >= BC_BINARY_SHORT && tag <= BC_BINARY_SHORT_MAX:
 		{
 			d.isLastChunk = true
-			d.chunkLength = (int(tag)-0x34)*256 + int(d.read())
+			d.chunkLength = (int(tag)-BC_BINARY_SHORT)*256 + int(d.read())
 
 			value := d.parseByte()
 
@@ -852,21 +852,21 @@ func (d *Decoder) readBytes2(buffer []byte, offset int, length int) int {
 		tag := d.read()
 
 		switch {
-		case tag == 'N':
+		case tag == BC_NULL:
 			return -1
 
-		case tag == 'B' || tag == BC_BINARY_CHUNK:
-			d.isLastChunk = tag == 'B'
+		case tag == BC_BINARY || tag == BC_BINARY_CHUNK:
+			d.isLastChunk = tag == BC_BINARY
 			d.chunkLength = (int(d.read()) << 8) + int(d.read())
 
-		case tag >= 0x20 && tag <= 0x2f:
+		case tag >= BC_BINARY_DIRECT && tag <= INT_DIRECT_MAX:
 
 			d.isLastChunk = true
-			d.chunkLength = int(tag) - 0x20
+			d.chunkLength = int(tag) - BC_BINARY_DIRECT
 
-		case tag >= 0x34 && tag <= 0x37:
+		case tag >= BC_BINARY_SHORT && tag <= BC_BINARY_SHORT_MAX:
 			d.isLastChunk = true
-			d.chunkLength = (int(tag)-0x34)*256 + int(d.read())
+			d.chunkLength = (int(tag)-BC_BINARY_SHORT)*256 + int(d.read())
 
 		default:
 			panic(d.expect("binary", tag))
@@ -891,8 +891,8 @@ func (d *Decoder) readBytes2(buffer []byte, offset int, length int) int {
 			tag := d.read()
 
 			switch tag {
-			case 'B', BC_BINARY_CHUNK:
-				d.isLastChunk = tag == 'B'
+			case BC_BINARY, BC_BINARY_CHUNK:
+				d.isLastChunk = tag == BC_BINARY
 				d.chunkLength = (int(d.read()) << 8) + int(d.read())
 
 			default:
@@ -915,46 +915,46 @@ func (d *Decoder) readBytes2(buffer []byte, offset int, length int) int {
 func (d *Decoder) ReadObject() interface{} {
 	tag := d.readTag()
 	switch {
-	case tag == 'N':
+	case tag == BC_NULL:
 		return nil
 
-	case tag == 'T':
+	case tag == BC_TRUE:
 		return true
 
-	case tag == 'F':
+	case tag == BC_FALSE:
 		return false
 
 	// direct integer
-	case tag >= 0x80 && tag <= 0xbf:
+	case tag >= DIRECT_INT && tag <= DIRECT_INT_MAX:
 		return int(tag) - BC_INT_ZERO
 
 	/* byte int */
-	case tag >= 0xc0 && tag <= 0xcf:
+	case tag >= BYTE_INT && tag <= BYTE_INT_LIMIT_MAX:
 		return ((int(tag) - BC_INT_BYTE_ZERO) << 8) + int(d.read())
 
 	/* short int */
-	case tag >= 0xd0 && tag <= 0xd7:
+	case tag >= SHORT_INT && tag <= SHORT_INT_LIMIT_MAX:
 		return ((int(tag) - BC_INT_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read())
 
-	case tag == 'I':
+	case tag == BC_INT:
 		return d.parseInt()
 
 	// direct long
-	case tag >= 0xd8 && tag <= 0xef:
+	case tag >= DIRECT_LONG && tag <= DIRECT_LONG_MAX:
 		return int64(tag) - BC_LONG_ZERO
 
 	/* byte long */
-	case tag >= 0xf0:
+	case tag >= BYTE_LONG:
 		return ((int64(tag) - BC_LONG_BYTE_ZERO) << 8) + int64(d.read())
 
 	/* short long */
-	case tag >= 0x38 && tag <= 0x3f:
+	case tag >= SHORT_LONG && tag <= SHORT_LONG_LIMIT_MAX:
 		return ((int64(tag) - BC_LONG_SHORT_ZERO) << 16) + 256*int64(d.read()) + int64(d.read())
 
 	case tag == BC_LONG_INT:
 		return int64(d.parseInt())
 
-	case tag == 'L':
+	case tag == BC_LONG:
 		return d.parseLong()
 
 	case tag == BC_DOUBLE_ZERO:
@@ -976,7 +976,7 @@ func (d *Decoder) ReadObject() interface{} {
 			return 0.001 * mills
 		}
 
-	case tag == 'D':
+	case tag == BC_DOUBLE:
 		return d.parseDouble()
 
 	case tag == BC_DATE:
@@ -986,9 +986,9 @@ func (d *Decoder) ReadObject() interface{} {
 	case tag == BC_DATE_MINUTE:
 		return time.Unix(int64(d.parseInt())*60000, 0)
 
-	case tag == BC_STRING_CHUNK || tag == 'S':
+	case tag == BC_STRING_CHUNK || tag == BC_STRING:
 		{
-			d.isLastChunk = tag == 'S'
+			d.isLastChunk = tag == BC_STRING
 			d.chunkLength = (int(d.read()) << 8) + int(d.read())
 
 			d.sbuf.Reset()
@@ -998,7 +998,7 @@ func (d *Decoder) ReadObject() interface{} {
 			return d.sbuf.String()
 		}
 
-	case tag <= 0x1f:
+	case tag <= STRING_DIRECT_MAX:
 		{
 			d.isLastChunk = true
 			d.chunkLength = int(tag)
@@ -1011,10 +1011,10 @@ func (d *Decoder) ReadObject() interface{} {
 			return builder.String()
 		}
 
-	case tag >= 0x30 && tag <= 0x33:
+	case tag >= BC_STRING_SHORT && tag <= BC_STRING_SHORT_MAX:
 		{
 			d.isLastChunk = true
-			d.chunkLength = (int(tag)-0x30)*256 + int(d.read())
+			d.chunkLength = (int(tag)-BC_STRING_SHORT)*256 + int(d.read())
 
 			d.sbuf.Reset()
 
@@ -1023,9 +1023,9 @@ func (d *Decoder) ReadObject() interface{} {
 			return d.sbuf.String()
 		}
 
-	case tag == BC_BINARY_CHUNK || tag == 'B':
+	case tag == BC_BINARY_CHUNK || tag == BC_BINARY:
 		{
-			d.isLastChunk = tag == 'B'
+			d.isLastChunk = tag == BC_BINARY
 			d.chunkLength = (int(d.read()) << 8) + int(d.read())
 
 			bos := bytes.NewBuffer([]byte{})
@@ -1033,7 +1033,7 @@ func (d *Decoder) ReadObject() interface{} {
 			var data byte
 			for {
 				data = d.parseByte()
-				if data == 0xFF {
+				if data == CHAR_END_MARK {
 					break
 				}
 				bos.WriteByte(data)
@@ -1042,10 +1042,10 @@ func (d *Decoder) ReadObject() interface{} {
 			return bos.Bytes()
 		}
 
-	case tag >= 0x20 && tag <= 0x2f:
+	case tag >= BC_BINARY_DIRECT && tag <= INT_DIRECT_MAX:
 		{
 			d.isLastChunk = true
-			length := int(tag) - 0x20
+			length := int(tag) - BC_BINARY_DIRECT
 			d.chunkLength = 0
 
 			data := make([]byte, length)
@@ -1057,10 +1057,10 @@ func (d *Decoder) ReadObject() interface{} {
 			return data
 		}
 
-	case tag >= 0x34 && tag <= 0x37:
+	case tag >= BC_BINARY_SHORT && tag <= BC_BINARY_SHORT_MAX:
 		{
 			d.isLastChunk = true
-			length := (int(tag)-0x34)*256 + int(d.read())
+			length := (int(tag)-BC_BINARY_SHORT)*256 + int(d.read())
 			d.chunkLength = 0
 
 			buffer := make([]byte, 0, length)
@@ -1097,41 +1097,41 @@ func (d *Decoder) ReadObject() interface{} {
 		}
 
 	// compact fixed list
-	case tag >= 0x70 && tag <= 0x77:
+	case tag >= P_PACKET_SHORT && tag <= P_PACKET_SHORT_MAX:
 		{
 			typ := d.readType()
-			length := int(tag) - 0x70
+			length := int(tag) - P_PACKET_SHORT
 			return d.readList(length, &typ)
 		}
 
 	// compact fixed untyped list
-	case tag >= 0x78 && tag <= 0x7f:
+	case tag >= BC_LIST_DIRECT_UNTYPED && tag <= PACKET_DIRECT_MAX:
 		{
-			length := int(tag) - 0x78
+			length := int(tag) - BC_LIST_DIRECT_UNTYPED
 			return d.readList(length, nil)
 		}
 
-	case tag == 'H':
+	case tag == BC_MAP_UNTYPED:
 		{
 			return d.readMap(nil)
 		}
 
-	case tag == 'M':
+	case tag == BC_MAP:
 		{
 			typ := d.readType()
 			return d.readMap(&typ)
 		}
 
-	case tag == 'C':
+	case tag == BC_OBJECT_DEF:
 		{
 			d.readObjectDefinition(nil)
 
 			return d.ReadObject()
 		}
 
-	case tag >= 0x60 && tag <= 0x6f:
+	case tag >= BC_OBJECT_DIRECT && tag <= BC_OBJECT_DIRECT_MAX:
 		{
-			ref := int(tag) - 0x60
+			ref := int(tag) - BC_OBJECT_DIRECT
 
 			if len(d.classDefs) <= ref {
 				panic(d.error(fmt.Sprintf("No classes defined at reference '%s'", strings.ToUpper(hex.EncodeToString([]byte{tag})))))
@@ -1142,7 +1142,7 @@ func (d *Decoder) ReadObject() interface{} {
 			return d.readObjectInstance(nil, def)
 		}
 
-	case tag == 'O':
+	case tag == BC_OBJECT:
 		{
 			ref := d.readInt()
 
@@ -1164,7 +1164,7 @@ func (d *Decoder) ReadObject() interface{} {
 		}
 
 	default:
-		if tag == 0xff {
+		if tag == CHAR_END_MARK {
 			panic(fmt.Errorf("readObject: unexpected end of file"))
 		} else {
 			panic(d.error("readObject: unknown code " + d.codeName(tag)))
@@ -1227,20 +1227,20 @@ func (d *Decoder) isEnd() bool {
 		code = d.buffer[d.offset]
 	} else {
 		code = d.read()
-		if code != 0xff {
+		if code != CHAR_END_MARK {
 			d.offset--
 		}
 	}
-	return code == 0xff || code == 'Z'
+	return code == CHAR_END_MARK || code == BC_END
 }
 
 // readEnd Check data read is end
 func (d *Decoder) readEnd() {
 	code := d.readTag()
-	if code == 'Z' {
+	if code == BC_END {
 		return
 	}
-	if code == 0xff {
+	if code == CHAR_END_MARK {
 		panic(d.error("unexpected end of file"))
 	}
 	panic(d.error("unknown code:" + d.codeName(code)))
@@ -1270,10 +1270,10 @@ func (d *Decoder) readType() string {
 	d.offset--
 
 	switch {
-	case (code <= 0x1f) ||
-		(code >= 0x30 && code <= 0x33) ||
+	case (code <= STRING_DIRECT_MAX) ||
+		(code >= BC_STRING_SHORT && code <= BC_STRING_SHORT_MAX) ||
 		code == BC_STRING_CHUNK ||
-		code == 'S':
+		code == BC_STRING:
 		{
 			typ := d.readString()
 
@@ -1344,7 +1344,7 @@ func (d *Decoder) parseString(builder *strings.Builder) {
 func (d *Decoder) parseChar() rune {
 	for d.chunkLength <= 0 {
 		if !d.parseChunkLength() {
-			return 0xff
+			return CHAR_END_MARK
 		}
 	}
 	d.chunkLength--
@@ -1363,17 +1363,17 @@ func (d *Decoder) parseChunkLength() bool {
 		d.isLastChunk = false
 		d.chunkLength = (int(d.read()) << 8) + int(d.read())
 
-	case code == 'S':
+	case code == BC_STRING:
 		d.isLastChunk = true
 		d.chunkLength = (int(d.read()) << 8) + int(d.read())
 
-	case code <= 0x1f:
+	case code <= STRING_DIRECT_MAX:
 		d.isLastChunk = true
 		d.chunkLength = int(code)
 
-	case code >= 0x30 && code <= 0x33:
+	case code >= BC_STRING_SHORT && code <= BC_STRING_SHORT_MAX:
 		d.isLastChunk = true
-		d.chunkLength = (int(code)-0x30)*256 + int(d.read())
+		d.chunkLength = (int(code)-BC_STRING_SHORT)*256 + int(d.read())
 
 	default:
 		panic(d.expect("string", code))
@@ -1385,17 +1385,17 @@ func (d *Decoder) parseChunkLength() bool {
 // parseUTF8Char Convert buffer to rune value
 func (d *Decoder) parseUTF8Char() rune {
 	ch := d.readTag()
-	if ch < 0x80 {
+	if ch <= ASCII_CODE_MAX {
 		return rune(ch)
-	} else if (ch & 0xe0) == 0xc0 {
+	} else if (ch & BC_LONG_ZERO) == BYTE_INT {
 		ch1 := d.read()
-		v := (int(ch&0x1f) << 6) + int(ch1&0x3f)
+		v := (int(ch&STRING_DIRECT_MAX) << 6) + int(ch1&SHORT_LONG_LIMIT_MAX)
 
 		return rune(v)
-	} else if (ch & 0xf0) == 0xe0 {
+	} else if (ch & BYTE_LONG) == BC_LONG_ZERO {
 		ch1 := d.read()
 		ch2 := d.read()
-		v := (int(ch&0x0f) << 12) + (int(ch1&0x3f) << 6) + int(ch2&0x3f)
+		v := (int(ch&BINARY_DIRECT_MAX) << 12) + (int(ch1&SHORT_LONG_LIMIT_MAX) << 6) + int(ch2&SHORT_LONG_LIMIT_MAX)
 
 		return rune(v)
 	} else {
@@ -1407,27 +1407,27 @@ func (d *Decoder) parseUTF8Char() rune {
 func (d *Decoder) parseByte() byte {
 	for d.chunkLength <= 0 {
 		if d.isLastChunk {
-			return 0xff
+			return CHAR_END_MARK
 		}
 
 		code := d.read()
 
 		switch {
-		case code == BC_BINARY_CHUNK:
+		case code == BC_BINARY_CHUNK: // 8-bit binary data non-final chunk ('A')
 			d.isLastChunk = false
 			d.chunkLength = (int(d.read()) << 8) + int(d.read())
 
-		case code == 'B':
+		case code == BC_BINARY: // 8-bit binary data final chunk ('B')
 			d.isLastChunk = true
 			d.chunkLength = (int(d.read()) << 8) + int(d.read())
 
-		case code >= 0x20 && code <= 0x2f:
+		case code >= BC_BINARY_DIRECT && code <= INT_DIRECT_MAX: // binary data length 0-16
 			d.isLastChunk = true
-			d.chunkLength = int(code) - 0x20
+			d.chunkLength = int(code) - BC_BINARY_DIRECT
 
-		case code >= 0x34 && code <= 0x37:
+		case code >= BC_BINARY_SHORT && code <= BC_BINARY_SHORT_MAX: // binary data length 0-1023
 			d.isLastChunk = true
-			d.chunkLength = (int(code)-0x34)*256 + int(d.read())
+			d.chunkLength = (int(code)-BC_BINARY_SHORT)*256 + int(d.read())
 
 		default:
 			panic(d.expect("byte[]", code))
@@ -1446,7 +1446,7 @@ func (d *Decoder) read2(buffer []byte, offset int, length int) int {
 		for d.chunkLength <= 0 {
 			if d.isLastChunk {
 				if readLength == 0 {
-					return 0xff
+					return CHAR_END_MARK
 				}
 				return readLength
 			}
@@ -1462,13 +1462,13 @@ func (d *Decoder) read2(buffer []byte, offset int, length int) int {
 				d.isLastChunk = true
 				d.chunkLength = (int(d.read()) << 8) + int(d.read())
 
-			case code >= 0x20 && code <= 0x2f:
+			case code >= BC_BINARY_DIRECT && code <= INT_DIRECT_MAX:
 				d.isLastChunk = true
-				d.chunkLength = int(code) - 0x20
+				d.chunkLength = int(code) - BC_BINARY_DIRECT
 
-			case code >= 0x34 && code <= 0x37:
+			case code >= BC_BINARY_SHORT && code <= BC_BINARY_SHORT_MAX:
 				d.isLastChunk = true
-				d.chunkLength = (int(code)-0x34)*256 + int(d.read())
+				d.chunkLength = (int(code)-BC_BINARY_SHORT)*256 + int(d.read())
 
 			default:
 				panic(d.expect("byte[]", code))
@@ -1503,7 +1503,7 @@ func (d *Decoder) read2(buffer []byte, offset int, length int) int {
 
 // codeName Convert byte to hexadecimal format
 func (d *Decoder) codeName(ch byte) string {
-	if ch == 0xff {
+	if ch == CHAR_END_MARK {
 		return "end of file"
 	}
 	return fmt.Sprintf("0x%s (%v)", strings.ToUpper(hex.EncodeToString([]byte{ch})), rune(ch))
@@ -1511,7 +1511,7 @@ func (d *Decoder) codeName(ch byte) string {
 
 // expect Get a expect information error message
 func (d *Decoder) expect(expect string, ch byte) error {
-	if ch == 0xff {
+	if ch == CHAR_END_MARK {
 		return d.error(fmt.Sprintf("expected %s at end of file", expect))
 	}
 	return d.error(fmt.Sprintf("expected %s(0x%s) at end of file", expect, strings.ToUpper(hex.EncodeToString([]byte{ch}))))

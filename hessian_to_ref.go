@@ -28,12 +28,14 @@ type JavaBean interface {
 	JavaClassName() string
 }
 
+// VirtualClass Java virtual class model
 type VirtualClass struct {
 	className    string                 // Java class name
 	classPackage string                 // Java class package
 	fields       map[string]interface{} // Java class field map
 }
 
+// NewVirtualClass Get a Java virtual class instance
 func NewVirtualClass(typ string, fieldNames []string) *VirtualClass {
 	idx := strings.LastIndexByte(typ, '.')
 	classPackage := ""
@@ -53,18 +55,22 @@ func NewVirtualClass(typ string, fieldNames []string) *VirtualClass {
 	}
 }
 
+// JavaClassPackage Get Java class package name
 func (vc *VirtualClass) JavaClassPackage() string {
 	return vc.classPackage
 }
 
+// JavaClassName Get Java class name
 func (vc *VirtualClass) JavaClassName() string {
 	return vc.className
 }
 
+// JavaFields Get Java class field map
 func (vc *VirtualClass) JavaFields() map[string]interface{} {
 	return vc.fields
 }
 
+// JavaFields Convert Java virtual class to simple String
 func (vc *VirtualClass) String() string {
 	m := make(map[string]interface{})
 	m["class_package"] = vc.classPackage
