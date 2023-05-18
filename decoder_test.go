@@ -17,11 +17,14 @@
 package hessian2
 
 import (
+	"fmt"
+	"math"
 	"testing"
 )
 
-func TestDecoder(t *testing.T) {
-	javaSimpleClassEncodeByteArray := []byte{
+// TestDecodeJavaSimpleClass test decode java simple class
+func TestDecodeJavaSimpleClass(t *testing.T) {
+	byteArray := []byte{
 		67, 10, 97, 46, 98, 46, 99, 46, 84, 101, 115, 116, 153, 4, 110, 97, 109, 101, 3, 97, 103, 101, 4, 97, 103, 101,
 		50, 5, 119, 105, 103, 104, 116, 6, 119, 105, 103, 104, 116, 50, 4, 97, 103, 101, 51, 5, 98, 121, 116, 101, 115,
 		4, 108, 105, 115, 116, 3, 109, 97, 112, 96, 9, 67, 104, 97, 110, 103, 101, 100, 101, 110, 154, 95, 0, 0, 44,
@@ -33,18 +36,194 @@ func TestDecoder(t *testing.T) {
 		112, 163, 35, 1, 0, 6, 112, 145, 77, 146, 90, 90,
 	}
 
-	decoder := NewDecoderWithByteArray(javaSimpleClassEncodeByteArray)
+	decoder := NewDecoderWithByteArray(byteArray)
 	obj := decoder.ReadObject()
 	switch vc := obj.(type) {
 	case *VirtualClass:
 		if vc.JavaClassPackage() != "a.b.c" {
-			t.Errorf("Java Package name decode error, expect: %s", "a.b.c")
+			t.Errorf("Java Package name decode error, expect: %s\n", "a.b.c")
+			t.Fail()
 		}
 		if vc.JavaClassName() != "Test" {
-			t.Errorf("Java Class name decode error, expect: %s", "Test")
+			t.Errorf("Java Class name decode error, expect: %s\n", "Test")
+			t.Fail()
 		}
-
+		t.Logf("%s\n", vc.String())
 	default:
-		t.Error("Decode error")
+		t.Error("Decode error\n")
+		t.Fail()
 	}
+}
+
+// TestDecodeString test decode string value
+func TestDecodeString(t *testing.T) {
+	byteArray := []byte{9, 67, 104, 97, 110, 103, 101, 100, 101, 110} // Changeden
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	str := decoder.readString()
+	if nil == str {
+		t.Errorf("String value decode error, expect: not nil")
+	}
+	if "Changeden" != *str {
+		t.Errorf("String value decode error, expect: %s\n", "Changeden")
+		t.Fail()
+	}
+	t.Logf("String value: %s\n", *str)
+}
+
+// TestDecodeString test decode int64(Java Long) value
+func TestDecodeInt64(t *testing.T) {
+	byteArray := []byte{76, 127, 255, 255, 255, 255, 255, 255, 255} // math.MaxInt64
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	i := decoder.readLong()
+	if math.MaxInt64 != i {
+		t.Errorf("int64 value decode error, expect: %d\n", math.MaxInt64)
+		t.Fail()
+	}
+	t.Logf("int64 value: %d\n", i)
+}
+
+// TestDecodeInt32 test decode int32(Java Integer) value
+func TestDecodeInt32(t *testing.T) {
+	byteArray := []byte{73, 127, 255, 255, 255} // math.MaxInt32
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	i := decoder.readInt()
+	if math.MaxInt32 != i {
+		t.Errorf("int32 value decode error, expect: %d\n", math.MaxInt32)
+		t.Fail()
+	}
+	t.Logf("int32 value: %d\n", i)
+}
+
+// TestDecodeInt16 test decode int16(Java Short) value
+func TestDecodeInt16(t *testing.T) {
+	byteArray := []byte{212, 127, 255} // math.MaxInt16
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	i := decoder.readShort()
+	if math.MaxInt16 != i {
+		t.Errorf("int16 value decode error, expect: %d\n", math.MaxInt16)
+		t.Fail()
+	}
+	t.Logf("int16 value: %d\n", i)
+}
+
+// TestDecodeInt8ByShort test decode int8(Java Byte) value
+func TestDecodeInt8ByShort(t *testing.T) {
+	byteArray := []byte{200, 127} // math.MaxInt8
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	i := decoder.readShort()
+	if math.MaxInt8 != i {
+		t.Errorf("int8 value decode error, expect: %d\n", math.MaxInt8)
+		t.Fail()
+	}
+	t.Logf("int8 value: %d\n", i)
+}
+
+// TestDecodeInt8ByInt test decode int8(Java Byte) value
+func TestDecodeInt8ByInt(t *testing.T) {
+	byteArray := []byte{200, 127} // math.MaxInt8
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	i := decoder.readInt()
+	if math.MaxInt8 != i {
+		t.Errorf("int8 value decode error, expect: %d\n", math.MaxInt8)
+		t.Fail()
+	}
+	t.Logf("int8 value: %d\n", i)
+}
+
+// TestDecodeFloat64 test decode float64(Java Double) value
+func TestDecodeFloat64(t *testing.T) {
+	byteArray := []byte{68, 127, 239, 255, 255, 255, 255, 255, 255} // math.MaxFloat64
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	i := decoder.readDouble()
+	if math.MaxFloat64 != i {
+		t.Errorf("float64 value decode error, expect: %v\n", math.MaxFloat64)
+		t.Fail()
+	}
+	t.Logf("float64 value: %v\n", i)
+}
+
+// TestDecodeFloat32 test decode float32(Java Float) value
+func TestDecodeFloat32(t *testing.T) {
+	byteArray := []byte{68, 71, 239, 255, 255, 224, 0, 0, 0} // math.MaxFloat32
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	i := decoder.readDouble()
+	if math.MaxFloat32 != i {
+		t.Errorf("float32 value decode error, expect: %v\n", math.MaxFloat64)
+		t.Fail()
+	}
+	t.Logf("float32 value: %v\n", i)
+}
+
+// TestDecodeBooleanTrue test decode bool(Java Boolean) value
+func TestDecodeBooleanTrue(t *testing.T) {
+	byteArray := []byte{84} // true
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	i := decoder.readBoolean()
+	if !i {
+		t.Errorf("boolean value decode error, expect: %v\n", true)
+		t.Fail()
+	}
+	t.Logf("boolean value: %v\n", i)
+}
+
+// TestDecodeBooleanFalse test decode bool(Java Boolean) value
+func TestDecodeBooleanFalse(t *testing.T) {
+	byteArray := []byte{70} // false
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	i := decoder.readBoolean()
+	if i {
+		t.Errorf("boolean value decode error, expect: %v\n", false)
+		t.Fail()
+	}
+	t.Logf("boolean value: %v\n", i)
+}
+
+// TestDecodeNull test decode nil(Java null) value
+func TestDecodeNull(t *testing.T) {
+	byteArray := []byte{78} // nil
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	defer func() {
+		if err := recover(); err != nil {
+			t.Errorf("boolean value decode error, expect: %v\n", false)
+			t.Fail()
+		}
+	}()
+	decoder.readNull()
+}
+
+// TestDecodeArray test decode array/slice(Java Array/List) value
+func TestDecodeArray(t *testing.T) {
+	byteArray := []byte{123, 1, 51, 1, 50, 1, 49} // [3, 2, 1]
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	i := decoder.ReadObject()
+	if "[3 2 1]" != fmt.Sprintf("%v", i) {
+		t.Errorf("string array decode error, expect: [3 2 1]\n")
+		t.Fail()
+	}
+	t.Logf("string array: %v\n", i)
+}
+
+// TestDecodeMap test decode map(Java Map) value
+func TestDecodeMap(t *testing.T) {
+	byteArray := []byte{72, 145, 1, 52, 146, 1, 51, 147, 1, 50, 148, 1, 49, 90} // {1=4, 2=3, 3=2, 4=1}
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	i := decoder.ReadObject()
+	if "map[1:4 2:3 3:2 4:1]" != fmt.Sprintf("%v", i) {
+		t.Errorf("map decode error, expect: map[1:4 2:3 3:2 4:1]\n")
+		t.Fail()
+	}
+	t.Logf("map: %v\n", i)
 }
