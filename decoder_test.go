@@ -228,6 +228,7 @@ func TestDecodeMap(t *testing.T) {
 	t.Logf("map: %v\n", i)
 }
 
+// TestDecodeUTCDate test decode UTC Date value
 func TestDecodeUTCDate(t *testing.T) {
 	byteArray := []byte{74, 0, 0, 1, 136, 77, 42, 50, 164} // 1684921791140
 
