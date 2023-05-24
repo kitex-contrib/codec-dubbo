@@ -154,7 +154,7 @@ func TestDecodeFloat32(t *testing.T) {
 	byteArray := []byte{68, 71, 239, 255, 255, 224, 0, 0, 0} // math.MaxFloat32
 
 	decoder := NewDecoderWithByteArray(byteArray)
-	i := decoder.readDouble()
+	i := decoder.readFloat()
 	if math.MaxFloat32 != i {
 		t.Errorf("float32 value decode error, expect: %v\n", math.MaxFloat64)
 		t.Fail()
@@ -226,4 +226,16 @@ func TestDecodeMap(t *testing.T) {
 		t.Fail()
 	}
 	t.Logf("map: %v\n", i)
+}
+
+func TestDecodeUTCDate(t *testing.T) {
+	byteArray := []byte{74, 0, 0, 1, 136, 77, 42, 50, 164} // 1684921791140
+
+	decoder := NewDecoderWithByteArray(byteArray)
+	i := decoder.readUTCDate()
+	if 1684921791140 != i {
+		t.Errorf("UTC date value decode error, expect: 1684921791140\n")
+		t.Fail()
+	}
+	t.Logf("UTC date value: %v\n", i)
 }
