@@ -30,8 +30,6 @@ import (
 
 const (
 	ReadSize = 1024
-
-	EndOfData = -2
 )
 
 // NewDecoder Get Hessian2 decoder instance with a reader
@@ -87,7 +85,7 @@ func (d *Decoder) readBuffer() bool {
 	}
 	l, err := d.in.Read(d.buffer[offset:])
 	d.offset = 0
-	if l <= 0 || err != nil {
+	if l <= 0 || nil != err {
 		d.length = offset
 		return offset > 0
 	}
@@ -584,79 +582,6 @@ func (d *Decoder) readString() *string {
 
 	default:
 		panic(d.expect("string", tag))
-	}
-}
-
-// readByte Try to read a byte value
-func (d *Decoder) readByte() byte {
-	if d.chunkLength > 0 {
-		d.chunkLength--
-		if d.chunkLength == 0 && d.isLastChunk {
-			d.chunkLength = EndOfData
-		}
-
-		return d.read()
-	} else if d.chunkLength == EndOfData {
-		d.chunkLength = 0
-		return CHAR_END_MARK
-	}
-
-	tag := d.read()
-
-	switch {
-	case tag == BC_NULL:
-		return CHAR_END_MARK
-
-	case tag == BC_BINARY || tag == BC_BINARY_CHUNK:
-		{
-			d.isLastChunk = tag == BC_BINARY
-			d.chunkLength = (int(d.read()) << 8) + int(d.read())
-
-			value := d.parseByte()
-
-			// special code so successive read byte won't
-			// be read as a single object.
-			if d.chunkLength == 0 && d.isLastChunk {
-				d.chunkLength = EndOfData
-			}
-
-			return value
-		}
-
-	case tag >= BC_BINARY_DIRECT && tag <= INT_DIRECT_MAX:
-		{
-			d.isLastChunk = true
-			d.chunkLength = int(tag) - BC_BINARY_DIRECT
-
-			value := d.parseByte()
-
-			// special code so successive read byte won't
-			// be read as a single object.
-			if d.chunkLength == 0 {
-				d.chunkLength = EndOfData
-			}
-
-			return value
-		}
-
-	case tag >= BC_BINARY_SHORT && tag <= BC_BINARY_SHORT_MAX:
-		{
-			d.isLastChunk = true
-			d.chunkLength = (int(tag)-BC_BINARY_SHORT)*256 + int(d.read())
-
-			value := d.parseByte()
-
-			// special code so successive read byte won't
-			// be read as a single object.
-			if d.chunkLength == 0 {
-				d.chunkLength = EndOfData
-			}
-
-			return value
-		}
-
-	default:
-		panic(d.expect("binary", tag))
 	}
 }
 
