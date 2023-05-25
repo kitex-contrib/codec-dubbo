@@ -221,17 +221,18 @@ func TestDecodeNull(t *testing.T) {
 // TestDecodeArray test decode array/slice(Java Array/List) value
 func TestDecodeArray(t *testing.T) {
 	byteArray := []byte{123, 1, 51, 1, 50, 1, 49} // [3, 2, 1]
+	expectValue := "[3 2 1]"
 
 	decoder := NewDecoderWithByteArray(byteArray)
 	i := decoder.ReadObject()
 	if nil == i {
-		t.Errorf("string array decode error, expect: [3 2 1]\n")
+		t.Errorf("string array decode error, expect: %s\n", expectValue)
 		t.Fail()
 		return
 	}
 	iv := fmt.Sprintf("%v", i)
-	if "[3 2 1]" != iv {
-		t.Errorf("string array decode error, expect: [3 2 1]\n")
+	if expectValue != iv {
+		t.Errorf("string array decode error, expect: %s\n", expectValue)
 		t.Fail()
 		return
 	}
@@ -241,17 +242,18 @@ func TestDecodeArray(t *testing.T) {
 // TestDecodeMap test decode map(Java Map) value
 func TestDecodeMap(t *testing.T) {
 	byteArray := []byte{72, 145, 1, 52, 146, 1, 51, 147, 1, 50, 148, 1, 49, 90} // {1=4, 2=3, 3=2, 4=1}
+	expectValue := "map[1:4 2:3 3:2 4:1]"
 
 	decoder := NewDecoderWithByteArray(byteArray)
 	i := decoder.ReadObject()
 	if nil == i {
-		t.Errorf("map decode error, expect: map[1:4 2:3 3:2 4:1]\n")
+		t.Errorf("map decode error, expect: %s\n", expectValue)
 		t.Fail()
 		return
 	}
 	iv := fmt.Sprintf("%v", i)
-	if "map[1:4 2:3 3:2 4:1]" != iv {
-		t.Errorf("map decode error, expect: map[1:4 2:3 3:2 4:1]\n")
+	if expectValue != iv {
+		t.Errorf("map decode error, expect: %s\n", expectValue)
 		t.Fail()
 		return
 	}
@@ -261,11 +263,12 @@ func TestDecodeMap(t *testing.T) {
 // TestDecodeUTCDate test decode UTC Date value
 func TestDecodeUTCDate(t *testing.T) {
 	byteArray := []byte{74, 0, 0, 1, 136, 77, 42, 50, 164} // 1684921791140
+	var expectValue int64 = 1684921791140
 
 	decoder := NewDecoderWithByteArray(byteArray)
 	i := decoder.readUTCDate()
-	if 1684921791140 != i {
-		t.Errorf("UTC date value decode error, expect: 1684921791140\n")
+	if expectValue != i {
+		t.Errorf("UTC date value decode error, expect: %d\n", expectValue)
 		t.Fail()
 		return
 	}
