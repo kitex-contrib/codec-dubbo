@@ -224,7 +224,13 @@ func TestDecodeArray(t *testing.T) {
 
 	decoder := NewDecoderWithByteArray(byteArray)
 	i := decoder.ReadObject()
-	if "[3 2 1]" != fmt.Sprintf("%v", i) {
+	if nil == i {
+		t.Errorf("string array decode error, expect: [3 2 1]\n")
+		t.Fail()
+		return
+	}
+	iv := fmt.Sprintf("%v", i)
+	if "[3 2 1]" != iv {
 		t.Errorf("string array decode error, expect: [3 2 1]\n")
 		t.Fail()
 		return
@@ -238,7 +244,13 @@ func TestDecodeMap(t *testing.T) {
 
 	decoder := NewDecoderWithByteArray(byteArray)
 	i := decoder.ReadObject()
-	if "map[1:4 2:3 3:2 4:1]" != fmt.Sprintf("%v", i) {
+	if nil == i {
+		t.Errorf("map decode error, expect: map[1:4 2:3 3:2 4:1]\n")
+		t.Fail()
+		return
+	}
+	iv := fmt.Sprintf("%v", i)
+	if "map[1:4 2:3 3:2 4:1]" != iv {
 		t.Errorf("map decode error, expect: map[1:4 2:3 3:2 4:1]\n")
 		t.Fail()
 		return
