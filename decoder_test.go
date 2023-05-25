@@ -43,15 +43,18 @@ func TestDecodeJavaSimpleClass(t *testing.T) {
 		if vc.JavaClassPackage() != "a.b.c" {
 			t.Errorf("Java Package name decode error, expect: %s\n", "a.b.c")
 			t.Fail()
+			return
 		}
 		if vc.JavaClassName() != "Test" {
 			t.Errorf("Java Class name decode error, expect: %s\n", "Test")
 			t.Fail()
+			return
 		}
 		t.Logf("%s\n", vc.String())
 	default:
 		t.Error("Decode error\n")
 		t.Fail()
+		return
 	}
 }
 
@@ -63,10 +66,13 @@ func TestDecodeString(t *testing.T) {
 	str := decoder.readString()
 	if nil == str {
 		t.Errorf("String value decode error, expect: not nil")
+		t.Fail()
+		return
 	}
-	if "Changeden" != *str {
+	if *str != "Changeden" {
 		t.Errorf("String value decode error, expect: %s\n", "Changeden")
 		t.Fail()
+		return
 	}
 	t.Logf("String value: %s\n", *str)
 }
@@ -80,6 +86,7 @@ func TestDecodeInt64(t *testing.T) {
 	if math.MaxInt64 != i {
 		t.Errorf("int64 value decode error, expect: %d\n", math.MaxInt64)
 		t.Fail()
+		return
 	}
 	t.Logf("int64 value: %d\n", i)
 }
@@ -93,6 +100,7 @@ func TestDecodeInt32(t *testing.T) {
 	if math.MaxInt32 != i {
 		t.Errorf("int32 value decode error, expect: %d\n", math.MaxInt32)
 		t.Fail()
+		return
 	}
 	t.Logf("int32 value: %d\n", i)
 }
@@ -106,6 +114,7 @@ func TestDecodeInt16(t *testing.T) {
 	if math.MaxInt16 != i {
 		t.Errorf("int16 value decode error, expect: %d\n", math.MaxInt16)
 		t.Fail()
+		return
 	}
 	t.Logf("int16 value: %d\n", i)
 }
@@ -119,6 +128,7 @@ func TestDecodeInt8ByShort(t *testing.T) {
 	if math.MaxInt8 != i {
 		t.Errorf("int8 value decode error, expect: %d\n", math.MaxInt8)
 		t.Fail()
+		return
 	}
 	t.Logf("int8 value: %d\n", i)
 }
@@ -132,6 +142,7 @@ func TestDecodeInt8ByInt(t *testing.T) {
 	if math.MaxInt8 != i {
 		t.Errorf("int8 value decode error, expect: %d\n", math.MaxInt8)
 		t.Fail()
+		return
 	}
 	t.Logf("int8 value: %d\n", i)
 }
@@ -145,6 +156,7 @@ func TestDecodeFloat64(t *testing.T) {
 	if math.MaxFloat64 != i {
 		t.Errorf("float64 value decode error, expect: %v\n", math.MaxFloat64)
 		t.Fail()
+		return
 	}
 	t.Logf("float64 value: %v\n", i)
 }
@@ -158,6 +170,7 @@ func TestDecodeFloat32(t *testing.T) {
 	if math.MaxFloat32 != i {
 		t.Errorf("float32 value decode error, expect: %v\n", math.MaxFloat64)
 		t.Fail()
+		return
 	}
 	t.Logf("float32 value: %v\n", i)
 }
@@ -171,6 +184,7 @@ func TestDecodeBooleanTrue(t *testing.T) {
 	if !i {
 		t.Errorf("boolean value decode error, expect: %v\n", true)
 		t.Fail()
+		return
 	}
 	t.Logf("boolean value: %v\n", i)
 }
@@ -184,6 +198,7 @@ func TestDecodeBooleanFalse(t *testing.T) {
 	if i {
 		t.Errorf("boolean value decode error, expect: %v\n", false)
 		t.Fail()
+		return
 	}
 	t.Logf("boolean value: %v\n", i)
 }
@@ -194,9 +209,10 @@ func TestDecodeNull(t *testing.T) {
 
 	decoder := NewDecoderWithByteArray(byteArray)
 	defer func() {
-		if err := recover(); err != nil {
+		if err := recover(); nil != err {
 			t.Errorf("boolean value decode error, expect: %v\n", false)
 			t.Fail()
+			return
 		}
 	}()
 	decoder.readNull()
@@ -211,6 +227,7 @@ func TestDecodeArray(t *testing.T) {
 	if "[3 2 1]" != fmt.Sprintf("%v", i) {
 		t.Errorf("string array decode error, expect: [3 2 1]\n")
 		t.Fail()
+		return
 	}
 	t.Logf("string array: %v\n", i)
 }
@@ -224,6 +241,7 @@ func TestDecodeMap(t *testing.T) {
 	if "map[1:4 2:3 3:2 4:1]" != fmt.Sprintf("%v", i) {
 		t.Errorf("map decode error, expect: map[1:4 2:3 3:2 4:1]\n")
 		t.Fail()
+		return
 	}
 	t.Logf("map: %v\n", i)
 }
@@ -237,6 +255,7 @@ func TestDecodeUTCDate(t *testing.T) {
 	if 1684921791140 != i {
 		t.Errorf("UTC date value decode error, expect: 1684921791140\n")
 		t.Fail()
+		return
 	}
 	t.Logf("UTC date value: %v\n", i)
 }
