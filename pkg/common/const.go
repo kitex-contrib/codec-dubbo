@@ -47,22 +47,4 @@ const (
 	BC_TRUE = byte('T')
 
 	PACKET_SHORT_MAX = 0xfff
-	ARRAY_STRING     = "[string"
-	ARRAY_INT        = "[int"
-	ARRAY_DOUBLE     = "[double"
-	ARRAY_FLOAT      = "[float"
-	ARRAY_BOOL       = "[boolean"
-	ARRAY_LONG       = "[long"
-
-	PATH_KEY      = "path"
-	GROUP_KEY     = "group"
-	INTERFACE_KEY = "interface"
-	VERSION_KEY   = "version"
-	TIMEOUT_KEY   = "timeout"
-
-	STRING_NIL   = ""
-	STRING_TRUE  = "true"
-	STRING_FALSE = "false"
-	STRING_ZERO  = "0.0"
-	STRING_ONE   = "1.0"
 )
