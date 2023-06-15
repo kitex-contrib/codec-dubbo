@@ -86,8 +86,8 @@ func (d *Decoder) readBuffer() bool {
 	return true
 }
 
-// readTag Read next tag mark
-func (d *Decoder) readTag() byte {
+// readNext Read next tag mark
+func (d *Decoder) readNext() byte {
 	if d.offset < d.length {
 		b := d.buffer[d.offset]
 		d.offset++
@@ -107,7 +107,7 @@ func (d *Decoder) readNull() {
 
 // readBoolean Try to read a boolean value
 func (d *Decoder) readBoolean() bool {
-	tag := d.readTag()
+	tag := d.readNext()
 	switch {
 	case tag == BC_TRUE:
 		return true
@@ -256,13 +256,7 @@ func (d *Decoder) readInt() int {
 
 	// case LONG_BYTE:
 	case tag == BC_DOUBLE_BYTE:
-		if d.offset < d.length {
-			v := int(d.buffer[d.offset])
-			d.offset++
-			return v
-		} else {
-			return int(d.read())
-		}
+		return int(d.readNext())
 
 	// case INT_SHORT:
 	// case LONG_SHORT:
@@ -307,13 +301,7 @@ func (d *Decoder) readLong() int64 {
 
 	// case LONG_BYTE:
 	case tag == BC_DOUBLE_BYTE:
-		if d.offset < d.length {
-			v := int64(d.buffer[d.offset])
-			d.offset++
-			return v
-		} else {
-			return int64(d.read())
-		}
+		return int64(d.readNext())
 
 	// case INT_SHORT:
 	// case LONG_SHORT:
@@ -410,13 +398,7 @@ func (d *Decoder) readDouble() float64 {
 		return 1
 
 	case tag == BC_DOUBLE_BYTE:
-		if d.offset < d.length {
-			v := float64(d.buffer[d.offset])
-			d.offset++
-			return v
-		} else {
-			return float64(d.read())
-		}
+		return float64(d.readNext())
 
 	case tag == BC_DOUBLE_SHORT:
 		return float64(int64(d.read())<<8) + float64(d.read())
@@ -507,7 +489,7 @@ func (d *Decoder) readString() *string {
 		return &val
 
 	case tag == BC_DOUBLE_BYTE:
-		val = strconv.Itoa(int(d.readTag()))
+		val = strconv.Itoa(int(d.readNext()))
 		return &val
 
 	case tag == BC_DOUBLE_SHORT:
@@ -580,7 +562,7 @@ func (d *Decoder) readString() *string {
 
 // ReadObject Decode Hessian2 data
 func (d *Decoder) ReadObject() interface{} {
-	tag := d.readTag()
+	tag := d.readNext()
 	switch {
 	case tag == BC_NULL:
 		return nil
@@ -902,7 +884,7 @@ func (d *Decoder) isEnd() bool {
 
 // readEnd Check data read is end
 func (d *Decoder) readEnd() {
-	code := d.readTag()
+	code := d.readNext()
 	if code == BC_END {
 		return
 	}
@@ -932,7 +914,7 @@ func (d *Decoder) Reset() {
 
 // readType Get the data type
 func (d *Decoder) readType() string {
-	code := d.readTag()
+	code := d.readNext()
 	d.offset--
 
 	switch {
@@ -1022,7 +1004,7 @@ func (d *Decoder) parseChunkLength() bool {
 		return false
 	}
 
-	code := d.readTag()
+	code := d.readNext()
 	switch {
 	case code == BC_STRING_CHUNK:
 		d.isLastChunk = false
@@ -1049,7 +1031,7 @@ func (d *Decoder) parseChunkLength() bool {
 
 // parseUTF8Char Convert buffer to rune value
 func (d *Decoder) parseUTF8Char() rune {
-	ch := d.readTag()
+	ch := d.readNext()
 	if ch <= ASCII_CODE_MAX {
 		return rune(ch)
 	} else if (ch & BC_LONG_ZERO) == BYTE_INT {
