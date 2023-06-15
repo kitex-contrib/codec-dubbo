@@ -29,7 +29,7 @@ import (
 )
 
 const (
-	ReadSize = 1024
+	ReadSize = 1024 // reader buffer size
 )
 
 // NewDecoder Get Hessian2 decoder instance with a reader
@@ -76,20 +76,13 @@ func (d *Decoder) read() byte {
 
 // readBuffer Read data to buffer from input stream
 func (d *Decoder) readBuffer() bool {
-	offset, length := d.offset, d.length
-	if offset < length {
-		copy(d.buffer, d.buffer[offset:length])
-		offset = length - offset
-	} else {
-		offset = 0
-	}
-	l, err := d.in.Read(d.buffer[offset:])
+	l, err := d.in.Read(d.buffer)
 	d.offset = 0
 	if l <= 0 || nil != err {
-		d.length = offset
-		return offset > 0
+		d.length = 0
+		return false
 	}
-	d.length = offset + l
+	d.length = l
 	return true
 }
 
@@ -439,7 +432,7 @@ func (d *Decoder) readDouble() float64 {
 	panic(d.expect("double", tag))
 }
 
-// readUTCDate Try to read a time.Time value
+// readUTCDate Try to read a timestamp value
 func (d *Decoder) readUTCDate() int64 {
 	tag := d.read()
 	if tag == BC_DATE {
