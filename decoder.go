@@ -131,7 +131,7 @@ func (d *Decoder) readBoolean() bool {
 
 	// INT_SHORT = 0
 	case tag == BC_INT_SHORT_ZERO:
-		return (256*int16(d.read()) + int16(d.read())) != 0
+		return (int16(d.read())<<8 + int16(d.read())) != 0
 
 	// INT_SHORT != 0
 	case (tag >= SHORT_INT && tag <= SHORT_INT_MAX) ||
@@ -158,7 +158,7 @@ func (d *Decoder) readBoolean() bool {
 
 	// INT_SHORT = 0
 	case tag == BC_LONG_SHORT_ZERO:
-		return (256*int16(d.read()) + int16(d.read())) != 0
+		return (int16(d.read())<<8 + int16(d.read())) != 0
 
 	// INT_SHORT != 0
 	case (tag >= SHORT_LONG && tag <= SHORT_LONG_MAX) ||
@@ -228,7 +228,7 @@ func (d *Decoder) readInt() int {
 
 	/* short int */
 	case tag >= SHORT_INT && tag <= SHORT_INT_LIMIT_MAX:
-		return ((int(tag) - BC_INT_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read())
+		return ((int(tag) - BC_INT_SHORT_ZERO) << 16) + int(d.read())<<8 + int(d.read())
 
 	case tag == BC_INT || tag == BC_LONG_INT:
 		return (int(d.read()) << 24) + (int(d.read()) << 16) + (int(d.read()) << 8) + int(d.read())
@@ -243,7 +243,7 @@ func (d *Decoder) readInt() int {
 
 	/* short long */
 	case tag >= SHORT_LONG && tag <= SHORT_LONG_LIMIT_MAX:
-		return ((int(tag) - BC_LONG_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read())
+		return ((int(tag) - BC_LONG_SHORT_ZERO) << 16) + int(d.read())<<8 + int(d.read())
 
 	case tag == BC_LONG:
 		return int(d.parseLong())
@@ -267,7 +267,7 @@ func (d *Decoder) readInt() int {
 	// case INT_SHORT:
 	// case LONG_SHORT:
 	case tag == BC_DOUBLE_SHORT:
-		return int(256*int16(d.read()) + int16(d.read()))
+		return int(int16(d.read())<<8 + int16(d.read()))
 
 	case tag == BC_DOUBLE_MILL:
 		return d.parseInt() / 1000
@@ -303,7 +303,7 @@ func (d *Decoder) readLong() int64 {
 
 	/* short int */
 	case tag >= SHORT_INT && tag <= SHORT_INT_LIMIT_MAX:
-		return ((int64(tag) - BC_INT_SHORT_ZERO) << 16) + 256*int64(d.read()) + int64(d.read())
+		return ((int64(tag) - BC_INT_SHORT_ZERO) << 16) + int64(d.read())<<8 + int64(d.read())
 
 	// case LONG_BYTE:
 	case tag == BC_DOUBLE_BYTE:
@@ -318,7 +318,7 @@ func (d *Decoder) readLong() int64 {
 	// case INT_SHORT:
 	// case LONG_SHORT:
 	case tag == BC_DOUBLE_SHORT:
-		return 256*int64(d.read()) + int64(d.read())
+		return int64(d.read())<<8 + int64(d.read())
 
 	case tag == BC_INT || tag == BC_LONG_INT:
 		return int64(d.parseInt())
@@ -333,7 +333,7 @@ func (d *Decoder) readLong() int64 {
 
 	/* short long */
 	case tag >= SHORT_LONG && tag <= SHORT_LONG_LIMIT_MAX:
-		return ((int64(tag) - BC_LONG_SHORT_ZERO) << 16) + 256*int64(d.read()) + int64(d.read())
+		return ((int64(tag) - BC_LONG_SHORT_ZERO) << 16) + int64(d.read())<<8 + int64(d.read())
 
 	case tag == BC_LONG:
 		return d.parseLong()
@@ -383,7 +383,7 @@ func (d *Decoder) readDouble() float64 {
 
 	/* short int */
 	case tag >= SHORT_INT && tag <= SHORT_INT_LIMIT_MAX:
-		return float64((int64(tag)-BC_INT_SHORT_ZERO)<<16) + 256*float64(d.read()) + float64(d.read())
+		return float64((int64(tag)-BC_INT_SHORT_ZERO)<<16) + float64(int64(d.read())<<8) + float64(d.read())
 
 	case tag == BC_INT || tag == BC_LONG_INT:
 		return float64(d.parseInt())
@@ -398,7 +398,7 @@ func (d *Decoder) readDouble() float64 {
 
 	/* short long */
 	case tag >= SHORT_LONG && tag <= SHORT_LONG_LIMIT_MAX:
-		return float64((int64(tag)-BC_LONG_SHORT_ZERO)<<16) + 256*float64(d.read()) + float64(d.read())
+		return float64((int64(tag)-BC_LONG_SHORT_ZERO)<<16) + float64(int64(d.read())<<8) + float64(d.read())
 
 	case tag == BC_LONG:
 		return float64(d.parseLong())
@@ -419,7 +419,7 @@ func (d *Decoder) readDouble() float64 {
 		}
 
 	case tag == BC_DOUBLE_SHORT:
-		return 256*float64(d.read()) + float64(d.read())
+		return float64(int64(d.read())<<8) + float64(d.read())
 
 	case tag == BC_DOUBLE_MILL:
 		return float64(d.parseInt() / 1000)
@@ -472,7 +472,7 @@ func (d *Decoder) readString() *string {
 
 	/* short int */
 	case tag >= SHORT_INT && tag <= SHORT_INT_LIMIT_MAX:
-		val = strconv.Itoa(((int(tag) - BC_INT_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read()))
+		val = strconv.Itoa(((int(tag) - BC_INT_SHORT_ZERO) << 16) + int(d.read())<<8 + int(d.read()))
 		return &val
 
 	case tag == BC_INT || tag == BC_LONG_INT:
@@ -491,7 +491,7 @@ func (d *Decoder) readString() *string {
 
 	/* short long */
 	case tag >= SHORT_LONG && tag <= SHORT_LONG_LIMIT_MAX:
-		val = strconv.Itoa(((int(tag) - BC_LONG_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read()))
+		val = strconv.Itoa(((int(tag) - BC_LONG_SHORT_ZERO) << 16) + int(d.read())<<8 + int(d.read()))
 		return &val
 
 	case tag == BC_LONG:
@@ -511,7 +511,7 @@ func (d *Decoder) readString() *string {
 		return &val
 
 	case tag == BC_DOUBLE_SHORT:
-		val = strconv.Itoa(int(int16(256*int(d.read()) + int(d.read()))))
+		val = strconv.Itoa(int(int16(int(d.read())<<8 + int(d.read()))))
 		return &val
 
 	case tag == BC_DOUBLE_MILL:
@@ -601,7 +601,7 @@ func (d *Decoder) ReadObject() interface{} {
 
 	/* short int */
 	case tag >= SHORT_INT && tag <= SHORT_INT_LIMIT_MAX:
-		return ((int(tag) - BC_INT_SHORT_ZERO) << 16) + 256*int(d.read()) + int(d.read())
+		return ((int(tag) - BC_INT_SHORT_ZERO) << 16) + int(d.read())<<8 + int(d.read())
 
 	case tag == BC_INT:
 		return d.parseInt()
@@ -616,7 +616,7 @@ func (d *Decoder) ReadObject() interface{} {
 
 	/* short long */
 	case tag >= SHORT_LONG && tag <= SHORT_LONG_LIMIT_MAX:
-		return ((int64(tag) - BC_LONG_SHORT_ZERO) << 16) + 256*int64(d.read()) + int64(d.read())
+		return ((int64(tag) - BC_LONG_SHORT_ZERO) << 16) + int64(d.read())<<8 + int64(d.read())
 
 	case tag == BC_LONG_INT:
 		return int64(d.parseInt())
@@ -634,7 +634,7 @@ func (d *Decoder) ReadObject() interface{} {
 		return float64(d.read())
 
 	case tag == BC_DOUBLE_SHORT:
-		return float64(256*int16(d.read()) + int16(d.read()))
+		return float64(int16(d.read())<<8 + int16(d.read()))
 
 	case tag == BC_DOUBLE_MILL:
 		{
