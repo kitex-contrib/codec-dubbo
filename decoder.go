@@ -261,7 +261,7 @@ func (d *Decoder) readInt() int {
 	case tag == BC_DOUBLE_ONE:
 		return 1
 
-	//case LONG_BYTE:
+	// case LONG_BYTE:
 	case tag == BC_DOUBLE_BYTE:
 		if d.offset < d.length {
 			v := int(d.buffer[d.offset])
@@ -271,8 +271,8 @@ func (d *Decoder) readInt() int {
 			return int(d.read())
 		}
 
-	//case INT_SHORT:
-	//case LONG_SHORT:
+	// case INT_SHORT:
+	// case LONG_SHORT:
 	case tag == BC_DOUBLE_SHORT:
 		return int(256*int16(d.read()) + int16(d.read()))
 
@@ -312,7 +312,7 @@ func (d *Decoder) readLong() int64 {
 	case tag >= SHORT_INT && tag <= SHORT_INT_LIMIT_MAX:
 		return ((int64(tag) - BC_INT_SHORT_ZERO) << 16) + 256*int64(d.read()) + int64(d.read())
 
-	//case LONG_BYTE:
+	// case LONG_BYTE:
 	case tag == BC_DOUBLE_BYTE:
 		if d.offset < d.length {
 			v := int64(d.buffer[d.offset])
@@ -322,8 +322,8 @@ func (d *Decoder) readLong() int64 {
 			return int64(d.read())
 		}
 
-	//case INT_SHORT:
-	//case LONG_SHORT:
+	// case INT_SHORT:
+	// case LONG_SHORT:
 	case tag == BC_DOUBLE_SHORT:
 		return 256*int64(d.read()) + int64(d.read())
 
@@ -821,7 +821,6 @@ func (d *Decoder) ReadObject() interface{} {
 			ref := d.readInt()
 
 			if len(d.classDefs) <= ref {
-
 				panic(d.error(fmt.Sprintf("Illegal object reference #%d", ref)))
 			}
 
@@ -980,7 +979,6 @@ func (d *Decoder) parseInt() int {
 
 		return int(binary.BigEndian.Uint32(buffer[offset+0 : offset+4]))
 	} else {
-
 		return int(binary.BigEndian.Uint32([]byte{d.read(), d.read(), d.read(), d.read()}))
 	}
 }
