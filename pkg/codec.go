@@ -19,7 +19,10 @@
 
 package hessian2
 
-import "context"
+import (
+	"context"
+	"io"
+)
 
 type Message struct {
 }
@@ -29,9 +32,9 @@ type ByteBuffer struct {
 
 // Codec is the abstraction of the codec layer of Kitex.
 type Codec interface {
-	Encode(ctx context.Context, msg Message, out ByteBuffer) error
+	Encode(ctx context.Context, msg Message, out io.Writer) error
 
-	Decode(ctx context.Context, msg Message, in ByteBuffer) error
+	Decode(ctx context.Context, msg Message, in io.Reader) error
 
 	Name() string
 }

@@ -38,30 +38,27 @@ func NewHessian2Output(w io.Writer) *Encoder {
 	}
 }
 
-// Class表示Java对象的类型信息
+// Class is java object info
 type Class struct {
-	Name   string   // 类名
-	Fields []*Field // 字段信息
+	Name   string   // class name
+	Fields []*Field // filed info
 }
 
-// Field表示Java对象的字段信息
+// Field is java object field info
 type Field struct {
-	Name    string // 字段名
-	Type    *Class // 字段类型
-	Default Object // 字段默认值
+	Name    string      // filed name
+	Type    *Class      // filed type
+	Default interface{} // default value
 }
-
-// Object表示Java对象的值信息
-type Object interface{}
 
 type Encoder struct {
-	writer io.Writer     // 输出流
-	buffer *bytes.Buffer // buffer缓存
+	writer io.Writer     // output stream
+	buffer *bytes.Buffer // buffer cache
 
-	writeType      bool     // 是否写入类型信息
-	typeRefWritten bool     // 是否已经将类型引用写入
-	typeRefs       []*Class // 类型引用数组
-	objRefs        []Object // 对象引用数组
+	writeType      bool          // write type info
+	typeRefWritten bool          // is written type info
+	typeRefs       []*Class      // class references
+	objRefs        []interface{} // object references
 }
 
 func (e *Encoder) writeObjectRef(i int) error {
@@ -73,34 +70,33 @@ func (e *Encoder) writeObjectRef(i int) error {
 	}
 	return nil
 }
-func (e *Encoder) WriteObject(obj Object) error {
-	// 判断是否为nil
-	if obj == nil {
+func (e *Encoder) WriteObject(obj interface{}) error {
+	// nil or nil pointer
+	if obj == nil || reflect.ValueOf(obj).IsNil() {
 		return e.WriteNull()
 	}
 
-	// 获取对象类型信息
 	clazz, err := getClass(obj)
 	if err != nil {
 		return err
 	}
 
-	// 写入类型信息
+	// write class info
 	if e.writeType {
 		if err := e.writeClass(clazz); err != nil {
 			return err
 		}
 	}
 
-	// 写入对象引用
+	// write object reference info
 	if ref, ok := e.findObjRef(obj); ok {
 		return e.writeObjectRef(ref)
 	}
 
-	// 将对象添加到引用数组
+	// write objects to references
 	e.objRefs = append(e.objRefs, obj)
 
-	// 判断类型并编码
+	// judge class type
 	switch v := obj.(type) {
 	case bool:
 		return e.WriteBool(v)
@@ -132,7 +128,7 @@ func (e *Encoder) WriteObject(obj Object) error {
 		return e.WriteString(v)
 	}
 
-	// 编码复杂类型
+	// encode complex types
 	switch v := obj.(type) {
 	case []byte:
 		return e.writeBytes(v)
@@ -142,26 +138,25 @@ func (e *Encoder) WriteObject(obj Object) error {
 		return e.writeMap(v)
 	}
 
-	// 构造并编码Java对象
+	// encode class types
 	return e.writeClass(clazz)
 }
 
-// 获取Java对象的类型信息
-func getClass(obj Object) (*Class, error) {
+// get object type info
+func getClass(obj interface{}) (*Class, error) {
 	if obj == nil {
 		return nil, fmt.Errorf("getClass: nil object")
 	}
 
-	// 获取对象的类型
+	// get an object type
 	t := reflect.TypeOf(obj)
 
-	// 获取对象的类名
 	name := getClassName(t)
 	if name == "" {
 		return nil, fmt.Errorf("getClass: invalid object type: %v", t)
 	}
 
-	// 如果是struct类型，则根据结构体字段构造Class对象
+	// if struct type,contract object
 	if t.Kind() == reflect.Struct {
 		fields, err := getClassFields(t)
 		if err != nil {
@@ -170,70 +165,66 @@ func getClass(obj Object) (*Class, error) {
 		return &Class{Name: name, Fields: fields}, nil
 	}
 
-	// 其他基本类型直接构造Class对象
 	return &Class{Name: name}, nil
 }
 
-// 获取对象的类名
+// get class name
 func getClassName(t reflect.Type) string {
 	switch t.Kind() {
 	case reflect.Struct:
 		if t.NumField() == 0 {
 			return ""
 		}
-		// 结构体类型的类名为结构体名的小写形式
+		// struct name to lower
 		return strings.ToLower(t.Name())
 	case reflect.Slice:
-		// 判断是否为字节数组
+		// is byte[]
 		if t.Elem().Kind() == reflect.Uint8 {
 			return "byte[]"
 		}
-		// 其他slice类型的类名为List
 		return "list"
 	case reflect.Map:
-		// map类型的类名为Map
 		return "map"
 	case reflect.Ptr:
-		// 指针类型递归调用获取类名
+		// point name
 		return getClassName(t.Elem())
 	default:
-		// 其他基本类型的类名为类型名的小写形式
 		return strings.ToLower(t.Name())
 	}
 }
 
-// 将Java对象类型信息编码为commons协议格式
+// encode class info to commons protocol
 func (e *Encoder) writeClass(clazz *Class) error {
-	// 查找类型引用
+	// get type reference
 	if ref, ok := e.findTypeRef(clazz); ok {
 		return e.writeTypeRef(ref)
 	}
 
-	// 将类型添加到引用数组
+	// add types to references
 	e.typeRefs = append(e.typeRefs, clazz)
 
-	// 写入类型标识
-	if err := e.WriteByte(byte('C')); err != nil {
+	// write class tag
+	if err := e.WriteByte(commons.BC_OBJECT_DEF); err != nil {
 		return err
 	}
 
-	// 写入类名
+	// write class name
 	if err := e.WriteString(clazz.Name); err != nil {
 		return err
 	}
 
-	// 写入类型信息
+	// write class info
 	if err := e.writeFields(clazz.Fields); err != nil {
 		return err
 	}
 
-	// 标记已经写入类型信息
+	// is written type info
 	e.typeRefWritten = true
 
 	return nil
 }
 
-// 查找类型引用
+// get type reference
 func (e *Encoder) findTypeRef(clazz *Class) (int64, bool) {
 	for i, ref := range e.typeRefs {
 		if reflect.DeepEqual(clazz, ref) {
@@ -243,7 +234,7 @@ func (e *Encoder) findTypeRef(clazz *Class) (int64, bool) {
 	return -1, false
 }
 
-// 写入类型引用
+// write type reference
 func (e *Encoder) writeTypeRef(ref int64) error {
 	if err := e.WriteByte(byte('T')); err != nil {
 		return err
@@ -254,7 +245,7 @@ func (e *Encoder) writeTypeRef(ref int64) error {
 	return nil
 }
 
-// 写入字段信息
+// write fields info
 func (e *Encoder) writeFields(fields []*Field) error {
 	for _, field := range fields {
 		if err := e.writeField(field); err != nil {
@@ -264,7 +255,7 @@ func (e *Encoder) writeFields(fields []*Field) error {
 	return nil
 }
 
-// 写入单个字段信息
+// write field info
 func (e *Encoder) writeField(field *Field) error {
 	if err := e.WriteString(field.Name); err != nil {
 		return err
@@ -280,7 +271,7 @@ func (e *Encoder) writeField(field *Field) error {
 	return nil
 }
 
-// 写入类型引用或类名
+// write type reference or class info
 func (e *Encoder) writeTypeRefOrClass(clazz *Class) error {
 	if ref, ok := e.findTypeRef(clazz); ok {
 		if err := e.writeTypeRef(ref); err != nil {
@@ -294,7 +285,7 @@ func (e *Encoder) writeTypeRefOrClass(clazz *Class) error {
 	return nil
 }
 
-// 获取结构体字段信息
+// get struct fields
 func getClassFields(t reflect.Type) ([]*Field, error) {
 	var fields []*Field
 
@@ -312,7 +303,7 @@ func getClassFields(t reflect.Type) ([]*Field, error) {
 }
 
 func (e *Encoder) WriteNull() error {
-	return nil
+	return e.WriteByte(commons.BC_NULL)
 }
 
 func (e *Encoder) findObjRef(obj interface{}) (int, bool) {
@@ -324,6 +315,10 @@ func (e *Encoder) findObjRef(obj interface{}) (int, bool) {
 	return -1, false
 }
 
+// # boolean true/false
+//
+//	::= 'T'
+//	::= 'F'
 func (e *Encoder) WriteBool(b bool) error {
 	if b {
 		return e.WriteByte(commons.BC_TRUE)
@@ -348,16 +343,16 @@ func (e *Encoder) writeDouble(f float64) error {
 
 func (e *Encoder) WriteInt(i int64) error {
 	if i >= commons.INT_DIRECT_MIN && i <= int64(commons.INT_DIRECT_MAX) {
-		// 一字节表示
+		// 1 byte
 		return e.WriteByte(byte(i) + commons.BC_INT_ZERO)
 	} else if i >= commons.INT_BYTE_MIN && i <= commons.INT_BYTE_MAX {
-		// 两字节表示
+		// 2 bytes
 		if err := e.WriteByte(byte(i>>8) + commons.BC_INT_ZERO); err != nil {
 			return err
 		}
 		return e.WriteByte(byte(i))
 	} else if i >= commons.INT_SHORT_MIN && i <= commons.INT_SHORT_MAX {
-		// 三字节表示
+		// 3 bytes
 		if err := e.WriteByte(byte(i>>16) + commons.BC_INT_SHORT_ZERO); err != nil {
 			return err
 		}
@@ -366,7 +361,7 @@ func (e *Encoder) WriteInt(i int64) error {
 		}
 		return e.WriteByte(byte(i))
 	} else {
-		// 八字节表示
+		// 8 bytes
 		if err := e.WriteByte(commons.BC_LONG); err != nil {
 			return err
 		}
@@ -381,9 +376,8 @@ func (e *Encoder) WriteString(s string) error {
 	// 将字符串转换为UTF-8编码的字节序列
 
 	b := []byte(s)
-	// 获取字符串长度
 	n := len(b)
-	// 写入字符串类型标记
+	// write string tag
 	if n < int(commons.BC_BINARY_DIRECT) {
 		e.buffer.WriteByte(byte(n + int(commons.BC_BINARY_DIRECT)))
 	} else if n <= commons.PACKET_SHORT_MAX {
@@ -391,21 +385,23 @@ func (e *Encoder) WriteString(s string) error {
 		e.buffer.WriteByte(byte(n))
 	} else {
 		e.buffer.WriteByte(commons.BC_STRING_CHUNK)
-		binary.Write(e.buffer, binary.BigEndian, uint32(n))
+		err := binary.Write(e.buffer, binary.BigEndian, uint32(n))
+		if err != nil {
+			return err
+		}
 	}
-	// 写入字符串的字节序列
 	e.buffer.Write(b)
 	return nil
 }
 
 func (e *Encoder) writeBytes(b []byte) error {
 	if len(b) <= int(commons.BINARY_DIRECT_MAX) {
-		// 一字节长度表示
+		// 1 byte
 		if err := e.WriteByte(byte(len(b)) + commons.BC_BINARY_DIRECT); err != nil {
 			return err
 		}
 	} else {
-		// 两字节长度表示
+		// 2 bytes
 		if err := e.WriteByte(commons.BC_BINARY); err != nil {
 			return err
 		}

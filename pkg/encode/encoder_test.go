@@ -33,7 +33,7 @@ func TestEncoder_WriteBool(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		b bool
@@ -95,7 +95,7 @@ func TestEncoder_WriteByte(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		b byte
@@ -147,7 +147,7 @@ func TestEncoder_WriteInt(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		i int64
@@ -199,7 +199,7 @@ func TestEncoder_WriteObject(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		obj interface{}
@@ -218,7 +218,7 @@ func TestEncoder_WriteObject(t *testing.T) {
 				buffer: bytes.NewBuffer([]byte{}),
 			},
 			args: args{
-				Object("唯德"),
+				interface{}("唯德"),
 			},
 			wantErr: false,
 			want:    "唯德",
@@ -252,7 +252,7 @@ func TestEncoder_findObjRef(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		obj interface{}
@@ -294,7 +294,7 @@ func TestEncoder_findTypeRef(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		clazz *Class
@@ -336,7 +336,7 @@ func TestEncoder_writeBytes(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		b []byte
@@ -373,7 +373,7 @@ func TestEncoder_writeClass(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		clazz *Class
@@ -410,7 +410,7 @@ func TestEncoder_writeDouble(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		f float64
@@ -447,7 +447,7 @@ func TestEncoder_writeField(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		field *Field
@@ -484,7 +484,7 @@ func TestEncoder_writeFields(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		fields []*Field
@@ -521,7 +521,7 @@ func TestEncoder_writeList(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		l []interface{}
@@ -558,7 +558,7 @@ func TestEncoder_writeMap(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		m map[string]interface{}
@@ -595,7 +595,7 @@ func TestEncoder_writeObjectRef(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		i int
@@ -619,7 +619,7 @@ func TestEncoder_writeObjectRef(t *testing.T) {
 				objRefs:        tt.fields.objRefs,
 			}
 			if err := e.writeObjectRef(tt.args.i); (err != nil) != tt.wantErr {
-				t.Errorf("writeObjectRef() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("writeinterface{}Ref() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
@@ -632,7 +632,7 @@ func TestEncoder_writeString(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		s string
@@ -697,7 +697,7 @@ func TestEncoder_writeTypeRef(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		ref int64
@@ -734,7 +734,7 @@ func TestEncoder_writeTypeRefOrClass(t *testing.T) {
 		writeType      bool
 		typeRefWritten bool
 		typeRefs       []*Class
-		objRefs        []Object
+		objRefs        []interface{}
 	}
 	type args struct {
 		clazz *Class
@@ -788,7 +788,7 @@ func TestNewHessian2Output(t *testing.T) {
 
 func Test_getClass(t *testing.T) {
 	type args struct {
-		obj Object
+		obj interface{}
 	}
 	tests := []struct {
 		name    string

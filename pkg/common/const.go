@@ -21,6 +21,7 @@ package commons
 const (
 	BC_BINARY       = byte('B') // final chunk
 	BC_BINARY_CHUNK = byte('A') // non-final chunk
+	BC_NULL         = byte('N') // x4e
 
 	BC_BINARY_DIRECT  = byte(0x20) // 1-byte length binary
 	BINARY_DIRECT_MAX = byte(0x0f)
@@ -43,6 +44,8 @@ const (
 
 	BC_STRING       = byte('S') // final string
 	BC_STRING_CHUNK = byte('R') // non-final string
+	BC_OBJECT       = byte('O')
+	BC_OBJECT_DEF   = byte('C')
 
 	BC_TRUE = byte('T')
 
