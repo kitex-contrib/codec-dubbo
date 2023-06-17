@@ -23,6 +23,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"github.com/cloudwego/kitex/pkg/utils"
 	"io"
 	"math"
 	"reflect"
@@ -374,8 +375,7 @@ func (e *Encoder) WriteInt(i int64) error {
 
 func (e *Encoder) WriteString(s string) error {
 	// 将字符串转换为UTF-8编码的字节序列
-
-	b := []byte(s)
+	b := utils.StringToSliceByte(s)
 	n := len(b)
 	// write string tag
 	if n < int(commons.BC_BINARY_DIRECT) {
