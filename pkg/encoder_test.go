@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package encode
+package hessian2
 
 import (
 	"bytes"

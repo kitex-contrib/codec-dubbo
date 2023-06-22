@@ -21,7 +21,6 @@ package hessian2
 
 import (
 	"context"
-	"io"
 )
 
 type Message struct {
@@ -30,11 +29,11 @@ type Message struct {
 type ByteBuffer struct {
 }
 
-// Codec is the abstraction of the codec layer of Kitex.
-type Codec interface {
-	Encode(ctx context.Context, msg Message, out io.Writer) error
+// PayloadCodec is used to marshal and unmarshal payload.
+type PayloadCodec interface {
+	Marshal(ctx context.Context, message Message, out ByteBuffer) error
 
-	Decode(ctx context.Context, msg Message, in io.Reader) error
+	Unmarshal(ctx context.Context, message Message, in ByteBuffer) error
 
 	Name() string
 }
