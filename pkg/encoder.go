@@ -22,6 +22,7 @@ package hessian2
 import (
 	"bytes"
 	"fmt"
+	"github.com/kitex-contrib/codec-hessian2/pkg/data"
 	"io"
 	"reflect"
 )
@@ -41,7 +42,7 @@ type Encoder struct {
 func (e *Encoder) Encode(obj interface{}) error {
 	// nil or nil pointer
 	if obj == nil || reflect.ValueOf(obj).IsNil() {
-		panic("this type not implemented")
+		data.EncNull(obj)
 	}
 
 	// judge class type
