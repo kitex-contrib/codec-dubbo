@@ -39,17 +39,17 @@ func NewHessian2Codec() *Hessian2Codec {
 	return nil
 }
 
-// Marshal mocks base method.
+// Marshal encode method
 func (m *Hessian2Codec) Marshal(ctx context.Context, message remote.Message, out remote.ByteBuffer) error {
 	return nil
 }
 
-// Unmarshal mocks base method.
+// Unmarshal decode method
 func (m *Hessian2Codec) Unmarshal(ctx context.Context, message remote.Message, in remote.ByteBuffer) error {
 	return nil
 }
 
-// Name mocks base method.
+// Name codec name
 func (m *Hessian2Codec) Name() string {
 	return "hessian2"
 
