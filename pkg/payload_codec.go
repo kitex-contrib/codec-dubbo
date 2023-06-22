@@ -21,6 +21,7 @@ package hessian2
 
 import (
 	"context"
+	"github.com/cloudwego/kitex/pkg/remote"
 )
 
 type Message struct {
@@ -29,18 +30,27 @@ type Message struct {
 type ByteBuffer struct {
 }
 
-// PayloadCodec is used to marshal and unmarshal payload.
-type hessian2Codec struct {
+// Hessian2Codec NewHessian2Codec creates the hessian2 codec.
+type Hessian2Codec struct {
 }
 
-func (c hessian2Codec) Marshal(ctx context.Context, message Message, out ByteBuffer) error {
+// NewHessian2Codec creates a new codec instance.
+func NewHessian2Codec() *Hessian2Codec {
 	return nil
 }
 
-func (c hessian2Codec) Unmarshal(ctx context.Context, message Message, in ByteBuffer) error {
+// Marshal mocks base method.
+func (m *Hessian2Codec) Marshal(ctx context.Context, message remote.Message, out remote.ByteBuffer) error {
 	return nil
 }
 
-func (c hessian2Codec) Name() string {
+// Unmarshal mocks base method.
+func (m *Hessian2Codec) Unmarshal(ctx context.Context, message remote.Message, in remote.ByteBuffer) error {
+	return nil
+}
+
+// Name mocks base method.
+func (m *Hessian2Codec) Name() string {
 	return "hessian2"
+
 }
