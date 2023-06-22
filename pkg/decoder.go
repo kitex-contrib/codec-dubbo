@@ -26,19 +26,19 @@ import (
 	"reflect"
 )
 
-func NewHessian2Output(w io.Writer) *Encoder {
-	return &Encoder{
-		writer: w,
+func NewHessian2Input(r io.Reader) *Decoder {
+	return &Decoder{
+		reader: r,
 		buffer: bytes.NewBuffer(nil),
 	}
 }
 
-type Encoder struct {
-	writer io.Writer     // output stream
+type Decoder struct {
+	reader io.Reader     // input stream
 	buffer *bytes.Buffer // buffer cache
 }
 
-func (e *Encoder) Encode(obj interface{}) error {
+func (e *Decoder) Decode(obj interface{}) error {
 	// nil or nil pointer
 	if obj == nil || reflect.ValueOf(obj).IsNil() {
 		panic("this type not implemented")

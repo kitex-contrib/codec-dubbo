@@ -30,10 +30,17 @@ type ByteBuffer struct {
 }
 
 // PayloadCodec is used to marshal and unmarshal payload.
-type PayloadCodec interface {
-	Marshal(ctx context.Context, message Message, out ByteBuffer) error
+type hessian2Codec struct {
+}
 
-	Unmarshal(ctx context.Context, message Message, in ByteBuffer) error
+func (c hessian2Codec) Marshal(ctx context.Context, message Message, out ByteBuffer) error {
+	return nil
+}
 
-	Name() string
+func (c hessian2Codec) Unmarshal(ctx context.Context, message Message, in ByteBuffer) error {
+	return nil
+}
+
+func (c hessian2Codec) Name() string {
+	return "hessian2"
 }

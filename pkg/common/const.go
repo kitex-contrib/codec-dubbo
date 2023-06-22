@@ -19,17 +19,21 @@ package commons
 
 // constants
 const (
+	BC_NULL = byte('N') // x4e
+
+	BC_TRUE  = byte('T') // boolean true
+	BC_FALSE = byte('F') // boolean false
+
 	BC_BINARY       = byte('B') // final chunk
 	BC_BINARY_CHUNK = byte('A') // non-final chunk
-	BC_NULL         = byte('N') // x4e
 
 	BC_BINARY_DIRECT  = byte(0x20) // 1-byte length binary
 	BINARY_DIRECT_MAX = byte(0x0f)
 	BC_DOUBLE         = byte('D') // IEEE 64-bit double
-	BC_FALSE          = byte('F') // boolean false
-	INT_DIRECT_MIN    = -0x10
-	INT_DIRECT_MAX    = byte(0x2f)
-	BC_INT_ZERO       = byte(0x90)
+
+	INT_DIRECT_MIN = -0x10
+	INT_DIRECT_MAX = byte(0x2f)
+	BC_INT_ZERO    = byte(0x90)
 
 	INT_BYTE_MIN      = -0x800
 	INT_BYTE_MAX      = 0x7ff
@@ -46,8 +50,9 @@ const (
 	BC_STRING_CHUNK = byte('R') // non-final string
 	BC_OBJECT       = byte('O')
 	BC_OBJECT_DEF   = byte('C')
-
-	BC_TRUE = byte('T')
+	BC_INT          = byte('I')
+	BC_LIST         = byte('Z')
+	BC_MAP_NON_TYPE = byte('H') //non-type key map
 
 	PACKET_SHORT_MAX = 0xfff
 )
