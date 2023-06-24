@@ -36,17 +36,20 @@ type Hessian2Codec struct {
 
 // NewHessian2Codec creates a new codec instance.
 func NewHessian2Codec() *Hessian2Codec {
-	return nil
+	// TOOD: WIP
+	panic("not implemented")
 }
 
 // Marshal encode method
 func (m *Hessian2Codec) Marshal(ctx context.Context, message remote.Message, out remote.ByteBuffer) error {
-	return nil
+	// TOOD: WIP
+	panic("not implemented")
 }
 
 // Unmarshal decode method
 func (m *Hessian2Codec) Unmarshal(ctx context.Context, message remote.Message, in remote.ByteBuffer) error {
-	return nil
+	// TOOD: WIP
+	panic("not implemented")
 }
 
 // Name codec name

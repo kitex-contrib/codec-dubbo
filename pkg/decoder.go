@@ -20,13 +20,13 @@
 package hessian2
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
-	"io"
-	"reflect"
+	commons "github.com/kitex-contrib/codec-hessian2/pkg/common"
 )
 
-func NewHessian2Input(r io.Reader) *Decoder {
+func NewDecoder(r bufio.Reader) *Decoder {
 	return &Decoder{
 		reader: r,
 		buffer: bytes.NewBuffer(nil),
@@ -34,54 +34,49 @@ func NewHessian2Input(r io.Reader) *Decoder {
 }
 
 type Decoder struct {
-	reader io.Reader     // input stream
+	reader bufio.Reader  // input stream
 	buffer *bytes.Buffer // buffer cache
 }
 
-func (e *Decoder) Decode(obj interface{}) error {
-	// nil or nil pointer
-	if obj == nil || reflect.ValueOf(obj).IsNil() {
-		panic("this type not implemented")
+func (d *Decoder) Decode(obj interface{}) error {
+	tag, err := d.buffer.ReadByte()
+	if err != nil {
+		return err
 	}
-
 	// judge class type
-	switch v := obj.(type) {
-	case bool:
+	switch tag {
+	case commons.BC_NULL:
+		return nil
+	case commons.BC_INT:
 		panic("this type not implemented")
-	case int:
+	case commons.BC_BINARY:
 		panic("this type not implemented")
-	case int8:
+	case commons.BC_BINARY_CHUNK:
 		panic("this type not implemented")
-	case int16:
+	case commons.BC_BINARY_DIRECT:
 		panic("this type not implemented")
-	case int32:
+	case commons.BC_FALSE:
 		panic("this type not implemented")
-	case int64:
+	case commons.BC_TRUE:
 		panic("this type not implemented")
-	case uint:
+	case commons.BC_LONG:
 		panic("this type not implemented")
-	case uint8:
+	case commons.BC_LIST:
 		panic("this type not implemented")
-	case uint16:
+	case commons.BC_MAP:
 		panic("this type not implemented")
-	case uint32:
+	case commons.BC_BINARY:
 		panic("this type not implemented")
-	case uint64:
+	case commons.BC_DOUBLE:
 		panic("this type not implemented")
-	case float32:
+	case commons.BC_LIST_FIXED:
 		panic("this type not implemented")
-	case float64:
+	case commons.BC_OBJECT:
 		panic("this type not implemented")
-	case string:
-		panic("this type not implemented")
-	case []byte:
-		panic("this type not implemented")
-	case []interface{}:
-		panic("this type not implemented")
-	case map[string]interface{}:
+	case commons.BC_MAP_NON_TYPE:
 		panic("this type not implemented")
 	default:
-		return fmt.Errorf("type not supported! %s", v)
+		return fmt.Errorf("type not supported! %s", tag)
 	}
 
 	return nil

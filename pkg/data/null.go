@@ -15,11 +15,13 @@
  * limitations under the License.
  */
 
-package data
+package hessian2
 
-import commons "github.com/kitex-contrib/codec-hessian2/pkg/common"
+import (
+	commons "github.com/kitex-contrib/codec-hessian2/pkg/common"
+)
 
-// EncNull ::= 'N'
-func EncNull(i interface{}) byte {
+// EncodeNull ::= 'N'
+func EncodeNull(i interface{}) byte {
 	return commons.BC_NULL
 }

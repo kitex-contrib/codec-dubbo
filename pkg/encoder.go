@@ -20,14 +20,14 @@
 package hessian2
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"github.com/kitex-contrib/codec-hessian2/pkg/data"
-	"io"
 	"reflect"
 )
 
-func NewHessian2Output(w io.Writer) *Encoder {
+func NewEncoder(w bufio.Writer) *Encoder {
 	return &Encoder{
 		writer: w,
 		buffer: bytes.NewBuffer(nil),
@@ -35,14 +35,14 @@ func NewHessian2Output(w io.Writer) *Encoder {
 }
 
 type Encoder struct {
-	writer io.Writer     // output stream
+	writer bufio.Writer  // output stream
 	buffer *bytes.Buffer // buffer cache
 }
 
 func (e *Encoder) Encode(obj interface{}) error {
 	// nil or nil pointer
 	if obj == nil || reflect.ValueOf(obj).IsNil() {
-		data.EncNull(obj)
+		hessian2.EncodeNull(obj)
 	}
 
 	// judge class type
