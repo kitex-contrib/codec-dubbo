@@ -55,5 +55,4 @@ func (m *Hessian2Codec) Unmarshal(ctx context.Context, message remote.Message, i
 // Name codec name
 func (m *Hessian2Codec) Name() string {
 	return "hessian2"
-
 }
