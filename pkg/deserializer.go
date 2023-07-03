@@ -24,23 +24,18 @@ import (
 	"github.com/cloudwego/kitex/pkg/remote"
 )
 
-type BaseSerializer struct {
+type BaseDeserializer struct {
 	Protocol BaseProtocol
 }
 
-type BaseStruct interface {
-	Write(p BaseProtocol) error
-	Read(p BaseProtocol) error
-}
-
-func NewBaseSerializer() *BaseSerializer {
+func NewBaseDeserializer() *BaseDeserializer {
 	trans := remote.NewReaderWriterBuffer(-1)
 	protocol := NewBinaryProtocol(trans)
-	return &BaseSerializer{protocol}
+	return &BaseDeserializer{protocol}
 }
 
-func (b *BaseSerializer) Write(ctx context.Context, msg BaseStruct) (bt []byte, err error) {
-	if err = msg.Write(b.Protocol); err != nil {
+func (b *BaseSerializer) Read(ctx context.Context, msg BaseStruct) (bt []byte, err error) {
+	if err = msg.Read(b.Protocol); err != nil {
 		return
 	}
 
