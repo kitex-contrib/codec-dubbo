@@ -11,6 +11,10 @@ var (
 	_      BaseProtocol = (*BinaryProtocol)(nil)
 )
 
+func init() {
+	bpPool.New = newBP
+}
+
 func newBP() interface{} {
 	return &BinaryProtocol{}
 }

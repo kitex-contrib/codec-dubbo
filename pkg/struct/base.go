@@ -1,4 +1,4 @@
-package hessian2
+package base
 
 type Base struct {
 }

@@ -19,7 +19,7 @@
 
 package commons
 
-// Type constants in the Thrift protocol
+// Type constants in the Hessian2 protocol
 type HType byte
 
 const (
