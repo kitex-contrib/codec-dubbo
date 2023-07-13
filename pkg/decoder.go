@@ -66,8 +66,6 @@ func (d *Decoder) Decode(obj interface{}) error {
 		panic("this type not implemented")
 	case commons.BC_MAP:
 		panic("this type not implemented")
-	case commons.BC_BINARY:
-		panic("this type not implemented")
 	case commons.BC_DOUBLE:
 		panic("this type not implemented")
 	case commons.BC_LIST_FIXED:
