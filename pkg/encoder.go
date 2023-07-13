@@ -23,8 +23,9 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"github.com/kitex-contrib/codec-hessian2/pkg/data"
 	"reflect"
+
+	hessian2 "github.com/kitex-contrib/codec-hessian2/pkg/data"
 )
 
 func NewEncoder(w bufio.Writer) *Encoder {
