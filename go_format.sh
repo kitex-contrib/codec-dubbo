@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # Copyright 2023 CloudWeGo Authors
 #
 # Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,12 +15,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# format go imports style
+go install golang.org/x/tools/cmd/goimports
+goimports  -local git@github.com/kitex-contrib/codec-hessian2 -w .
 
-current=$(git status | head -n1 | sed 's/On branch //')
-name=${1:-$current}
-if [[ ! $name =~ ^(((opt(imize)?|feat(ure)?|(bug|hot)?fix|test|refact(or)?|ci)/.+)|(main|develop)|(release-v[0-9]+\.[0-9]+)|(release/v[0-9]+\.[0-9]+\.[0-9]+(-[a-z0-9.]+(\+[a-z0-9.]+)?)?)|revert-[a-z0-9]+)$ ]]; then
-    echo "branch name '$name' is invalid"
-    exit 1
-else
-    echo "branch name '$name' is valid"
-fi
+# format licence style
+go install github.com/apache/skywalking-eyes/cmd/license-eye@latest
+license-eye header fix
+# check dependency licence is valid
+license-eye dependency check
+
+# format go.mod
+go mod tidy
