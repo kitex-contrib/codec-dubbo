@@ -77,6 +77,4 @@ func (d *Decoder) Decode(obj interface{}) error {
 	default:
 		return fmt.Errorf("type not supported! %v", tag)
 	}
-
-	return nil
 }

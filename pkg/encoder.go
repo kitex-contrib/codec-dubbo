@@ -85,6 +85,4 @@ func (e *Encoder) Encode(obj interface{}) error {
 	default:
 		return fmt.Errorf("type not supported! %s", v)
 	}
-
-	return nil
 }
