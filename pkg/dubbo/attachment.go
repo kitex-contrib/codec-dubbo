@@ -17,4 +17,36 @@
  * limitations under the License.
  */
 
-package tests
+package dubbo
+
+import "time"
+
+const (
+	PATH_KEY      = "path"
+	GROUP_KEY     = "group"
+	INTERFACE_KEY = "interface"
+	VERSION_KEY   = "version"
+	TIMEOUT_KEY   = "timeout"
+)
+
+type Attachment = map[string]interface{}
+
+func NewAttachment(path, group, iface, version string, timeout time.Duration) Attachment {
+	result := Attachment{}
+	if len(path) > 0 {
+		result[PATH_KEY] = path
+	}
+	if len(group) > 0 {
+		result[GROUP_KEY] = group
+	}
+	if len(iface) > 0 {
+		result[INTERFACE_KEY] = iface
+	}
+	if len(version) > 0 {
+		result[VERSION_KEY] = version
+	}
+	if timeout > 0 {
+		result[TIMEOUT_KEY] = timeout.Milliseconds()
+	}
+	return result
+}

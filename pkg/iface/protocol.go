@@ -17,33 +17,18 @@
  * limitations under the License.
  */
 
-package hessian2
+package iface
 
-import (
-	"bytes"
-	"context"
-
-	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
-)
-
-type BaseSerializer struct {
-	Protocol iface.BaseProtocol
+type Message interface {
+	Encode(e Encoder) error
+	Decode(d Decoder) error
 }
 
-type BaseStruct interface {
-	Write(p iface.BaseProtocol) error
-	Read(p iface.BaseProtocol) error
+type Encoder interface {
+	Encode(interface{}) error
+	Buffer() []byte
 }
 
-func NewBaseSerializer() *BaseSerializer {
-	protocol := NewBinaryProtocol(&bytes.Buffer{})
-	return &BaseSerializer{protocol}
-}
-
-func (b *BaseSerializer) Write(ctx context.Context, msg BaseStruct) (bt []byte, err error) {
-	if err = msg.Write(b.Protocol); err != nil {
-		return
-	}
-
-	return
+type Decoder interface {
+	Decode() (interface{}, error)
 }

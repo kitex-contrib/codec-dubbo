@@ -1,0 +1,10 @@
+dubbo:
+  registries:
+    demoZK: # 定义服务注册发现中心
+      protocol: zookeeper
+      address: 127.0.0.1:2181
+  consumer:
+    references:
+      UserProvider: # 存根类名
+        protocol: dubbo # dubbo 协议，默认 hessian2 序列化方式
+        interface: org.apache.dubbo.UserProvider # 接口需要与 go/java 客户端对应

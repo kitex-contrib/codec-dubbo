@@ -20,15 +20,18 @@
 package hessian2
 
 import (
+	"bytes"
+	"encoding/binary"
 	"sync"
 
-	"github.com/cloudwego/kitex/pkg/remote"
+	"github.com/cloudwego/kitex/pkg/utils"
+	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
 )
 
 // must be strict read & strict write
 var (
 	bpPool sync.Pool
-	_      BaseProtocol = (*BinaryProtocol)(nil)
+	_      iface.BaseProtocol = (*BinaryProtocol)(nil)
 )
 
 func init() {
@@ -40,7 +43,7 @@ func newBP() interface{} {
 }
 
 // NewBinaryProtocol ...
-func NewBinaryProtocol(t remote.ByteBuffer) *BinaryProtocol {
+func NewBinaryProtocol(t *bytes.Buffer) *BinaryProtocol {
 	bp := bpPool.Get().(*BinaryProtocol)
 	bp.trans = t
 	return bp
@@ -48,23 +51,70 @@ func NewBinaryProtocol(t remote.ByteBuffer) *BinaryProtocol {
 
 // BinaryProtocol ...
 type BinaryProtocol struct {
-	trans remote.ByteBuffer
+	trans *bytes.Buffer
 	enc   Encoder
 	dec   Decoder
 }
 
+func (p *BinaryProtocol) WriteString(s string) error {
+	// TODO implement me: compact format
+	b := utils.StringToSliceByte(s)
+	for {
+		if len(b) <= 15 {
+			if err := p.trans.WriteByte(0x20 + uint8(len(b))); err != nil {
+				return err
+			}
+			if _, err := p.trans.Write(b); err != nil {
+				return err
+			}
+			return nil
+		}
+
+		var trunk []byte
+		var tag byte
+		if len(b) > 65535 { // non-final trunk
+			tag = 'A'
+			trunk = b[:65535]
+			b = b[65535:]
+		} else { // final trunk
+			tag = 'B'
+		}
+
+		buf := []byte{tag, byte(len(trunk) >> 8), byte(len(trunk))}
+		if _, err := p.trans.Write(buf); err != nil {
+			return err
+		}
+		if _, err := p.trans.Write(trunk); err != nil {
+			return err
+		}
+		if tag == 'B' {
+			break
+		}
+	}
+	return nil
+}
+
+func (p *BinaryProtocol) WriteInt32(i int32) error {
+	// TODO implement me: compact encoding
+	buf := make([]byte, 5)
+	buf[0] = 'I'
+	binary.BigEndian.PutUint32(buf[1:], uint32(i))
+	_, err := p.trans.Write(buf)
+	return err
+}
+
 // WriteByte ...
-func (p *BinaryProtocol) WriteByte(value int8) error {
+func (p *BinaryProtocol) WriteByte(value byte) error {
 	err := p.enc.Encode(value)
 	return err
 }
 
 // ReadByte ...
-func (p *BinaryProtocol) ReadByte() (value int8, err error) {
+func (p *BinaryProtocol) ReadByte() (value byte, err error) {
 	err = p.dec.Decode(p.trans)
 	if err != nil {
 		return 0, err
 	}
 	readByte, _ := p.dec.buffer.ReadByte()
-	return int8(readByte), err
+	return byte(readByte), err
 }

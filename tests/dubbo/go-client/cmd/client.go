@@ -1,6 +1,4 @@
 /*
- * Copyright 2023 CloudWeGo Authors
- *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -17,12 +15,36 @@
  * limitations under the License.
  */
 
-package hessian2
+package main
 
-type BaseProtocol interface {
-	// WriteByte ...
-	WriteByte(value int8) error
+import (
+	"context"
+	"helloworld/api"
 
-	// ReadByte ...
-	ReadByte() (value int8, err error)
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+)
+
+func main() {
+	// 启动框架
+	if err := config.Load(); err != nil {
+		panic(err)
+	}
+
+	// 发起调用
+	var i int32 = 0x0A0B0C0D
+	/*
+		user, err := api.UserProviderClient.GetUser(context.TODO(), i)
+		if err != nil {
+			panic(err)
+		}
+		logger.Infof("response result: %+v", user)
+	*/
+
+	resp, err := api.UserProviderClient.EchoInt(context.TODO(), i)
+	if err != nil {
+		panic(err)
+	}
+	logger.Infof("response result: %+v", resp)
 }

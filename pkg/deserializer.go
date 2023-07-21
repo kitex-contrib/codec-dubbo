@@ -20,18 +20,18 @@
 package hessian2
 
 import (
+	"bytes"
 	"context"
 
-	"github.com/cloudwego/kitex/pkg/remote"
+	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
 )
 
 type BaseDeserializer struct {
-	Protocol BaseProtocol
+	Protocol iface.BaseProtocol
 }
 
 func NewBaseDeserializer() *BaseDeserializer {
-	trans := remote.NewReaderWriterBuffer(-1)
-	protocol := NewBinaryProtocol(trans)
+	protocol := NewBinaryProtocol(&bytes.Buffer{})
 	return &BaseDeserializer{protocol}
 }
 

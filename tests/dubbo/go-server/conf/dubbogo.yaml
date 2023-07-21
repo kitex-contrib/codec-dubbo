@@ -1,0 +1,13 @@
+dubbo:
+  registries:
+    demoZK: # 定义服务注册发现中心
+      protocol: zookeeper
+      address: 127.0.0.1:2181
+  protocols:
+    dubbo:
+      name: dubbo # 协议名 dubbo
+      port: 20000 # 监听端口
+  provider:
+    services:
+      UserProvider: # 服务提供结构类名
+        interface: org.apache.dubbo.UserProvider  # 接口需要与 go/java 客户端对应
