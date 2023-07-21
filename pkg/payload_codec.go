@@ -25,15 +25,12 @@ import (
 	"github.com/cloudwego/kitex/pkg/remote"
 )
 
-type Message struct {
-}
+type Message struct{}
 
-type ByteBuffer struct {
-}
+type ByteBuffer struct{}
 
 // Hessian2Codec NewHessian2Codec creates the hessian2 codec.
-type Hessian2Codec struct {
-}
+type Hessian2Codec struct{}
 
 // NewHessian2Codec creates a new codec instance.
 func NewHessian2Codec() *Hessian2Codec {

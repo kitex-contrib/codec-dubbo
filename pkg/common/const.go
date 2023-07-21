@@ -1,4 +1,6 @@
 /*
+ * Copyright 2023 CloudWeGo Authors
+ *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -52,7 +54,7 @@ const (
 	BC_OBJECT_DEF   = byte('C')
 	BC_INT          = byte('I')
 	BC_LIST         = byte('Z')
-	BC_MAP_NON_TYPE = byte('H') //non-type key map
+	BC_MAP_NON_TYPE = byte('H') // non-type key map
 
 	PACKET_SHORT_MAX = 0xfff
 )

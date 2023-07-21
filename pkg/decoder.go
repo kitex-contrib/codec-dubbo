@@ -75,7 +75,7 @@ func (d *Decoder) Decode(obj interface{}) error {
 	case commons.BC_MAP_NON_TYPE:
 		panic("this type not implemented")
 	default:
-		return fmt.Errorf("type not supported! %s", tag)
+		return fmt.Errorf("type not supported! %v", tag)
 	}
 
 	return nil

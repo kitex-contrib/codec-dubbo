@@ -19,8 +19,7 @@
 
 package base
 
-type Base struct {
-}
+type Base struct{}
 
 func NewBaseStruct() *Base {
 	return &Base{}
