@@ -100,6 +100,7 @@ func (m *Hessian2Codec) messageData(message remote.Message, e iface.Encoder) err
 	if !ok {
 		return fmt.Errorf("invalid data: not hessian2.MessageWriter")
 	}
+	//TODO: e.Encode(data.GetTypes()), return err if err != nil
 	return data.Encode(e)
 }
 

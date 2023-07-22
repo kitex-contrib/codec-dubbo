@@ -19,7 +19,10 @@
 
 package dubbo
 
-import "time"
+import (
+	"strconv"
+	"time"
+)
 
 const (
 	PATH_KEY      = "path"
@@ -46,7 +49,7 @@ func NewAttachment(path, group, iface, version string, timeout time.Duration) At
 		result[VERSION_KEY] = version
 	}
 	if timeout > 0 {
-		result[TIMEOUT_KEY] = timeout.Milliseconds()
+		result[TIMEOUT_KEY] = strconv.Itoa(int(timeout.Milliseconds()))
 	}
 	return result
 }
