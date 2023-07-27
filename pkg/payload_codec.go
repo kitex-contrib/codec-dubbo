@@ -68,7 +68,7 @@ func (m *Hessian2Codec) Marshal(ctx context.Context, message remote.Message, out
 func (m *Hessian2Codec) buildPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
 	encoder := hessian.NewEncoder()
 
-	if err = m.messageBegin(ctx, message, encoder); err != nil {
+	if err = m.messageServiceInfo(ctx, message, encoder); err != nil {
 		return nil, err
 	}
 
@@ -76,7 +76,7 @@ func (m *Hessian2Codec) buildPayload(ctx context.Context, message remote.Message
 		return nil, err
 	}
 
-	if err = m.messageEnd(ctx, message, encoder); err != nil {
+	if err = m.messageAttachment(ctx, message, encoder); err != nil {
 		return nil, err
 	}
 
@@ -87,7 +87,7 @@ func (m *Hessian2Codec) buildDubboHeader(message remote.Message, size int) *dubb
 	msgType := message.MessageType()
 	return &dubbo.DubboHeader{
 		IsRequest:       msgType == remote.Call || msgType == remote.Oneway,
-		IsEvent:         true,
+		IsEvent:         false,
 		IsOneWay:        msgType == remote.Oneway,
 		SerializationID: dubbo.SERIALIZATION_ID_HESSIAN,
 		RequestID:       uint64(message.RPCInfo().Invocation().SeqID()),
@@ -100,11 +100,11 @@ func (m *Hessian2Codec) messageData(message remote.Message, e iface.Encoder) err
 	if !ok {
 		return fmt.Errorf("invalid data: not hessian2.MessageWriter")
 	}
-	//TODO: e.Encode(data.GetTypes()), return err if err != nil
+	// TODO: e.Encode(data.GetTypes()), return err if err != nil
 	return data.Encode(e)
 }
 
-func (m *Hessian2Codec) messageBegin(ctx context.Context, message remote.Message, e iface.Encoder) error {
+func (m *Hessian2Codec) messageServiceInfo(ctx context.Context, message remote.Message, e iface.Encoder) error {
 	service := &dubbo.Service{
 		ProtocolVersion: dubbo.DEFAULT_DUBBO_PROTOCOL_VERSION,
 		Path:            "<PATH:TODO>",
@@ -126,7 +126,7 @@ func (m *Hessian2Codec) messageBegin(ctx context.Context, message remote.Message
 	return nil
 }
 
-func (m *Hessian2Codec) messageEnd(ctx context.Context, message remote.Message, e iface.Encoder) error {
+func (m *Hessian2Codec) messageAttachment(ctx context.Context, message remote.Message, e iface.Encoder) error {
 	// TODO: WIP
 	attachment := dubbo.NewAttachment(
 		"<PATH:TODO>",

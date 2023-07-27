@@ -25,7 +25,7 @@ import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-// 1. 定义传输结构， 如需 Java 互通，字段需要与 Java 侧对应，首字母大写
+// User transmission struct; for compatibility with java, field names should be consistent with Java class fields
 type User struct {
 	ID   string
 	Name string
@@ -34,20 +34,20 @@ type User struct {
 }
 
 func (u *User) JavaClassName() string {
-	return "org.apache.dubbo.User" // 如果与 Java 互通，需要与 Java 侧 User class全名对应,
+	return "org.apache.dubbo.User" // Should be same as Java class name for java compatibility
 }
 
-var UserProviderClient = &UserProvider{} // 客户端指针
+var UserProviderClient = &UserProvider{} // client pointer
 
-// 2。 定义客户端存根类：UserProvider
+// UserProvider client interface
 type UserProvider struct {
-	// dubbo标签，用于适配go侧客户端大写方法名 -> java侧小写方法名，只有 dubbo 协议客户端才需要使用
+	// dubbo tag is necessary to map go function name to java function name
 	GetUser func(ctx context.Context, req int32) (*User, error) //`dubbo:"getUser"`
 	EchoInt func(ctx context.Context, req int32) (int32, error) //`dubbo:"echoInt"`
 }
 
 func init() {
-	hessian.RegisterPOJO(&User{}) // 注册传输结构到 hessian 库
-	// 注册客户端存根类到框架，实例化客户端接口指针 userProvider
+	hessian.RegisterPOJO(&User{}) // Register all transmission struct to hessian lib
+	// Register client interface to the framework
 	config.SetConsumerService(UserProviderClient)
 }
