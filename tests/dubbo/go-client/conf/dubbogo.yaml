@@ -1,0 +1,10 @@
+dubbo:
+  registries:
+    demoZK:
+      protocol: zookeeper
+      address: 127.0.0.1:2181
+  consumer:
+    references:
+      UserProvider:
+        protocol: dubbo # dubbo protocol with hessian2 codec
+        interface: org.apache.dubbo.UserProvider # should be consistent with Java class

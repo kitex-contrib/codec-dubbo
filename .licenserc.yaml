@@ -70,6 +70,7 @@ header: # `header` section is configurations for source codes license header.
     - '*.toml'
     - 'LICENSE-APACHE'
     - 'OWNERS'
+    - 'tests'
   comment: on-failure # on what condition license-eye will comment on the pull request, `on-failure`, `always`, `never`.
 
   language:

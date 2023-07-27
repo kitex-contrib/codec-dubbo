@@ -26,7 +26,10 @@ import (
 	"reflect"
 
 	hessian2 "github.com/kitex-contrib/codec-hessian2/pkg/data"
+	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
 )
+
+var _ iface.Encoder = (*Encoder)(nil)
 
 func NewEncoder(w bufio.Writer) *Encoder {
 	return &Encoder{
@@ -38,6 +41,10 @@ func NewEncoder(w bufio.Writer) *Encoder {
 type Encoder struct {
 	writer bufio.Writer  // output stream
 	buffer *bytes.Buffer // buffer cache
+}
+
+func (e *Encoder) Buffer() []byte {
+	return e.buffer.Bytes()
 }
 
 func (e *Encoder) Encode(obj interface{}) error {

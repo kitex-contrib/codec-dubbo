@@ -17,33 +17,13 @@
  * limitations under the License.
  */
 
-package hessian2
+package dubbo
 
-import (
-	"bytes"
-	"context"
+const DEFAULT_DUBBO_PROTOCOL_VERSION = "2.0.2"
 
-	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
-)
-
-type BaseSerializer struct {
-	Protocol iface.BaseProtocol
-}
-
-type BaseStruct interface {
-	Write(p iface.BaseProtocol) error
-	Read(p iface.BaseProtocol) error
-}
-
-func NewBaseSerializer() *BaseSerializer {
-	protocol := NewBinaryProtocol(&bytes.Buffer{})
-	return &BaseSerializer{protocol}
-}
-
-func (b *BaseSerializer) Write(ctx context.Context, msg BaseStruct) (bt []byte, err error) {
-	if err = msg.Write(b.Protocol); err != nil {
-		return
-	}
-
-	return
+type Service struct {
+	ProtocolVersion string
+	Path            string
+	Version         string
+	Method          string
 }
