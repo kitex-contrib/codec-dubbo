@@ -180,6 +180,8 @@ func (m *Hessian2Codec) Decode(ctx context.Context, message remote.Message, in r
 			return exceptionErr
 		}
 		return fmt.Errorf("dubbo side exception: %v", exception)
+	default:
+		return fmt.Errorf("unsupported payloadType: %v", payloadType)
 	}
 	return nil
 }

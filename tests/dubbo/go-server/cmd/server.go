@@ -59,7 +59,7 @@ func init() {
 }
 
 func main() {
-	if err := config.Load(config.WithPath("/Users/wangyuxuan/my_project/codec-hessian2/tests/dubbo/go-server/conf/dubbogo.yaml")); err != nil {
+	if err := config.Load(); err != nil {
 		panic(err)
 	}
 	select {}
