@@ -19,9 +19,10 @@ package main
 
 import (
 	"context"
-	"helloworld/api"
 	"strconv"
 	"time"
+
+	"helloworld/api"
 
 	"dubbo.apache.org/dubbo-go/v3/common/logger" // dubbogo 框架日志
 	"dubbo.apache.org/dubbo-go/v3/config"

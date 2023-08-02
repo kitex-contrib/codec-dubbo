@@ -22,6 +22,7 @@ package hessian2
 import (
 	"context"
 	"fmt"
+
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/cloudwego/kitex/pkg/remote"
 	"github.com/kitex-contrib/codec-hessian2/pkg/dubbo"
