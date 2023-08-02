@@ -18,7 +18,7 @@ Just search for `thrift` in this directory.
 
 ## Implement iface.Message
 
-Implement `iface.Message` interface (Encode, Decode) for all `KitexArgs` and `KitexResult` types in `kitex_gen/echo/k-api.go`
+Implement `iface.Message` interface (Encode, Decode, GetTypes) for all `KitexArgs` and `KitexResult` types in `kitex_gen/echo/k-api.go`
 
 ## Register POJO
 
@@ -31,11 +31,11 @@ Need to implement `hessian.POJO` for these structs (`JavaClassName() string`)
 * Client: kitex_gen/echo/testservice/client.go 
 
 ```go
-options = append(options, client.WithPayloadCodec(hessian2.NewHessian2Codec()))
+options = append(options, client.WithCodec(hessian2.NewHessian2Codec()))
 ```
 
 * Server: kitex_gen/echo/testservice/server.go
 
 ```go
-options = append(options, server.WithPayloadCodec(hessian2.NewHessian2Codec()))
+options = append(options, server.WithCodec(hessian2.NewHessian2Codec()))
 ```

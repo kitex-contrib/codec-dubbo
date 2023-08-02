@@ -19,7 +19,7 @@ type Client interface {
 func NewClient(destService string, opts ...client.Option) (Client, error) {
 	var options []client.Option
 	options = append(options, client.WithDestService(destService))
-	options = append(options, client.WithPayloadCodec(hessian2.NewHessian2Codec()))
+	options = append(options, client.WithCodec(hessian2.NewHessian2Codec()))
 
 	options = append(options, opts...)
 

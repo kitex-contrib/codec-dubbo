@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	cli, err := testservice.NewClient("kitex-server", client.WithHostPorts("192.168.1.4:20000"))
+	cli, err := testservice.NewClient("org.apache.dubbo.UserProvider", client.WithHostPorts("127.0.0.1:20000"))
 	if err != nil {
 		panic(err)
 	}

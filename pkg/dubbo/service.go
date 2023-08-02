@@ -19,6 +19,8 @@
 
 package dubbo
 
+import "time"
+
 const DEFAULT_DUBBO_PROTOCOL_VERSION = "2.0.2"
 
 type Service struct {
@@ -26,4 +28,6 @@ type Service struct {
 	Path            string
 	Version         string
 	Method          string
+	Timeout         time.Duration
+	Group           string
 }
