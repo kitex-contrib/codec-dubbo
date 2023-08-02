@@ -17,19 +17,14 @@
  * limitations under the License.
  */
 
-package iface
+package dubbo
 
-type Message interface {
-	Encode(e Encoder) error
-	Decode(d Decoder) error
-	GetTypes() string
-}
-
-type Encoder interface {
-	Encode(interface{}) error
-	Buffer() []byte
-}
-
-type Decoder interface {
-	Decode() (interface{}, error)
-}
+// Response payload type enum
+const (
+	RESPONSE_WITH_EXCEPTION                  int32 = 0
+	RESPONSE_VALUE                           int32 = 1
+	RESPONSE_NULL_VALUE                      int32 = 2
+	RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS int32 = 3
+	RESPONSE_VALUE_WITH_ATTACHMENTS          int32 = 4
+	RESPONSE_NULL_VALUE_WITH_ATTACHMENTS     int32 = 5
+)

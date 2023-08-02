@@ -28,7 +28,7 @@ import (
 
 func main() {
 	// 启动框架
-	if err := config.Load(); err != nil {
+	if err := config.Load(config.WithPath("/Users/wangyuxuan/my_project/codec-hessian2/tests/dubbo/go-client/conf/dubbogo.yaml")); err != nil {
 		panic(err)
 	}
 
