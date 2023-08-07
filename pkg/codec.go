@@ -116,7 +116,12 @@ func (m *Hessian2Codec) encodeRequestPayload(ctx context.Context, message remote
 
 func (m *Hessian2Codec) encodeResponsePayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
 	encoder := hessian.NewEncoder()
-	payloadType := dubbo.GetAttachmentsPayloadType(len(message.Tags()) != 0, dubbo.RESPONSE_VALUE)
+	var payloadType dubbo.PayloadType
+	if len(message.Tags()) != 0 {
+		payloadType = dubbo.RESPONSE_VALUE_WITH_ATTACHMENTS
+	} else {
+		payloadType = dubbo.RESPONSE_VALUE
+	}
 
 	if err := encoder.Encode(payloadType); err != nil {
 		return nil, err
@@ -144,7 +149,12 @@ func (m *Hessian2Codec) encodeResponsePayload(ctx context.Context, message remot
 
 func (m *Hessian2Codec) encodeExceptionPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
 	encoder := hessian.NewEncoder()
-	payloadType := dubbo.GetAttachmentsPayloadType(len(message.Tags()) != 0, dubbo.RESPONSE_WITH_EXCEPTION)
+	var payloadType dubbo.PayloadType
+	if len(message.Tags()) != 0 {
+		payloadType = dubbo.RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS
+	} else {
+		payloadType = dubbo.RESPONSE_WITH_EXCEPTION
+	}
 
 	if err := encoder.Encode(payloadType); err != nil {
 		return nil, err

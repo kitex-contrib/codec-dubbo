@@ -37,29 +37,10 @@ const (
 	RESPONSE_NULL_VALUE_WITH_ATTACHMENTS
 )
 
-var (
-	attachmentsPair = map[PayloadType]PayloadType{
-		RESPONSE_WITH_EXCEPTION: RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS,
-		RESPONSE_VALUE:          RESPONSE_VALUE_WITH_ATTACHMENTS,
-		RESPONSE_NULL_VALUE:     RESPONSE_NULL_VALUE_WITH_ATTACHMENTS,
-	}
-	attachmentsSet = map[PayloadType]struct{}{
-		RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS: {},
-		RESPONSE_VALUE_WITH_ATTACHMENTS:          {},
-		RESPONSE_NULL_VALUE_WITH_ATTACHMENTS:     {},
-	}
-)
-
-// GetAttachmentsPayloadType returns base PayloadType or base with attachments PayloadType based on expression.
-// If base PayloadType does not have responding attachments PayloadType, returns itself.
-func GetAttachmentsPayloadType(expression bool, base PayloadType) PayloadType {
-	if expression {
-		if pair, ok := attachmentsPair[base]; ok {
-			return pair
-		}
-	}
-
-	return base
+var attachmentsSet = map[PayloadType]struct{}{
+	RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS: {},
+	RESPONSE_VALUE_WITH_ATTACHMENTS:          {},
+	RESPONSE_NULL_VALUE_WITH_ATTACHMENTS:     {},
 }
 
 // IsAttachmentsPayloadType determines whether typ is an attachments PayloadType
