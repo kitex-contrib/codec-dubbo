@@ -315,7 +315,6 @@ func (m *Hessian2Codec) decodeResponseBody(ctx context.Context, header *dubbo.Du
 		return err
 	}
 	switch payloadType {
-	// todo: processing RESPONSE_WITH_EXC
 	case dubbo.RESPONSE_VALUE, dubbo.RESPONSE_VALUE_WITH_ATTACHMENTS:
 		msg, ok := message.Data().(iface.Message)
 		if !ok {
