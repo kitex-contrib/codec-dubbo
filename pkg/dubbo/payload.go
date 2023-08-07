@@ -21,6 +21,7 @@ package dubbo
 
 import (
 	"fmt"
+
 	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
 )
 
