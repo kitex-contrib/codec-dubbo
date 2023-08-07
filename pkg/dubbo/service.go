@@ -20,6 +20,7 @@
 package dubbo
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
@@ -37,45 +38,32 @@ type Service struct {
 }
 
 func (svc *Service) Decode(decoder iface.Decoder) error {
-	protoVerRaw, err := decoder.Decode()
+	if err := decodeString(decoder, &svc.ProtocolVersion, "ProtocolVersion"); err != nil {
+		return err
+	}
+	if err := decodeString(decoder, &svc.Path, "Path"); err != nil {
+		return err
+	}
+	if err := decodeString(decoder, &svc.Version, "Version"); err != nil {
+		return err
+	}
+	if err := decodeString(decoder, &svc.Method, "Method"); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// decodeString decodes dubbo Service string field
+func decodeString(decoder iface.Decoder, target *string, targetName string) error {
+	strRaw, err := decoder.Decode()
 	if err != nil {
 		return err
 	}
-	protoVer, ok := protoVerRaw.(string)
+	str, ok := strRaw.(string)
 	if !ok {
-		return nil
+		return fmt.Errorf("decode dubbo Service field %s failed, got %v", targetName, strRaw)
 	}
-	svc.ProtocolVersion = protoVer
-
-	pathRaw, err := decoder.Decode()
-	if err != nil {
-		return err
-	}
-	path, ok := pathRaw.(string)
-	if !ok {
-		return nil
-	}
-	svc.Path = path
-
-	versionRaw, err := decoder.Decode()
-	if err != nil {
-		return err
-	}
-	version, ok := versionRaw.(string)
-	if !ok {
-		return nil
-	}
-	svc.Version = version
-
-	methodRaw, err := decoder.Decode()
-	if err != nil {
-		return err
-	}
-	method, ok := methodRaw.(string)
-	if !ok {
-		return err
-	}
-	svc.Method = method
-
+	*target = str
 	return nil
 }

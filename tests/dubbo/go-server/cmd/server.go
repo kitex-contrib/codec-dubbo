@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"strconv"
 	"time"
 
@@ -45,7 +46,9 @@ func (u *UserProvider) GetUser(ctx context.Context, req int32) (*api.User, error
 
 func (u *UserProvider) EchoInt(ctx context.Context, req int32) (int32, error) {
 	// for exception test
-	// return 0, errors.New("EchoInt failed without reason")
+	if req == 400 {
+		return 0, errors.New("EchoInt failed without reason")
+	}
 
 	return req, nil
 }

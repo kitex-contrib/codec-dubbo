@@ -116,13 +116,7 @@ func (m *Hessian2Codec) encodeRequestPayload(ctx context.Context, message remote
 
 func (m *Hessian2Codec) encodeResponsePayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
 	encoder := hessian.NewEncoder()
-
-	var payloadType int32
-	if len(message.Tags()) != 0 {
-		payloadType = dubbo.RESPONSE_VALUE_WITH_ATTACHMENTS
-	} else {
-		payloadType = dubbo.RESPONSE_VALUE
-	}
+	payloadType := dubbo.GetAttachmentsPayloadType(len(message.Tags()) != 0, dubbo.RESPONSE_VALUE)
 
 	if err := encoder.Encode(payloadType); err != nil {
 		return nil, err
@@ -139,7 +133,7 @@ func (m *Hessian2Codec) encodeResponsePayload(ctx context.Context, message remot
 	}
 
 	// encode attachments if needed
-	if payloadType == dubbo.RESPONSE_VALUE_WITH_ATTACHMENTS {
+	if dubbo.IsAttachmentsPayloadType(payloadType) {
 		if err := encoder.Encode(message.Tags()); err != nil {
 			return nil, err
 		}
@@ -150,12 +144,7 @@ func (m *Hessian2Codec) encodeResponsePayload(ctx context.Context, message remot
 
 func (m *Hessian2Codec) encodeExceptionPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
 	encoder := hessian.NewEncoder()
-	var payloadType int32
-	if len(message.Tags()) != 0 {
-		payloadType = dubbo.RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS
-	} else {
-		payloadType = dubbo.RESPONSE_WITH_EXCEPTION
-	}
+	payloadType := dubbo.GetAttachmentsPayloadType(len(message.Tags()) != 0, dubbo.RESPONSE_WITH_EXCEPTION)
 
 	if err := encoder.Encode(payloadType); err != nil {
 		return nil, err
@@ -177,7 +166,7 @@ func (m *Hessian2Codec) encodeExceptionPayload(ctx context.Context, message remo
 		}
 	}
 
-	if payloadType == dubbo.RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS {
+	if dubbo.IsAttachmentsPayloadType(payloadType) {
 		if err := encoder.Encode(message.Tags()); err != nil {
 			return nil, err
 		}
@@ -272,12 +261,10 @@ func (m *Hessian2Codec) decodeRequestBody(ctx context.Context, header *dubbo.Dub
 	}
 
 	// decode payload
-	types, err := decoder.Decode()
-	if err != nil {
+	// there is no need to make use of types
+	if _, err = decoder.Decode(); err != nil {
 		return err
 	}
-	// todo: using reflection to process types
-	fmt.Println(types)
 	if err := codec.NewDataIfNeeded(service.Method, message); err != nil {
 		return err
 	}
@@ -310,7 +297,7 @@ func (m *Hessian2Codec) decodeResponseBody(ctx context.Context, header *dubbo.Du
 	}
 
 	decoder := hessian.NewDecoder(body)
-	payloadType, err := decoder.Decode()
+	payloadType, err := dubbo.DecodePayloadType(decoder)
 	if err != nil {
 		return err
 	}
@@ -323,7 +310,7 @@ func (m *Hessian2Codec) decodeResponseBody(ctx context.Context, header *dubbo.Du
 		if err := msg.Decode(decoder); err != nil {
 			return err
 		}
-		if payloadType == dubbo.RESPONSE_VALUE_WITH_ATTACHMENTS {
+		if dubbo.IsAttachmentsPayloadType(payloadType) {
 			if err := processAttachments(decoder, message); err != nil {
 				return err
 			}
@@ -333,7 +320,7 @@ func (m *Hessian2Codec) decodeResponseBody(ctx context.Context, header *dubbo.Du
 		if err != nil {
 			return err
 		}
-		if payloadType == dubbo.RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS {
+		if dubbo.IsAttachmentsPayloadType(payloadType) {
 			if err := processAttachments(decoder, message); err != nil {
 				return err
 			}

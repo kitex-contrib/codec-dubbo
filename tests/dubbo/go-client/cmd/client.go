@@ -48,4 +48,10 @@ func main() {
 		panic(err)
 	}
 	logger.Infof("response result: %+v", resp)
+
+	_, err = api.UserProviderClient.EchoInt(context.TODO(), 400)
+	if err == nil {
+		panic("want err but got nothing")
+	}
+	logger.Infof("got err: %+v", err)
 }

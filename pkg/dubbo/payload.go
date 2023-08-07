@@ -19,12 +19,62 @@
 
 package dubbo
 
+import (
+	"fmt"
+	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
+)
+
+type PayloadType int32
+
 // Response payload type enum
 const (
-	RESPONSE_WITH_EXCEPTION                  int32 = 0
-	RESPONSE_VALUE                           int32 = 1
-	RESPONSE_NULL_VALUE                      int32 = 2
-	RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS int32 = 3
-	RESPONSE_VALUE_WITH_ATTACHMENTS          int32 = 4
-	RESPONSE_NULL_VALUE_WITH_ATTACHMENTS     int32 = 5
+	RESPONSE_WITH_EXCEPTION PayloadType = iota
+	RESPONSE_VALUE
+	RESPONSE_NULL_VALUE
+	RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS
+	RESPONSE_VALUE_WITH_ATTACHMENTS
+	RESPONSE_NULL_VALUE_WITH_ATTACHMENTS
 )
+
+var (
+	attachmentsPair = map[PayloadType]PayloadType{
+		RESPONSE_WITH_EXCEPTION: RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS,
+		RESPONSE_VALUE:          RESPONSE_VALUE_WITH_ATTACHMENTS,
+		RESPONSE_NULL_VALUE:     RESPONSE_NULL_VALUE_WITH_ATTACHMENTS,
+	}
+	attachmentsSet = map[PayloadType]struct{}{
+		RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS: {},
+		RESPONSE_VALUE_WITH_ATTACHMENTS:          {},
+		RESPONSE_NULL_VALUE_WITH_ATTACHMENTS:     {},
+	}
+)
+
+// GetAttachmentsPayloadType returns base PayloadType or base with attachments PayloadType based on expression.
+// If base PayloadType does not have responding attachments PayloadType, returns itself.
+func GetAttachmentsPayloadType(expression bool, base PayloadType) PayloadType {
+	if expression {
+		if pair, ok := attachmentsPair[base]; ok {
+			return pair
+		}
+	}
+
+	return base
+}
+
+// IsAttachmentsPayloadType determines whether typ is an attachments PayloadType
+func IsAttachmentsPayloadType(typ PayloadType) bool {
+	_, ok := attachmentsSet[typ]
+	return ok
+}
+
+func DecodePayloadType(decoder iface.Decoder) (PayloadType, error) {
+	payloadTypeRaw, err := decoder.Decode()
+	if err != nil {
+		return 0, err
+	}
+	payloadTypeInt32, ok := payloadTypeRaw.(int32)
+	if !ok {
+		return 0, fmt.Errorf("dubbo PayloadType decoded failed, got: %v", payloadTypeRaw)
+	}
+	return PayloadType(payloadTypeInt32), nil
+}
