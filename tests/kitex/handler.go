@@ -11,12 +11,15 @@ type TestServiceImpl struct{}
 
 // EchoInt implements the TestServiceImpl interface.
 func (s *TestServiceImpl) EchoInt(ctx context.Context, req int32) (resp int32, err error) {
-	// TODO: Your code here...
-	return
+	// for exception test
+	// return 0, errors.New("EchoInt failed without reason")
+
+	return req, nil
 }
 
 // Echo implements the TestServiceImpl interface.
 func (s *TestServiceImpl) Echo(ctx context.Context, req *echo.EchoRequest) (resp *echo.EchoResponse, err error) {
-	// TODO: Your code here...
-	return
+	return &echo.EchoResponse{
+		Int32: req.Int32,
+	}, nil
 }

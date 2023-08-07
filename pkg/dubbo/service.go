@@ -19,7 +19,11 @@
 
 package dubbo
 
-import "time"
+import (
+	"time"
+
+	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
+)
 
 const DEFAULT_DUBBO_PROTOCOL_VERSION = "2.0.2"
 
@@ -30,4 +34,48 @@ type Service struct {
 	Method          string
 	Timeout         time.Duration
 	Group           string
+}
+
+func (svc *Service) Decode(decoder iface.Decoder) error {
+	protoVerRaw, err := decoder.Decode()
+	if err != nil {
+		return err
+	}
+	protoVer, ok := protoVerRaw.(string)
+	if !ok {
+		return nil
+	}
+	svc.ProtocolVersion = protoVer
+
+	pathRaw, err := decoder.Decode()
+	if err != nil {
+		return err
+	}
+	path, ok := pathRaw.(string)
+	if !ok {
+		return nil
+	}
+	svc.Path = path
+
+	versionRaw, err := decoder.Decode()
+	if err != nil {
+		return err
+	}
+	version, ok := versionRaw.(string)
+	if !ok {
+		return nil
+	}
+	svc.Version = version
+
+	methodRaw, err := decoder.Decode()
+	if err != nil {
+		return err
+	}
+	method, ok := methodRaw.(string)
+	if !ok {
+		return err
+	}
+	svc.Method = method
+
+	return nil
 }

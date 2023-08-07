@@ -36,9 +36,9 @@ const (
 	MAGIC_HIGH = 0xda
 	MAGIC_LOW  = 0xbb
 
-	IS_REQUEST       = 1
-	IS_RESPONSE      = 0
-	REQUEST_BIT_SHIT = 7
+	IS_REQUEST        = 1
+	IS_RESPONSE       = 0
+	REQUEST_BIT_SHIFT = 7
 
 	IS_ONEWAY        = 0
 	IS_PINGPONG      = 1
@@ -78,7 +78,7 @@ type DubboHeader struct {
 
 func (h *DubboHeader) RequestResponseByte() byte {
 	if h.IsRequest {
-		return IS_REQUEST << REQUEST_BIT_SHIT
+		return IS_REQUEST << REQUEST_BIT_SHIFT
 	}
 	return 0
 }
@@ -117,10 +117,11 @@ func (h *DubboHeader) DecodeFromByteSlice(buf []byte) error {
 	if buf[0] != MAGIC_HIGH || buf[1] != MAGIC_LOW {
 		return ErrInvalidHeader
 	}
-	h.IsRequest = isRequest(buf[3])
-	h.IsOneWay = isOneWay(buf[3])
-	h.IsEvent = isEvent(buf[3])
-	h.SerializationID = getSerializationID(buf[3])
+	h.IsRequest = isRequest(buf[2])
+	h.IsOneWay = isOneWay(buf[2])
+	h.IsEvent = isEvent(buf[2])
+	h.SerializationID = getSerializationID(buf[2])
+	// todo: process status
 	h.RequestID = binary.BigEndian.Uint64(buf[4:12])
 	h.DataLength = binary.BigEndian.Uint32(buf[12:])
 	return nil
@@ -143,7 +144,7 @@ func BitTest(b byte, shift int, expected byte) bool {
 }
 
 func isRequest(b byte) bool {
-	return BitTest(b, REQUEST_BIT_SHIT, IS_REQUEST)
+	return BitTest(b, REQUEST_BIT_SHIFT, IS_REQUEST)
 }
 
 func isOneWay(b byte) bool {
