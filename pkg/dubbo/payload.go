@@ -19,12 +19,44 @@
 
 package dubbo
 
+import (
+	"fmt"
+
+	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
+)
+
+type PayloadType int32
+
 // Response payload type enum
 const (
-	RESPONSE_WITH_EXCEPTION                  int32 = 0
-	RESPONSE_VALUE                           int32 = 1
-	RESPONSE_NULL_VALUE                      int32 = 2
-	RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS int32 = 3
-	RESPONSE_VALUE_WITH_ATTACHMENTS          int32 = 4
-	RESPONSE_NULL_VALUE_WITH_ATTACHMENTS     int32 = 5
+	RESPONSE_WITH_EXCEPTION PayloadType = iota
+	RESPONSE_VALUE
+	RESPONSE_NULL_VALUE
+	RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS
+	RESPONSE_VALUE_WITH_ATTACHMENTS
+	RESPONSE_NULL_VALUE_WITH_ATTACHMENTS
 )
+
+var attachmentsSet = map[PayloadType]struct{}{
+	RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS: {},
+	RESPONSE_VALUE_WITH_ATTACHMENTS:          {},
+	RESPONSE_NULL_VALUE_WITH_ATTACHMENTS:     {},
+}
+
+// IsAttachmentsPayloadType determines whether typ is an attachments PayloadType
+func IsAttachmentsPayloadType(typ PayloadType) bool {
+	_, ok := attachmentsSet[typ]
+	return ok
+}
+
+func DecodePayloadType(decoder iface.Decoder) (PayloadType, error) {
+	payloadTypeRaw, err := decoder.Decode()
+	if err != nil {
+		return 0, err
+	}
+	payloadTypeInt32, ok := payloadTypeRaw.(int32)
+	if !ok {
+		return 0, fmt.Errorf("dubbo PayloadType decoded failed, got: %v", payloadTypeRaw)
+	}
+	return PayloadType(payloadTypeInt32), nil
+}

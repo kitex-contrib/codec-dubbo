@@ -19,4 +19,10 @@ func main() {
 		panic(err)
 	}
 	klog.Infof("resp: %v", resp)
+
+	_, err = cli.EchoInt(context.Background(), 400)
+	if err == nil {
+		panic("want err but got nothing")
+	}
+	klog.Infof("got err: %v", err)
 }

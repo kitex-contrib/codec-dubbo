@@ -38,7 +38,7 @@ func TestDubboHeader_RequestResponseByte(t *testing.T) {
 			fields: fields{
 				IsRequest: true,
 			},
-			want: IS_REQUEST << REQUEST_BIT_SHIT,
+			want: IS_REQUEST << REQUEST_BIT_SHIFT,
 		},
 		{
 			name: "response",
@@ -89,7 +89,7 @@ func TestDubboHeader_EncodeToByteSlice(t *testing.T) {
 			want: []byte{
 				MAGIC_HIGH,
 				MAGIC_LOW,
-				(IS_REQUEST << REQUEST_BIT_SHIT) | (IS_PINGPONG << ONEWAY_BIT_SHIFT) | (IS_EVENT << EVENT_BIT_SHIFT) | SERIALIZATION_ID_HESSIAN,
+				(IS_REQUEST << REQUEST_BIT_SHIFT) | (IS_PINGPONG << ONEWAY_BIT_SHIFT) | (IS_EVENT << EVENT_BIT_SHIFT) | SERIALIZATION_ID_HESSIAN,
 				byte(StatusOK),
 				0x12, 0x34, 0x56, 0x78, 0x87, 0x65, 0x43, 0x21,
 				0x12, 0x34, 0x43, 0x21,
