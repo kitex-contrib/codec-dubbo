@@ -43,10 +43,6 @@ func (p *TestServiceEchoIntArgs) Decode(d hessian2.Decoder) error {
 	return nil
 }
 
-func (p *TestServiceEchoIntArgs) GetTypes() string {
-	return "I"
-}
-
 func NewTestServiceEchoIntArgs() *TestServiceEchoIntArgs {
 	return &TestServiceEchoIntArgs{}
 }
@@ -89,10 +85,6 @@ func (p *TestServiceEchoIntResult) Decode(d hessian2.Decoder) error {
 	}
 	p.Success = &i
 	return nil
-}
-
-func (p *TestServiceEchoIntResult) GetTypes() string {
-	return ""
 }
 
 func NewTestServiceEchoIntResult() *TestServiceEchoIntResult {
@@ -148,11 +140,6 @@ func (p *TestServiceEchoArgs) Decode(d hessian2.Decoder) error {
 	return nil
 }
 
-func (p *TestServiceEchoArgs) GetTypes() string {
-	// todo: automate generating types
-	return ""
-}
-
 func NewTestServiceEchoArgs() *TestServiceEchoArgs {
 	return &TestServiceEchoArgs{}
 }
@@ -204,10 +191,6 @@ func (p *TestServiceEchoResult) Decode(d hessian2.Decoder) error {
 	}
 	p.Success = i
 	return nil
-}
-
-func (p *TestServiceEchoResult) GetTypes() string {
-	return ""
 }
 
 func NewTestServiceEchoResult() *TestServiceEchoResult {

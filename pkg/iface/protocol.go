@@ -22,7 +22,6 @@ package iface
 type Message interface {
 	Encode(e Encoder) error
 	Decode(d Decoder) error
-	GetTypes() string
 }
 
 type Encoder interface {

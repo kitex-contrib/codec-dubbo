@@ -101,7 +101,7 @@ func (h *DubboHeader) EncodeToByteSlice() []byte {
 	buf := make([]byte, HEADER_SIZE)
 	buf[0] = MAGIC_HIGH
 	buf[1] = MAGIC_LOW
-	buf[2] = h.RequestResponseByte() | h.OnewayByte() | h.EventByte() | h.SerializationID
+	buf[2] = h.RequestResponseByte() | h.OnewayByte() | h.EventByte() | getSerializationID(h.SerializationID)
 	buf[3] = byte(h.Status)
 	binary.BigEndian.PutUint64(buf[4:12], h.RequestID)
 	binary.BigEndian.PutUint32(buf[12:HEADER_SIZE], h.DataLength)
