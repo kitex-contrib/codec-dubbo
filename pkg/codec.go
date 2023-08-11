@@ -23,7 +23,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"reflect"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go-hessian2/java_exception"
@@ -217,7 +216,7 @@ func (m *Hessian2Codec) messageData(message remote.Message, e iface.Encoder) err
 	if !ok {
 		return fmt.Errorf("invalid data: not hessian2.MessageWriter")
 	}
-	types, err := getTypes(data)
+	types, err := dubbo.GetTypes(data)
 	if err != nil {
 		return err
 	}
@@ -375,10 +374,6 @@ func processAttachments(decoder iface.Decoder, message remote.Message) error {
 	if err != nil {
 		return err
 	}
-	//
-	//if attachmentsRaw == nil || attachmentsRaw == "" {
-	//	attachmentsRaw = map[interface{}]interface{}{"interface": service.}
-	//}
 
 	if attachments, ok := attachmentsRaw.(map[interface{}]interface{}); ok {
 		for keyRaw, val := range attachments {
@@ -390,16 +385,6 @@ func processAttachments(decoder iface.Decoder, message remote.Message) error {
 	}
 
 	return fmt.Errorf("unsupported attachments: %v", attachmentsRaw)
-}
-
-func getTypes(data interface{}) (string, error) {
-	elem := reflect.ValueOf(data).Elem()
-	numField := elem.NumField()
-	fields := make([]interface{}, numField)
-	for i := 0; i < numField; i++ {
-		fields[i] = elem.Field(i).Interface()
-	}
-	return dubbo.GetParamsTypeList(fields)
 }
 
 func readBody(header *dubbo.DubboHeader, in remote.ByteBuffer) ([]byte, error) {

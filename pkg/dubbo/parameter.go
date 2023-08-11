@@ -15,6 +15,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * This source file has been replicated from the original dubbo-go project
+ * repository, and we extend our sincere appreciation to the dubbo-go
+ * development team for their valuable contribution.
  */
 
 package dubbo
@@ -23,13 +27,46 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"sync"
 	"time"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
+var (
+	typesMapLock sync.Mutex
+	typesMap     = make(map[reflect.Type]string)
+)
+
+func GetTypes(data interface{}) (string, error) {
+	val := reflect.ValueOf(data)
+	typ := val.Type()
+	typesMapLock.Lock()
+	types, ok := typesMap[typ]
+	if ok {
+		typesMapLock.Unlock()
+		return types, nil
+	}
+
+	elem := val.Elem()
+	numField := elem.NumField()
+	fields := make([]interface{}, numField)
+	for i := 0; i < numField; i++ {
+		fields[i] = elem.Field(i).Interface()
+	}
+
+	types, err := getParamsTypeList(fields)
+	if err != nil {
+		typesMapLock.Unlock()
+		return "", err
+	}
+	typesMap[typ] = types
+	typesMapLock.Unlock()
+	return types, nil
+}
+
 // GetParamsTypeList is copied from dubbo-go, it should be rewritten
-func GetParamsTypeList(params []interface{}) (string, error) {
+func getParamsTypeList(params []interface{}) (string, error) {
 	var (
 		typ   string
 		types string
