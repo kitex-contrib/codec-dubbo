@@ -118,7 +118,7 @@ func getParamType(param interface{}) string {
 		// return  "java.util.HashMap"
 		return "java.util.Map"
 	case hessian.POJOEnum:
-		return typ.(hessian.POJOEnum).JavaClassName()
+		return typ.JavaClassName()
 	case *int8:
 		return "java.lang.Byte"
 	case *int16:

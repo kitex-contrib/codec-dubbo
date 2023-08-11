@@ -187,15 +187,16 @@ func (m *Hessian2Codec) encodeExceptionPayload(ctx context.Context, message remo
 	return encoder.Buffer(), nil
 }
 
-func (m *Hessian2Codec) encodeHeartbeatPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
-	encoder := hessian.NewEncoder()
-	// nil does not mean body is empty. after encoding, body contains 'N'
-	if err := encoder.Encode(nil); err != nil {
-		return nil, err
-	}
-
-	return encoder.Buffer(), nil
-}
+// todo(DMwangnima): add this logic to Hessian2Codec.Encode
+//func (m *Hessian2Codec) encodeHeartbeatPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
+//	encoder := hessian.NewEncoder()
+//	// nil does not mean body is empty. after encoding, body contains 'N'
+//	if err := encoder.Encode(nil); err != nil {
+//		return nil, err
+//	}
+//
+//	return encoder.Buffer(), nil
+//}
 
 func (m *Hessian2Codec) buildDubboHeader(message remote.Message, status dubbo.StatusCode, size int) *dubbo.DubboHeader {
 	msgType := message.MessageType()
@@ -268,6 +269,7 @@ func (m *Hessian2Codec) Decode(ctx context.Context, message remote.Message, in r
 	if header.IsRequest {
 		// heartbeat package
 		if header.IsEvent {
+			return m.decodeHeartbeatBody(ctx, header, message, in)
 		}
 		return m.decodeRequestBody(ctx, header, message, in)
 	}
