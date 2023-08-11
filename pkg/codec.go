@@ -268,7 +268,6 @@ func (m *Hessian2Codec) Decode(ctx context.Context, message remote.Message, in r
 	if header.IsRequest {
 		// heartbeat package
 		if header.IsEvent {
-
 		}
 		return m.decodeRequestBody(ctx, header, message, in)
 	}

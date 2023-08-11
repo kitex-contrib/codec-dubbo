@@ -21,10 +21,11 @@ package dubbo
 
 import (
 	"fmt"
-	hessian "github.com/apache/dubbo-go-hessian2"
 	"reflect"
 	"strings"
 	"time"
+
+	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
 // GetParamsTypeList is copied from dubbo-go, it should be rewritten
