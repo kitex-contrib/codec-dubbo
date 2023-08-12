@@ -63,13 +63,13 @@ func (tc *typesCache) getByData(data interface{}) (string, error) {
 		if err != nil {
 			return "", err
 		}
+		tc.typesMap.Store(typ, types)
 
 		return types, nil
 	})
 	if err != nil {
 		return "", err
 	}
-	tc.typesMap.Store(typ, typesRaw)
 
 	return typesRaw.(string), nil
 }
