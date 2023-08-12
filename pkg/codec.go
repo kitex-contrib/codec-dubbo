@@ -61,6 +61,7 @@ func (m *Hessian2Codec) Encode(ctx context.Context, message remote.Message, out 
 		// use StatusOK by default, regardless of whether it is Reply or Exception
 		status = dubbo.StatusOK
 	case remote.Reply:
+		// todo(DMwangnima): after processing with UnknownHandler, message should contain heartbeat information
 		payload, err = m.encodeResponsePayload(ctx, message)
 		status = dubbo.StatusOK
 	default:
@@ -185,10 +186,22 @@ func (m *Hessian2Codec) encodeExceptionPayload(ctx context.Context, message remo
 	return encoder.Buffer(), nil
 }
 
+// todo(DMwangnima): add this logic to Hessian2Codec.Encode
+//func (m *Hessian2Codec) encodeHeartbeatPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
+//	encoder := hessian.NewEncoder()
+//	// nil does not mean body is empty. after encoding, body contains 'N'
+//	if err := encoder.Encode(nil); err != nil {
+//		return nil, err
+//	}
+//
+//	return encoder.Buffer(), nil
+//}
+
 func (m *Hessian2Codec) buildDubboHeader(message remote.Message, status dubbo.StatusCode, size int) *dubbo.DubboHeader {
 	msgType := message.MessageType()
 	return &dubbo.DubboHeader{
-		IsRequest:       msgType == remote.Call || msgType == remote.Oneway,
+		IsRequest: msgType == remote.Call || msgType == remote.Oneway,
+		// todo(DMwangnima): message contains heartbeat information or heartbeat flag passed in
 		IsEvent:         false,
 		IsOneWay:        msgType == remote.Oneway,
 		SerializationID: dubbo.SERIALIZATION_ID_HESSIAN,
@@ -203,7 +216,11 @@ func (m *Hessian2Codec) messageData(message remote.Message, e iface.Encoder) err
 	if !ok {
 		return fmt.Errorf("invalid data: not hessian2.MessageWriter")
 	}
-	if err := e.Encode(data.GetTypes()); err != nil {
+	types, err := dubbo.GetTypes(data)
+	if err != nil {
+		return err
+	}
+	if err := e.Encode(types); err != nil {
 		return err
 	}
 	return data.Encode(e)
@@ -249,17 +266,24 @@ func (m *Hessian2Codec) Decode(ctx context.Context, message remote.Message, in r
 
 	// parse body part
 	if header.IsRequest {
+		// heartbeat package
+		if header.IsEvent {
+			return m.decodeHeartbeatBody(ctx, header, message, in)
+		}
 		return m.decodeRequestBody(ctx, header, message, in)
 	}
 	return m.decodeResponseBody(ctx, header, message, in)
 }
 
+func (m *Hessian2Codec) decodeHeartbeatBody(ctx context.Context, header *dubbo.DubboHeader, message remote.Message, in remote.ByteBuffer) error {
+	// for heartbeat, there is no need to decode the body
+
+	// todo(DMwangnima): process heartbeat with UnknownHandler
+	return nil
+}
+
 func (m *Hessian2Codec) decodeRequestBody(ctx context.Context, header *dubbo.DubboHeader, message remote.Message, in remote.ByteBuffer) error {
-	length := int(header.DataLength)
-	if in.ReadableLen() < length {
-		return errors.New("invalid dubbo package with body length being less than header specified")
-	}
-	body, err := in.Next(length)
+	body, err := readBody(header, in)
 	if err != nil {
 		return err
 	}
@@ -268,6 +292,9 @@ func (m *Hessian2Codec) decodeRequestBody(ctx context.Context, header *dubbo.Dub
 	service := new(dubbo.Service)
 	if err := service.Decode(decoder); err != nil {
 		return err
+	}
+	if serviceName := message.ServiceInfo().ServiceName; service.Path != serviceName {
+		return fmt.Errorf("dubbo requested Path: %s, kitex ServiceName: %s", service.Path, serviceName)
 	}
 
 	// decode payload
@@ -297,11 +324,7 @@ func (m *Hessian2Codec) decodeRequestBody(ctx context.Context, header *dubbo.Dub
 }
 
 func (m *Hessian2Codec) decodeResponseBody(ctx context.Context, header *dubbo.DubboHeader, message remote.Message, in remote.ByteBuffer) error {
-	length := int(header.DataLength)
-	if in.ReadableLen() < length {
-		return errors.New("invalid dubbo package with body length being less than header specified")
-	}
-	body, err := in.Next(length)
+	body, err := readBody(header, in)
 	if err != nil {
 		return err
 	}
@@ -351,6 +374,7 @@ func processAttachments(decoder iface.Decoder, message remote.Message) error {
 	if err != nil {
 		return err
 	}
+
 	if attachments, ok := attachmentsRaw.(map[interface{}]interface{}); ok {
 		for keyRaw, val := range attachments {
 			if key, ok := keyRaw.(string); ok {
@@ -361,4 +385,12 @@ func processAttachments(decoder iface.Decoder, message remote.Message) error {
 	}
 
 	return fmt.Errorf("unsupported attachments: %v", attachmentsRaw)
+}
+
+func readBody(header *dubbo.DubboHeader, in remote.ByteBuffer) ([]byte, error) {
+	length := int(header.DataLength)
+	if in.ReadableLen() < length {
+		return nil, errors.New("invalid dubbo package with body length being less than header specified")
+	}
+	return in.Next(length)
 }
