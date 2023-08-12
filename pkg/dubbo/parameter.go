@@ -34,35 +34,72 @@ import (
 )
 
 var (
-	typesMapLock sync.Mutex
-	typesMap     = make(map[reflect.Type]string)
+	cache = new(typesCache)
 )
 
-func GetTypes(data interface{}) (string, error) {
+// typesCache maintains a cache from type of data(reflect.Type) to Types string used by Hessian2.
+type typesCache struct {
+	group    Group
+	typesMap sync.Map
+}
+
+// getByData returns the Types string of given data.
+// It reads embedded sync.Map firstly. If cache misses, using singleFlight to process reflection and getParamsTypeList.
+func (tc *typesCache) getByData(data interface{}) (string, error) {
 	val := reflect.ValueOf(data)
 	typ := val.Type()
-	typesMapLock.Lock()
-	types, ok := typesMap[typ]
+	typesRaw, ok := tc.typesMap.Load(typ)
 	if ok {
-		typesMapLock.Unlock()
+		return typesRaw.(string), nil
+	}
+
+	typesRaw, err, _ := tc.group.Do(typ, func() (interface{}, error) {
+		elem := val.Elem()
+		numField := elem.NumField()
+		fields := make([]interface{}, numField)
+		for i := 0; i < numField; i++ {
+			fields[i] = elem.Field(i).Interface()
+		}
+
+		types, err := getParamsTypeList(fields)
+		if err != nil {
+			return "", err
+		}
+
 		return types, nil
-	}
-
-	elem := val.Elem()
-	numField := elem.NumField()
-	fields := make([]interface{}, numField)
-	for i := 0; i < numField; i++ {
-		fields[i] = elem.Field(i).Interface()
-	}
-
-	types, err := getParamsTypeList(fields)
+	})
 	if err != nil {
-		typesMapLock.Unlock()
 		return "", err
 	}
-	typesMap[typ] = types
-	typesMapLock.Unlock()
-	return types, nil
+	tc.typesMap.Store(typ, typesRaw)
+
+	return typesRaw.(string), nil
+}
+
+// get retrieves Types string from reflect.Type directly.
+// For test.
+func (tc *typesCache) get(key reflect.Type) (string, bool) {
+	typesRaw, ok := tc.typesMap.Load(key)
+	if !ok {
+		return "", false
+	}
+
+	return typesRaw.(string), true
+}
+
+// len returns the length of embedded sync.Map.
+// For test.
+func (tc *typesCache) len() int {
+	var length int
+	tc.typesMap.Range(func(key, value interface{}) bool {
+		length++
+		return true
+	})
+	return length
+}
+
+func GetTypes(data interface{}) (string, error) {
+	return cache.getByData(data)
 }
 
 // GetParamsTypeList is copied from dubbo-go, it should be rewritten

@@ -39,11 +39,11 @@ type testStructB struct {
 	Internal *testInternalStruct
 }
 
-func TestGetTypes(t *testing.T) {
+func TestTypesCache_getByData(t *testing.T) {
 	tests := []struct {
 		desc     string
 		datum    []interface{}
-		expected func(t *testing.T, typesMap map[reflect.Type]string)
+		expected func(t *testing.T, c *typesCache)
 	}{
 		{
 			desc: "same structs with basic Type",
@@ -51,11 +51,13 @@ func TestGetTypes(t *testing.T) {
 				&testStructA{Field: 1},
 				&testStructA{Field: 2},
 			},
-			expected: func(t *testing.T, typesMap map[reflect.Type]string) {
+			expected: func(t *testing.T, c *typesCache) {
+				assert.Equal(t, 1, c.len())
 				data := &testStructA{Field: 3}
 				typ := reflect.ValueOf(data).Type()
-				assert.Equal(t, 1, len(typesMap))
-				assert.Equal(t, "J", typesMap[typ])
+				types, ok := c.get(typ)
+				assert.Equal(t, true, ok)
+				assert.Equal(t, "J", types)
 			},
 		},
 		{
@@ -72,15 +74,17 @@ func TestGetTypes(t *testing.T) {
 					},
 				},
 			},
-			expected: func(t *testing.T, typesMap map[reflect.Type]string) {
+			expected: func(t *testing.T, c *typesCache) {
+				assert.Equal(t, 1, c.len())
 				data := &testStructB{
 					Internal: &testInternalStruct{
 						Field: 3,
 					},
 				}
 				typ := reflect.ValueOf(data).Type()
-				assert.Equal(t, 1, len(typesMap))
-				assert.Equal(t, "Ljava/lang/Object;", typesMap[typ])
+				types, ok := c.get(typ)
+				assert.Equal(t, true, ok)
+				assert.Equal(t, "Ljava/lang/Object;", types)
 			},
 		},
 		{
@@ -93,7 +97,8 @@ func TestGetTypes(t *testing.T) {
 					},
 				},
 			},
-			expected: func(t *testing.T, typesMap map[reflect.Type]string) {
+			expected: func(t *testing.T, c *typesCache) {
+				assert.Equal(t, 2, c.len())
 				dataA := &testStructA{Field: 3}
 				dataB := &testStructB{
 					Internal: &testInternalStruct{
@@ -102,30 +107,32 @@ func TestGetTypes(t *testing.T) {
 				}
 				typA := reflect.ValueOf(dataA).Type()
 				typB := reflect.ValueOf(dataB).Type()
-				assert.Equal(t, 2, len(typesMap))
-				assert.Equal(t, "J", typesMap[typA])
-				assert.Equal(t, "Ljava/lang/Object;", typesMap[typB])
+				types, ok := c.get(typA)
+				assert.Equal(t, true, ok)
+				assert.Equal(t, "J", types)
+				types, ok = c.get(typB)
+				assert.Equal(t, true, ok)
+				assert.Equal(t, "Ljava/lang/Object;", types)
 			},
 		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.desc, func(t *testing.T) {
-			// run GetTypes concurrently
+			tc := new(typesCache)
+			// run getByData concurrently
 			for i, data := range test.datum {
 				testData := data
 				t.Run(fmt.Sprintf("struct%d", i), func(t *testing.T) {
 					t.Parallel()
-					_, err := GetTypes(testData)
+					_, err := tc.getByData(testData)
 					if err != nil {
 						t.Fatal(err)
 					}
 				})
 			}
 			t.Cleanup(func() {
-				test.expected(t, typesMap)
-				// reset
-				typesMap = make(map[reflect.Type]string)
+				test.expected(t, tc)
 			})
 		})
 	}
