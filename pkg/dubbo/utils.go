@@ -15,6 +15,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * This source file has been replicated from the original golang.org/x
+ * repository, and we extend our sincere appreciation to the golang
+ * development team for their valuable contribution.
  */
 
 package dubbo
@@ -29,18 +33,13 @@ import (
 	"sync"
 )
 
-// errGoexit indicates the runtime.Goexit was called in
-// the user given function.
 var errGoexit = errors.New("runtime.Goexit was called")
 
-// A panicError is an arbitrary value recovered from a panic
-// with the stack trace during the execution of given function.
 type panicError struct {
 	value interface{}
 	stack []byte
 }
 
-// Error implements error interface.
 func (p *panicError) Error() string {
 	return fmt.Sprintf("%v\n\n%s", p.value, p.stack)
 }
@@ -57,46 +56,33 @@ func newPanicError(v interface{}) error {
 	return &panicError{value: v, stack: stack}
 }
 
-// call is an in-flight or completed singleflight.Do call
 type call struct {
 	wg sync.WaitGroup
 
-	// These fields are written once before the WaitGroup is done
-	// and are only read after the WaitGroup is done.
 	val interface{}
 	err error
 
-	// forgotten indicates whether Forget was called with this call's key
-	// while the call was still in flight.
 	forgotten bool
 
-	// These fields are read and written with the singleflight
-	// mutex held before the WaitGroup is done, and are read but
-	// not written after the WaitGroup is done.
 	dups  int
 	chans []chan<- Result
 }
 
 // Group represents a class of work and forms a namespace in
 // which units of work can be executed with duplicate suppression.
+// The only difference between this Group and golang.org/x/sync/singleflight is that key is reflect.Type
+// cause reflect.Type.String() could not be guaranteed to be unique.
 type Group struct {
 	mu sync.Mutex             // protects m
 	m  map[reflect.Type]*call // lazily initialized
 }
 
-// Result holds the results of Do, so they can be passed
-// on a channel.
 type Result struct {
 	Val    interface{}
 	Err    error
 	Shared bool
 }
 
-// Do executes and returns the results of the given function, making
-// sure that only one execution is in-flight for a given key at a
-// time. If a duplicate comes in, the duplicate caller waits for the
-// original to complete and receives the same results.
-// The return value shared indicates whether v was given to multiple callers.
 func (g *Group) Do(key reflect.Type, fn func() (interface{}, error)) (v interface{}, err error, shared bool) {
 	g.mu.Lock()
 	if g.m == nil {
@@ -123,10 +109,6 @@ func (g *Group) Do(key reflect.Type, fn func() (interface{}, error)) (v interfac
 	return c.val, c.err, c.dups > 0
 }
 
-// DoChan is like Do but returns a channel that will receive the
-// results when they are ready.
-//
-// The returned channel will not be closed.
 func (g *Group) DoChan(key reflect.Type, fn func() (interface{}, error)) <-chan Result {
 	ch := make(chan Result, 1)
 	g.mu.Lock()
@@ -149,7 +131,6 @@ func (g *Group) DoChan(key reflect.Type, fn func() (interface{}, error)) <-chan 
 	return ch
 }
 
-// doCall handles the single call for a key.
 func (g *Group) doCall(c *call, key reflect.Type, fn func() (interface{}, error)) {
 	normalReturn := false
 	recovered := false
@@ -213,9 +194,6 @@ func (g *Group) doCall(c *call, key reflect.Type, fn func() (interface{}, error)
 	}
 }
 
-// Forget tells the singleflight to forget about a key.  Future calls
-// to Do for this key will call the function rather than waiting for
-// an earlier call to complete.
 func (g *Group) Forget(key reflect.Type) {
 	g.mu.Lock()
 	if c, ok := g.m[key]; ok {
