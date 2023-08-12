@@ -33,9 +33,7 @@ import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-var (
-	cache = new(typesCache)
-)
+var cache = new(typesCache)
 
 // typesCache maintains a cache from type of data(reflect.Type) to Types string used by Hessian2.
 type typesCache struct {
