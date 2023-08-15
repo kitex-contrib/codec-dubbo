@@ -61,8 +61,10 @@ func (m *Hessian2Codec) Encode(ctx context.Context, message remote.Message, out 
 		// use StatusOK by default, regardless of whether it is Reply or Exception
 		status = dubbo.StatusOK
 	case remote.Reply:
-		// todo(DMwangnima): after processing with UnknownHandler, message should contain heartbeat information
 		payload, err = m.encodeResponsePayload(ctx, message)
+		status = dubbo.StatusOK
+	case remote.Heartbeat:
+		payload, err = m.encodeHeartbeatPayload(ctx, message)
 		status = dubbo.StatusOK
 	default:
 		return fmt.Errorf("unsupported MessageType: %v", msgType)
@@ -145,7 +147,8 @@ func (m *Hessian2Codec) encodeResponsePayload(ctx context.Context, message remot
 		}
 	}
 
-	return encoder.Buffer(), nil
+	// java client needs this Null as the sign of end of file
+	return hessian.EncNull(encoder.Buffer()), nil
 }
 
 func (m *Hessian2Codec) encodeExceptionPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
@@ -183,19 +186,20 @@ func (m *Hessian2Codec) encodeExceptionPayload(ctx context.Context, message remo
 		}
 	}
 
-	return encoder.Buffer(), nil
+	// java client needs this Null as the sign of end of file
+	return hessian.EncNull(encoder.Buffer()), nil
 }
 
-// todo(DMwangnima): add this logic to Hessian2Codec.Encode
-//func (m *Hessian2Codec) encodeHeartbeatPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
-//	encoder := hessian.NewEncoder()
-//	// nil does not mean body is empty. after encoding, body contains 'N'
-//	if err := encoder.Encode(nil); err != nil {
-//		return nil, err
-//	}
-//
-//	return encoder.Buffer(), nil
-//}
+func (m *Hessian2Codec) encodeHeartbeatPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
+	encoder := hessian.NewEncoder()
+	// nil does not mean body is empty. after encoding, body contains 'N'
+	if err := encoder.Encode(nil); err != nil {
+		return nil, err
+	}
+
+	// java client needs this Null as the sign of end of file
+	return hessian.EncNull(encoder.Buffer()), nil
+}
 
 func (m *Hessian2Codec) buildDubboHeader(message remote.Message, status dubbo.StatusCode, size int) *dubbo.DubboHeader {
 	msgType := message.MessageType()
@@ -278,7 +282,7 @@ func (m *Hessian2Codec) Decode(ctx context.Context, message remote.Message, in r
 func (m *Hessian2Codec) decodeHeartbeatBody(ctx context.Context, header *dubbo.DubboHeader, message remote.Message, in remote.ByteBuffer) error {
 	// for heartbeat, there is no need to decode the body
 
-	// todo(DMwangnima): process heartbeat with UnknownHandler
+	message.SetMessageType(remote.Heartbeat)
 	return nil
 }
 
@@ -362,6 +366,12 @@ func (m *Hessian2Codec) decodeResponseBody(ctx context.Context, header *dubbo.Du
 			return exceptionErr
 		}
 		return fmt.Errorf("dubbo side exception: %v", exception)
+	case dubbo.RESPONSE_NULL_VALUE, dubbo.RESPONSE_NULL_VALUE_WITH_ATTACHMENTS:
+		if dubbo.IsAttachmentsPayloadType(payloadType) {
+			if err := processAttachments(decoder, message); err != nil {
+				return err
+			}
+		}
 	default:
 		return fmt.Errorf("unsupported payloadType: %v", payloadType)
 	}
