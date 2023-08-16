@@ -149,8 +149,7 @@ func (m *Hessian2Codec) encodeResponsePayload(ctx context.Context, message remot
 		}
 	}
 
-	// java client needs this Null as the sign of end of file
-	return hessian.EncNull(encoder.Buffer()), nil
+	return encoder.Buffer(), nil
 }
 
 func (m *Hessian2Codec) encodeExceptionPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
@@ -189,7 +188,7 @@ func (m *Hessian2Codec) encodeExceptionPayload(ctx context.Context, message remo
 	}
 
 	// java client needs this Null as the sign of end of file
-	return hessian.EncNull(encoder.Buffer()), nil
+	return encoder.Buffer(), nil
 }
 
 func (m *Hessian2Codec) encodeHeartbeatPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
@@ -199,8 +198,7 @@ func (m *Hessian2Codec) encodeHeartbeatPayload(ctx context.Context, message remo
 		return nil, err
 	}
 
-	// java client needs this Null as the sign of end of file
-	return hessian.EncNull(encoder.Buffer()), nil
+	return encoder.Buffer(), nil
 }
 
 func (m *Hessian2Codec) buildDubboHeader(message remote.Message, status dubbo.StatusCode, size int) *dubbo.DubboHeader {
