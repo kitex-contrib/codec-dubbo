@@ -54,6 +54,8 @@ func (m *DubboCodec) Encode(ctx context.Context, message remote.Message, out rem
 	var payload []byte
 	var err error
 	var status dubbo_spec.StatusCode
+	// indicate whether this pkg is event
+	var eventFlag bool
 	msgType := message.MessageType()
 	switch msgType {
 	case remote.Call, remote.Oneway:
@@ -64,6 +66,7 @@ func (m *DubboCodec) Encode(ctx context.Context, message remote.Message, out rem
 		// is in outside layer.(eg. non-exist InterfaceName)
 		// for now, use StatusOK by default, regardless of whether it is in outside layer.
 		status = dubbo_spec.StatusOK
+		eventFlag = true
 	case remote.Reply:
 		payload, err = m.encodeResponsePayload(ctx, message)
 		status = dubbo_spec.StatusOK
@@ -78,7 +81,7 @@ func (m *DubboCodec) Encode(ctx context.Context, message remote.Message, out rem
 		return err
 	}
 
-	header := m.buildDubboHeader(message, status, len(payload))
+	header := m.buildDubboHeader(message, status, len(payload), eventFlag)
 
 	// write header
 	if err := header.Encode(out); err != nil {
@@ -208,12 +211,11 @@ func (m *DubboCodec) encodeHeartbeatPayload(ctx context.Context, message remote.
 	return encoder.Buffer(), nil
 }
 
-func (m *DubboCodec) buildDubboHeader(message remote.Message, status dubbo_spec.StatusCode, size int) *dubbo_spec.DubboHeader {
+func (m *DubboCodec) buildDubboHeader(message remote.Message, status dubbo_spec.StatusCode, size int, eventFlag bool) *dubbo_spec.DubboHeader {
 	msgType := message.MessageType()
 	return &dubbo_spec.DubboHeader{
-		IsRequest: msgType == remote.Call || msgType == remote.Oneway,
-		// todo(DMwangnima): message contains heartbeat information or heartbeat flag passed in
-		IsEvent:         false,
+		IsRequest:       msgType == remote.Call || msgType == remote.Oneway,
+		IsEvent:         eventFlag,
 		IsOneWay:        msgType == remote.Oneway,
 		SerializationID: dubbo_spec.SERIALIZATION_ID_HESSIAN,
 		Status:          status,
