@@ -187,7 +187,6 @@ func (m *Hessian2Codec) encodeExceptionPayload(ctx context.Context, message remo
 		}
 	}
 
-	// java client needs this Null as the sign of end of file
 	return encoder.Buffer(), nil
 }
 
