@@ -190,9 +190,15 @@ func (m *Hessian2Codec) encodeExceptionPayload(ctx context.Context, message remo
 	return encoder.Buffer(), nil
 }
 
+// Event Flag set in dubbo header and 'N' body determines that this pkg is heartbeat.
+// For dubbo-go, it does not decode the body of the pkg when Event Flag is set in dubbo header.
+// For dubbo-java, it reads the body of the pkg and use this statement to judge when Event Flag is set in dubbo header.
+// Arrays.equals(payload, getNullBytesOf(getSerializationById(proto)))
+// For hessian2, NullByte is 'N'.
+// As a result, we need to encode nil in heartbeat response body for both dubbo-go side and dubbo-java side.
 func (m *Hessian2Codec) encodeHeartbeatPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
 	encoder := hessian.NewEncoder()
-	// nil does not mean body is empty. after encoding, body contains 'N'
+
 	if err := encoder.Encode(nil); err != nil {
 		return nil, err
 	}
@@ -288,7 +294,7 @@ func (m *Hessian2Codec) decodeEventBody(ctx context.Context, header *dubbo.Dubbo
 	if len(body) == 1 && body[0] == commons.BC_NULL {
 		message.SetMessageType(remote.Heartbeat)
 	}
-	// there are other events(READONLY_EVENT, WRITABLE_EVENT) in dubbo-java that we are not planing to implement
+	// todo(DMwangnima): there are other events(READONLY_EVENT, WRITABLE_EVENT) in dubbo-java that we are planning to implement currently
 
 	return nil
 }
