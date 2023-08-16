@@ -24,6 +24,8 @@ import (
 	"errors"
 	"fmt"
 
+	commons "github.com/kitex-contrib/codec-hessian2/pkg/common"
+
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go-hessian2/java_exception"
 	"github.com/cloudwego/kitex/pkg/remote"
@@ -61,8 +63,10 @@ func (m *Hessian2Codec) Encode(ctx context.Context, message remote.Message, out 
 		// use StatusOK by default, regardless of whether it is Reply or Exception
 		status = dubbo.StatusOK
 	case remote.Reply:
-		// todo(DMwangnima): after processing with UnknownHandler, message should contain heartbeat information
 		payload, err = m.encodeResponsePayload(ctx, message)
+		status = dubbo.StatusOK
+	case remote.Heartbeat:
+		payload, err = m.encodeHeartbeatPayload(ctx, message)
 		status = dubbo.StatusOK
 	default:
 		return fmt.Errorf("unsupported MessageType: %v", msgType)
@@ -186,16 +190,21 @@ func (m *Hessian2Codec) encodeExceptionPayload(ctx context.Context, message remo
 	return encoder.Buffer(), nil
 }
 
-// todo(DMwangnima): add this logic to Hessian2Codec.Encode
-//func (m *Hessian2Codec) encodeHeartbeatPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
-//	encoder := hessian.NewEncoder()
-//	// nil does not mean body is empty. after encoding, body contains 'N'
-//	if err := encoder.Encode(nil); err != nil {
-//		return nil, err
-//	}
-//
-//	return encoder.Buffer(), nil
-//}
+// Event Flag set in dubbo header and 'N' body determines that this pkg is heartbeat.
+// For dubbo-go, it does not decode the body of the pkg when Event Flag is set in dubbo header.
+// For dubbo-java, it reads the body of the pkg and use this statement to judge when Event Flag is set in dubbo header.
+// Arrays.equals(payload, getNullBytesOf(getSerializationById(proto)))
+// For hessian2, NullByte is 'N'.
+// As a result, we need to encode nil in heartbeat response body for both dubbo-go side and dubbo-java side.
+func (m *Hessian2Codec) encodeHeartbeatPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
+	encoder := hessian.NewEncoder()
+
+	if err := encoder.Encode(nil); err != nil {
+		return nil, err
+	}
+
+	return encoder.Buffer(), nil
+}
 
 func (m *Hessian2Codec) buildDubboHeader(message remote.Message, status dubbo.StatusCode, size int) *dubbo.DubboHeader {
 	msgType := message.MessageType()
@@ -268,17 +277,25 @@ func (m *Hessian2Codec) Decode(ctx context.Context, message remote.Message, in r
 	if header.IsRequest {
 		// heartbeat package
 		if header.IsEvent {
-			return m.decodeHeartbeatBody(ctx, header, message, in)
+			return m.decodeEventBody(ctx, header, message, in)
 		}
 		return m.decodeRequestBody(ctx, header, message, in)
 	}
 	return m.decodeResponseBody(ctx, header, message, in)
 }
 
-func (m *Hessian2Codec) decodeHeartbeatBody(ctx context.Context, header *dubbo.DubboHeader, message remote.Message, in remote.ByteBuffer) error {
-	// for heartbeat, there is no need to decode the body
+func (m *Hessian2Codec) decodeEventBody(ctx context.Context, header *dubbo.DubboHeader, message remote.Message, in remote.ByteBuffer) error {
+	body, err := readBody(header, in)
+	if err != nil {
+		return err
+	}
 
-	// todo(DMwangnima): process heartbeat with UnknownHandler
+	// entire body equals to BC_NULL determines that this request is a heartbeat
+	if len(body) == 1 && body[0] == commons.BC_NULL {
+		message.SetMessageType(remote.Heartbeat)
+	}
+	// todo(DMwangnima): there are other events(READONLY_EVENT, WRITABLE_EVENT) in dubbo-java that we are planning to implement currently
+
 	return nil
 }
 
@@ -348,6 +365,7 @@ func (m *Hessian2Codec) decodeResponseBody(ctx context.Context, header *dubbo.Du
 				return err
 			}
 		}
+	// business logic exception
 	case dubbo.RESPONSE_WITH_EXCEPTION, dubbo.RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS:
 		exception, err := decoder.Decode()
 		if err != nil {
@@ -362,6 +380,12 @@ func (m *Hessian2Codec) decodeResponseBody(ctx context.Context, header *dubbo.Du
 			return exceptionErr
 		}
 		return fmt.Errorf("dubbo side exception: %v", exception)
+	case dubbo.RESPONSE_NULL_VALUE, dubbo.RESPONSE_NULL_VALUE_WITH_ATTACHMENTS:
+		if dubbo.IsAttachmentsPayloadType(payloadType) {
+			if err := processAttachments(decoder, message); err != nil {
+				return err
+			}
+		}
 	default:
 		return fmt.Errorf("unsupported payloadType: %v", payloadType)
 	}
