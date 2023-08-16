@@ -5,8 +5,8 @@ import (
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/client/callopt"
-	hessian2 "github.com/kitex-contrib/codec-hessian2/pkg"
-	"github.com/kitex-contrib/codec-hessian2/tests/kitex/kitex_gen/echo"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
@@ -19,7 +19,7 @@ type Client interface {
 func NewClient(destService string, opts ...client.Option) (Client, error) {
 	var options []client.Option
 	options = append(options, client.WithDestService(destService))
-	options = append(options, client.WithCodec(hessian2.NewHessian2Codec()))
+	options = append(options, client.WithCodec(dubbo.NewDubboCodec()))
 
 	options = append(options, opts...)
 

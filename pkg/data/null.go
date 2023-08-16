@@ -20,7 +20,7 @@
 package hessian2
 
 import (
-	commons "github.com/kitex-contrib/codec-hessian2/pkg/common"
+	commons "github.com/kitex-contrib/codec-dubbo/pkg/common"
 )
 
 // EncodeNull ::= 'N'

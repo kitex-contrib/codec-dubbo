@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package hessian2
+package dubbo
 
 import (
 	"bufio"
@@ -25,8 +25,8 @@ import (
 	"fmt"
 	"reflect"
 
-	hessian2 "github.com/kitex-contrib/codec-hessian2/pkg/data"
-	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
+	hessian2 "github.com/kitex-contrib/codec-dubbo/pkg/data"
+	"github.com/kitex-contrib/codec-dubbo/pkg/iface"
 )
 
 var _ iface.Encoder = (*Encoder)(nil)

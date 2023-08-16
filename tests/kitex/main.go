@@ -6,7 +6,7 @@ import (
 
 	"github.com/cloudwego/kitex/server"
 
-	echo "github.com/kitex-contrib/codec-hessian2/tests/kitex/kitex_gen/echo/testservice"
+	echo "github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testservice"
 )
 
 func main() {

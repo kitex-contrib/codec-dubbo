@@ -17,14 +17,14 @@
  * limitations under the License.
  */
 
-package hessian2
+package dubbo
 
 import (
 	"bufio"
 	"bytes"
 	"fmt"
 
-	commons "github.com/kitex-contrib/codec-hessian2/pkg/common"
+	commons "github.com/kitex-contrib/codec-dubbo/pkg/common"
 )
 
 func NewDecoder(r bufio.Reader) *Decoder {

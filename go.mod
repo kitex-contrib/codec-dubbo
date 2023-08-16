@@ -1,4 +1,4 @@
-module github.com/kitex-contrib/codec-hessian2
+module github.com/kitex-contrib/codec-dubbo
 
 go 1.13
 

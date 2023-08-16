@@ -1,4 +1,4 @@
-# codec-hessian2
+# codec-dubbo
 
 
 ---
@@ -6,7 +6,7 @@
 > **Notice: When decoding, the java version of hessian will default skip and ignore non-exist fields.**
 
 
-It's a golang hessian library used by kitex (https://github.com/cloudwego/kitex).
+It's a golang dubbo library used by kitex (https://github.com/cloudwego/kitex).
 
 
 ## Feature List

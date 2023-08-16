@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"strings"
 
-	hessian2 "github.com/kitex-contrib/codec-hessian2/pkg/iface"
+	hessian2 "github.com/kitex-contrib/codec-dubbo/pkg/iface"
 )
 
 // unused protection
