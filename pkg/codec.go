@@ -23,6 +23,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	commons "github.com/kitex-contrib/codec-hessian2/pkg/common"
 
 	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/apache/dubbo-go-hessian2/java_exception"
@@ -272,17 +273,25 @@ func (m *Hessian2Codec) Decode(ctx context.Context, message remote.Message, in r
 	if header.IsRequest {
 		// heartbeat package
 		if header.IsEvent {
-			return m.decodeHeartbeatBody(ctx, header, message, in)
+			return m.decodeEventBody(ctx, header, message, in)
 		}
 		return m.decodeRequestBody(ctx, header, message, in)
 	}
 	return m.decodeResponseBody(ctx, header, message, in)
 }
 
-func (m *Hessian2Codec) decodeHeartbeatBody(ctx context.Context, header *dubbo.DubboHeader, message remote.Message, in remote.ByteBuffer) error {
-	// for heartbeat, there is no need to decode the body
+func (m *Hessian2Codec) decodeEventBody(ctx context.Context, header *dubbo.DubboHeader, message remote.Message, in remote.ByteBuffer) error {
+	body, err := readBody(header, in)
+	if err != nil {
+		return err
+	}
 
-	message.SetMessageType(remote.Heartbeat)
+	// entire body equals to BC_NULL determines that this request is a heartbeat
+	if len(body) == 1 && body[0] == commons.BC_NULL {
+		message.SetMessageType(remote.Heartbeat)
+	}
+	// there are other events(READONLY_EVENT, WRITABLE_EVENT) in dubbo-java that we are not planing to implement
+
 	return nil
 }
 
@@ -352,6 +361,7 @@ func (m *Hessian2Codec) decodeResponseBody(ctx context.Context, header *dubbo.Du
 				return err
 			}
 		}
+	// business logic exception
 	case dubbo.RESPONSE_WITH_EXCEPTION, dubbo.RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS:
 		exception, err := decoder.Decode()
 		if err != nil {

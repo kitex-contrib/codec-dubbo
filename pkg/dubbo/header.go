@@ -121,7 +121,7 @@ func (h *DubboHeader) DecodeFromByteSlice(buf []byte) error {
 	h.IsOneWay = isOneWay(buf[2])
 	h.IsEvent = isEvent(buf[2])
 	h.SerializationID = getSerializationID(buf[2])
-	// todo: process status
+	h.Status = StatusCode(buf[3])
 	h.RequestID = binary.BigEndian.Uint64(buf[4:12])
 	h.DataLength = binary.BigEndian.Uint32(buf[12:])
 	return nil
