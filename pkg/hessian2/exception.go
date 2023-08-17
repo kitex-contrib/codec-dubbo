@@ -17,18 +17,14 @@
  * limitations under the License.
  */
 
-package base
+package hessian2
 
-type Base struct{}
+import "github.com/apache/dubbo-go-hessian2/java_exception"
 
-func NewBaseStruct() *Base {
-	return &Base{}
+type Throwabler interface {
+	java_exception.Throwabler
 }
 
-func (b Base) Read() error {
-	return nil
-}
-
-func (b Base) Write() error {
-	return nil
+func NewException(detailMessage string) Throwabler {
+	return java_exception.NewException(detailMessage)
 }

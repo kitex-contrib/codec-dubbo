@@ -17,53 +17,10 @@
  * limitations under the License.
  */
 
-package commons
+package hessian2
 
-// Type constants in the Hessian2 protocol
-type HType byte
+import hessian "github.com/apache/dubbo-go-hessian2"
 
 const (
-	STOP   = 0
-	VOID   = 1
-	BOOL   = 2
-	BYTE   = 3
-	I08    = 3
-	DOUBLE = 4
-	I16    = 6
-	I32    = 8
-	I64    = 10
-	STRING = 11
-	UTF7   = 11
-	STRUCT = 12
-	MAP    = 13
-	SET    = 14
-	LIST   = 15
-	UTF8   = 16
-	UTF16  = 17
-	// BINARY = 18   wrong and unused
+	NULL = hessian.BC_NULL
 )
-
-var typeNames = map[int]string{
-	STOP:   "STOP",
-	VOID:   "VOID",
-	BOOL:   "BOOL",
-	BYTE:   "BYTE",
-	DOUBLE: "DOUBLE",
-	I16:    "I16",
-	I32:    "I32",
-	I64:    "I64",
-	STRING: "STRING",
-	STRUCT: "STRUCT",
-	MAP:    "MAP",
-	SET:    "SET",
-	LIST:   "LIST",
-	UTF8:   "UTF8",
-	UTF16:  "UTF16",
-}
-
-func (p HType) String() string {
-	if s, ok := typeNames[int(p)]; ok {
-		return s
-	}
-	return "Unknown"
-}

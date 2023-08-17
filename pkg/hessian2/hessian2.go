@@ -17,33 +17,17 @@
  * limitations under the License.
  */
 
-package dubbo
+package hessian2
 
 import (
-	"bytes"
-	"context"
-
+	hessian "github.com/apache/dubbo-go-hessian2"
 	"github.com/kitex-contrib/codec-dubbo/pkg/iface"
 )
 
-type BaseSerializer struct {
-	Protocol iface.BaseProtocol
+func NewEncoder() iface.Encoder {
+	return hessian.NewEncoder()
 }
 
-type BaseStruct interface {
-	Write(p iface.BaseProtocol) error
-	Read(p iface.BaseProtocol) error
-}
-
-func NewBaseSerializer() *BaseSerializer {
-	protocol := NewBinaryProtocol(&bytes.Buffer{})
-	return &BaseSerializer{protocol}
-}
-
-func (b *BaseSerializer) Write(ctx context.Context, msg BaseStruct) (bt []byte, err error) {
-	if err = msg.Write(b.Protocol); err != nil {
-		return
-	}
-
-	return
+func NewDecoder(b []byte) iface.Decoder {
+	return hessian.NewDecoder(b)
 }

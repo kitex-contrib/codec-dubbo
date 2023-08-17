@@ -24,13 +24,10 @@ import (
 	"errors"
 	"fmt"
 
-	commons "github.com/kitex-contrib/codec-dubbo/pkg/common"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/apache/dubbo-go-hessian2/java_exception"
 	"github.com/cloudwego/kitex/pkg/remote"
 	"github.com/cloudwego/kitex/pkg/remote/codec"
 	"github.com/kitex-contrib/codec-dubbo/pkg/dubbo_spec"
+	"github.com/kitex-contrib/codec-dubbo/pkg/hessian2"
 	"github.com/kitex-contrib/codec-dubbo/pkg/iface"
 )
 
@@ -66,13 +63,13 @@ func (m *DubboCodec) Encode(ctx context.Context, message remote.Message, out rem
 		// is in outside layer.(eg. non-exist InterfaceName)
 		// for now, use StatusOK by default, regardless of whether it is in outside layer.
 		status = dubbo_spec.StatusOK
-		eventFlag = true
 	case remote.Reply:
 		payload, err = m.encodeResponsePayload(ctx, message)
 		status = dubbo_spec.StatusOK
 	case remote.Heartbeat:
 		payload, err = m.encodeHeartbeatPayload(ctx, message)
 		status = dubbo_spec.StatusOK
+		eventFlag = true
 	default:
 		return fmt.Errorf("unsupported MessageType: %v", msgType)
 	}
@@ -96,7 +93,7 @@ func (m *DubboCodec) Encode(ctx context.Context, message remote.Message, out rem
 }
 
 func (m *DubboCodec) encodeRequestPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
-	encoder := hessian.NewEncoder()
+	encoder := hessian2.NewEncoder()
 
 	service := &dubbo_spec.Service{
 		ProtocolVersion: dubbo_spec.DEFAULT_DUBBO_PROTOCOL_VERSION,
@@ -125,7 +122,7 @@ func (m *DubboCodec) encodeRequestPayload(ctx context.Context, message remote.Me
 }
 
 func (m *DubboCodec) encodeResponsePayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
-	encoder := hessian.NewEncoder()
+	encoder := hessian2.NewEncoder()
 	var payloadType dubbo_spec.PayloadType
 	if len(message.Tags()) != 0 {
 		payloadType = dubbo_spec.RESPONSE_VALUE_WITH_ATTACHMENTS
@@ -158,7 +155,7 @@ func (m *DubboCodec) encodeResponsePayload(ctx context.Context, message remote.M
 }
 
 func (m *DubboCodec) encodeExceptionPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
-	encoder := hessian.NewEncoder()
+	encoder := hessian2.NewEncoder()
 	var payloadType dubbo_spec.PayloadType
 	if len(message.Tags()) != 0 {
 		payloadType = dubbo_spec.RESPONSE_WITH_EXCEPTION_WITH_ATTACHMENTS
@@ -176,12 +173,12 @@ func (m *DubboCodec) encodeExceptionPayload(ctx context.Context, message remote.
 	if !ok {
 		return nil, fmt.Errorf("%v exception does not implement Error", data)
 	}
-	if exception, ok := data.(java_exception.Throwabler); ok {
+	if exception, ok := data.(hessian2.Throwabler); ok {
 		if err := encoder.Encode(exception); err != nil {
 			return nil, err
 		}
 	} else {
-		if err := encoder.Encode(java_exception.NewException(errRaw.Error())); err != nil {
+		if err := encoder.Encode(hessian2.NewException(errRaw.Error())); err != nil {
 			return nil, err
 		}
 	}
@@ -202,7 +199,7 @@ func (m *DubboCodec) encodeExceptionPayload(ctx context.Context, message remote.
 // For hessian2, NullByte is 'N'.
 // As a result, we need to encode nil in heartbeat response body for both dubbo-go side and dubbo-java side.
 func (m *DubboCodec) encodeHeartbeatPayload(ctx context.Context, message remote.Message) (buf []byte, err error) {
-	encoder := hessian.NewEncoder()
+	encoder := hessian2.NewEncoder()
 
 	if err := encoder.Encode(nil); err != nil {
 		return nil, err
@@ -299,7 +296,7 @@ func (m *DubboCodec) decodeEventBody(ctx context.Context, header *dubbo_spec.Dub
 	}
 
 	// entire body equals to BC_NULL determines that this request is a heartbeat
-	if len(body) == 1 && body[0] == commons.BC_NULL {
+	if len(body) == 1 && body[0] == hessian2.NULL {
 		message.SetMessageType(remote.Heartbeat)
 	}
 	// todo(DMwangnima): there are other events(READONLY_EVENT, WRITABLE_EVENT) in dubbo-java that we are planning to implement currently
@@ -313,7 +310,7 @@ func (m *DubboCodec) decodeRequestBody(ctx context.Context, header *dubbo_spec.D
 		return err
 	}
 
-	decoder := hessian.NewDecoder(body)
+	decoder := hessian2.NewDecoder(body)
 	service := new(dubbo_spec.Service)
 	if err := service.Decode(decoder); err != nil {
 		return err
@@ -356,7 +353,7 @@ func (m *DubboCodec) decodeExceptionBody(ctx context.Context, header *dubbo_spec
 		return err
 	}
 
-	decoder := hessian.NewDecoder(body)
+	decoder := hessian2.NewDecoder(body)
 	exception, err := decoder.Decode()
 	if err != nil {
 		return err
@@ -374,7 +371,7 @@ func (m *DubboCodec) decodeResponseBody(ctx context.Context, header *dubbo_spec.
 		return err
 	}
 
-	decoder := hessian.NewDecoder(body)
+	decoder := hessian2.NewDecoder(body)
 	payloadType, err := dubbo_spec.DecodePayloadType(decoder)
 	if err != nil {
 		return err
