@@ -17,13 +17,13 @@
  * limitations under the License.
  */
 
-package dubbo
+package dubbo_spec
 
 import (
 	"fmt"
 	"time"
 
-	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
+	"github.com/kitex-contrib/codec-dubbo/pkg/iface"
 )
 
 const DEFAULT_DUBBO_PROTOCOL_VERSION = "2.0.2"

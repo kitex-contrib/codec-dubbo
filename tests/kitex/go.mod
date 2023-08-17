@@ -1,14 +1,14 @@
-module github.com/kitex-contrib/codec-hessian2/tests/kitex
+module github.com/kitex-contrib/codec-dubbo/tests/kitex
 
 go 1.18
 
 require (
 	github.com/apache/dubbo-go-hessian2 v1.12.2
 	github.com/cloudwego/kitex v0.6.2-0.20230815060351-88ea60530d40
-	github.com/kitex-contrib/codec-hessian2 v0.0.0-20230721121604-c37a28c79a02
+	github.com/kitex-contrib/codec-dubbo v0.0.0-20230721121604-c37a28c79a02
 )
 
-replace github.com/kitex-contrib/codec-hessian2 => ../../
+replace github.com/kitex-contrib/codec-dubbo => ../../
 
 require (
 	github.com/apache/thrift v0.13.0 // indirect

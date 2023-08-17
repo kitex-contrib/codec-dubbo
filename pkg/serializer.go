@@ -17,13 +17,13 @@
  * limitations under the License.
  */
 
-package hessian2
+package dubbo
 
 import (
 	"bytes"
 	"context"
 
-	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
+	"github.com/kitex-contrib/codec-dubbo/pkg/iface"
 )
 
 type BaseSerializer struct {

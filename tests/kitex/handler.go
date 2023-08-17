@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	echo "github.com/kitex-contrib/codec-hessian2/tests/kitex/kitex_gen/echo"
+	echo "github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 )
 
 // TestServiceImpl implements the last service interface defined in the IDL.

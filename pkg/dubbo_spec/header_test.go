@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package dubbo
+package dubbo_spec
 
 import (
 	"reflect"

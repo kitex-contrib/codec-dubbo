@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package hessian2
+package dubbo
 
 import (
 	"bytes"
@@ -25,7 +25,7 @@ import (
 	"sync"
 
 	"github.com/cloudwego/kitex/pkg/utils"
-	"github.com/kitex-contrib/codec-hessian2/pkg/iface"
+	"github.com/kitex-contrib/codec-dubbo/pkg/iface"
 )
 
 // must be strict read & strict write

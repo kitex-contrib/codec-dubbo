@@ -21,7 +21,7 @@
  * development team for their valuable contribution.
  */
 
-package dubbo
+package dubbo_spec
 
 import (
 	"fmt"

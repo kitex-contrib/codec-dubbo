@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
-	"github.com/kitex-contrib/codec-hessian2/tests/kitex/kitex_gen/echo"
+	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 )
 
 func serviceInfo() *kitex.ServiceInfo {

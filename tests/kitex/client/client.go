@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/kitex-contrib/codec-hessian2/tests/kitex/kitex_gen/echo/testservice"
+	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testservice"
 )
 
 func main() {

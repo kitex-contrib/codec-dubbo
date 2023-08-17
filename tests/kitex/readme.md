@@ -31,11 +31,11 @@ Need to implement `hessian.POJO` for these structs (`JavaClassName() string`)
 * Client: kitex_gen/echo/testservice/client.go 
 
 ```go
-options = append(options, client.WithCodec(hessian2.NewHessian2Codec()))
+options = append(options, client.WithCodec(dubbo.NewDubboCodec()))
 ```
 
 * Server: kitex_gen/echo/testservice/server.go
 
 ```go
-options = append(options, server.WithCodec(hessian2.NewHessian2Codec()))
+options = append(options, server.WithCodec(dubbo.NewDubboCodec()))
 ```

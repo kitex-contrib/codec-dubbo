@@ -17,7 +17,7 @@
 
 # format go imports style
 go install golang.org/x/tools/cmd/goimports
-goimports  -local git@github.com/kitex-contrib/codec-hessian2 -w .
+goimports  -local git@github.com/kitex-contrib/codec-dubbo -w .
 
 # format licence style
 go install github.com/apache/skywalking-eyes/cmd/license-eye@latest

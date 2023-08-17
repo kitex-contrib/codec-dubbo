@@ -2,7 +2,7 @@ package testservice
 
 import (
 	"github.com/cloudwego/kitex/server"
-	"github.com/kitex-contrib/codec-hessian2/tests/kitex/kitex_gen/echo"
+	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 )
 
 // NewInvoker creates a server.Invoker with the given handler and options.
