@@ -23,9 +23,10 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/dubbogo/gost/log/logger"
+
 	"helloworld/api"
 
-	"dubbo.apache.org/dubbo-go/v3/common/logger" // dubbogo 框架日志
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports" // dubbogo 框架依赖，所有dubbogo进程都需要隐式引入一次
 )

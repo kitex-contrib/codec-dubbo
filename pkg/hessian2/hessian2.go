@@ -31,3 +31,7 @@ func NewEncoder() iface.Encoder {
 func NewDecoder(b []byte) iface.Decoder {
 	return hessian.NewDecoder(b)
 }
+
+func ReflectResponse(int, out interface{}) error {
+	return hessian.ReflectResponse(int, out)
+}
