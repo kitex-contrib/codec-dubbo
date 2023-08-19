@@ -42,8 +42,12 @@ var UserProviderClient = &UserProvider{} // client pointer
 // UserProvider client interface
 type UserProvider struct {
 	// dubbo tag is necessary to map go function name to java function name
-	GetUser func(ctx context.Context, req int32) (*User, error) //`dubbo:"getUser"`
-	EchoInt func(ctx context.Context, req int32) (int32, error) //`dubbo:"echoInt"`
+	GetUser   func(ctx context.Context, req int32) (*User, error)   //`dubbo:"getUser"`
+	EchoInt   func(ctx context.Context, req int32) (int32, error)   //`dubbo:"echoInt"`
+	EchoByte  func(ctx context.Context, req byte) (byte, error)     //`dubbo:"echoByte"`
+	EchoBytes func(ctx context.Context, req []byte) ([]byte, error) //`dubbo:"echoBytes"`
+	EchoInt8  func(ctx context.Context, req int8) (int8, error)     //`dubbo:"echoInt8"`
+	EchoInt8s func(ctx context.Context, req []int8) ([]int8, error) //`dubbo:"echoInt8s"`
 }
 
 func init() {
