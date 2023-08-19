@@ -20,6 +20,22 @@ func (s *TestServiceImpl) EchoInt(ctx context.Context, req int32) (resp int32, e
 	return req, nil
 }
 
+func (s *TestServiceImpl) EchoByte(ctx context.Context, req byte) (resp byte, err error) {
+	return req, nil
+}
+
+func (s *TestServiceImpl) EchoBytes(ctx context.Context, req []byte) (resp []byte, err error) {
+	return req, nil
+}
+
+func (s *TestServiceImpl) EchoInt8(ctx context.Context, req int8) (resp int8, err error) {
+	return req, nil
+}
+
+func (s *TestServiceImpl) EchoInt8s(ctx context.Context, req []int8) (resp []int8, err error) {
+	return req, nil
+}
+
 // Echo implements the TestServiceImpl interface.
 func (s *TestServiceImpl) Echo(ctx context.Context, req *echo.EchoRequest) (resp *echo.EchoResponse, err error) {
 	return &echo.EchoResponse{
