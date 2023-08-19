@@ -8,7 +8,9 @@ require (
 	github.com/kitex-contrib/codec-dubbo v0.0.0-20230817144706-07db3a9b55f8
 )
 
-replace github.com/kitex-contrib/codec-dubbo => ../../
+replace (
+	github.com/kitex-contrib/codec-dubbo => ../../
+)
 
 require (
 	github.com/apache/thrift v0.13.0 // indirect
