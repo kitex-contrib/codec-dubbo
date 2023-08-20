@@ -54,6 +54,11 @@ func (u *UserProvider) EchoInt(ctx context.Context, req int32) (int32, error) {
 	return req, nil
 }
 
+func (u *UserProvider) EchoByte(ctx context.Context, req int8) (int8, error) {
+	// for exception test
+	return req, nil
+}
+
 // MethodMapper is for mapping go func name to java func name.
 // Not necessary for go client -> go server
 // func (s *UserProvider) MethodMapper() map[string]string {

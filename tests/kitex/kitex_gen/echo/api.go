@@ -53,9 +53,8 @@ func (p *EchoResponse) String() string {
 
 type TestService interface {
 	EchoInt(ctx context.Context, req int32) (r int32, err error)
-	EchoByte(ctx context.Context, req byte) (r byte, err error)
-	EchoBytes(ctx context.Context, req []byte) (r []byte, err error)
-	EchoInt8(ctx context.Context, req int8) (r int8, err error)
-	EchoInt8s(ctx context.Context, req []int8) (r []int8, err error)
+
+	EchoByte(ctx context.Context, req int8) (r int8, err error)
+
 	Echo(ctx context.Context, req *EchoRequest) (r *EchoResponse, err error)
 }
