@@ -1,8 +1,16 @@
 package echo
 
-import hessian "github.com/apache/dubbo-go-hessian2"
+import hessian2 "github.com/kitex-contrib/codec-dubbo/pkg/hessian2"
+
+var objects = []interface{}{
+	&EchoRequest{},
+	&EchoResponse{},
+}
 
 func init() {
-	hessian.RegisterPOJO(&EchoRequest{})
-	hessian.RegisterPOJO(&EchoResponse{})
+	register(objects)
+}
+
+func register(objs []interface{}) {
+	hessian2.Register(objs)
 }

@@ -32,6 +32,21 @@ func NewDecoder(b []byte) iface.Decoder {
 	return hessian.NewDecoder(b)
 }
 
-func ReflectResponse(int, out interface{}) error {
-	return hessian.ReflectResponse(int, out)
+type (
+	Encoder struct {
+		hessian.Encoder
+	}
+	Decoder struct {
+		hessian.Decoder
+	}
+)
+
+func Register(pojos []interface{}) {
+	for _, i := range pojos {
+		hessian.RegisterPOJO(i.(hessian.POJO))
+	}
+}
+
+func ReflectResponse(in, out interface{}) error {
+	return hessian.ReflectResponse(in, out)
 }

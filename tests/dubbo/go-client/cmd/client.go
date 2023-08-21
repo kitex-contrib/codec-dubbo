@@ -50,6 +50,12 @@ func main() {
 	}
 	logger.Infof("response result: %+v", resp)
 
+	byteResp, err := api.UserProviderClient.EchoByte(context.TODO(), 8)
+	if err != nil {
+		panic(err)
+	}
+	logger.Infof("response result: %+v", byteResp)
+
 	_, err = api.UserProviderClient.EchoInt(context.TODO(), 400)
 	if err == nil {
 		panic("want err but got nothing")
