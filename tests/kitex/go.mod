@@ -3,17 +3,16 @@ module github.com/kitex-contrib/codec-dubbo/tests/kitex
 go 1.18
 
 require (
-	github.com/apache/dubbo-go-hessian2 v1.12.2
+	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/kitex v0.6.2-0.20230815060351-88ea60530d40
 	github.com/kitex-contrib/codec-dubbo v0.0.0-20230817144706-07db3a9b55f8
+	github.com/pkg/errors v0.9.1
 )
 
-replace (
-	github.com/kitex-contrib/codec-dubbo => ../../
-)
+replace github.com/kitex-contrib/codec-dubbo => ../../
 
 require (
-	github.com/apache/thrift v0.13.0 // indirect
+	github.com/apache/dubbo-go-hessian2 v1.12.2 // indirect
 	github.com/bytedance/gopkg v0.0.0-20230728082804-614d0af6619b // indirect
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
@@ -39,7 +38,6 @@ require (
 	github.com/modern-go/gls v0.0.0-20220109145502-612d0167dce5 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/oleiade/lane v1.0.1 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.8.2 // indirect
 	github.com/tidwall/gjson v1.9.3 // indirect
