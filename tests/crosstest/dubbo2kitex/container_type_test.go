@@ -6,7 +6,7 @@ import (
 )
 
 func TestEchoBoolList(t *testing.T) {
-	var req = []bool{true, false}
+	req := []bool{true, false}
 	resp, err := cli.EchoBoolList(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
@@ -26,25 +26,25 @@ func TestEchoBoolList(t *testing.T) {
 //}
 
 func TestEchoInt32List(t *testing.T) {
-	var req = []int32{1, 2}
+	req := []int32{1, 2}
 	resp, err := cli.EchoInt32List(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 
 func TestEchoInt64List(t *testing.T) {
-	var req = []int64{1, 2}
+	req := []int64{1, 2}
 	resp, err := cli.EchoInt64List(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 
 func TestEchoDoubleList(t *testing.T) {
-	var req = []float64{12.3456, 78.9012}
+	req := []float64{12.3456, 78.9012}
 	resp, err := cli.EchoDoubleList(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 
 func TestEchoStringList(t *testing.T) {
-	var req = []string{"1", "2"}
+	req := []string{"1", "2"}
 	resp, err := cli.EchoStringList(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }

@@ -71,7 +71,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestEchoBool(t *testing.T) {
-	var req = true
+	req := true
 	resp, err := cli.EchoBool(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
@@ -107,7 +107,7 @@ func TestEchoDouble(t *testing.T) {
 }
 
 func TestEchoString(t *testing.T) {
-	var req = "12"
+	req := "12"
 	resp, err := cli.EchoString(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }

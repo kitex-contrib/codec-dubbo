@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+
 	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 )
 
