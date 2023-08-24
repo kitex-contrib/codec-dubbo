@@ -8,9 +8,5 @@ var objects = []interface{}{
 }
 
 func init() {
-	register(objects)
-}
-
-func register(objs []interface{}) {
-	hessian2.Register(objs)
+	hessian2.Register(objects)
 }

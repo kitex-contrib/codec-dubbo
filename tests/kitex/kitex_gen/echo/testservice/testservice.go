@@ -6,7 +6,7 @@ import (
 	"context"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
-	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
+	echo "github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 )
 
 func serviceInfo() *kitex.ServiceInfo {
@@ -19,19 +19,34 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "TestService"
 	handlerType := (*echo.TestService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"EchoInt":  kitex.NewMethodInfo(echoIntHandler, newTestServiceEchoIntArgs, newTestServiceEchoIntResult, false),
-		"EchoByte": kitex.NewMethodInfo(echoByteHandler, newTestServiceEchoByteArgs, newTestServiceEchoByteResult, false),
-		"Echo":     kitex.NewMethodInfo(echoHandler, newTestServiceEchoArgs, newTestServiceEchoResult, false),
+		"EchoInt":        kitex.NewMethodInfo(echoIntHandler, newTestServiceEchoIntArgs, newTestServiceEchoIntResult, false),
+		"EchoBool":       kitex.NewMethodInfo(echoBoolHandler, newTestServiceEchoBoolArgs, newTestServiceEchoBoolResult, false),
+		"EchoByte":       kitex.NewMethodInfo(echoByteHandler, newTestServiceEchoByteArgs, newTestServiceEchoByteResult, false),
+		"EchoInt16":      kitex.NewMethodInfo(echoInt16Handler, newTestServiceEchoInt16Args, newTestServiceEchoInt16Result, false),
+		"EchoInt32":      kitex.NewMethodInfo(echoInt32Handler, newTestServiceEchoInt32Args, newTestServiceEchoInt32Result, false),
+		"EchoInt64":      kitex.NewMethodInfo(echoInt64Handler, newTestServiceEchoInt64Args, newTestServiceEchoInt64Result, false),
+		"EchoDouble":     kitex.NewMethodInfo(echoDoubleHandler, newTestServiceEchoDoubleArgs, newTestServiceEchoDoubleResult, false),
+		"EchoString":     kitex.NewMethodInfo(echoStringHandler, newTestServiceEchoStringArgs, newTestServiceEchoStringResult, false),
+		"EchoBinary":     kitex.NewMethodInfo(echoBinaryHandler, newTestServiceEchoBinaryArgs, newTestServiceEchoBinaryResult, false),
+		"Echo":           kitex.NewMethodInfo(echoHandler, newTestServiceEchoArgs, newTestServiceEchoResult, false),
+		"EchoBoolList":   kitex.NewMethodInfo(echoBoolListHandler, newTestServiceEchoBoolListArgs, newTestServiceEchoBoolListResult, false),
+		"EchoByteList":   kitex.NewMethodInfo(echoByteListHandler, newTestServiceEchoByteListArgs, newTestServiceEchoByteListResult, false),
+		"EchoInt16List":  kitex.NewMethodInfo(echoInt16ListHandler, newTestServiceEchoInt16ListArgs, newTestServiceEchoInt16ListResult, false),
+		"EchoInt32List":  kitex.NewMethodInfo(echoInt32ListHandler, newTestServiceEchoInt32ListArgs, newTestServiceEchoInt32ListResult, false),
+		"EchoInt64List":  kitex.NewMethodInfo(echoInt64ListHandler, newTestServiceEchoInt64ListArgs, newTestServiceEchoInt64ListResult, false),
+		"EchoDoubleList": kitex.NewMethodInfo(echoDoubleListHandler, newTestServiceEchoDoubleListArgs, newTestServiceEchoDoubleListResult, false),
+		"EchoStringList": kitex.NewMethodInfo(echoStringListHandler, newTestServiceEchoStringListArgs, newTestServiceEchoStringListResult, false),
+		"EchoBinaryList": kitex.NewMethodInfo(echoBinaryListHandler, newTestServiceEchoBinaryListArgs, newTestServiceEchoBinaryListResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "echo",
-		"ServiceFilePath": "tool/cmd/kitex/api.thrift",
+		"ServiceFilePath": "api.thrift",
 	}
+
 	svcInfo := &kitex.ServiceInfo{
 		ServiceName:     serviceName,
 		HandlerType:     handlerType,
 		Methods:         methods,
-		PayloadCodec:    kitex.Thrift,
 		KiteXGenVersion: "v0.7.0",
 		Extra:           extra,
 	}
@@ -56,6 +71,24 @@ func newTestServiceEchoIntResult() interface{} {
 	return echo.NewTestServiceEchoIntResult()
 }
 
+func echoBoolHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBoolArgs)
+	realResult := result.(*echo.TestServiceEchoBoolResult)
+	success, err := handler.(echo.TestService).EchoBool(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newTestServiceEchoBoolArgs() interface{} {
+	return echo.NewTestServiceEchoBoolArgs()
+}
+
+func newTestServiceEchoBoolResult() interface{} {
+	return echo.NewTestServiceEchoBoolResult()
+}
+
 func echoByteHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*echo.TestServiceEchoByteArgs)
 	realResult := result.(*echo.TestServiceEchoByteResult)
@@ -74,6 +107,114 @@ func newTestServiceEchoByteResult() interface{} {
 	return echo.NewTestServiceEchoByteResult()
 }
 
+func echoInt16Handler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoInt16Args)
+	realResult := result.(*echo.TestServiceEchoInt16Result)
+	success, err := handler.(echo.TestService).EchoInt16(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newTestServiceEchoInt16Args() interface{} {
+	return echo.NewTestServiceEchoInt16Args()
+}
+
+func newTestServiceEchoInt16Result() interface{} {
+	return echo.NewTestServiceEchoInt16Result()
+}
+
+func echoInt32Handler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoInt32Args)
+	realResult := result.(*echo.TestServiceEchoInt32Result)
+	success, err := handler.(echo.TestService).EchoInt32(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newTestServiceEchoInt32Args() interface{} {
+	return echo.NewTestServiceEchoInt32Args()
+}
+
+func newTestServiceEchoInt32Result() interface{} {
+	return echo.NewTestServiceEchoInt32Result()
+}
+
+func echoInt64Handler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoInt64Args)
+	realResult := result.(*echo.TestServiceEchoInt64Result)
+	success, err := handler.(echo.TestService).EchoInt64(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newTestServiceEchoInt64Args() interface{} {
+	return echo.NewTestServiceEchoInt64Args()
+}
+
+func newTestServiceEchoInt64Result() interface{} {
+	return echo.NewTestServiceEchoInt64Result()
+}
+
+func echoDoubleHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoDoubleArgs)
+	realResult := result.(*echo.TestServiceEchoDoubleResult)
+	success, err := handler.(echo.TestService).EchoDouble(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newTestServiceEchoDoubleArgs() interface{} {
+	return echo.NewTestServiceEchoDoubleArgs()
+}
+
+func newTestServiceEchoDoubleResult() interface{} {
+	return echo.NewTestServiceEchoDoubleResult()
+}
+
+func echoStringHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoStringArgs)
+	realResult := result.(*echo.TestServiceEchoStringResult)
+	success, err := handler.(echo.TestService).EchoString(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newTestServiceEchoStringArgs() interface{} {
+	return echo.NewTestServiceEchoStringArgs()
+}
+
+func newTestServiceEchoStringResult() interface{} {
+	return echo.NewTestServiceEchoStringResult()
+}
+
+func echoBinaryHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBinaryArgs)
+	realResult := result.(*echo.TestServiceEchoBinaryResult)
+	success, err := handler.(echo.TestService).EchoBinary(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBinaryArgs() interface{} {
+	return echo.NewTestServiceEchoBinaryArgs()
+}
+
+func newTestServiceEchoBinaryResult() interface{} {
+	return echo.NewTestServiceEchoBinaryResult()
+}
+
 func echoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*echo.TestServiceEchoArgs)
 	realResult := result.(*echo.TestServiceEchoResult)
@@ -90,6 +231,150 @@ func newTestServiceEchoArgs() interface{} {
 
 func newTestServiceEchoResult() interface{} {
 	return echo.NewTestServiceEchoResult()
+}
+
+func echoBoolListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBoolListArgs)
+	realResult := result.(*echo.TestServiceEchoBoolListResult)
+	success, err := handler.(echo.TestService).EchoBoolList(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBoolListArgs() interface{} {
+	return echo.NewTestServiceEchoBoolListArgs()
+}
+
+func newTestServiceEchoBoolListResult() interface{} {
+	return echo.NewTestServiceEchoBoolListResult()
+}
+
+func echoByteListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoByteListArgs)
+	realResult := result.(*echo.TestServiceEchoByteListResult)
+	success, err := handler.(echo.TestService).EchoByteList(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoByteListArgs() interface{} {
+	return echo.NewTestServiceEchoByteListArgs()
+}
+
+func newTestServiceEchoByteListResult() interface{} {
+	return echo.NewTestServiceEchoByteListResult()
+}
+
+func echoInt16ListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoInt16ListArgs)
+	realResult := result.(*echo.TestServiceEchoInt16ListResult)
+	success, err := handler.(echo.TestService).EchoInt16List(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoInt16ListArgs() interface{} {
+	return echo.NewTestServiceEchoInt16ListArgs()
+}
+
+func newTestServiceEchoInt16ListResult() interface{} {
+	return echo.NewTestServiceEchoInt16ListResult()
+}
+
+func echoInt32ListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoInt32ListArgs)
+	realResult := result.(*echo.TestServiceEchoInt32ListResult)
+	success, err := handler.(echo.TestService).EchoInt32List(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoInt32ListArgs() interface{} {
+	return echo.NewTestServiceEchoInt32ListArgs()
+}
+
+func newTestServiceEchoInt32ListResult() interface{} {
+	return echo.NewTestServiceEchoInt32ListResult()
+}
+
+func echoInt64ListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoInt64ListArgs)
+	realResult := result.(*echo.TestServiceEchoInt64ListResult)
+	success, err := handler.(echo.TestService).EchoInt64List(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoInt64ListArgs() interface{} {
+	return echo.NewTestServiceEchoInt64ListArgs()
+}
+
+func newTestServiceEchoInt64ListResult() interface{} {
+	return echo.NewTestServiceEchoInt64ListResult()
+}
+
+func echoDoubleListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoDoubleListArgs)
+	realResult := result.(*echo.TestServiceEchoDoubleListResult)
+	success, err := handler.(echo.TestService).EchoDoubleList(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoDoubleListArgs() interface{} {
+	return echo.NewTestServiceEchoDoubleListArgs()
+}
+
+func newTestServiceEchoDoubleListResult() interface{} {
+	return echo.NewTestServiceEchoDoubleListResult()
+}
+
+func echoStringListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoStringListArgs)
+	realResult := result.(*echo.TestServiceEchoStringListResult)
+	success, err := handler.(echo.TestService).EchoStringList(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoStringListArgs() interface{} {
+	return echo.NewTestServiceEchoStringListArgs()
+}
+
+func newTestServiceEchoStringListResult() interface{} {
+	return echo.NewTestServiceEchoStringListResult()
+}
+
+func echoBinaryListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBinaryListArgs)
+	realResult := result.(*echo.TestServiceEchoBinaryListResult)
+	success, err := handler.(echo.TestService).EchoBinaryList(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBinaryListArgs() interface{} {
+	return echo.NewTestServiceEchoBinaryListArgs()
+}
+
+func newTestServiceEchoBinaryListResult() interface{} {
+	return echo.NewTestServiceEchoBinaryListResult()
 }
 
 type kClient struct {
@@ -112,6 +397,16 @@ func (p *kClient) EchoInt(ctx context.Context, req int32) (r int32, err error) {
 	return _result.GetSuccess(), nil
 }
 
+func (p *kClient) EchoBool(ctx context.Context, req bool) (r bool, err error) {
+	var _args echo.TestServiceEchoBoolArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBoolResult
+	if err = p.c.Call(ctx, "EchoBool", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
 func (p *kClient) EchoByte(ctx context.Context, req int8) (r int8, err error) {
 	var _args echo.TestServiceEchoByteArgs
 	_args.Req = req
@@ -122,11 +417,151 @@ func (p *kClient) EchoByte(ctx context.Context, req int8) (r int8, err error) {
 	return _result.GetSuccess(), nil
 }
 
+func (p *kClient) EchoInt16(ctx context.Context, req int16) (r int16, err error) {
+	var _args echo.TestServiceEchoInt16Args
+	_args.Req = req
+	var _result echo.TestServiceEchoInt16Result
+	if err = p.c.Call(ctx, "EchoInt16", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoInt32(ctx context.Context, req int32) (r int32, err error) {
+	var _args echo.TestServiceEchoInt32Args
+	_args.Req = req
+	var _result echo.TestServiceEchoInt32Result
+	if err = p.c.Call(ctx, "EchoInt32", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoInt64(ctx context.Context, req int64) (r int64, err error) {
+	var _args echo.TestServiceEchoInt64Args
+	_args.Req = req
+	var _result echo.TestServiceEchoInt64Result
+	if err = p.c.Call(ctx, "EchoInt64", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoDouble(ctx context.Context, req float64) (r float64, err error) {
+	var _args echo.TestServiceEchoDoubleArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoDoubleResult
+	if err = p.c.Call(ctx, "EchoDouble", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoString(ctx context.Context, req string) (r string, err error) {
+	var _args echo.TestServiceEchoStringArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoStringResult
+	if err = p.c.Call(ctx, "EchoString", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBinary(ctx context.Context, req []byte) (r []byte, err error) {
+	var _args echo.TestServiceEchoBinaryArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBinaryResult
+	if err = p.c.Call(ctx, "EchoBinary", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
 func (p *kClient) Echo(ctx context.Context, req *echo.EchoRequest) (r *echo.EchoResponse, err error) {
 	var _args echo.TestServiceEchoArgs
 	_args.Req = req
 	var _result echo.TestServiceEchoResult
 	if err = p.c.Call(ctx, "Echo", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBoolList(ctx context.Context, req []bool) (r []bool, err error) {
+	var _args echo.TestServiceEchoBoolListArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBoolListResult
+	if err = p.c.Call(ctx, "EchoBoolList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoByteList(ctx context.Context, req []int8) (r []int8, err error) {
+	var _args echo.TestServiceEchoByteListArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoByteListResult
+	if err = p.c.Call(ctx, "EchoByteList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoInt16List(ctx context.Context, req []int16) (r []int16, err error) {
+	var _args echo.TestServiceEchoInt16ListArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoInt16ListResult
+	if err = p.c.Call(ctx, "EchoInt16List", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoInt32List(ctx context.Context, req []int32) (r []int32, err error) {
+	var _args echo.TestServiceEchoInt32ListArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoInt32ListResult
+	if err = p.c.Call(ctx, "EchoInt32List", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoInt64List(ctx context.Context, req []int64) (r []int64, err error) {
+	var _args echo.TestServiceEchoInt64ListArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoInt64ListResult
+	if err = p.c.Call(ctx, "EchoInt64List", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoDoubleList(ctx context.Context, req []float64) (r []float64, err error) {
+	var _args echo.TestServiceEchoDoubleListArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoDoubleListResult
+	if err = p.c.Call(ctx, "EchoDoubleList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoStringList(ctx context.Context, req []string) (r []string, err error) {
+	var _args echo.TestServiceEchoStringListArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoStringListResult
+	if err = p.c.Call(ctx, "EchoStringList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBinaryList(ctx context.Context, req [][]byte) (r [][]byte, err error) {
+	var _args echo.TestServiceEchoBinaryListArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBinaryListResult
+	if err = p.c.Call(ctx, "EchoBinaryList", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

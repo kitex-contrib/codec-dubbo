@@ -70,31 +70,47 @@ func TestMain(m *testing.M) {
 	exitCh <- nil
 }
 
+func TestEchoBool(t *testing.T) {
+	req := true
+	resp, err := cli.EchoBool(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
 func TestEchoByte(t *testing.T) {
-	var req byte = 12
+	var req int8 = 12
 	resp, err := cli.EchoByte(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 
-func TestEchoBytes(t *testing.T) {
-	req := []byte{1, 2}
-	resp, err := cli.EchoBytes(context.Background(), req)
+func TestEchoInt16(t *testing.T) {
+	var req int16 = 12
+	resp, err := cli.EchoInt16(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 
-func TestEchoInt8(t *testing.T) {
-	var req int8 = 12
-	resp, err := cli.EchoInt8(context.Background(), req)
+func TestEchoInt32(t *testing.T) {
+	var req int32 = 12
+	resp, err := cli.EchoInt32(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 
-// todo(DMwangnima): enhance hessian2.ReflectResponse to support reflecting []int8
-//func TestEchoInt8s(t *testing.T) {
-//	var req = []int8{1, 2}
-//	resp, err := cli.EchoInt8s(context.Background(), req)
-//	assertEcho(t, err, req, resp)
-//	select {}
-//}
+func TestEchoInt64(t *testing.T) {
+	var req int64 = 12
+	resp, err := cli.EchoInt64(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoDouble(t *testing.T) {
+	var req float64 = 12.3456
+	resp, err := cli.EchoDouble(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoString(t *testing.T) {
+	req := "12"
+	resp, err := cli.EchoString(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
 
 func assertEcho(t *testing.T, err error, req, resp interface{}) {
 	if err != nil {

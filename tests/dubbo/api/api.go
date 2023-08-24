@@ -42,12 +42,30 @@ var UserProviderClient = &UserProvider{} // client pointer
 // UserProvider client interface
 type UserProvider struct {
 	// dubbo tag is necessary to map go function name to java function name
-	GetUser   func(ctx context.Context, req int32) (*User, error)   //`dubbo:"getUser"`
-	EchoInt   func(ctx context.Context, req int32) (int32, error)   //`dubbo:"echoInt"`
-	EchoByte  func(ctx context.Context, req byte) (byte, error)     //`dubbo:"echoByte"`
-	EchoBytes func(ctx context.Context, req []byte) ([]byte, error) //`dubbo:"echoBytes"`
-	EchoInt8  func(ctx context.Context, req int8) (int8, error)     //`dubbo:"echoInt8"`
-	EchoInt8s func(ctx context.Context, req []int8) ([]int8, error) //`dubbo:"echoInt8s"`
+	GetUser func(ctx context.Context, req int32) (*User, error) //`dubbo:"getUser"`
+	EchoInt func(ctx context.Context, req int32) (int32, error) //`dubbo:"echoInt"`
+
+	// base types
+	EchoBool   func(ctx context.Context, req bool) (bool, error)       //`dubbo:"echoBool"`
+	EchoByte   func(ctx context.Context, req int8) (int8, error)       //`dubbo:"echoByte"`
+	EchoInt16  func(ctx context.Context, req int16) (int16, error)     //`dubbo:"echoInt16"`
+	EchoInt32  func(ctx context.Context, req int32) (int32, error)     //`dubbo:"echoInt32"`
+	EchoInt64  func(ctx context.Context, req int64) (int64, error)     //`dubbo:"echoInt64"`
+	EchoDouble func(ctx context.Context, req float64) (float64, error) //`dubbo:"echoDouble"`
+	EchoString func(ctx context.Context, req string) (string, error)   //`dubbo:"echoString"`
+
+	// special types
+	EchoBinary func(ctx context.Context, req []byte) ([]byte, error) //`dubbo:"echoBinary"`
+
+	// container list
+	EchoBoolList   func(ctx context.Context, req []bool) ([]bool, error)       //`dubbo:"echoBoolList"`
+	EchoByteList   func(ctx context.Context, req []int8) ([]int8, error)       //`dubbo:"echoByteList"`
+	EchoInt16List  func(ctx context.Context, req []int16) ([]int16, error)     //`dubbo:"echoInt16List"`
+	EchoInt32List  func(ctx context.Context, req []int32) ([]int32, error)     //`dubbo:"echoInt32List"`
+	EchoInt64List  func(ctx context.Context, req []int64) ([]int64, error)     //`dubbo:"echoInt64List"`
+	EchoDoubleList func(ctx context.Context, req []float64) ([]float64, error) //`dubbo:"echoDoubleList"`
+	EchoStringList func(ctx context.Context, req []string) ([]string, error)   //`dubbo:"echoStringList"`
+	EchoBinaryList func(ctx context.Context, req [][]byte) ([][]byte, error)   //`dubbo:"echoBinaryList"`
 }
 
 func init() {

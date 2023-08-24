@@ -4,7 +4,7 @@ package testservice
 import (
 	server "github.com/cloudwego/kitex/server"
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
-	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
+	echo "github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 )
 
 // NewServer creates a server.Server with the given handler and options.
