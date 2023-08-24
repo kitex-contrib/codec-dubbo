@@ -117,6 +117,52 @@ func (p *TestServiceEchoIntResult) Decode(d codec.Decoder) error {
 	return nil
 }
 
+func (p *TestServiceEchoBoolArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBoolArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBoolResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBoolResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
 func (p *TestServiceEchoByteArgs) Encode(e codec.Encoder) error {
 	var err error
 	err = e.Encode(p.Req)
@@ -151,6 +197,282 @@ func (p *TestServiceEchoByteResult) Encode(e codec.Encoder) error {
 }
 
 func (p *TestServiceEchoByteResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt16Args) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt16Args) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt16Result) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt16Result) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt32Args) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt32Args) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt32Result) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt32Result) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt64Args) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt64Args) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt64Result) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt64Result) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoDoubleArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoDoubleArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoDoubleResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoDoubleResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoStringArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoStringArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoStringResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoStringResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBinaryArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBinaryArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBinaryResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBinaryResult) Decode(d codec.Decoder) error {
 	v, err := d.Decode()
 	if err != nil {
 		return err
@@ -209,12 +531,384 @@ func (p *TestServiceEchoResult) Decode(d codec.Decoder) error {
 	return nil
 }
 
+func (p *TestServiceEchoBoolListArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBoolListArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBoolListResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBoolListResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoByteListArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoByteListArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoByteListResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoByteListResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt16ListArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt16ListArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt16ListResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt16ListResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt32ListArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt32ListArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt32ListResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt32ListResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt64ListArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt64ListArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt64ListResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoInt64ListResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoDoubleListArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoDoubleListArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoDoubleListResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoDoubleListResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoStringListArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoStringListArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoStringListResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoStringListResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBinaryListArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBinaryListArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBinaryListResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBinaryListResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
 type TestServiceEchoIntArgs struct {
 	Req int32 `thrift:"req,1" frugal:"1,default,i32" json:"req"`
 }
 
 func NewTestServiceEchoIntArgs() *TestServiceEchoIntArgs {
 	return &TestServiceEchoIntArgs{}
+}
+
+func (p *TestServiceEchoIntArgs) InitDefault() {
+	*p = TestServiceEchoIntArgs{}
 }
 
 func (p *TestServiceEchoIntArgs) GetReq() (v int32) {
@@ -240,6 +934,10 @@ type TestServiceEchoIntResult struct {
 
 func NewTestServiceEchoIntResult() *TestServiceEchoIntResult {
 	return &TestServiceEchoIntResult{}
+}
+
+func (p *TestServiceEchoIntResult) InitDefault() {
+	*p = TestServiceEchoIntResult{}
 }
 
 var TestServiceEchoIntResult_Success_DEFAULT int32
@@ -268,12 +966,83 @@ func (p *TestServiceEchoIntResult) GetResult() interface{} {
 	return p.Success
 }
 
+type TestServiceEchoBoolArgs struct {
+	Req bool `thrift:"req,1" frugal:"1,default,bool" json:"req"`
+}
+
+func NewTestServiceEchoBoolArgs() *TestServiceEchoBoolArgs {
+	return &TestServiceEchoBoolArgs{}
+}
+
+func (p *TestServiceEchoBoolArgs) InitDefault() {
+	*p = TestServiceEchoBoolArgs{}
+}
+
+func (p *TestServiceEchoBoolArgs) GetReq() (v bool) {
+	return p.Req
+}
+func (p *TestServiceEchoBoolArgs) SetReq(val bool) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBoolArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBoolArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBoolArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBoolResult struct {
+	Success *bool `thrift:"success,0,optional" frugal:"0,optional,bool" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBoolResult() *TestServiceEchoBoolResult {
+	return &TestServiceEchoBoolResult{}
+}
+
+func (p *TestServiceEchoBoolResult) InitDefault() {
+	*p = TestServiceEchoBoolResult{}
+}
+
+var TestServiceEchoBoolResult_Success_DEFAULT bool
+
+func (p *TestServiceEchoBoolResult) GetSuccess() (v bool) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBoolResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoBoolResult) SetSuccess(x interface{}) {
+	p.Success = x.(*bool)
+}
+
+func (p *TestServiceEchoBoolResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBoolResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBoolResult(%+v)", *p)
+}
+func (p *TestServiceEchoBoolResult) GetResult() interface{} {
+	return p.Success
+}
+
 type TestServiceEchoByteArgs struct {
 	Req int8 `thrift:"req,1" frugal:"1,default,byte" json:"req"`
 }
 
 func NewTestServiceEchoByteArgs() *TestServiceEchoByteArgs {
 	return &TestServiceEchoByteArgs{}
+}
+
+func (p *TestServiceEchoByteArgs) InitDefault() {
+	*p = TestServiceEchoByteArgs{}
 }
 
 func (p *TestServiceEchoByteArgs) GetReq() (v int8) {
@@ -299,6 +1068,10 @@ type TestServiceEchoByteResult struct {
 
 func NewTestServiceEchoByteResult() *TestServiceEchoByteResult {
 	return &TestServiceEchoByteResult{}
+}
+
+func (p *TestServiceEchoByteResult) InitDefault() {
+	*p = TestServiceEchoByteResult{}
 }
 
 var TestServiceEchoByteResult_Success_DEFAULT int8
@@ -327,12 +1100,418 @@ func (p *TestServiceEchoByteResult) GetResult() interface{} {
 	return p.Success
 }
 
+type TestServiceEchoInt16Args struct {
+	Req int16 `thrift:"req,1" frugal:"1,default,i16" json:"req"`
+}
+
+func NewTestServiceEchoInt16Args() *TestServiceEchoInt16Args {
+	return &TestServiceEchoInt16Args{}
+}
+
+func (p *TestServiceEchoInt16Args) InitDefault() {
+	*p = TestServiceEchoInt16Args{}
+}
+
+func (p *TestServiceEchoInt16Args) GetReq() (v int16) {
+	return p.Req
+}
+func (p *TestServiceEchoInt16Args) SetReq(val int16) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoInt16Args) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoInt16Args(%+v)", *p)
+}
+func (p *TestServiceEchoInt16Args) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoInt16Result struct {
+	Success *int16 `thrift:"success,0,optional" frugal:"0,optional,i16" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoInt16Result() *TestServiceEchoInt16Result {
+	return &TestServiceEchoInt16Result{}
+}
+
+func (p *TestServiceEchoInt16Result) InitDefault() {
+	*p = TestServiceEchoInt16Result{}
+}
+
+var TestServiceEchoInt16Result_Success_DEFAULT int16
+
+func (p *TestServiceEchoInt16Result) GetSuccess() (v int16) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoInt16Result_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoInt16Result) SetSuccess(x interface{}) {
+	p.Success = x.(*int16)
+}
+
+func (p *TestServiceEchoInt16Result) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoInt16Result) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoInt16Result(%+v)", *p)
+}
+func (p *TestServiceEchoInt16Result) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoInt32Args struct {
+	Req int32 `thrift:"req,1" frugal:"1,default,i32" json:"req"`
+}
+
+func NewTestServiceEchoInt32Args() *TestServiceEchoInt32Args {
+	return &TestServiceEchoInt32Args{}
+}
+
+func (p *TestServiceEchoInt32Args) InitDefault() {
+	*p = TestServiceEchoInt32Args{}
+}
+
+func (p *TestServiceEchoInt32Args) GetReq() (v int32) {
+	return p.Req
+}
+func (p *TestServiceEchoInt32Args) SetReq(val int32) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoInt32Args) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoInt32Args(%+v)", *p)
+}
+func (p *TestServiceEchoInt32Args) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoInt32Result struct {
+	Success *int32 `thrift:"success,0,optional" frugal:"0,optional,i32" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoInt32Result() *TestServiceEchoInt32Result {
+	return &TestServiceEchoInt32Result{}
+}
+
+func (p *TestServiceEchoInt32Result) InitDefault() {
+	*p = TestServiceEchoInt32Result{}
+}
+
+var TestServiceEchoInt32Result_Success_DEFAULT int32
+
+func (p *TestServiceEchoInt32Result) GetSuccess() (v int32) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoInt32Result_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoInt32Result) SetSuccess(x interface{}) {
+	p.Success = x.(*int32)
+}
+
+func (p *TestServiceEchoInt32Result) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoInt32Result) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoInt32Result(%+v)", *p)
+}
+func (p *TestServiceEchoInt32Result) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoInt64Args struct {
+	Req int64 `thrift:"req,1" frugal:"1,default,i64" json:"req"`
+}
+
+func NewTestServiceEchoInt64Args() *TestServiceEchoInt64Args {
+	return &TestServiceEchoInt64Args{}
+}
+
+func (p *TestServiceEchoInt64Args) InitDefault() {
+	*p = TestServiceEchoInt64Args{}
+}
+
+func (p *TestServiceEchoInt64Args) GetReq() (v int64) {
+	return p.Req
+}
+func (p *TestServiceEchoInt64Args) SetReq(val int64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoInt64Args) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoInt64Args(%+v)", *p)
+}
+func (p *TestServiceEchoInt64Args) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoInt64Result struct {
+	Success *int64 `thrift:"success,0,optional" frugal:"0,optional,i64" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoInt64Result() *TestServiceEchoInt64Result {
+	return &TestServiceEchoInt64Result{}
+}
+
+func (p *TestServiceEchoInt64Result) InitDefault() {
+	*p = TestServiceEchoInt64Result{}
+}
+
+var TestServiceEchoInt64Result_Success_DEFAULT int64
+
+func (p *TestServiceEchoInt64Result) GetSuccess() (v int64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoInt64Result_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoInt64Result) SetSuccess(x interface{}) {
+	p.Success = x.(*int64)
+}
+
+func (p *TestServiceEchoInt64Result) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoInt64Result) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoInt64Result(%+v)", *p)
+}
+func (p *TestServiceEchoInt64Result) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoDoubleArgs struct {
+	Req float64 `thrift:"req,1" frugal:"1,default,double" json:"req"`
+}
+
+func NewTestServiceEchoDoubleArgs() *TestServiceEchoDoubleArgs {
+	return &TestServiceEchoDoubleArgs{}
+}
+
+func (p *TestServiceEchoDoubleArgs) InitDefault() {
+	*p = TestServiceEchoDoubleArgs{}
+}
+
+func (p *TestServiceEchoDoubleArgs) GetReq() (v float64) {
+	return p.Req
+}
+func (p *TestServiceEchoDoubleArgs) SetReq(val float64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoDoubleArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoDoubleArgs(%+v)", *p)
+}
+func (p *TestServiceEchoDoubleArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoDoubleResult struct {
+	Success *float64 `thrift:"success,0,optional" frugal:"0,optional,double" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoDoubleResult() *TestServiceEchoDoubleResult {
+	return &TestServiceEchoDoubleResult{}
+}
+
+func (p *TestServiceEchoDoubleResult) InitDefault() {
+	*p = TestServiceEchoDoubleResult{}
+}
+
+var TestServiceEchoDoubleResult_Success_DEFAULT float64
+
+func (p *TestServiceEchoDoubleResult) GetSuccess() (v float64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoDoubleResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoDoubleResult) SetSuccess(x interface{}) {
+	p.Success = x.(*float64)
+}
+
+func (p *TestServiceEchoDoubleResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoDoubleResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoDoubleResult(%+v)", *p)
+}
+func (p *TestServiceEchoDoubleResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoStringArgs struct {
+	Req string `thrift:"req,1" frugal:"1,default,string" json:"req"`
+}
+
+func NewTestServiceEchoStringArgs() *TestServiceEchoStringArgs {
+	return &TestServiceEchoStringArgs{}
+}
+
+func (p *TestServiceEchoStringArgs) InitDefault() {
+	*p = TestServiceEchoStringArgs{}
+}
+
+func (p *TestServiceEchoStringArgs) GetReq() (v string) {
+	return p.Req
+}
+func (p *TestServiceEchoStringArgs) SetReq(val string) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoStringArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoStringArgs(%+v)", *p)
+}
+func (p *TestServiceEchoStringArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoStringResult struct {
+	Success *string `thrift:"success,0,optional" frugal:"0,optional,string" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoStringResult() *TestServiceEchoStringResult {
+	return &TestServiceEchoStringResult{}
+}
+
+func (p *TestServiceEchoStringResult) InitDefault() {
+	*p = TestServiceEchoStringResult{}
+}
+
+var TestServiceEchoStringResult_Success_DEFAULT string
+
+func (p *TestServiceEchoStringResult) GetSuccess() (v string) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoStringResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoStringResult) SetSuccess(x interface{}) {
+	p.Success = x.(*string)
+}
+
+func (p *TestServiceEchoStringResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoStringResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoStringResult(%+v)", *p)
+}
+func (p *TestServiceEchoStringResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBinaryArgs struct {
+	Req []byte `thrift:"req,1" frugal:"1,default,binary" json:"req"`
+}
+
+func NewTestServiceEchoBinaryArgs() *TestServiceEchoBinaryArgs {
+	return &TestServiceEchoBinaryArgs{}
+}
+
+func (p *TestServiceEchoBinaryArgs) InitDefault() {
+	*p = TestServiceEchoBinaryArgs{}
+}
+
+func (p *TestServiceEchoBinaryArgs) GetReq() (v []byte) {
+	return p.Req
+}
+func (p *TestServiceEchoBinaryArgs) SetReq(val []byte) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBinaryArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBinaryArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBinaryArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBinaryResult struct {
+	Success []byte `thrift:"success,0,optional" frugal:"0,optional,binary" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBinaryResult() *TestServiceEchoBinaryResult {
+	return &TestServiceEchoBinaryResult{}
+}
+
+func (p *TestServiceEchoBinaryResult) InitDefault() {
+	*p = TestServiceEchoBinaryResult{}
+}
+
+var TestServiceEchoBinaryResult_Success_DEFAULT []byte
+
+func (p *TestServiceEchoBinaryResult) GetSuccess() (v []byte) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBinaryResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBinaryResult) SetSuccess(x interface{}) {
+	p.Success = x.([]byte)
+}
+
+func (p *TestServiceEchoBinaryResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBinaryResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBinaryResult(%+v)", *p)
+}
+func (p *TestServiceEchoBinaryResult) GetResult() interface{} {
+	return p.Success
+}
+
 type TestServiceEchoArgs struct {
 	Req *EchoRequest `thrift:"req,1" frugal:"1,default,EchoRequest" json:"req"`
 }
 
 func NewTestServiceEchoArgs() *TestServiceEchoArgs {
 	return &TestServiceEchoArgs{}
+}
+
+func (p *TestServiceEchoArgs) InitDefault() {
+	*p = TestServiceEchoArgs{}
 }
 
 var TestServiceEchoArgs_Req_DEFAULT *EchoRequest
@@ -369,6 +1548,10 @@ func NewTestServiceEchoResult() *TestServiceEchoResult {
 	return &TestServiceEchoResult{}
 }
 
+func (p *TestServiceEchoResult) InitDefault() {
+	*p = TestServiceEchoResult{}
+}
+
 var TestServiceEchoResult_Success_DEFAULT *EchoResponse
 
 func (p *TestServiceEchoResult) GetSuccess() (v *EchoResponse) {
@@ -392,5 +1575,541 @@ func (p *TestServiceEchoResult) String() string {
 	return fmt.Sprintf("TestServiceEchoResult(%+v)", *p)
 }
 func (p *TestServiceEchoResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBoolListArgs struct {
+	Req []bool `thrift:"req,1" frugal:"1,default,list<bool>" json:"req"`
+}
+
+func NewTestServiceEchoBoolListArgs() *TestServiceEchoBoolListArgs {
+	return &TestServiceEchoBoolListArgs{}
+}
+
+func (p *TestServiceEchoBoolListArgs) InitDefault() {
+	*p = TestServiceEchoBoolListArgs{}
+}
+
+func (p *TestServiceEchoBoolListArgs) GetReq() (v []bool) {
+	return p.Req
+}
+func (p *TestServiceEchoBoolListArgs) SetReq(val []bool) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBoolListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBoolListArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBoolListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBoolListResult struct {
+	Success []bool `thrift:"success,0,optional" frugal:"0,optional,list<bool>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBoolListResult() *TestServiceEchoBoolListResult {
+	return &TestServiceEchoBoolListResult{}
+}
+
+func (p *TestServiceEchoBoolListResult) InitDefault() {
+	*p = TestServiceEchoBoolListResult{}
+}
+
+var TestServiceEchoBoolListResult_Success_DEFAULT []bool
+
+func (p *TestServiceEchoBoolListResult) GetSuccess() (v []bool) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBoolListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBoolListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]bool)
+}
+
+func (p *TestServiceEchoBoolListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBoolListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBoolListResult(%+v)", *p)
+}
+func (p *TestServiceEchoBoolListResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoByteListArgs struct {
+	Req []int8 `thrift:"req,1" frugal:"1,default,list<byte>" json:"req"`
+}
+
+func NewTestServiceEchoByteListArgs() *TestServiceEchoByteListArgs {
+	return &TestServiceEchoByteListArgs{}
+}
+
+func (p *TestServiceEchoByteListArgs) InitDefault() {
+	*p = TestServiceEchoByteListArgs{}
+}
+
+func (p *TestServiceEchoByteListArgs) GetReq() (v []int8) {
+	return p.Req
+}
+func (p *TestServiceEchoByteListArgs) SetReq(val []int8) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoByteListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoByteListArgs(%+v)", *p)
+}
+func (p *TestServiceEchoByteListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoByteListResult struct {
+	Success []int8 `thrift:"success,0,optional" frugal:"0,optional,list<byte>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoByteListResult() *TestServiceEchoByteListResult {
+	return &TestServiceEchoByteListResult{}
+}
+
+func (p *TestServiceEchoByteListResult) InitDefault() {
+	*p = TestServiceEchoByteListResult{}
+}
+
+var TestServiceEchoByteListResult_Success_DEFAULT []int8
+
+func (p *TestServiceEchoByteListResult) GetSuccess() (v []int8) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoByteListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoByteListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]int8)
+}
+
+func (p *TestServiceEchoByteListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoByteListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoByteListResult(%+v)", *p)
+}
+func (p *TestServiceEchoByteListResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoInt16ListArgs struct {
+	Req []int16 `thrift:"req,1" frugal:"1,default,list<i16>" json:"req"`
+}
+
+func NewTestServiceEchoInt16ListArgs() *TestServiceEchoInt16ListArgs {
+	return &TestServiceEchoInt16ListArgs{}
+}
+
+func (p *TestServiceEchoInt16ListArgs) InitDefault() {
+	*p = TestServiceEchoInt16ListArgs{}
+}
+
+func (p *TestServiceEchoInt16ListArgs) GetReq() (v []int16) {
+	return p.Req
+}
+func (p *TestServiceEchoInt16ListArgs) SetReq(val []int16) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoInt16ListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoInt16ListArgs(%+v)", *p)
+}
+func (p *TestServiceEchoInt16ListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoInt16ListResult struct {
+	Success []int16 `thrift:"success,0,optional" frugal:"0,optional,list<i16>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoInt16ListResult() *TestServiceEchoInt16ListResult {
+	return &TestServiceEchoInt16ListResult{}
+}
+
+func (p *TestServiceEchoInt16ListResult) InitDefault() {
+	*p = TestServiceEchoInt16ListResult{}
+}
+
+var TestServiceEchoInt16ListResult_Success_DEFAULT []int16
+
+func (p *TestServiceEchoInt16ListResult) GetSuccess() (v []int16) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoInt16ListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoInt16ListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]int16)
+}
+
+func (p *TestServiceEchoInt16ListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoInt16ListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoInt16ListResult(%+v)", *p)
+}
+func (p *TestServiceEchoInt16ListResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoInt32ListArgs struct {
+	Req []int32 `thrift:"req,1" frugal:"1,default,list<i32>" json:"req"`
+}
+
+func NewTestServiceEchoInt32ListArgs() *TestServiceEchoInt32ListArgs {
+	return &TestServiceEchoInt32ListArgs{}
+}
+
+func (p *TestServiceEchoInt32ListArgs) InitDefault() {
+	*p = TestServiceEchoInt32ListArgs{}
+}
+
+func (p *TestServiceEchoInt32ListArgs) GetReq() (v []int32) {
+	return p.Req
+}
+func (p *TestServiceEchoInt32ListArgs) SetReq(val []int32) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoInt32ListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoInt32ListArgs(%+v)", *p)
+}
+func (p *TestServiceEchoInt32ListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoInt32ListResult struct {
+	Success []int32 `thrift:"success,0,optional" frugal:"0,optional,list<i32>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoInt32ListResult() *TestServiceEchoInt32ListResult {
+	return &TestServiceEchoInt32ListResult{}
+}
+
+func (p *TestServiceEchoInt32ListResult) InitDefault() {
+	*p = TestServiceEchoInt32ListResult{}
+}
+
+var TestServiceEchoInt32ListResult_Success_DEFAULT []int32
+
+func (p *TestServiceEchoInt32ListResult) GetSuccess() (v []int32) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoInt32ListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoInt32ListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]int32)
+}
+
+func (p *TestServiceEchoInt32ListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoInt32ListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoInt32ListResult(%+v)", *p)
+}
+func (p *TestServiceEchoInt32ListResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoInt64ListArgs struct {
+	Req []int64 `thrift:"req,1" frugal:"1,default,list<i64>" json:"req"`
+}
+
+func NewTestServiceEchoInt64ListArgs() *TestServiceEchoInt64ListArgs {
+	return &TestServiceEchoInt64ListArgs{}
+}
+
+func (p *TestServiceEchoInt64ListArgs) InitDefault() {
+	*p = TestServiceEchoInt64ListArgs{}
+}
+
+func (p *TestServiceEchoInt64ListArgs) GetReq() (v []int64) {
+	return p.Req
+}
+func (p *TestServiceEchoInt64ListArgs) SetReq(val []int64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoInt64ListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoInt64ListArgs(%+v)", *p)
+}
+func (p *TestServiceEchoInt64ListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoInt64ListResult struct {
+	Success []int64 `thrift:"success,0,optional" frugal:"0,optional,list<i64>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoInt64ListResult() *TestServiceEchoInt64ListResult {
+	return &TestServiceEchoInt64ListResult{}
+}
+
+func (p *TestServiceEchoInt64ListResult) InitDefault() {
+	*p = TestServiceEchoInt64ListResult{}
+}
+
+var TestServiceEchoInt64ListResult_Success_DEFAULT []int64
+
+func (p *TestServiceEchoInt64ListResult) GetSuccess() (v []int64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoInt64ListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoInt64ListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]int64)
+}
+
+func (p *TestServiceEchoInt64ListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoInt64ListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoInt64ListResult(%+v)", *p)
+}
+func (p *TestServiceEchoInt64ListResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoDoubleListArgs struct {
+	Req []float64 `thrift:"req,1" frugal:"1,default,list<double>" json:"req"`
+}
+
+func NewTestServiceEchoDoubleListArgs() *TestServiceEchoDoubleListArgs {
+	return &TestServiceEchoDoubleListArgs{}
+}
+
+func (p *TestServiceEchoDoubleListArgs) InitDefault() {
+	*p = TestServiceEchoDoubleListArgs{}
+}
+
+func (p *TestServiceEchoDoubleListArgs) GetReq() (v []float64) {
+	return p.Req
+}
+func (p *TestServiceEchoDoubleListArgs) SetReq(val []float64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoDoubleListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoDoubleListArgs(%+v)", *p)
+}
+func (p *TestServiceEchoDoubleListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoDoubleListResult struct {
+	Success []float64 `thrift:"success,0,optional" frugal:"0,optional,list<double>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoDoubleListResult() *TestServiceEchoDoubleListResult {
+	return &TestServiceEchoDoubleListResult{}
+}
+
+func (p *TestServiceEchoDoubleListResult) InitDefault() {
+	*p = TestServiceEchoDoubleListResult{}
+}
+
+var TestServiceEchoDoubleListResult_Success_DEFAULT []float64
+
+func (p *TestServiceEchoDoubleListResult) GetSuccess() (v []float64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoDoubleListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoDoubleListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]float64)
+}
+
+func (p *TestServiceEchoDoubleListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoDoubleListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoDoubleListResult(%+v)", *p)
+}
+func (p *TestServiceEchoDoubleListResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoStringListArgs struct {
+	Req []string `thrift:"req,1" frugal:"1,default,list<string>" json:"req"`
+}
+
+func NewTestServiceEchoStringListArgs() *TestServiceEchoStringListArgs {
+	return &TestServiceEchoStringListArgs{}
+}
+
+func (p *TestServiceEchoStringListArgs) InitDefault() {
+	*p = TestServiceEchoStringListArgs{}
+}
+
+func (p *TestServiceEchoStringListArgs) GetReq() (v []string) {
+	return p.Req
+}
+func (p *TestServiceEchoStringListArgs) SetReq(val []string) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoStringListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoStringListArgs(%+v)", *p)
+}
+func (p *TestServiceEchoStringListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoStringListResult struct {
+	Success []string `thrift:"success,0,optional" frugal:"0,optional,list<string>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoStringListResult() *TestServiceEchoStringListResult {
+	return &TestServiceEchoStringListResult{}
+}
+
+func (p *TestServiceEchoStringListResult) InitDefault() {
+	*p = TestServiceEchoStringListResult{}
+}
+
+var TestServiceEchoStringListResult_Success_DEFAULT []string
+
+func (p *TestServiceEchoStringListResult) GetSuccess() (v []string) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoStringListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoStringListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]string)
+}
+
+func (p *TestServiceEchoStringListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoStringListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoStringListResult(%+v)", *p)
+}
+func (p *TestServiceEchoStringListResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBinaryListArgs struct {
+	Req [][]byte `thrift:"req,1" frugal:"1,default,list<binary>" json:"req"`
+}
+
+func NewTestServiceEchoBinaryListArgs() *TestServiceEchoBinaryListArgs {
+	return &TestServiceEchoBinaryListArgs{}
+}
+
+func (p *TestServiceEchoBinaryListArgs) InitDefault() {
+	*p = TestServiceEchoBinaryListArgs{}
+}
+
+func (p *TestServiceEchoBinaryListArgs) GetReq() (v [][]byte) {
+	return p.Req
+}
+func (p *TestServiceEchoBinaryListArgs) SetReq(val [][]byte) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBinaryListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBinaryListArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBinaryListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBinaryListResult struct {
+	Success [][]byte `thrift:"success,0,optional" frugal:"0,optional,list<binary>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBinaryListResult() *TestServiceEchoBinaryListResult {
+	return &TestServiceEchoBinaryListResult{}
+}
+
+func (p *TestServiceEchoBinaryListResult) InitDefault() {
+	*p = TestServiceEchoBinaryListResult{}
+}
+
+var TestServiceEchoBinaryListResult_Success_DEFAULT [][]byte
+
+func (p *TestServiceEchoBinaryListResult) GetSuccess() (v [][]byte) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBinaryListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBinaryListResult) SetSuccess(x interface{}) {
+	p.Success = x.([][]byte)
+}
+
+func (p *TestServiceEchoBinaryListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBinaryListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBinaryListResult(%+v)", *p)
+}
+func (p *TestServiceEchoBinaryListResult) GetResult() interface{} {
 	return p.Success
 }
