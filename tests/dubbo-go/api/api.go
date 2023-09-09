@@ -66,6 +66,16 @@ type UserProvider struct {
 	EchoDoubleList func(ctx context.Context, req []float64) ([]float64, error) //`dubbo:"echoDoubleList"`
 	EchoStringList func(ctx context.Context, req []string) ([]string, error)   //`dubbo:"echoStringList"`
 	EchoBinaryList func(ctx context.Context, req [][]byte) ([][]byte, error)   //`dubbo:"echoBinaryList"`
+
+	// container map
+	EchoBool2BoolMap   func(ctx context.Context, req map[bool]bool) (map[bool]bool, error)       //`dubbo:"echoBool2BoolMap"`
+	EchoBool2ByteMap   func(ctx context.Context, req map[bool]byte) (map[bool]byte, error)       //`dubbo:"echoBool2ByteMap"`
+	EchoBool2Int16Map  func(ctx context.Context, req map[bool]int16) (map[bool]int16, error)     //`dubbo:"echoBool2Int16Map"`
+	EchoBool2Int32Map  func(ctx context.Context, req map[bool]int32) (map[bool]int32, error)     //`dubbo:"echoBool2Int32Map"`
+	EchoBool2Int64Map  func(ctx context.Context, req map[bool]int64) (map[bool]int64, error)     //`dubbo:"echoBool2Int64Map"`
+	EchoBool2DoubleMap func(ctx context.Context, req map[bool]float64) (map[bool]float64, error) //`dubbo:"echoBool2DoubleMap"`
+	EchoBool2StringMap func(ctx context.Context, req map[bool]string) (map[bool]string, error)   //`dubbo:"echoBool2StringMap"`
+	EchoBool2BinaryMap func(ctx context.Context, req map[bool][]byte) (map[bool][]byte, error)   //`dubbo:"echoBool2BinaryMap"`
 }
 
 func init() {

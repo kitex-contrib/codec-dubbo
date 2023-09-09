@@ -226,7 +226,7 @@ func (m *DubboCodec) messageData(message remote.Message, e iface.Encoder) error 
 	if !ok {
 		return fmt.Errorf("invalid data: not hessian2.MessageWriter")
 	}
-	types, err := dubbo_spec.GetTypes(data)
+	types, err := hessian2.GetTypes(data)
 	if err != nil {
 		return err
 	}

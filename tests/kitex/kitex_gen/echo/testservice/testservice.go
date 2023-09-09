@@ -19,24 +19,40 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "TestService"
 	handlerType := (*echo.TestService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"EchoInt":        kitex.NewMethodInfo(echoIntHandler, newTestServiceEchoIntArgs, newTestServiceEchoIntResult, false),
-		"EchoBool":       kitex.NewMethodInfo(echoBoolHandler, newTestServiceEchoBoolArgs, newTestServiceEchoBoolResult, false),
-		"EchoByte":       kitex.NewMethodInfo(echoByteHandler, newTestServiceEchoByteArgs, newTestServiceEchoByteResult, false),
-		"EchoInt16":      kitex.NewMethodInfo(echoInt16Handler, newTestServiceEchoInt16Args, newTestServiceEchoInt16Result, false),
-		"EchoInt32":      kitex.NewMethodInfo(echoInt32Handler, newTestServiceEchoInt32Args, newTestServiceEchoInt32Result, false),
-		"EchoInt64":      kitex.NewMethodInfo(echoInt64Handler, newTestServiceEchoInt64Args, newTestServiceEchoInt64Result, false),
-		"EchoDouble":     kitex.NewMethodInfo(echoDoubleHandler, newTestServiceEchoDoubleArgs, newTestServiceEchoDoubleResult, false),
-		"EchoString":     kitex.NewMethodInfo(echoStringHandler, newTestServiceEchoStringArgs, newTestServiceEchoStringResult, false),
-		"EchoBinary":     kitex.NewMethodInfo(echoBinaryHandler, newTestServiceEchoBinaryArgs, newTestServiceEchoBinaryResult, false),
-		"Echo":           kitex.NewMethodInfo(echoHandler, newTestServiceEchoArgs, newTestServiceEchoResult, false),
-		"EchoBoolList":   kitex.NewMethodInfo(echoBoolListHandler, newTestServiceEchoBoolListArgs, newTestServiceEchoBoolListResult, false),
-		"EchoByteList":   kitex.NewMethodInfo(echoByteListHandler, newTestServiceEchoByteListArgs, newTestServiceEchoByteListResult, false),
-		"EchoInt16List":  kitex.NewMethodInfo(echoInt16ListHandler, newTestServiceEchoInt16ListArgs, newTestServiceEchoInt16ListResult, false),
-		"EchoInt32List":  kitex.NewMethodInfo(echoInt32ListHandler, newTestServiceEchoInt32ListArgs, newTestServiceEchoInt32ListResult, false),
-		"EchoInt64List":  kitex.NewMethodInfo(echoInt64ListHandler, newTestServiceEchoInt64ListArgs, newTestServiceEchoInt64ListResult, false),
-		"EchoDoubleList": kitex.NewMethodInfo(echoDoubleListHandler, newTestServiceEchoDoubleListArgs, newTestServiceEchoDoubleListResult, false),
-		"EchoStringList": kitex.NewMethodInfo(echoStringListHandler, newTestServiceEchoStringListArgs, newTestServiceEchoStringListResult, false),
-		"EchoBinaryList": kitex.NewMethodInfo(echoBinaryListHandler, newTestServiceEchoBinaryListArgs, newTestServiceEchoBinaryListResult, false),
+		"EchoInt":                kitex.NewMethodInfo(echoIntHandler, newTestServiceEchoIntArgs, newTestServiceEchoIntResult, false),
+		"EchoBool":               kitex.NewMethodInfo(echoBoolHandler, newTestServiceEchoBoolArgs, newTestServiceEchoBoolResult, false),
+		"EchoByte":               kitex.NewMethodInfo(echoByteHandler, newTestServiceEchoByteArgs, newTestServiceEchoByteResult, false),
+		"EchoInt16":              kitex.NewMethodInfo(echoInt16Handler, newTestServiceEchoInt16Args, newTestServiceEchoInt16Result, false),
+		"EchoInt32":              kitex.NewMethodInfo(echoInt32Handler, newTestServiceEchoInt32Args, newTestServiceEchoInt32Result, false),
+		"EchoInt64":              kitex.NewMethodInfo(echoInt64Handler, newTestServiceEchoInt64Args, newTestServiceEchoInt64Result, false),
+		"EchoDouble":             kitex.NewMethodInfo(echoDoubleHandler, newTestServiceEchoDoubleArgs, newTestServiceEchoDoubleResult, false),
+		"EchoString":             kitex.NewMethodInfo(echoStringHandler, newTestServiceEchoStringArgs, newTestServiceEchoStringResult, false),
+		"EchoBinary":             kitex.NewMethodInfo(echoBinaryHandler, newTestServiceEchoBinaryArgs, newTestServiceEchoBinaryResult, false),
+		"Echo":                   kitex.NewMethodInfo(echoHandler, newTestServiceEchoArgs, newTestServiceEchoResult, false),
+		"EchoBoolList":           kitex.NewMethodInfo(echoBoolListHandler, newTestServiceEchoBoolListArgs, newTestServiceEchoBoolListResult, false),
+		"EchoByteList":           kitex.NewMethodInfo(echoByteListHandler, newTestServiceEchoByteListArgs, newTestServiceEchoByteListResult, false),
+		"EchoInt16List":          kitex.NewMethodInfo(echoInt16ListHandler, newTestServiceEchoInt16ListArgs, newTestServiceEchoInt16ListResult, false),
+		"EchoInt32List":          kitex.NewMethodInfo(echoInt32ListHandler, newTestServiceEchoInt32ListArgs, newTestServiceEchoInt32ListResult, false),
+		"EchoInt64List":          kitex.NewMethodInfo(echoInt64ListHandler, newTestServiceEchoInt64ListArgs, newTestServiceEchoInt64ListResult, false),
+		"EchoDoubleList":         kitex.NewMethodInfo(echoDoubleListHandler, newTestServiceEchoDoubleListArgs, newTestServiceEchoDoubleListResult, false),
+		"EchoStringList":         kitex.NewMethodInfo(echoStringListHandler, newTestServiceEchoStringListArgs, newTestServiceEchoStringListResult, false),
+		"EchoBinaryList":         kitex.NewMethodInfo(echoBinaryListHandler, newTestServiceEchoBinaryListArgs, newTestServiceEchoBinaryListResult, false),
+		"EchoBool2BoolMap":       kitex.NewMethodInfo(echoBool2BoolMapHandler, newTestServiceEchoBool2BoolMapArgs, newTestServiceEchoBool2BoolMapResult, false),
+		"EchoBool2ByteMap":       kitex.NewMethodInfo(echoBool2ByteMapHandler, newTestServiceEchoBool2ByteMapArgs, newTestServiceEchoBool2ByteMapResult, false),
+		"EchoBool2Int16Map":      kitex.NewMethodInfo(echoBool2Int16MapHandler, newTestServiceEchoBool2Int16MapArgs, newTestServiceEchoBool2Int16MapResult, false),
+		"EchoBool2Int32Map":      kitex.NewMethodInfo(echoBool2Int32MapHandler, newTestServiceEchoBool2Int32MapArgs, newTestServiceEchoBool2Int32MapResult, false),
+		"EchoBool2Int64Map":      kitex.NewMethodInfo(echoBool2Int64MapHandler, newTestServiceEchoBool2Int64MapArgs, newTestServiceEchoBool2Int64MapResult, false),
+		"EchoBool2DoubleMap":     kitex.NewMethodInfo(echoBool2DoubleMapHandler, newTestServiceEchoBool2DoubleMapArgs, newTestServiceEchoBool2DoubleMapResult, false),
+		"EchoBool2StringMap":     kitex.NewMethodInfo(echoBool2StringMapHandler, newTestServiceEchoBool2StringMapArgs, newTestServiceEchoBool2StringMapResult, false),
+		"EchoBool2BinaryMap":     kitex.NewMethodInfo(echoBool2BinaryMapHandler, newTestServiceEchoBool2BinaryMapArgs, newTestServiceEchoBool2BinaryMapResult, false),
+		"EchoBool2BoolListMap":   kitex.NewMethodInfo(echoBool2BoolListMapHandler, newTestServiceEchoBool2BoolListMapArgs, newTestServiceEchoBool2BoolListMapResult, false),
+		"EchoBool2ByteListMap":   kitex.NewMethodInfo(echoBool2ByteListMapHandler, newTestServiceEchoBool2ByteListMapArgs, newTestServiceEchoBool2ByteListMapResult, false),
+		"EchoBool2Int16ListMap":  kitex.NewMethodInfo(echoBool2Int16ListMapHandler, newTestServiceEchoBool2Int16ListMapArgs, newTestServiceEchoBool2Int16ListMapResult, false),
+		"EchoBool2Int32ListMap":  kitex.NewMethodInfo(echoBool2Int32ListMapHandler, newTestServiceEchoBool2Int32ListMapArgs, newTestServiceEchoBool2Int32ListMapResult, false),
+		"EchoBool2Int64ListMap":  kitex.NewMethodInfo(echoBool2Int64ListMapHandler, newTestServiceEchoBool2Int64ListMapArgs, newTestServiceEchoBool2Int64ListMapResult, false),
+		"EchoBool2DoubleListMap": kitex.NewMethodInfo(echoBool2DoubleListMapHandler, newTestServiceEchoBool2DoubleListMapArgs, newTestServiceEchoBool2DoubleListMapResult, false),
+		"EchoBool2StringListMap": kitex.NewMethodInfo(echoBool2StringListMapHandler, newTestServiceEchoBool2StringListMapArgs, newTestServiceEchoBool2StringListMapResult, false),
+		"EchoBool2BinaryListMap": kitex.NewMethodInfo(echoBool2BinaryListMapHandler, newTestServiceEchoBool2BinaryListMapArgs, newTestServiceEchoBool2BinaryListMapResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "echo",
@@ -377,6 +393,294 @@ func newTestServiceEchoBinaryListResult() interface{} {
 	return echo.NewTestServiceEchoBinaryListResult()
 }
 
+func echoBool2BoolMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2BoolMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2BoolMapResult)
+	success, err := handler.(echo.TestService).EchoBool2BoolMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2BoolMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2BoolMapArgs()
+}
+
+func newTestServiceEchoBool2BoolMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2BoolMapResult()
+}
+
+func echoBool2ByteMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2ByteMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2ByteMapResult)
+	success, err := handler.(echo.TestService).EchoBool2ByteMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2ByteMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2ByteMapArgs()
+}
+
+func newTestServiceEchoBool2ByteMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2ByteMapResult()
+}
+
+func echoBool2Int16MapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2Int16MapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2Int16MapResult)
+	success, err := handler.(echo.TestService).EchoBool2Int16Map(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2Int16MapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2Int16MapArgs()
+}
+
+func newTestServiceEchoBool2Int16MapResult() interface{} {
+	return echo.NewTestServiceEchoBool2Int16MapResult()
+}
+
+func echoBool2Int32MapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2Int32MapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2Int32MapResult)
+	success, err := handler.(echo.TestService).EchoBool2Int32Map(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2Int32MapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2Int32MapArgs()
+}
+
+func newTestServiceEchoBool2Int32MapResult() interface{} {
+	return echo.NewTestServiceEchoBool2Int32MapResult()
+}
+
+func echoBool2Int64MapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2Int64MapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2Int64MapResult)
+	success, err := handler.(echo.TestService).EchoBool2Int64Map(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2Int64MapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2Int64MapArgs()
+}
+
+func newTestServiceEchoBool2Int64MapResult() interface{} {
+	return echo.NewTestServiceEchoBool2Int64MapResult()
+}
+
+func echoBool2DoubleMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2DoubleMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2DoubleMapResult)
+	success, err := handler.(echo.TestService).EchoBool2DoubleMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2DoubleMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2DoubleMapArgs()
+}
+
+func newTestServiceEchoBool2DoubleMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2DoubleMapResult()
+}
+
+func echoBool2StringMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2StringMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2StringMapResult)
+	success, err := handler.(echo.TestService).EchoBool2StringMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2StringMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2StringMapArgs()
+}
+
+func newTestServiceEchoBool2StringMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2StringMapResult()
+}
+
+func echoBool2BinaryMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2BinaryMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2BinaryMapResult)
+	success, err := handler.(echo.TestService).EchoBool2BinaryMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2BinaryMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2BinaryMapArgs()
+}
+
+func newTestServiceEchoBool2BinaryMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2BinaryMapResult()
+}
+
+func echoBool2BoolListMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2BoolListMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2BoolListMapResult)
+	success, err := handler.(echo.TestService).EchoBool2BoolListMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2BoolListMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2BoolListMapArgs()
+}
+
+func newTestServiceEchoBool2BoolListMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2BoolListMapResult()
+}
+
+func echoBool2ByteListMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2ByteListMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2ByteListMapResult)
+	success, err := handler.(echo.TestService).EchoBool2ByteListMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2ByteListMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2ByteListMapArgs()
+}
+
+func newTestServiceEchoBool2ByteListMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2ByteListMapResult()
+}
+
+func echoBool2Int16ListMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2Int16ListMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2Int16ListMapResult)
+	success, err := handler.(echo.TestService).EchoBool2Int16ListMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2Int16ListMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2Int16ListMapArgs()
+}
+
+func newTestServiceEchoBool2Int16ListMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2Int16ListMapResult()
+}
+
+func echoBool2Int32ListMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2Int32ListMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2Int32ListMapResult)
+	success, err := handler.(echo.TestService).EchoBool2Int32ListMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2Int32ListMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2Int32ListMapArgs()
+}
+
+func newTestServiceEchoBool2Int32ListMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2Int32ListMapResult()
+}
+
+func echoBool2Int64ListMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2Int64ListMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2Int64ListMapResult)
+	success, err := handler.(echo.TestService).EchoBool2Int64ListMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2Int64ListMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2Int64ListMapArgs()
+}
+
+func newTestServiceEchoBool2Int64ListMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2Int64ListMapResult()
+}
+
+func echoBool2DoubleListMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2DoubleListMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2DoubleListMapResult)
+	success, err := handler.(echo.TestService).EchoBool2DoubleListMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2DoubleListMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2DoubleListMapArgs()
+}
+
+func newTestServiceEchoBool2DoubleListMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2DoubleListMapResult()
+}
+
+func echoBool2StringListMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2StringListMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2StringListMapResult)
+	success, err := handler.(echo.TestService).EchoBool2StringListMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2StringListMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2StringListMapArgs()
+}
+
+func newTestServiceEchoBool2StringListMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2StringListMapResult()
+}
+
+func echoBool2BinaryListMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2BinaryListMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2BinaryListMapResult)
+	success, err := handler.(echo.TestService).EchoBool2BinaryListMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2BinaryListMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2BinaryListMapArgs()
+}
+
+func newTestServiceEchoBool2BinaryListMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2BinaryListMapResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -562,6 +866,166 @@ func (p *kClient) EchoBinaryList(ctx context.Context, req [][]byte) (r [][]byte,
 	_args.Req = req
 	var _result echo.TestServiceEchoBinaryListResult
 	if err = p.c.Call(ctx, "EchoBinaryList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2BoolMap(ctx context.Context, req map[bool]bool) (r map[bool]bool, err error) {
+	var _args echo.TestServiceEchoBool2BoolMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2BoolMapResult
+	if err = p.c.Call(ctx, "EchoBool2BoolMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2ByteMap(ctx context.Context, req map[bool]int8) (r map[bool]int8, err error) {
+	var _args echo.TestServiceEchoBool2ByteMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2ByteMapResult
+	if err = p.c.Call(ctx, "EchoBool2ByteMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2Int16Map(ctx context.Context, req map[bool]int16) (r map[bool]int16, err error) {
+	var _args echo.TestServiceEchoBool2Int16MapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2Int16MapResult
+	if err = p.c.Call(ctx, "EchoBool2Int16Map", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2Int32Map(ctx context.Context, req map[bool]int32) (r map[bool]int32, err error) {
+	var _args echo.TestServiceEchoBool2Int32MapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2Int32MapResult
+	if err = p.c.Call(ctx, "EchoBool2Int32Map", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2Int64Map(ctx context.Context, req map[bool]int64) (r map[bool]int64, err error) {
+	var _args echo.TestServiceEchoBool2Int64MapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2Int64MapResult
+	if err = p.c.Call(ctx, "EchoBool2Int64Map", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2DoubleMap(ctx context.Context, req map[bool]float64) (r map[bool]float64, err error) {
+	var _args echo.TestServiceEchoBool2DoubleMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2DoubleMapResult
+	if err = p.c.Call(ctx, "EchoBool2DoubleMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2StringMap(ctx context.Context, req map[bool]string) (r map[bool]string, err error) {
+	var _args echo.TestServiceEchoBool2StringMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2StringMapResult
+	if err = p.c.Call(ctx, "EchoBool2StringMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2BinaryMap(ctx context.Context, req map[bool][]byte) (r map[bool][]byte, err error) {
+	var _args echo.TestServiceEchoBool2BinaryMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2BinaryMapResult
+	if err = p.c.Call(ctx, "EchoBool2BinaryMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2BoolListMap(ctx context.Context, req map[bool][]bool) (r map[bool][]bool, err error) {
+	var _args echo.TestServiceEchoBool2BoolListMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2BoolListMapResult
+	if err = p.c.Call(ctx, "EchoBool2BoolListMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2ByteListMap(ctx context.Context, req map[bool][]int8) (r map[bool][]int8, err error) {
+	var _args echo.TestServiceEchoBool2ByteListMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2ByteListMapResult
+	if err = p.c.Call(ctx, "EchoBool2ByteListMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2Int16ListMap(ctx context.Context, req map[bool][]int16) (r map[bool][]int16, err error) {
+	var _args echo.TestServiceEchoBool2Int16ListMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2Int16ListMapResult
+	if err = p.c.Call(ctx, "EchoBool2Int16ListMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2Int32ListMap(ctx context.Context, req map[bool][]int32) (r map[bool][]int32, err error) {
+	var _args echo.TestServiceEchoBool2Int32ListMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2Int32ListMapResult
+	if err = p.c.Call(ctx, "EchoBool2Int32ListMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2Int64ListMap(ctx context.Context, req map[bool][]int64) (r map[bool][]int64, err error) {
+	var _args echo.TestServiceEchoBool2Int64ListMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2Int64ListMapResult
+	if err = p.c.Call(ctx, "EchoBool2Int64ListMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2DoubleListMap(ctx context.Context, req map[bool][]float64) (r map[bool][]float64, err error) {
+	var _args echo.TestServiceEchoBool2DoubleListMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2DoubleListMapResult
+	if err = p.c.Call(ctx, "EchoBool2DoubleListMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2StringListMap(ctx context.Context, req map[bool][]string) (r map[bool][]string, err error) {
+	var _args echo.TestServiceEchoBool2StringListMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2StringListMapResult
+	if err = p.c.Call(ctx, "EchoBool2StringListMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2BinaryListMap(ctx context.Context, req map[bool][][]byte) (r map[bool][][]byte, err error) {
+	var _args echo.TestServiceEchoBool2BinaryListMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2BinaryListMapResult
+	if err = p.c.Call(ctx, "EchoBool2BinaryListMap", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

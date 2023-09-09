@@ -1,16 +1,15 @@
 package main
 
 import (
+	"github.com/cloudwego/kitex/server"
 	"log"
 	"net"
-
-	"github.com/cloudwego/kitex/server"
 
 	echo "github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testservice"
 )
 
 func main() {
-	addr, _ := net.ResolveTCPAddr("tcp", "127.0.0.1:20000")
+	addr, _ := net.ResolveTCPAddr("tcp", ":20000")
 	svr := echo.NewServer(new(TestServiceImpl), server.WithServiceAddr(addr))
 
 	err := svr.Run()

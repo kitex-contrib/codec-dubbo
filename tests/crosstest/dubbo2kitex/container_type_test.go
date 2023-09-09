@@ -55,3 +55,62 @@ func TestEchoStringList(t *testing.T) {
 //	resp, err := cli.EchoBinaryList(context.Background(), req)
 //	assertEcho(t, err, req, resp)
 //}
+
+// todo(DMwangnima): enhance hessian2.ReflectResponse to support reflecting map[bool]...
+func TestEchoBool2BoolMap(t *testing.T) {
+	req := map[bool]bool{
+		true: true,
+	}
+	resp, err := cli.EchoBool2BoolMap(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoBool2ByteMap(t *testing.T) {
+	req := map[bool]byte{
+		true: 1,
+	}
+	resp, err := cli.EchoBool2ByteMap(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+func TestEchoBool2Int16Map(t *testing.T) {
+	req := map[bool]int16{
+		true: 1,
+	}
+	resp, err := cli.EchoBool2Int16Map(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+func TestEchoBool2Int32Map(t *testing.T) {
+	req := map[bool]int32{
+		true: 1,
+	}
+	resp, err := cli.EchoBool2Int32Map(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+func TestEchoBool2Int64Map(t *testing.T) {
+	req := map[bool]int64{
+		true: 1,
+	}
+	resp, err := cli.EchoBool2Int64Map(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+func TestEchoBool2DoubleMap(t *testing.T) {
+	req := map[bool]float64{
+		true: 12.34,
+	}
+	resp, err := cli.EchoBool2DoubleMap(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+func TestEchoBool2StringMap(t *testing.T) {
+	req := map[bool]string{
+		true: "1",
+	}
+	resp, err := cli.EchoBool2StringMap(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+func TestEchoBool2BinaryMap(t *testing.T) {
+	req := map[bool][]byte{
+		true: {'1', '2'},
+	}
+	resp, err := cli.EchoBool2BinaryMap(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
