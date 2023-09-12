@@ -47,24 +47,24 @@ func (op *outputParser) init(set map[string]bool) {
 }
 
 func (op *outputParser) parse(output string) error {
-	if matchs := op.end.FindStringSubmatch(output); len(matchs) == 2 {
-		if _, ok := op.funcMap[matchs[1]]; ok {
-			op.funcMap[matchs[1]] = true
+	if matches := op.end.FindStringSubmatch(output); len(matches) == 2 {
+		if _, ok := op.funcMap[matches[1]]; ok {
+			op.funcMap[matches[1]] = true
 			op.finishNum++
 		}
 		return nil
 	}
-	if matchs := op.fail.FindStringSubmatch(output); len(matchs) == 2 {
-		if _, ok := op.funcMap[matchs[1]]; ok {
-			op.funcMap[matchs[1]] = true
-			return fmt.Errorf("%s failed", matchs[0])
+	if matches := op.fail.FindStringSubmatch(output); len(matches) == 2 {
+		if _, ok := op.funcMap[matches[1]]; ok {
+			op.funcMap[matches[1]] = true
+			return fmt.Errorf("%s failed", matches[0])
 		}
 		return nil
 	}
-	if matchs := op.exception.FindStringSubmatch(output); len(matchs) == 3 {
-		if _, ok := op.funcMap[matchs[1]]; ok {
-			op.funcMap[matchs[1]] = true
-			return fmt.Errorf("%s catch exception: %s", matchs[1], matchs[2])
+	if matches := op.exception.FindStringSubmatch(output); len(matches) == 3 {
+		if _, ok := op.funcMap[matches[1]]; ok {
+			op.funcMap[matches[1]] = true
+			return fmt.Errorf("%s catch exception: %s", matches[1], matches[2])
 		}
 		return nil
 	}
