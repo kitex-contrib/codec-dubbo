@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/cloudwego/kitex/server"
 	"log"
 	"net"
+
+	"github.com/cloudwego/kitex/server"
 
 	echo "github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testservice"
 )

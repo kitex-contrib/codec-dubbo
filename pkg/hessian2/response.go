@@ -103,7 +103,7 @@ func (h *_refHolder) add(dest reflect.Value) {
 var _refHolderPtrType = reflect.TypeOf(&_refHolder{})
 
 // ReflectResponse reflect return value
-func ReflectResponse(in interface{}, out interface{}) error {
+func ReflectResponse(in, out interface{}) error {
 	if in == nil {
 		return fmt.Errorf("@in is nil")
 	}
@@ -324,7 +324,7 @@ func packPtr(v reflect.Value) reflect.Value {
 }
 
 // setValueToPtrDest set the raw value to a pointer dest.
-func setValueToPtrDest(dest reflect.Value, v reflect.Value) {
+func setValueToPtrDest(dest, v reflect.Value) {
 	// for number, the type of value may be different with the dest,
 	// must convert it to the correct type of value then set.
 	switch dest.Type() {
