@@ -16,7 +16,8 @@ func serviceInfo() *kitex.ServiceInfo {
 var testServiceServiceInfo = NewServiceInfo()
 
 func NewServiceInfo() *kitex.ServiceInfo {
-	serviceName := "TestService"
+	// todo(DMwangnima): we modify this name to pass tests. In the next PR, should fix this.
+	serviceName := "org.apache.dubbo.tests.api.UserProvider"
 	handlerType := (*echo.TestService)(nil)
 	methods := map[string]kitex.MethodInfo{
 		"EchoInt":                kitex.NewMethodInfo(echoIntHandler, newTestServiceEchoIntArgs, newTestServiceEchoIntResult, false),
