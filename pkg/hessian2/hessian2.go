@@ -46,7 +46,3 @@ func Register(pojos []interface{}) {
 		hessian.RegisterPOJO(i.(hessian.POJO))
 	}
 }
-
-//func ReflectResponse(in, out interface{}) error {
-//	return hessian.ReflectResponse(in, out)
-//}

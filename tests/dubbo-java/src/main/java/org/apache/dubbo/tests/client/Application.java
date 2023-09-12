@@ -1,4 +1,6 @@
 /*
+ * Copyright 2023 CloudWeGo Authors
+ *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -15,22 +17,17 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo.samples.client;
+package org.apache.dubbo.tests.client;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 
 import org.apache.dubbo.config.ReferenceConfig;
-import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
-import org.apache.dubbo.samples.api.UserProvider;
+import org.apache.dubbo.tests.api.UserProvider;
 
 public class Application {
-    private static final String ZOOKEEPER_HOST = System.getProperty("zookeeper.address", "127.0.0.1");
-    private static final String ZOOKEEPER_PORT = System.getProperty("zookeeper.port", "2181");
-    private static final String ZOOKEEPER_ADDRESS = "zookeeper://" + ZOOKEEPER_HOST + ":" + ZOOKEEPER_PORT;
-
     public static void main(String[] args) throws IOException {
         ReferenceConfig<UserProvider> reference = new ReferenceConfig<>();
         reference.setInterface(UserProvider.class);
@@ -38,12 +35,24 @@ public class Application {
 
         DubboBootstrap.getInstance()
                 .application("first-dubbo-consumer")
-//                .registry(new RegistryConfig(ZOOKEEPER_ADDRESS))
                 .reference(reference)
                 .start();
 
         UserProvider service = reference.get();
         testBaseTypes(service);
+        testContainerMapType(service);
+    }
+
+    public static void logEchoFail(String methodName) {
+        System.out.printf("{%s} fail\n", methodName);
+    }
+
+    public static void logEchoException(String methodName, Exception e) {
+        System.out.printf("{%s} exception: {%s}\n", methodName, e);
+    }
+
+    public static void logEchoEnd(String methodName) {
+        System.out.printf("{%s} end\n", methodName);
     }
 
     public static void testBaseTypes(UserProvider svc) {
@@ -57,17 +66,29 @@ public class Application {
         testEchoBinary(svc);
     }
 
+    public static void testContainerMapType(UserProvider svc) {
+        testEchoBool2BoolMap(svc);
+        testEchoBool2ByteMap(svc);
+        testEchoBool2Int16Map(svc);
+        testEchoBool2Int32Map(svc);
+        testEchoBool2Int64Map(svc);
+        testEchoBool2DoubleMap(svc);
+        testEchoBool2StringMap(svc);
+        testEchoBool2BinaryMap(svc);
+    }
+
     public static void testEchoBool(UserProvider svc) {
         String methodName = "EchoBool";
         try {
             boolean req = true;
             boolean resp = svc.EchoBool(req);
             if (req != resp) {
-                System.out.printf("%s req %s is not equal to resp %s", methodName, req, resp);
+                logEchoFail(methodName);
             }
         } catch (Exception e) {
-            System.out.printf("%s received Exception: %s", methodName, e);
+            logEchoException(methodName, e);
         }
+        logEchoEnd(methodName);
     }
 
     public static void testEchoByte(UserProvider svc) {
@@ -76,11 +97,12 @@ public class Application {
             Byte req = '1';
             Byte resp = svc.EchoByte(req);
             if (!req.equals(resp)) {
-                System.out.printf("%s req %s is not equal to resp %s", methodName, req, resp);
+                logEchoFail(methodName);
             }
         } catch (Exception e) {
-            System.out.printf("%s received Exception: %s", methodName, e);
+            logEchoException(methodName, e);
         }
+        logEchoEnd(methodName);
     }
 
     public static void testEchoInt16(UserProvider svc) {
@@ -89,11 +111,12 @@ public class Application {
             Short req = 12;
             Short resp = svc.EchoInt16(req);
             if (!req.equals(resp)) {
-                System.out.printf("%s req %s is not equal to resp %s", methodName, req, resp);
+                logEchoFail(methodName);
             }
         } catch (Exception e) {
-            System.out.printf("%s received Exception: %s", methodName, e);
+            logEchoException(methodName, e);
         }
+        logEchoEnd(methodName);
     }
 
     public static void testEchoInt32(UserProvider svc) {
@@ -102,11 +125,12 @@ public class Application {
             Integer req = 12;
             Integer resp = svc.EchoInt32(req);
             if (!req.equals(resp)) {
-                System.out.printf("%s req %s is not equal to resp %s", methodName, req, resp);
+                logEchoFail(methodName);
             }
         } catch (Exception e) {
-            System.out.printf("%s received Exception: %s", methodName, e);
+            logEchoException(methodName, e);
         }
+        logEchoEnd(methodName);
     }
 
     public static void testEchoInt64(UserProvider svc) {
@@ -115,11 +139,12 @@ public class Application {
             Long req = 12L;
             Long resp = svc.EchoInt64(req);
             if (!req.equals(resp)) {
-                System.out.printf("%s req %s is not equal to resp %s", methodName, req, resp);
+                logEchoFail(methodName);
             }
         } catch (Exception e) {
-            System.out.printf("%s received Exception: %s", methodName, e);
+            logEchoException(methodName, e);
         }
+        logEchoEnd(methodName);
     }
 
     public static void testEchoDouble(UserProvider svc) {
@@ -128,11 +153,12 @@ public class Application {
             Double req = 12.34;
             Double resp = svc.EchoDouble(req);
             if (!req.equals(resp)) {
-                System.out.printf("%s req %s is not equal to resp %s", methodName, req, resp);
+                logEchoFail(methodName);
             }
         } catch (Exception e) {
-            System.out.printf("%s received Exception: %s", methodName, e);
+            logEchoException(methodName, e);
         }
+        logEchoEnd(methodName);
     }
 
     public static void testEchoString(UserProvider svc) {
@@ -141,11 +167,12 @@ public class Application {
             String req = "12";
             String resp = svc.EchoString(req);
             if (!req.equals(resp)) {
-                System.out.printf("%s req %s is not equal to resp %s", methodName, req, resp);
+                logEchoFail(methodName);
             }
         } catch (Exception e) {
-            System.out.printf("%s received Exception: %s", methodName, e);
+            logEchoException(methodName, e);
         }
+        logEchoEnd(methodName);
     }
 
     public static void testEchoBinary(UserProvider svc) {
@@ -154,11 +181,132 @@ public class Application {
             byte[] req = "1234".getBytes();
             byte[] resp = svc.EchoBinary(req);
             if (!Arrays.equals(req, resp)) {
-                System.out.printf("%s req %s is not equal to resp %s", methodName, req, resp);
+                logEchoFail(methodName);
             }
         } catch (Exception e) {
-            System.out.printf("%s received Exception: %s", methodName, e);
+            logEchoException(methodName, e);
         }
+        logEchoEnd(methodName);
     }
 
+    public static void testEchoBool2BoolMap(UserProvider svc) {
+        String methodName = "EchoBool2BoolMap";
+        try {
+            HashMap<Boolean, Boolean> req = new HashMap<>();
+            req.put(true, true);
+            HashMap<Boolean, Boolean> resp = svc.EchoBool2BoolMap(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2ByteMap(UserProvider svc) {
+        String methodName = "EchoBool2ByteMap";
+        try {
+            HashMap<Boolean, Byte> req = new HashMap<>();
+            req.put(true, (byte) 12);
+            HashMap<Boolean, Byte> resp = svc.EchoBool2ByteMap(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2Int16Map(UserProvider svc) {
+        String methodName = "EchoBool2Int16Map";
+        try {
+            HashMap<Boolean, Short> req = new HashMap<>();
+            req.put(true, (short) 12);
+            HashMap<Boolean, Short> resp = svc.EchoBool2Int16Map(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2Int32Map(UserProvider svc) {
+        String methodName = "EchoBool2Int32Map";
+        try {
+            HashMap<Boolean, Integer> req = new HashMap<>();
+            req.put(true, 1);
+            HashMap<Boolean, Integer> resp = svc.EchoBool2Int32Map(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2Int64Map(UserProvider svc) {
+        String methodName = "EchoBool2Int64Map";
+        try {
+            HashMap<Boolean, Long> req = new HashMap<>();
+            req.put(true, (long)1);
+            HashMap<Boolean, Long> resp = svc.EchoBool2Int64Map(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2DoubleMap(UserProvider svc) {
+        String methodName = "EchoBool2DoubleMap";
+        try {
+            HashMap<Boolean, Double> req = new HashMap<>();
+            req.put(true, 12.34);
+            HashMap<Boolean, Double> resp = svc.EchoBool2DoubleMap(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2StringMap(UserProvider svc) {
+        String methodName = "EchoBool2StringMap";
+        try {
+            HashMap<Boolean, String> req = new HashMap<>();
+            req.put(true, "12");
+            HashMap<Boolean, String> resp = svc.EchoBool2StringMap(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2BinaryMap(UserProvider svc) {
+        String methodName = "EchoBool2BinaryMap";
+        try {
+            HashMap<Boolean, byte[]> req = new HashMap<>();
+            byte[] bs = new byte[]{1, 2};
+            req.put(true, bs);
+            HashMap<Boolean, byte[]> resp = svc.EchoBool2BinaryMap(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
 }

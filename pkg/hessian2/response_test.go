@@ -28,21 +28,17 @@ func TestReflectResponse(t *testing.T) {
 	t.Run("map", func(t *testing.T) {
 		tests := []struct {
 			desc      string
-			src       interface{}
-			dest      interface{}
-			testFunc  func(t *testing.T, src, dest interface{}, expectedErr bool)
+			testFunc  func(t *testing.T, expectedErr bool)
 			expectErr bool
 		}{
 			{
 				desc: "map[bool]bool",
-				src: map[bool]bool{
-					true: true,
-				},
-				dest: map[bool]bool(nil),
-				testFunc: func(t *testing.T, src, dest interface{}, expectedErr bool) {
-					typSrc := src.(map[bool]bool)
-					typDest := dest.(map[bool]bool)
-					testReflectResponse(t, typSrc, &typDest, expectedErr)
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool]bool
+					src := map[bool]bool{
+						true: true,
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
 					if !reflect.DeepEqual(src, dest) {
 						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
 					}
@@ -50,14 +46,12 @@ func TestReflectResponse(t *testing.T) {
 			},
 			{
 				desc: "map[bool]int8",
-				src: map[bool]int8{
-					true: 12,
-				},
-				dest: map[bool]int8(nil),
-				testFunc: func(t *testing.T, src, dest interface{}, expectedErr bool) {
-					typSrc := src.(map[bool]int8)
-					typDest := dest.(map[bool]int8)
-					testReflectResponse(t, typSrc, &typDest, expectedErr)
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool]int8
+					src := map[bool]int8{
+						true: 12,
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
 					if !reflect.DeepEqual(src, dest) {
 						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
 					}
@@ -65,14 +59,12 @@ func TestReflectResponse(t *testing.T) {
 			},
 			{
 				desc: "map[bool]int16",
-				src: map[bool]int16{
-					true: 12,
-				},
-				dest: map[bool]int16(nil),
-				testFunc: func(t *testing.T, src, dest interface{}, expectedErr bool) {
-					typSrc := src.(map[bool]int16)
-					typDest := dest.(map[bool]int16)
-					testReflectResponse(t, typSrc, &typDest, expectedErr)
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool]int16
+					src := map[bool]int16{
+						true: 12,
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
 					if !reflect.DeepEqual(src, dest) {
 						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
 					}
@@ -80,14 +72,12 @@ func TestReflectResponse(t *testing.T) {
 			},
 			{
 				desc: "map[bool]int32",
-				src: map[bool]int32{
-					true: 12,
-				},
-				dest: map[bool]int32(nil),
-				testFunc: func(t *testing.T, src, dest interface{}, expectedErr bool) {
-					typSrc := src.(map[bool]int32)
-					typDest := dest.(map[bool]int32)
-					testReflectResponse(t, typSrc, &typDest, expectedErr)
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool]int32
+					src := map[bool]int32{
+						true: 12,
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
 					if !reflect.DeepEqual(src, dest) {
 						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
 					}
@@ -95,14 +85,12 @@ func TestReflectResponse(t *testing.T) {
 			},
 			{
 				desc: "map[bool]int64",
-				src: map[bool]int64{
-					true: 12,
-				},
-				dest: map[bool]int64(nil),
-				testFunc: func(t *testing.T, src, dest interface{}, expectedErr bool) {
-					typSrc := src.(map[bool]int64)
-					typDest := dest.(map[bool]int64)
-					testReflectResponse(t, typSrc, &typDest, expectedErr)
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool]int64
+					src := map[bool]int64{
+						true: 12,
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
 					if !reflect.DeepEqual(src, dest) {
 						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
 					}
@@ -110,14 +98,12 @@ func TestReflectResponse(t *testing.T) {
 			},
 			{
 				desc: "map[bool]float64",
-				src: map[bool]float64{
-					true: 12.34,
-				},
-				dest: map[bool]float64(nil),
-				testFunc: func(t *testing.T, src, dest interface{}, expectedErr bool) {
-					typSrc := src.(map[bool]float64)
-					typDest := dest.(map[bool]float64)
-					testReflectResponse(t, typSrc, &typDest, expectedErr)
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool]float64
+					src := map[bool]float64{
+						true: 12.34,
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
 					if !reflect.DeepEqual(src, dest) {
 						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
 					}
@@ -125,14 +111,12 @@ func TestReflectResponse(t *testing.T) {
 			},
 			{
 				desc: "map[bool]string",
-				src: map[bool]string{
-					true: "12",
-				},
-				dest: map[bool]string(nil),
-				testFunc: func(t *testing.T, src, dest interface{}, expectedErr bool) {
-					typSrc := src.(map[bool]string)
-					typDest := dest.(map[bool]string)
-					testReflectResponse(t, typSrc, &typDest, expectedErr)
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool]string
+					src := map[bool]string{
+						true: "12",
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
 					if !reflect.DeepEqual(src, dest) {
 						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
 					}
@@ -140,17 +124,15 @@ func TestReflectResponse(t *testing.T) {
 			},
 			{
 				desc: "map[bool][]byte",
-				src: map[bool][]byte{
-					true: {
-						'1',
-						'2',
-					},
-				},
-				dest: map[bool][]byte(nil),
-				testFunc: func(t *testing.T, src, dest interface{}, expectedErr bool) {
-					typSrc := src.(map[bool][]byte)
-					typDest := dest.(map[bool][]byte)
-					testReflectResponse(t, typSrc, &typDest, expectedErr)
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool][]byte
+					src := map[bool][]byte{
+						true: {
+							'1',
+							'2',
+						},
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
 					if !reflect.DeepEqual(src, dest) {
 						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
 					}
@@ -158,17 +140,133 @@ func TestReflectResponse(t *testing.T) {
 			},
 			{
 				desc: "map[bool][]bool",
-				src: map[bool][]bool{
-					true: {
-						true,
-						true,
-					},
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool][]bool
+					src := map[bool][]bool{
+						true: {
+							true,
+							true,
+						},
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
 				},
-				dest: map[bool][]bool(nil),
-				testFunc: func(t *testing.T, src, dest interface{}, expectedErr bool) {
-					typSrc := src.(map[bool][]bool)
-					typDest := dest.(map[bool][]bool)
-					testReflectResponse(t, typSrc, &typDest, expectedErr)
+			},
+			{
+				desc: "map[bool][]int8",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool][]int8
+					src := map[bool][]int8{
+						true: {
+							1,
+							2,
+						},
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "map[bool][]int16",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool][]int16
+					src := map[bool][]int16{
+						true: {
+							1,
+							2,
+						},
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "map[bool][]int32",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool][]int32
+					src := map[bool][]int32{
+						true: {
+							1,
+							2,
+						},
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "map[bool][]int64",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool][]int64
+					src := map[bool][]int64{
+						true: {
+							1,
+							2,
+						},
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "map[bool][]float64",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool][]float64
+					src := map[bool][]float64{
+						true: {
+							1.2,
+							3.4,
+						},
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "map[bool][]string",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool][]string
+					src := map[bool][]string{
+						true: {
+							"12",
+							"34",
+						},
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "map[bool][][]byte",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest map[bool][][]byte
+					src := map[bool][][]byte{
+						true: {
+							{
+								'1',
+								'2',
+							},
+							{
+								'3',
+								'4',
+							},
+						},
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
 					if !reflect.DeepEqual(src, dest) {
 						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
 					}
@@ -178,8 +276,7 @@ func TestReflectResponse(t *testing.T) {
 
 		for _, test := range tests {
 			t.Run(test.desc, func(t *testing.T) {
-				test.testFunc(t, test.src, test.dest, test.expectErr)
-
+				test.testFunc(t, test.expectErr)
 			})
 		}
 	})

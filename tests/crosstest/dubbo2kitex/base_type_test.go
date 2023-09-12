@@ -60,7 +60,7 @@ func runKitexServer(startCh chan struct{}, exitCh chan error, addr string) {
 func TestMain(m *testing.M) {
 	startCh := make(chan struct{})
 	exitCh := make(chan error)
-	go runKitexServer(startCh, exitCh, "127.0.0.1:20000")
+	go runKitexServer(startCh, exitCh, ":20000")
 	<-startCh
 	// init dubbo cli until kitex srv has started
 	if err := config.Load(config.WithPath("./conf/dubbogo.yaml")); err != nil {

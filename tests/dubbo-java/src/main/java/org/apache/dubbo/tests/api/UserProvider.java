@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo.samples.api;
+package org.apache.dubbo.tests.api;
 
 import java.util.HashMap;
 import java.util.List;
@@ -64,4 +64,18 @@ public interface UserProvider {
     // Map
 
     HashMap<Boolean, Boolean> EchoBool2BoolMap(HashMap<Boolean, Boolean> req) throws Exception;
+
+    HashMap<Boolean, Byte> EchoBool2ByteMap(HashMap<Boolean, Byte> req) throws Exception;
+
+    HashMap<Boolean, Short> EchoBool2Int16Map(HashMap<Boolean, Short> req) throws Exception;
+
+    HashMap<Boolean, Integer> EchoBool2Int32Map(HashMap<Boolean, Integer> req) throws Exception;
+
+    HashMap<Boolean, Long> EchoBool2Int64Map(HashMap<Boolean, Long> req) throws Exception;
+
+    HashMap<Boolean, Double> EchoBool2DoubleMap(HashMap<Boolean, Double> req) throws Exception;
+
+    HashMap<Boolean, String> EchoBool2StringMap(HashMap<Boolean, String> req) throws Exception;
+
+    HashMap<Boolean, byte[]> EchoBool2BinaryMap(HashMap<Boolean, byte[]> req) throws Exception;
 }

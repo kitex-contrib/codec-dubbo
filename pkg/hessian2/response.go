@@ -15,6 +15,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * This source file has been replicated from the original dubbo-go-hessian2
+ * project repository, and we extend our sincere appreciation to the
+ * dubbo-go development team for their valuable contribution.
  */
 
 package hessian2
@@ -25,12 +29,12 @@ import (
 	"reflect"
 )
 
-// Rune is an alias for rune, so that to get the correct runtime type of rune.
+// _Rune is an alias for rune, so that to get the correct runtime type of rune.
 // The runtime type of rune is int32, which is not expected.
-type Rune rune
+type _Rune rune
 
 var (
-	_varRune       = Rune(0)
+	_varRune       = _Rune(0)
 	_typeOfRune    = reflect.TypeOf(_varRune)
 	_typeOfRunePtr = reflect.TypeOf(&_varRune)
 )
@@ -86,7 +90,7 @@ func (h *_refHolder) change(v reflect.Value) {
 // notice all destinations ref to the value
 func (h *_refHolder) notify() {
 	for _, dest := range h.destinations {
-		SetValue(dest, h.value)
+		setValue(dest, h.value)
 	}
 }
 
@@ -111,31 +115,31 @@ func ReflectResponse(in interface{}, out interface{}) error {
 		return fmt.Errorf("@out should be a pointer")
 	}
 
-	inValue := EnsurePackValue(in)
-	outValue := EnsurePackValue(out)
+	inValue := ensurePackValue(in)
+	outValue := ensurePackValue(out)
 
 	outType := outValue.Type().String()
 	if outType == "interface {}" || outType == "*interface {}" {
-		SetValue(outValue, inValue)
+		setValue(outValue, inValue)
 		return nil
 	}
 
 	switch inValue.Type().Kind() {
 	case reflect.Slice, reflect.Array:
-		return CopySlice(inValue, outValue)
+		return copySlice(inValue, outValue)
 	case reflect.Map:
-		return CopyMap(inValue, outValue)
+		return copyMap(inValue, outValue)
 	default:
-		SetValue(outValue, inValue)
+		setValue(outValue, inValue)
 	}
 
 	return nil
 }
 
-// SetValue set the value to dest.
+// setValue set the value to dest.
 // It will auto check the Ptr pack level and unpack/pack to the right level.
 // It makes sure success to set value
-func SetValue(dest, v reflect.Value) {
+func setValue(dest, v reflect.Value) {
 	// zero value not need to set
 	if !v.IsValid() {
 		return
@@ -157,19 +161,19 @@ func SetValue(dest, v reflect.Value) {
 		return
 	}
 
-	vRawType, vPtrDepth := UnpackType(vType)
+	vRawType, vPtrDepth := unpackType(vType)
 
 	// unpack to the root addressable value, so that to set the value.
-	dest = UnpackToRootAddressableValue(dest)
+	dest = unpackToRootAddressableValue(dest)
 	destType = dest.Type()
-	destRawType, destPtrDepth := UnpackType(destType)
+	destRawType, destPtrDepth := unpackType(destType)
 
 	// it can set the value directly if the raw types are of the same type.
 	if destRawType == vRawType {
 		if destPtrDepth > vPtrDepth {
 			// pack to the same level of dest
 			for i := 0; i < destPtrDepth-vPtrDepth; i++ {
-				v = PackPtr(v)
+				v = packPtr(v)
 			}
 		} else if destPtrDepth < vPtrDepth {
 			// unpack to the same level of dest
@@ -198,7 +202,7 @@ func SetValue(dest, v reflect.Value) {
 		dest.SetUint(uint64(v.Int()))
 		return
 	case reflect.Ptr:
-		SetValueToPtrDest(dest, v)
+		setValueToPtrDest(dest, v)
 		return
 	case reflect.Bool:
 		dest.SetBool(v.Bool())
@@ -208,8 +212,8 @@ func SetValue(dest, v reflect.Value) {
 	}
 }
 
-// CopySlice copy from inSlice to outSlice
-func CopySlice(inSlice, outSlice reflect.Value) error {
+// copySlice copy from inSlice to outSlice
+func copySlice(inSlice, outSlice reflect.Value) error {
 	if inSlice.IsNil() {
 		return errors.New("@in is nil")
 	}
@@ -236,8 +240,8 @@ func CopySlice(inSlice, outSlice reflect.Value) error {
 	return nil
 }
 
-// CopyMap copy from in map to out map
-func CopyMap(inMapValue, outMapValue reflect.Value) error {
+// copyMap copy from in map to out map
+func copyMap(inMapValue, outMapValue reflect.Value) error {
 	if inMapValue.IsNil() {
 		return errors.New("@in is nil")
 	}
@@ -248,20 +252,20 @@ func CopyMap(inMapValue, outMapValue reflect.Value) error {
 		return fmt.Errorf("@in is not map, but %v", inMapValue.Kind())
 	}
 
-	outMapType := UnpackPtrType(outMapValue.Type())
-	SetValue(outMapValue, reflect.MakeMap(outMapType))
+	outMapType := unpackPtrType(outMapValue.Type())
+	setValue(outMapValue, reflect.MakeMap(outMapType))
 
 	outKeyType := outMapType.Key()
 
-	outMapValue = UnpackPtrValue(outMapValue)
+	outMapValue = unpackPtrValue(outMapValue)
 	outValueType := outMapValue.Type().Elem()
 
 	for _, inKey := range inMapValue.MapKeys() {
 		inValue := inMapValue.MapIndex(inKey)
 		outKey := reflect.New(outKeyType).Elem()
-		SetValue(outKey, inKey)
+		setValue(outKey, inKey)
 		outValue := reflect.New(outValueType).Elem()
-		SetValue(outValue, inValue)
+		setValue(outValue, inValue)
 
 		outMapValue.SetMapIndex(outKey, outValue)
 	}
@@ -269,33 +273,33 @@ func CopyMap(inMapValue, outMapValue reflect.Value) error {
 	return nil
 }
 
-// UnpackPtrType unpack pointer type to original type
-func UnpackPtrType(typ reflect.Type) reflect.Type {
+// unpackPtrType unpack pointer type to original type
+func unpackPtrType(typ reflect.Type) reflect.Type {
 	for typ.Kind() == reflect.Ptr {
 		typ = typ.Elem()
 	}
 	return typ
 }
 
-// UnpackPtrValue unpack pointer value to original value
+// unpackPtrValue unpack pointer value to original value
 // return the pointer if its elem is zero value, because lots of operations on zero value is invalid
-func UnpackPtrValue(v reflect.Value) reflect.Value {
+func unpackPtrValue(v reflect.Value) reflect.Value {
 	for v.Kind() == reflect.Ptr && v.Elem().IsValid() {
 		v = v.Elem()
 	}
 	return v
 }
 
-// EnsurePackValue pack the interface with value
-func EnsurePackValue(in interface{}) reflect.Value {
+// ensurePackValue pack the interface with value
+func ensurePackValue(in interface{}) reflect.Value {
 	if v, ok := in.(reflect.Value); ok {
 		return v
 	}
 	return reflect.ValueOf(in)
 }
 
-// UnpackType unpack pointer type to original type and return the pointer depth.
-func UnpackType(typ reflect.Type) (reflect.Type, int) {
+// unpackType unpack pointer type to original type and return the pointer depth.
+func unpackType(typ reflect.Type) (reflect.Type, int) {
 	depth := 0
 	for typ.Kind() == reflect.Ptr {
 		typ = typ.Elem()
@@ -304,23 +308,23 @@ func UnpackType(typ reflect.Type) (reflect.Type, int) {
 	return typ, depth
 }
 
-// UnpackToRootAddressableValue unpack pointer value to the root addressable value.
-func UnpackToRootAddressableValue(v reflect.Value) reflect.Value {
+// unpackToRootAddressableValue unpack pointer value to the root addressable value.
+func unpackToRootAddressableValue(v reflect.Value) reflect.Value {
 	for v.Kind() == reflect.Ptr && v.Elem().CanAddr() {
 		v = v.Elem()
 	}
 	return v
 }
 
-// PackPtr pack a Ptr value
-func PackPtr(v reflect.Value) reflect.Value {
+// packPtr pack a Ptr value
+func packPtr(v reflect.Value) reflect.Value {
 	vv := reflect.New(v.Type())
 	vv.Elem().Set(v)
 	return vv
 }
 
-// SetValueToPtrDest set the raw value to a pointer dest.
-func SetValueToPtrDest(dest reflect.Value, v reflect.Value) {
+// setValueToPtrDest set the raw value to a pointer dest.
+func setValueToPtrDest(dest reflect.Value, v reflect.Value) {
 	// for number, the type of value may be different with the dest,
 	// must convert it to the correct type of value then set.
 	switch dest.Type() {
@@ -379,12 +383,11 @@ func SetValueToPtrDest(dest reflect.Value, v reflect.Value) {
 		return
 	case _typeOfRunePtr:
 		if v.Kind() == reflect.String {
-			vv := Rune(v.String()[0])
+			vv := _Rune(v.String()[0])
 			dest.Set(reflect.ValueOf(&vv))
 			return
 		}
-
-		vv := Rune(v.Int())
+		vv := _Rune(v.Int())
 		dest.Set(reflect.ValueOf(&vv))
 		return
 	default:

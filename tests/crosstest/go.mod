@@ -11,7 +11,7 @@ require (
 
 replace (
 	github.com/kitex-contrib/codec-dubbo/tests/kitex => ../kitex
-	helloworld => ../dubbo
+	helloworld => ../dubbo-go
 	github.com/kitex-contrib/codec-dubbo => ../../
 )
 

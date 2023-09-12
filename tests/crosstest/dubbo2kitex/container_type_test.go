@@ -59,7 +59,7 @@ func TestEchoStringList(t *testing.T) {
 // We have supported other map types (refer to /pkg/hessian2/response_test),
 // but ReflectResponse in dubbo-go side could not support. As a result dubbo-go could not parse
 // map types response correctly.
-// We would finish this part of tests in dubbo-java -> kitex.
+// We would finish this part of tests in dubbo -> kitex.
 
 //func TestEchoBool2BoolMap(t *testing.T) {
 //	req := map[bool]bool{

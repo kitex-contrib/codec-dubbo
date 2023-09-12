@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package org.apache.dubbo.samples.provider;
+package org.apache.dubbo.tests.provider;
 
 import org.apache.dubbo.config.ProtocolConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.ServiceConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
-import org.apache.dubbo.samples.api.UserProvider;
+import org.apache.dubbo.tests.api.UserProvider;
 
 public class Application {
     private static final String ZOOKEEPER_HOST = System.getProperty("zookeeper.address", "127.0.0.1");
