@@ -35,7 +35,6 @@ type _Rune rune
 
 var (
 	_varRune       = _Rune(0)
-	_typeOfRune    = reflect.TypeOf(_varRune)
 	_typeOfRunePtr = reflect.TypeOf(&_varRune)
 )
 
@@ -75,23 +74,6 @@ var (
 type _refHolder struct {
 	// destinations
 	destinations []reflect.Value
-
-	value reflect.Value
-}
-
-// change ref value
-func (h *_refHolder) change(v reflect.Value) {
-	if h.value.CanAddr() && v.CanAddr() && h.value.Pointer() == v.Pointer() {
-		return
-	}
-	h.value = v
-}
-
-// notice all destinations ref to the value
-func (h *_refHolder) notify() {
-	for _, dest := range h.destinations {
-		setValue(dest, h.value)
-	}
 }
 
 // add destination
@@ -246,7 +228,7 @@ func copyMap(inMapValue, outMapValue reflect.Value) error {
 		return errors.New("@in is nil")
 	}
 	if !inMapValue.CanInterface() {
-		return errors.New("@in's Interface can not be used.")
+		return errors.New("@in's Interface can not be used")
 	}
 	if inMapValue.Kind() != reflect.Map {
 		return fmt.Errorf("@in is not map, but %v", inMapValue.Kind())
