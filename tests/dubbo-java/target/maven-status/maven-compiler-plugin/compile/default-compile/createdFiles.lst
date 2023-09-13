@@ -1,4 +1,0 @@
-org/apache/dubbo/tests/api/UserProvider.class
-org/apache/dubbo/tests/provider/UserProviderImpl.class
-org/apache/dubbo/tests/client/Application.class
-org/apache/dubbo/tests/provider/Application.class
