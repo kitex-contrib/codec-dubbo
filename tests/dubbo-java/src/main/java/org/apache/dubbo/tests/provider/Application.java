@@ -24,9 +24,6 @@ import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.tests.api.UserProvider;
 
 public class Application {
-    private static final String ZOOKEEPER_HOST = System.getProperty("zookeeper.address", "127.0.0.1");
-    private static final String ZOOKEEPER_PORT = System.getProperty("zookeeper.port", "2181");
-    private static final String ZOOKEEPER_ADDRESS = "zookeeper://" + ZOOKEEPER_HOST + ":" + ZOOKEEPER_PORT;
 
     public static void main(String[] args) {
         ServiceConfig<UserProvider> service = new ServiceConfig<>();
@@ -35,8 +32,7 @@ public class Application {
 
         DubboBootstrap.getInstance()
                 .application("first-dubbo-provider")
-//                .registry(new RegistryConfig(ZOOKEEPER_ADDRESS))
-                .protocol(new ProtocolConfig("dubbo", -1))
+                .protocol(new ProtocolConfig("dubbo", 20000))
                 .service(service)
                 .start()
                 .await();
