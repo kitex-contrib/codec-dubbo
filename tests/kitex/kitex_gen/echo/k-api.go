@@ -899,6 +899,742 @@ func (p *TestServiceEchoBinaryListResult) Decode(d codec.Decoder) error {
 	return nil
 }
 
+func (p *TestServiceEchoBool2BoolMapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BoolMapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BoolMapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BoolMapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2ByteMapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2ByteMapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2ByteMapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2ByteMapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int16MapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int16MapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int16MapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int16MapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int32MapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int32MapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int32MapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int32MapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int64MapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int64MapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int64MapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int64MapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2DoubleMapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2DoubleMapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2DoubleMapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2DoubleMapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2StringMapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2StringMapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2StringMapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2StringMapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BinaryMapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BinaryMapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BinaryMapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BinaryMapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BoolListMapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BoolListMapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BoolListMapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BoolListMapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2ByteListMapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2ByteListMapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2ByteListMapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2ByteListMapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int16ListMapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int16ListMapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int16ListMapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int16ListMapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int32ListMapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int32ListMapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int32ListMapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int32ListMapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int64ListMapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int64ListMapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int64ListMapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2Int64ListMapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2DoubleListMapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2DoubleListMapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2DoubleListMapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2DoubleListMapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2StringListMapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2StringListMapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2StringListMapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2StringListMapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BinaryListMapArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BinaryListMapArgs) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BinaryListMapResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoBool2BinaryListMapResult) Decode(d codec.Decoder) error {
+	v, err := d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
 type TestServiceEchoIntArgs struct {
 	Req int32 `thrift:"req,1" frugal:"1,default,i32" json:"req"`
 }
@@ -2111,5 +2847,1077 @@ func (p *TestServiceEchoBinaryListResult) String() string {
 	return fmt.Sprintf("TestServiceEchoBinaryListResult(%+v)", *p)
 }
 func (p *TestServiceEchoBinaryListResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2BoolMapArgs struct {
+	Req map[bool]bool `thrift:"req,1" frugal:"1,default,map<bool:bool>" json:"req"`
+}
+
+func NewTestServiceEchoBool2BoolMapArgs() *TestServiceEchoBool2BoolMapArgs {
+	return &TestServiceEchoBool2BoolMapArgs{}
+}
+
+func (p *TestServiceEchoBool2BoolMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2BoolMapArgs{}
+}
+
+func (p *TestServiceEchoBool2BoolMapArgs) GetReq() (v map[bool]bool) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2BoolMapArgs) SetReq(val map[bool]bool) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2BoolMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2BoolMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2BoolMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2BoolMapResult struct {
+	Success map[bool]bool `thrift:"success,0,optional" frugal:"0,optional,map<bool:bool>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2BoolMapResult() *TestServiceEchoBool2BoolMapResult {
+	return &TestServiceEchoBool2BoolMapResult{}
+}
+
+func (p *TestServiceEchoBool2BoolMapResult) InitDefault() {
+	*p = TestServiceEchoBool2BoolMapResult{}
+}
+
+var TestServiceEchoBool2BoolMapResult_Success_DEFAULT map[bool]bool
+
+func (p *TestServiceEchoBool2BoolMapResult) GetSuccess() (v map[bool]bool) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2BoolMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2BoolMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool]bool)
+}
+
+func (p *TestServiceEchoBool2BoolMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2BoolMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2BoolMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2BoolMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2ByteMapArgs struct {
+	Req map[bool]int8 `thrift:"req,1" frugal:"1,default,map<bool:byte>" json:"req"`
+}
+
+func NewTestServiceEchoBool2ByteMapArgs() *TestServiceEchoBool2ByteMapArgs {
+	return &TestServiceEchoBool2ByteMapArgs{}
+}
+
+func (p *TestServiceEchoBool2ByteMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2ByteMapArgs{}
+}
+
+func (p *TestServiceEchoBool2ByteMapArgs) GetReq() (v map[bool]int8) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2ByteMapArgs) SetReq(val map[bool]int8) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2ByteMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2ByteMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2ByteMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2ByteMapResult struct {
+	Success map[bool]int8 `thrift:"success,0,optional" frugal:"0,optional,map<bool:byte>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2ByteMapResult() *TestServiceEchoBool2ByteMapResult {
+	return &TestServiceEchoBool2ByteMapResult{}
+}
+
+func (p *TestServiceEchoBool2ByteMapResult) InitDefault() {
+	*p = TestServiceEchoBool2ByteMapResult{}
+}
+
+var TestServiceEchoBool2ByteMapResult_Success_DEFAULT map[bool]int8
+
+func (p *TestServiceEchoBool2ByteMapResult) GetSuccess() (v map[bool]int8) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2ByteMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2ByteMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool]int8)
+}
+
+func (p *TestServiceEchoBool2ByteMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2ByteMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2ByteMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2ByteMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2Int16MapArgs struct {
+	Req map[bool]int16 `thrift:"req,1" frugal:"1,default,map<bool:i16>" json:"req"`
+}
+
+func NewTestServiceEchoBool2Int16MapArgs() *TestServiceEchoBool2Int16MapArgs {
+	return &TestServiceEchoBool2Int16MapArgs{}
+}
+
+func (p *TestServiceEchoBool2Int16MapArgs) InitDefault() {
+	*p = TestServiceEchoBool2Int16MapArgs{}
+}
+
+func (p *TestServiceEchoBool2Int16MapArgs) GetReq() (v map[bool]int16) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2Int16MapArgs) SetReq(val map[bool]int16) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2Int16MapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2Int16MapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2Int16MapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2Int16MapResult struct {
+	Success map[bool]int16 `thrift:"success,0,optional" frugal:"0,optional,map<bool:i16>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2Int16MapResult() *TestServiceEchoBool2Int16MapResult {
+	return &TestServiceEchoBool2Int16MapResult{}
+}
+
+func (p *TestServiceEchoBool2Int16MapResult) InitDefault() {
+	*p = TestServiceEchoBool2Int16MapResult{}
+}
+
+var TestServiceEchoBool2Int16MapResult_Success_DEFAULT map[bool]int16
+
+func (p *TestServiceEchoBool2Int16MapResult) GetSuccess() (v map[bool]int16) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2Int16MapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2Int16MapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool]int16)
+}
+
+func (p *TestServiceEchoBool2Int16MapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2Int16MapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2Int16MapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2Int16MapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2Int32MapArgs struct {
+	Req map[bool]int32 `thrift:"req,1" frugal:"1,default,map<bool:i32>" json:"req"`
+}
+
+func NewTestServiceEchoBool2Int32MapArgs() *TestServiceEchoBool2Int32MapArgs {
+	return &TestServiceEchoBool2Int32MapArgs{}
+}
+
+func (p *TestServiceEchoBool2Int32MapArgs) InitDefault() {
+	*p = TestServiceEchoBool2Int32MapArgs{}
+}
+
+func (p *TestServiceEchoBool2Int32MapArgs) GetReq() (v map[bool]int32) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2Int32MapArgs) SetReq(val map[bool]int32) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2Int32MapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2Int32MapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2Int32MapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2Int32MapResult struct {
+	Success map[bool]int32 `thrift:"success,0,optional" frugal:"0,optional,map<bool:i32>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2Int32MapResult() *TestServiceEchoBool2Int32MapResult {
+	return &TestServiceEchoBool2Int32MapResult{}
+}
+
+func (p *TestServiceEchoBool2Int32MapResult) InitDefault() {
+	*p = TestServiceEchoBool2Int32MapResult{}
+}
+
+var TestServiceEchoBool2Int32MapResult_Success_DEFAULT map[bool]int32
+
+func (p *TestServiceEchoBool2Int32MapResult) GetSuccess() (v map[bool]int32) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2Int32MapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2Int32MapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool]int32)
+}
+
+func (p *TestServiceEchoBool2Int32MapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2Int32MapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2Int32MapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2Int32MapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2Int64MapArgs struct {
+	Req map[bool]int64 `thrift:"req,1" frugal:"1,default,map<bool:i64>" json:"req"`
+}
+
+func NewTestServiceEchoBool2Int64MapArgs() *TestServiceEchoBool2Int64MapArgs {
+	return &TestServiceEchoBool2Int64MapArgs{}
+}
+
+func (p *TestServiceEchoBool2Int64MapArgs) InitDefault() {
+	*p = TestServiceEchoBool2Int64MapArgs{}
+}
+
+func (p *TestServiceEchoBool2Int64MapArgs) GetReq() (v map[bool]int64) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2Int64MapArgs) SetReq(val map[bool]int64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2Int64MapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2Int64MapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2Int64MapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2Int64MapResult struct {
+	Success map[bool]int64 `thrift:"success,0,optional" frugal:"0,optional,map<bool:i64>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2Int64MapResult() *TestServiceEchoBool2Int64MapResult {
+	return &TestServiceEchoBool2Int64MapResult{}
+}
+
+func (p *TestServiceEchoBool2Int64MapResult) InitDefault() {
+	*p = TestServiceEchoBool2Int64MapResult{}
+}
+
+var TestServiceEchoBool2Int64MapResult_Success_DEFAULT map[bool]int64
+
+func (p *TestServiceEchoBool2Int64MapResult) GetSuccess() (v map[bool]int64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2Int64MapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2Int64MapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool]int64)
+}
+
+func (p *TestServiceEchoBool2Int64MapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2Int64MapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2Int64MapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2Int64MapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2DoubleMapArgs struct {
+	Req map[bool]float64 `thrift:"req,1" frugal:"1,default,map<bool:double>" json:"req"`
+}
+
+func NewTestServiceEchoBool2DoubleMapArgs() *TestServiceEchoBool2DoubleMapArgs {
+	return &TestServiceEchoBool2DoubleMapArgs{}
+}
+
+func (p *TestServiceEchoBool2DoubleMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2DoubleMapArgs{}
+}
+
+func (p *TestServiceEchoBool2DoubleMapArgs) GetReq() (v map[bool]float64) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2DoubleMapArgs) SetReq(val map[bool]float64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2DoubleMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2DoubleMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2DoubleMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2DoubleMapResult struct {
+	Success map[bool]float64 `thrift:"success,0,optional" frugal:"0,optional,map<bool:double>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2DoubleMapResult() *TestServiceEchoBool2DoubleMapResult {
+	return &TestServiceEchoBool2DoubleMapResult{}
+}
+
+func (p *TestServiceEchoBool2DoubleMapResult) InitDefault() {
+	*p = TestServiceEchoBool2DoubleMapResult{}
+}
+
+var TestServiceEchoBool2DoubleMapResult_Success_DEFAULT map[bool]float64
+
+func (p *TestServiceEchoBool2DoubleMapResult) GetSuccess() (v map[bool]float64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2DoubleMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2DoubleMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool]float64)
+}
+
+func (p *TestServiceEchoBool2DoubleMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2DoubleMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2DoubleMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2DoubleMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2StringMapArgs struct {
+	Req map[bool]string `thrift:"req,1" frugal:"1,default,map<bool:string>" json:"req"`
+}
+
+func NewTestServiceEchoBool2StringMapArgs() *TestServiceEchoBool2StringMapArgs {
+	return &TestServiceEchoBool2StringMapArgs{}
+}
+
+func (p *TestServiceEchoBool2StringMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2StringMapArgs{}
+}
+
+func (p *TestServiceEchoBool2StringMapArgs) GetReq() (v map[bool]string) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2StringMapArgs) SetReq(val map[bool]string) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2StringMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2StringMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2StringMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2StringMapResult struct {
+	Success map[bool]string `thrift:"success,0,optional" frugal:"0,optional,map<bool:string>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2StringMapResult() *TestServiceEchoBool2StringMapResult {
+	return &TestServiceEchoBool2StringMapResult{}
+}
+
+func (p *TestServiceEchoBool2StringMapResult) InitDefault() {
+	*p = TestServiceEchoBool2StringMapResult{}
+}
+
+var TestServiceEchoBool2StringMapResult_Success_DEFAULT map[bool]string
+
+func (p *TestServiceEchoBool2StringMapResult) GetSuccess() (v map[bool]string) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2StringMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2StringMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool]string)
+}
+
+func (p *TestServiceEchoBool2StringMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2StringMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2StringMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2StringMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2BinaryMapArgs struct {
+	Req map[bool][]byte `thrift:"req,1" frugal:"1,default,map<bool:binary>" json:"req"`
+}
+
+func NewTestServiceEchoBool2BinaryMapArgs() *TestServiceEchoBool2BinaryMapArgs {
+	return &TestServiceEchoBool2BinaryMapArgs{}
+}
+
+func (p *TestServiceEchoBool2BinaryMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2BinaryMapArgs{}
+}
+
+func (p *TestServiceEchoBool2BinaryMapArgs) GetReq() (v map[bool][]byte) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2BinaryMapArgs) SetReq(val map[bool][]byte) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2BinaryMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2BinaryMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2BinaryMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2BinaryMapResult struct {
+	Success map[bool][]byte `thrift:"success,0,optional" frugal:"0,optional,map<bool:binary>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2BinaryMapResult() *TestServiceEchoBool2BinaryMapResult {
+	return &TestServiceEchoBool2BinaryMapResult{}
+}
+
+func (p *TestServiceEchoBool2BinaryMapResult) InitDefault() {
+	*p = TestServiceEchoBool2BinaryMapResult{}
+}
+
+var TestServiceEchoBool2BinaryMapResult_Success_DEFAULT map[bool][]byte
+
+func (p *TestServiceEchoBool2BinaryMapResult) GetSuccess() (v map[bool][]byte) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2BinaryMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2BinaryMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool][]byte)
+}
+
+func (p *TestServiceEchoBool2BinaryMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2BinaryMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2BinaryMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2BinaryMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2BoolListMapArgs struct {
+	Req map[bool][]bool `thrift:"req,1" frugal:"1,default,map<bool:list<bool>>" json:"req"`
+}
+
+func NewTestServiceEchoBool2BoolListMapArgs() *TestServiceEchoBool2BoolListMapArgs {
+	return &TestServiceEchoBool2BoolListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2BoolListMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2BoolListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2BoolListMapArgs) GetReq() (v map[bool][]bool) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2BoolListMapArgs) SetReq(val map[bool][]bool) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2BoolListMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2BoolListMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2BoolListMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2BoolListMapResult struct {
+	Success map[bool][]bool `thrift:"success,0,optional" frugal:"0,optional,map<bool:list<bool>>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2BoolListMapResult() *TestServiceEchoBool2BoolListMapResult {
+	return &TestServiceEchoBool2BoolListMapResult{}
+}
+
+func (p *TestServiceEchoBool2BoolListMapResult) InitDefault() {
+	*p = TestServiceEchoBool2BoolListMapResult{}
+}
+
+var TestServiceEchoBool2BoolListMapResult_Success_DEFAULT map[bool][]bool
+
+func (p *TestServiceEchoBool2BoolListMapResult) GetSuccess() (v map[bool][]bool) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2BoolListMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2BoolListMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool][]bool)
+}
+
+func (p *TestServiceEchoBool2BoolListMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2BoolListMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2BoolListMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2BoolListMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2ByteListMapArgs struct {
+	Req map[bool][]int8 `thrift:"req,1" frugal:"1,default,map<bool:list<byte>>" json:"req"`
+}
+
+func NewTestServiceEchoBool2ByteListMapArgs() *TestServiceEchoBool2ByteListMapArgs {
+	return &TestServiceEchoBool2ByteListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2ByteListMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2ByteListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2ByteListMapArgs) GetReq() (v map[bool][]int8) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2ByteListMapArgs) SetReq(val map[bool][]int8) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2ByteListMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2ByteListMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2ByteListMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2ByteListMapResult struct {
+	Success map[bool][]int8 `thrift:"success,0,optional" frugal:"0,optional,map<bool:list<byte>>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2ByteListMapResult() *TestServiceEchoBool2ByteListMapResult {
+	return &TestServiceEchoBool2ByteListMapResult{}
+}
+
+func (p *TestServiceEchoBool2ByteListMapResult) InitDefault() {
+	*p = TestServiceEchoBool2ByteListMapResult{}
+}
+
+var TestServiceEchoBool2ByteListMapResult_Success_DEFAULT map[bool][]int8
+
+func (p *TestServiceEchoBool2ByteListMapResult) GetSuccess() (v map[bool][]int8) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2ByteListMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2ByteListMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool][]int8)
+}
+
+func (p *TestServiceEchoBool2ByteListMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2ByteListMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2ByteListMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2ByteListMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2Int16ListMapArgs struct {
+	Req map[bool][]int16 `thrift:"req,1" frugal:"1,default,map<bool:list<i16>>" json:"req"`
+}
+
+func NewTestServiceEchoBool2Int16ListMapArgs() *TestServiceEchoBool2Int16ListMapArgs {
+	return &TestServiceEchoBool2Int16ListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2Int16ListMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2Int16ListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2Int16ListMapArgs) GetReq() (v map[bool][]int16) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2Int16ListMapArgs) SetReq(val map[bool][]int16) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2Int16ListMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2Int16ListMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2Int16ListMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2Int16ListMapResult struct {
+	Success map[bool][]int16 `thrift:"success,0,optional" frugal:"0,optional,map<bool:list<i16>>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2Int16ListMapResult() *TestServiceEchoBool2Int16ListMapResult {
+	return &TestServiceEchoBool2Int16ListMapResult{}
+}
+
+func (p *TestServiceEchoBool2Int16ListMapResult) InitDefault() {
+	*p = TestServiceEchoBool2Int16ListMapResult{}
+}
+
+var TestServiceEchoBool2Int16ListMapResult_Success_DEFAULT map[bool][]int16
+
+func (p *TestServiceEchoBool2Int16ListMapResult) GetSuccess() (v map[bool][]int16) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2Int16ListMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2Int16ListMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool][]int16)
+}
+
+func (p *TestServiceEchoBool2Int16ListMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2Int16ListMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2Int16ListMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2Int16ListMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2Int32ListMapArgs struct {
+	Req map[bool][]int32 `thrift:"req,1" frugal:"1,default,map<bool:list<i32>>" json:"req"`
+}
+
+func NewTestServiceEchoBool2Int32ListMapArgs() *TestServiceEchoBool2Int32ListMapArgs {
+	return &TestServiceEchoBool2Int32ListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2Int32ListMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2Int32ListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2Int32ListMapArgs) GetReq() (v map[bool][]int32) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2Int32ListMapArgs) SetReq(val map[bool][]int32) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2Int32ListMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2Int32ListMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2Int32ListMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2Int32ListMapResult struct {
+	Success map[bool][]int32 `thrift:"success,0,optional" frugal:"0,optional,map<bool:list<i32>>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2Int32ListMapResult() *TestServiceEchoBool2Int32ListMapResult {
+	return &TestServiceEchoBool2Int32ListMapResult{}
+}
+
+func (p *TestServiceEchoBool2Int32ListMapResult) InitDefault() {
+	*p = TestServiceEchoBool2Int32ListMapResult{}
+}
+
+var TestServiceEchoBool2Int32ListMapResult_Success_DEFAULT map[bool][]int32
+
+func (p *TestServiceEchoBool2Int32ListMapResult) GetSuccess() (v map[bool][]int32) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2Int32ListMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2Int32ListMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool][]int32)
+}
+
+func (p *TestServiceEchoBool2Int32ListMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2Int32ListMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2Int32ListMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2Int32ListMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2Int64ListMapArgs struct {
+	Req map[bool][]int64 `thrift:"req,1" frugal:"1,default,map<bool:list<i64>>" json:"req"`
+}
+
+func NewTestServiceEchoBool2Int64ListMapArgs() *TestServiceEchoBool2Int64ListMapArgs {
+	return &TestServiceEchoBool2Int64ListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2Int64ListMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2Int64ListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2Int64ListMapArgs) GetReq() (v map[bool][]int64) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2Int64ListMapArgs) SetReq(val map[bool][]int64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2Int64ListMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2Int64ListMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2Int64ListMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2Int64ListMapResult struct {
+	Success map[bool][]int64 `thrift:"success,0,optional" frugal:"0,optional,map<bool:list<i64>>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2Int64ListMapResult() *TestServiceEchoBool2Int64ListMapResult {
+	return &TestServiceEchoBool2Int64ListMapResult{}
+}
+
+func (p *TestServiceEchoBool2Int64ListMapResult) InitDefault() {
+	*p = TestServiceEchoBool2Int64ListMapResult{}
+}
+
+var TestServiceEchoBool2Int64ListMapResult_Success_DEFAULT map[bool][]int64
+
+func (p *TestServiceEchoBool2Int64ListMapResult) GetSuccess() (v map[bool][]int64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2Int64ListMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2Int64ListMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool][]int64)
+}
+
+func (p *TestServiceEchoBool2Int64ListMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2Int64ListMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2Int64ListMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2Int64ListMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2DoubleListMapArgs struct {
+	Req map[bool][]float64 `thrift:"req,1" frugal:"1,default,map<bool:list<double>>" json:"req"`
+}
+
+func NewTestServiceEchoBool2DoubleListMapArgs() *TestServiceEchoBool2DoubleListMapArgs {
+	return &TestServiceEchoBool2DoubleListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2DoubleListMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2DoubleListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2DoubleListMapArgs) GetReq() (v map[bool][]float64) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2DoubleListMapArgs) SetReq(val map[bool][]float64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2DoubleListMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2DoubleListMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2DoubleListMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2DoubleListMapResult struct {
+	Success map[bool][]float64 `thrift:"success,0,optional" frugal:"0,optional,map<bool:list<double>>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2DoubleListMapResult() *TestServiceEchoBool2DoubleListMapResult {
+	return &TestServiceEchoBool2DoubleListMapResult{}
+}
+
+func (p *TestServiceEchoBool2DoubleListMapResult) InitDefault() {
+	*p = TestServiceEchoBool2DoubleListMapResult{}
+}
+
+var TestServiceEchoBool2DoubleListMapResult_Success_DEFAULT map[bool][]float64
+
+func (p *TestServiceEchoBool2DoubleListMapResult) GetSuccess() (v map[bool][]float64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2DoubleListMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2DoubleListMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool][]float64)
+}
+
+func (p *TestServiceEchoBool2DoubleListMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2DoubleListMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2DoubleListMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2DoubleListMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2StringListMapArgs struct {
+	Req map[bool][]string `thrift:"req,1" frugal:"1,default,map<bool:list<string>>" json:"req"`
+}
+
+func NewTestServiceEchoBool2StringListMapArgs() *TestServiceEchoBool2StringListMapArgs {
+	return &TestServiceEchoBool2StringListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2StringListMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2StringListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2StringListMapArgs) GetReq() (v map[bool][]string) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2StringListMapArgs) SetReq(val map[bool][]string) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2StringListMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2StringListMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2StringListMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2StringListMapResult struct {
+	Success map[bool][]string `thrift:"success,0,optional" frugal:"0,optional,map<bool:list<string>>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2StringListMapResult() *TestServiceEchoBool2StringListMapResult {
+	return &TestServiceEchoBool2StringListMapResult{}
+}
+
+func (p *TestServiceEchoBool2StringListMapResult) InitDefault() {
+	*p = TestServiceEchoBool2StringListMapResult{}
+}
+
+var TestServiceEchoBool2StringListMapResult_Success_DEFAULT map[bool][]string
+
+func (p *TestServiceEchoBool2StringListMapResult) GetSuccess() (v map[bool][]string) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2StringListMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2StringListMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool][]string)
+}
+
+func (p *TestServiceEchoBool2StringListMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2StringListMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2StringListMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2StringListMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2BinaryListMapArgs struct {
+	Req map[bool][][]byte `thrift:"req,1" frugal:"1,default,map<bool:list<binary>>" json:"req"`
+}
+
+func NewTestServiceEchoBool2BinaryListMapArgs() *TestServiceEchoBool2BinaryListMapArgs {
+	return &TestServiceEchoBool2BinaryListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2BinaryListMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2BinaryListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2BinaryListMapArgs) GetReq() (v map[bool][][]byte) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2BinaryListMapArgs) SetReq(val map[bool][][]byte) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2BinaryListMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2BinaryListMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2BinaryListMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2BinaryListMapResult struct {
+	Success map[bool][][]byte `thrift:"success,0,optional" frugal:"0,optional,map<bool:list<binary>>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2BinaryListMapResult() *TestServiceEchoBool2BinaryListMapResult {
+	return &TestServiceEchoBool2BinaryListMapResult{}
+}
+
+func (p *TestServiceEchoBool2BinaryListMapResult) InitDefault() {
+	*p = TestServiceEchoBool2BinaryListMapResult{}
+}
+
+var TestServiceEchoBool2BinaryListMapResult_Success_DEFAULT map[bool][][]byte
+
+func (p *TestServiceEchoBool2BinaryListMapResult) GetSuccess() (v map[bool][][]byte) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2BinaryListMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2BinaryListMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool][][]byte)
+}
+
+func (p *TestServiceEchoBool2BinaryListMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2BinaryListMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2BinaryListMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2BinaryListMapResult) GetResult() interface{} {
 	return p.Success
 }

@@ -1,6 +1,4 @@
 /*
- * Copyright 2023 CloudWeGo Authors
- *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -17,32 +15,26 @@
  * limitations under the License.
  */
 
-package hessian2
+package org.apache.dubbo.tests.provider;
 
-import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/kitex-contrib/codec-dubbo/pkg/iface"
-)
+import org.apache.dubbo.config.ProtocolConfig;
+import org.apache.dubbo.config.RegistryConfig;
+import org.apache.dubbo.config.ServiceConfig;
+import org.apache.dubbo.config.bootstrap.DubboBootstrap;
+import org.apache.dubbo.tests.api.UserProvider;
 
-func NewEncoder() iface.Encoder {
-	return hessian.NewEncoder()
-}
+public class Application {
 
-func NewDecoder(b []byte) iface.Decoder {
-	return hessian.NewDecoder(b)
-}
+    public static void main(String[] args) {
+        ServiceConfig<UserProvider> service = new ServiceConfig<>();
+        service.setInterface(UserProvider.class);
+        service.setRef(new UserProviderImpl());
 
-type (
-	Encoder struct {
-		hessian.Encoder
-	}
-	Decoder struct {
-		hessian.Decoder
-	}
-)
-
-func Register(pojos []interface{}) {
-	for _, i := range pojos {
-		hessian.RegisterPOJO(i.(hessian.POJO))
-	}
+        DubboBootstrap.getInstance()
+                .application("first-dubbo-provider")
+                .protocol(new ProtocolConfig("dubbo", 20000))
+                .service(service)
+                .start()
+                .await();
+    }
 }

@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	addr, _ := net.ResolveTCPAddr("tcp", "127.0.0.1:20000")
+	addr, _ := net.ResolveTCPAddr("tcp", ":20000")
 	svr := echo.NewServer(new(TestServiceImpl), server.WithServiceAddr(addr))
 
 	err := svr.Run()

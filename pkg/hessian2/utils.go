@@ -21,7 +21,7 @@
  * development team for their valuable contribution.
  */
 
-package dubbo_spec
+package hessian2
 
 import (
 	"bytes"

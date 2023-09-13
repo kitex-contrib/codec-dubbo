@@ -87,4 +87,36 @@ type TestService interface {
 	EchoStringList(ctx context.Context, req []string) (r []string, err error)
 
 	EchoBinaryList(ctx context.Context, req [][]byte) (r [][]byte, err error)
+
+	EchoBool2BoolMap(ctx context.Context, req map[bool]bool) (r map[bool]bool, err error)
+
+	EchoBool2ByteMap(ctx context.Context, req map[bool]int8) (r map[bool]int8, err error)
+
+	EchoBool2Int16Map(ctx context.Context, req map[bool]int16) (r map[bool]int16, err error)
+
+	EchoBool2Int32Map(ctx context.Context, req map[bool]int32) (r map[bool]int32, err error)
+
+	EchoBool2Int64Map(ctx context.Context, req map[bool]int64) (r map[bool]int64, err error)
+
+	EchoBool2DoubleMap(ctx context.Context, req map[bool]float64) (r map[bool]float64, err error)
+
+	EchoBool2StringMap(ctx context.Context, req map[bool]string) (r map[bool]string, err error)
+
+	EchoBool2BinaryMap(ctx context.Context, req map[bool][]byte) (r map[bool][]byte, err error)
+
+	EchoBool2BoolListMap(ctx context.Context, req map[bool][]bool) (r map[bool][]bool, err error)
+
+	EchoBool2ByteListMap(ctx context.Context, req map[bool][]int8) (r map[bool][]int8, err error)
+
+	EchoBool2Int16ListMap(ctx context.Context, req map[bool][]int16) (r map[bool][]int16, err error)
+
+	EchoBool2Int32ListMap(ctx context.Context, req map[bool][]int32) (r map[bool][]int32, err error)
+
+	EchoBool2Int64ListMap(ctx context.Context, req map[bool][]int64) (r map[bool][]int64, err error)
+
+	EchoBool2DoubleListMap(ctx context.Context, req map[bool][]float64) (r map[bool][]float64, err error)
+
+	EchoBool2StringListMap(ctx context.Context, req map[bool][]string) (r map[bool][]string, err error)
+
+	EchoBool2BinaryListMap(ctx context.Context, req map[bool][][]byte) (r map[bool][][]byte, err error)
 }

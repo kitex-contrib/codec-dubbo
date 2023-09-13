@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package dubbo_spec
+package hessian2
 
 import (
 	"fmt"

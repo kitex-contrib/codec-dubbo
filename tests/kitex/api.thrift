@@ -35,4 +35,22 @@ service TestService {
     list<double> EchoDoubleList(1: list<double>req)
     list<string> EchoStringList(1: list<string>req)
     list<binary> EchoBinaryList(1: list<binary>req)
+
+    // container map
+    map<bool, bool> EchoBool2BoolMap(1: map<bool, bool>req)
+    map<bool, byte> EchoBool2ByteMap(1: map<bool, byte>req)
+    map<bool, i16> EchoBool2Int16Map(1: map<bool, i16>req)
+    map<bool, i32> EchoBool2Int32Map(1: map<bool, i32>req)
+    map<bool, i64> EchoBool2Int64Map(1: map<bool, i64>req)
+    map<bool, double> EchoBool2DoubleMap(1: map<bool, double>req)
+    map<bool, string> EchoBool2StringMap(1: map<bool, string>req)
+    map<bool, binary> EchoBool2BinaryMap(1: map<bool, binary>req)
+    map<bool, list<bool>> EchoBool2BoolListMap(1: map<bool, list<bool>>req)
+    map<bool, list<byte>> EchoBool2ByteListMap(1: map<bool, list<byte>>req)
+    map<bool, list<i16>> EchoBool2Int16ListMap(1: map<bool, list<i16>>req)
+    map<bool, list<i32>> EchoBool2Int32ListMap(1: map<bool, list<i32>>req)
+    map<bool, list<i64>> EchoBool2Int64ListMap(1: map<bool, list<i64>>req)
+    map<bool, list<double>> EchoBool2DoubleListMap(1: map<bool, list<double>>req)
+    map<bool, list<string>> EchoBool2StringListMap(1: map<bool, list<string>>req)
+    map<bool, list<binary>> EchoBool2BinaryListMap(1: map<bool, list<binary>>req)
 }

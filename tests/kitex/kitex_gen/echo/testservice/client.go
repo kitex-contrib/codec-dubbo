@@ -30,6 +30,22 @@ type Client interface {
 	EchoDoubleList(ctx context.Context, req []float64, callOptions ...callopt.Option) (r []float64, err error)
 	EchoStringList(ctx context.Context, req []string, callOptions ...callopt.Option) (r []string, err error)
 	EchoBinaryList(ctx context.Context, req [][]byte, callOptions ...callopt.Option) (r [][]byte, err error)
+	EchoBool2BoolMap(ctx context.Context, req map[bool]bool, callOptions ...callopt.Option) (r map[bool]bool, err error)
+	EchoBool2ByteMap(ctx context.Context, req map[bool]int8, callOptions ...callopt.Option) (r map[bool]int8, err error)
+	EchoBool2Int16Map(ctx context.Context, req map[bool]int16, callOptions ...callopt.Option) (r map[bool]int16, err error)
+	EchoBool2Int32Map(ctx context.Context, req map[bool]int32, callOptions ...callopt.Option) (r map[bool]int32, err error)
+	EchoBool2Int64Map(ctx context.Context, req map[bool]int64, callOptions ...callopt.Option) (r map[bool]int64, err error)
+	EchoBool2DoubleMap(ctx context.Context, req map[bool]float64, callOptions ...callopt.Option) (r map[bool]float64, err error)
+	EchoBool2StringMap(ctx context.Context, req map[bool]string, callOptions ...callopt.Option) (r map[bool]string, err error)
+	EchoBool2BinaryMap(ctx context.Context, req map[bool][]byte, callOptions ...callopt.Option) (r map[bool][]byte, err error)
+	EchoBool2BoolListMap(ctx context.Context, req map[bool][]bool, callOptions ...callopt.Option) (r map[bool][]bool, err error)
+	EchoBool2ByteListMap(ctx context.Context, req map[bool][]int8, callOptions ...callopt.Option) (r map[bool][]int8, err error)
+	EchoBool2Int16ListMap(ctx context.Context, req map[bool][]int16, callOptions ...callopt.Option) (r map[bool][]int16, err error)
+	EchoBool2Int32ListMap(ctx context.Context, req map[bool][]int32, callOptions ...callopt.Option) (r map[bool][]int32, err error)
+	EchoBool2Int64ListMap(ctx context.Context, req map[bool][]int64, callOptions ...callopt.Option) (r map[bool][]int64, err error)
+	EchoBool2DoubleListMap(ctx context.Context, req map[bool][]float64, callOptions ...callopt.Option) (r map[bool][]float64, err error)
+	EchoBool2StringListMap(ctx context.Context, req map[bool][]string, callOptions ...callopt.Option) (r map[bool][]string, err error)
+	EchoBool2BinaryListMap(ctx context.Context, req map[bool][][]byte, callOptions ...callopt.Option) (r map[bool][][]byte, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -151,4 +167,84 @@ func (p *kTestServiceClient) EchoStringList(ctx context.Context, req []string, c
 func (p *kTestServiceClient) EchoBinaryList(ctx context.Context, req [][]byte, callOptions ...callopt.Option) (r [][]byte, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.EchoBinaryList(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2BoolMap(ctx context.Context, req map[bool]bool, callOptions ...callopt.Option) (r map[bool]bool, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2BoolMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2ByteMap(ctx context.Context, req map[bool]int8, callOptions ...callopt.Option) (r map[bool]int8, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2ByteMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2Int16Map(ctx context.Context, req map[bool]int16, callOptions ...callopt.Option) (r map[bool]int16, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2Int16Map(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2Int32Map(ctx context.Context, req map[bool]int32, callOptions ...callopt.Option) (r map[bool]int32, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2Int32Map(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2Int64Map(ctx context.Context, req map[bool]int64, callOptions ...callopt.Option) (r map[bool]int64, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2Int64Map(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2DoubleMap(ctx context.Context, req map[bool]float64, callOptions ...callopt.Option) (r map[bool]float64, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2DoubleMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2StringMap(ctx context.Context, req map[bool]string, callOptions ...callopt.Option) (r map[bool]string, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2StringMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2BinaryMap(ctx context.Context, req map[bool][]byte, callOptions ...callopt.Option) (r map[bool][]byte, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2BinaryMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2BoolListMap(ctx context.Context, req map[bool][]bool, callOptions ...callopt.Option) (r map[bool][]bool, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2BoolListMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2ByteListMap(ctx context.Context, req map[bool][]int8, callOptions ...callopt.Option) (r map[bool][]int8, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2ByteListMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2Int16ListMap(ctx context.Context, req map[bool][]int16, callOptions ...callopt.Option) (r map[bool][]int16, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2Int16ListMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2Int32ListMap(ctx context.Context, req map[bool][]int32, callOptions ...callopt.Option) (r map[bool][]int32, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2Int32ListMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2Int64ListMap(ctx context.Context, req map[bool][]int64, callOptions ...callopt.Option) (r map[bool][]int64, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2Int64ListMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2DoubleListMap(ctx context.Context, req map[bool][]float64, callOptions ...callopt.Option) (r map[bool][]float64, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2DoubleListMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2StringListMap(ctx context.Context, req map[bool][]string, callOptions ...callopt.Option) (r map[bool][]string, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2StringListMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2BinaryListMap(ctx context.Context, req map[bool][][]byte, callOptions ...callopt.Option) (r map[bool][][]byte, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2BinaryListMap(ctx, req)
 }
