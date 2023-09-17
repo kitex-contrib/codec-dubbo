@@ -208,6 +208,9 @@ public class Application {
             ArrayList<Boolean> req = new ArrayList<>();
             req.add(true);
             ArrayList<Boolean> resp = svc.EchoBoolList(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
         } catch (Exception e) {
             logEchoException(methodName, e);
         }
@@ -220,6 +223,9 @@ public class Application {
             ArrayList<Byte> req = new ArrayList<>();
             req.add((byte)12);
             ArrayList<Byte> resp = svc.EchoByteList(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
         } catch (Exception e) {
             logEchoException(methodName, e);
         }
@@ -232,6 +238,9 @@ public class Application {
             ArrayList<Short> req = new ArrayList<>();
             req.add((short)12);
             ArrayList<Short> resp = svc.EchoInt16List(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
         } catch (Exception e) {
             logEchoException(methodName, e);
         }
@@ -244,6 +253,9 @@ public class Application {
             ArrayList<Integer> req = new ArrayList<>();
             req.add(12);
             ArrayList<Integer> resp = svc.EchoInt32List(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
         } catch (Exception e) {
             logEchoException(methodName, e);
         }
@@ -256,6 +268,9 @@ public class Application {
             ArrayList<Long> req = new ArrayList<>();
             req.add((long)12);
             ArrayList<Long> resp = svc.EchoInt64List(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
         } catch (Exception e) {
             logEchoException(methodName, e);
         }
@@ -268,6 +283,9 @@ public class Application {
             ArrayList<Double> req = new ArrayList<>();
             req.add(12.34);
             ArrayList<Double> resp = svc.EchoDoubleList(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
         } catch (Exception e) {
             logEchoException(methodName, e);
         }
@@ -280,6 +298,9 @@ public class Application {
             ArrayList<String> req = new ArrayList<>();
             req.add("12");
             ArrayList<String> resp = svc.EchoStringList(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
         } catch (Exception e) {
             logEchoException(methodName, e);
         }
@@ -293,6 +314,9 @@ public class Application {
             byte[] bs = new byte[]{1, 2};
             req.add(bs);
             ArrayList<byte[]> resp = svc.EchoBinaryList(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
         } catch (Exception e) {
             logEchoException(methodName, e);
         }
