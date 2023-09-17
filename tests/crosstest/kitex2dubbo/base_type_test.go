@@ -49,7 +49,7 @@ func runDubboGoServer(exitChan chan struct{}) {
 func TestMain(m *testing.M) {
 	exitChan := make(chan struct{})
 	go runDubboGoServer(exitChan)
-	//cancel := runDubboJavaServer()
+	cancel := runDubboJavaServer()
 	//wait for dubbo-go and dubbo-java server initialization
 	time.Sleep(10 * time.Second)
 	var err error
@@ -65,7 +65,7 @@ func TestMain(m *testing.M) {
 	// close dubbo-go server
 	close(exitChan)
 	// kill dubbo-java server
-	//cancel()
+	cancel()
 }
 
 func TestEchoBool(t *testing.T) {
