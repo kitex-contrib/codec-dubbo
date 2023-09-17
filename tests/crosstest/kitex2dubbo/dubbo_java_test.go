@@ -42,8 +42,7 @@ func runDubboJavaServer() context.CancelFunc {
 
 	go func() {
 		if err := cmd.Run(); err != nil {
-			fmt.Println(err)
-			//panic(fmt.Sprintf("mvn exec failed: %s", err))
+			panic(fmt.Sprintf("mvn exec failed: %s", err))
 		}
 	}()
 
