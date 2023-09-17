@@ -17,15 +17,35 @@
  * limitations under the License.
  */
 
-package dubbo2kitex
+package kitex2dubbo
 
 import (
 	"context"
-	"testing"
+	"fmt"
+	"os/exec"
 )
 
-func TestEchoBinary(t *testing.T) {
-	req := []byte{'1', '2'}
-	resp, err := cli.EchoBinary(context.Background(), req)
-	assertEcho(t, err, req, resp)
+func runDubboJavaServer() context.CancelFunc {
+	testDir := "../../dubbo-java"
+	// initialize mvn packages
+	cleanCmd := exec.Command("mvn", "clean", "package")
+	cleanCmd.Dir = testDir
+	if _, err := cleanCmd.Output(); err != nil {
+		panic(fmt.Sprintf("mvn clean package failed: %s", err))
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	cmd := exec.CommandContext(ctx, "mvn",
+		"-Djava.net.preferIPv4Stack=true",
+		"-Dexec.mainClass=org.apache.dubbo.tests.provider.Application",
+		"exec:java")
+	cmd.Dir = testDir
+
+	go func() {
+		if err := cmd.Run(); err != nil {
+			fmt.Println(err)
+			//panic(fmt.Sprintf("mvn exec failed: %s", err))
+		}
+	}()
+
+	return cancel
 }

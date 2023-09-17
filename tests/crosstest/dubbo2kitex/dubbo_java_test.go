@@ -96,8 +96,7 @@ func TestDubboJava(t *testing.T) {
 	// initialize mvn packages
 	cleanCmd := exec.Command("mvn", "clean", "package")
 	cleanCmd.Dir = testDir
-	if content, err := cleanCmd.Output(); err != nil {
-		t.Log(content)
+	if _, err := cleanCmd.Output(); err != nil {
 		t.Fatal(err)
 	}
 	ctx, cancel := context.WithCancel(context.Background())
@@ -117,14 +116,23 @@ func TestDubboJava(t *testing.T) {
 	parser := new(outputParser)
 	parser.init(map[string]bool{
 		// comment lines mean dubbo-java can not support
-		"EchoBool":         false,
-		"EchoByte":         false,
-		"EchoInt16":        false,
-		"EchoInt32":        false,
-		"EchoInt64":        false,
-		"EchoDouble":       false,
-		"EchoString":       false,
-		"EchoBinary":       false,
+		"EchoBool":       false,
+		"EchoByte":       false,
+		"EchoInt16":      false,
+		"EchoInt32":      false,
+		"EchoInt64":      false,
+		"EchoDouble":     false,
+		"EchoString":     false,
+		"EchoBinary":     false,
+		"EchoBoolList":   false,
+		"EchoByteList":   false,
+		"EchoInt16List":  false,
+		"EchoInt32List":  false,
+		"EchoInt64List":  false,
+		"EchoDoubleList": false,
+		"EchoStringList": false,
+		// hessian2 can not support encoding [][]byte
+		//"EchoBinaryList":   false,
 		"EchoBool2BoolMap": false,
 		//"EchoBool2ByteMap":   false,
 		//"EchoBool2Int16Map":  false,

@@ -18,57 +18,14 @@
 package main
 
 import (
-	"context"
-	"errors"
-	"strconv"
-	"time"
-
-	"github.com/dubbogo/gost/log/logger"
-
 	"helloworld/api"
 
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports" // dubbogo 框架依赖，所有dubbogo进程都需要隐式引入一次
 )
 
-type UserProvider struct{}
-
-// GetUser implements the interface
-func (u *UserProvider) GetUser(ctx context.Context, req int32) (*api.User, error) {
-	var err error
-	logger.Infof("req:%#v", req)
-	user := &api.User{}
-	user.ID = strconv.Itoa(int(req))
-	user.Name = "laurence"
-	user.Age = 22
-	user.Time = time.Now()
-	return user, err
-}
-
-func (u *UserProvider) EchoInt(ctx context.Context, req int32) (int32, error) {
-	// for exception test
-	if req == 400 {
-		return 0, errors.New("EchoInt failed without reason")
-	}
-
-	return req, nil
-}
-
-func (u *UserProvider) EchoByte(ctx context.Context, req int8) (int8, error) {
-	// for exception test
-	return req, nil
-}
-
-// MethodMapper is for mapping go func name to java func name.
-// Not necessary for go client -> go server
-// func (s *UserProvider) MethodMapper() map[string]string {
-// 	return map[string]string{
-// 		"GetUser": "getUser",
-// 	}
-// }
-
 func init() {
-	config.SetProviderService(&UserProvider{}) // Register service provider, should be same in the config file
+	config.SetProviderService(&api.UserProviderImpl{}) // Register service provider, should be same in the config file
 }
 
 func main() {
