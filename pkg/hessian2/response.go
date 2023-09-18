@@ -212,11 +212,9 @@ func copySlice(inSlice, outSlice reflect.Value) error {
 
 	for i := 0; i < size; i++ {
 		inSliceValue := inSlice.Index(i)
-		if !inSliceValue.Type().AssignableTo(outSlice.Index(i).Type()) {
-			return fmt.Errorf("in element type [%s] can not assign to out element type [%s]",
-				inSliceValue.Type().String(), outSlice.Type().String())
-		}
-		outSlice.Index(i).Set(inSliceValue)
+		outSliceValue := reflect.New(outSlice.Index(i).Type()).Elem()
+		setValue(outSliceValue, inSliceValue)
+		outSlice.Index(i).Set(outSliceValue)
 	}
 
 	return nil

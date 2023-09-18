@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package dubbo2kitex
+package kitex2dubbo
 
 import (
 	"context"
@@ -26,6 +26,14 @@ import (
 
 func TestEchoBinary(t *testing.T) {
 	req := []byte{'1', '2'}
-	resp, err := cli.EchoBinary(context.Background(), req)
+	resp, err := cli2Go.EchoBinary(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+// ----------kitex -> dubbo-java----------
+
+func TestEchoBinary_Java(t *testing.T) {
+	req := []byte{'1', '2'}
+	resp, err := cli2Java.EchoBinary(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
