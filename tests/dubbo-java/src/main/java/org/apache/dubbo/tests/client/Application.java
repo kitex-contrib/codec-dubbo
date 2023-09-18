@@ -20,6 +20,7 @@
 package org.apache.dubbo.tests.client;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -40,6 +41,7 @@ public class Application {
 
         UserProvider service = reference.get();
         testBaseTypes(service);
+        testContainerListType(service);
         testContainerMapType(service);
     }
 
@@ -64,6 +66,17 @@ public class Application {
         testEchoDouble(svc);
         testEchoString(svc);
         testEchoBinary(svc);
+    }
+
+    public static void testContainerListType(UserProvider svc) {
+        testEchoBoolList(svc);
+        testEchoByteList(svc);
+        testEchoInt16List(svc);
+        testEchoInt32List(svc);
+        testEchoInt64List(svc);
+        testEchoDoubleList(svc);
+        testEchoStringList(svc);
+//        testEchoBinaryList(svc);
     }
 
     public static void testContainerMapType(UserProvider svc) {
@@ -181,6 +194,127 @@ public class Application {
             byte[] req = "1234".getBytes();
             byte[] resp = svc.EchoBinary(req);
             if (!Arrays.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBoolList(UserProvider svc) {
+        String methodName = "EchoBoolList";
+        try {
+            ArrayList<Boolean> req = new ArrayList<>();
+            req.add(true);
+            ArrayList<Boolean> resp = svc.EchoBoolList(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoByteList(UserProvider svc) {
+        String methodName = "EchoByteList";
+        try {
+            ArrayList<Byte> req = new ArrayList<>();
+            req.add((byte)12);
+            ArrayList<Byte> resp = svc.EchoByteList(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoInt16List(UserProvider svc) {
+        String methodName = "EchoInt16List";
+        try {
+            ArrayList<Short> req = new ArrayList<>();
+            req.add((short)12);
+            ArrayList<Short> resp = svc.EchoInt16List(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoInt32List(UserProvider svc) {
+        String methodName = "EchoInt32List";
+        try {
+            ArrayList<Integer> req = new ArrayList<>();
+            req.add(12);
+            ArrayList<Integer> resp = svc.EchoInt32List(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoInt64List(UserProvider svc) {
+        String methodName = "EchoInt64List";
+        try {
+            ArrayList<Long> req = new ArrayList<>();
+            req.add((long)12);
+            ArrayList<Long> resp = svc.EchoInt64List(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoDoubleList(UserProvider svc) {
+        String methodName = "EchoDoubleList";
+        try {
+            ArrayList<Double> req = new ArrayList<>();
+            req.add(12.34);
+            ArrayList<Double> resp = svc.EchoDoubleList(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoStringList(UserProvider svc) {
+        String methodName = "EchoStringList";
+        try {
+            ArrayList<String> req = new ArrayList<>();
+            req.add("12");
+            ArrayList<String> resp = svc.EchoStringList(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBinaryList(UserProvider svc) {
+        String methodName = "EchoBinaryList";
+        try {
+            ArrayList<byte[]> req = new ArrayList<>();
+            byte[] bs = new byte[]{1, 2};
+            req.add(bs);
+            ArrayList<byte[]> resp = svc.EchoBinaryList(req);
+            if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
         } catch (Exception e) {

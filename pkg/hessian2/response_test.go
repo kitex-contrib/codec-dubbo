@@ -280,6 +280,124 @@ func TestReflectResponse(t *testing.T) {
 			})
 		}
 	})
+	t.Run("list", func(t *testing.T) {
+		tests := []struct {
+			desc      string
+			testFunc  func(t *testing.T, expectedErr bool)
+			expectErr bool
+		}{
+			{
+				desc: "[]bool",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest []bool
+					src := []bool{
+						true, true,
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "[]int8",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest []int8
+					src := []int8{
+						12, 34,
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "[]int16",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest []int16
+					src := []int16{
+						12, 34,
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "[]int32",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest []int32
+					src := []int32{
+						12, 34,
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "[]int64",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest []int64
+					src := []int64{
+						12, 34,
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "[]float64",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest []float64
+					src := []float64{
+						12.34, 56.78,
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "[]string",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest []string
+					src := []string{
+						"12", "34",
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "[][]byte",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest [][]byte
+					src := [][]byte{
+						{1, 2}, {3, 4},
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+		}
+
+		for _, test := range tests {
+			t.Run(test.desc, func(t *testing.T) {
+				test.testFunc(t, test.expectErr)
+			})
+		}
+	})
 }
 
 func testReflectResponse(t *testing.T, src, dest interface{}, expectErr bool) {

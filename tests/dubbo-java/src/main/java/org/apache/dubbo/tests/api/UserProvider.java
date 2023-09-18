@@ -1,4 +1,6 @@
 /*
+ * Copyright 2023 CloudWeGo Authors
+ *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -18,50 +20,44 @@
 package org.apache.dubbo.tests.api;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.ArrayList;
 
 public interface UserProvider {
     int EchoInt(int req) throws Exception;
     byte EchoInt8(byte req) throws Exception;
 
-    // ----------base types----------
-
     boolean EchoBool(boolean req) throws Exception;
 
-    Byte EchoByte(Byte req) throws Exception;
+    byte EchoByte(byte req) throws Exception;
 
-    Short EchoInt16(Short req) throws Exception;
+    short EchoInt16(short req) throws Exception;
 
-    Integer EchoInt32(Integer req) throws Exception;
+    int EchoInt32(int req) throws Exception;
 
-    Long EchoInt64(Long req) throws Exception;
+    long EchoInt64(long req) throws Exception;
 
-    Double EchoDouble(Double req) throws Exception;
+    double EchoDouble(double req) throws Exception;
 
     String EchoString(String req) throws Exception;
 
     byte[] EchoBinary(byte[] req) throws Exception;
 
-    // ----------container types----------
-    // List
+    ArrayList<Boolean> EchoBoolList(ArrayList<Boolean> req) throws Exception;
 
-    List<Boolean> EchoBoolList(List<Boolean> req) throws Exception;
+    ArrayList<Byte> EchoByteList(ArrayList<Byte> req) throws Exception;
 
-    List<Byte> EchoByteList(List<Byte> req) throws Exception;
+    ArrayList<Short> EchoInt16List(ArrayList<Short> req) throws Exception;
 
-    List<Short> EchoInt16List(List<Short> req) throws Exception;
+    ArrayList<Integer> EchoInt32List(ArrayList<Integer> req) throws Exception;
 
-    List<Integer> EchoInt32List(List<Integer> req) throws Exception;
+    ArrayList<Long> EchoInt64List(ArrayList<Long> req) throws Exception;
 
-    List<Long> EchoInt64List(List<Long> req) throws Exception;
+    ArrayList<Double> EchoDoubleList(ArrayList<Double> req) throws Exception;
 
-    List<Double> EchoDoubleList(List<Double> req) throws Exception;
+    ArrayList<String> EchoStringList(ArrayList<String> req) throws Exception;
 
-    List<String> EchoStringList(List<String> req) throws Exception;
+    ArrayList<byte[]> EchoBinaryList(ArrayList<byte[]> req) throws Exception;
 
-    List<byte[]> EchoBinaryList(List<byte[]> req) throws Exception;
-
-    // Map
 
     HashMap<Boolean, Boolean> EchoBool2BoolMap(HashMap<Boolean, Boolean> req) throws Exception;
 

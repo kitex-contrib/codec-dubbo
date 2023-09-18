@@ -29,5 +29,4 @@ output/*
 .vscode
 
 # Maven generated files
-./tests/dubbo-java/target/
-
+/tests/dubbo-java/target/

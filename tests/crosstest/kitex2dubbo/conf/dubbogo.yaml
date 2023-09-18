@@ -1,0 +1,9 @@
+dubbo:
+  protocols:
+    dubbo:
+      name: dubbo
+      port: 20000
+  provider:
+    services:
+      UserProviderImpl:
+        interface: org.apache.dubbo.UserProvider  # should be consistent with java class name

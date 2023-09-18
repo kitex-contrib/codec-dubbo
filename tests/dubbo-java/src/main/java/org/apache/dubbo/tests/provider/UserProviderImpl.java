@@ -1,4 +1,6 @@
 /*
+ * Copyright 2023 CloudWeGo Authors
+ *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -20,7 +22,7 @@ package org.apache.dubbo.tests.provider;
 import org.apache.dubbo.tests.api.UserProvider;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.ArrayList;
 
 public class UserProviderImpl implements UserProvider {
     @Override
@@ -39,27 +41,27 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public Byte EchoByte(Byte req) throws Exception {
+    public byte EchoByte(byte req) throws Exception {
         return req;
     }
 
     @Override
-    public Short EchoInt16(Short req) throws Exception {
+    public short EchoInt16(short req) throws Exception {
         return req;
     }
 
     @Override
-    public Integer EchoInt32(Integer req) throws Exception {
+    public int EchoInt32(int req) throws Exception {
         return req;
     }
 
     @Override
-    public Long EchoInt64(Long req) throws Exception {
+    public long EchoInt64(long req) throws Exception {
         return req;
     }
 
     @Override
-    public Double EchoDouble(Double req) throws Exception {
+    public double EchoDouble(double req) throws Exception {
         return req;
     }
 
@@ -74,42 +76,42 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public List<Boolean> EchoBoolList(List<Boolean> req) throws Exception {
+    public ArrayList<Boolean> EchoBoolList(ArrayList<Boolean> req) throws Exception {
         return req;
     }
 
     @Override
-    public List<Byte> EchoByteList(List<Byte> req) throws Exception {
+    public ArrayList<Byte> EchoByteList(ArrayList<Byte> req) throws Exception {
         return req;
     }
 
     @Override
-    public List<Short> EchoInt16List(List<Short> req) throws Exception {
+    public ArrayList<Short> EchoInt16List(ArrayList<Short> req) throws Exception {
         return req;
     }
 
     @Override
-    public List<Integer> EchoInt32List(List<Integer> req) throws Exception {
+    public ArrayList<Integer> EchoInt32List(ArrayList<Integer> req) throws Exception {
         return req;
     }
 
     @Override
-    public List<Long> EchoInt64List(List<Long> req) throws Exception {
+    public ArrayList<Long> EchoInt64List(ArrayList<Long> req) throws Exception {
         return req;
     }
 
     @Override
-    public List<Double> EchoDoubleList(List<Double> req) throws Exception {
+    public ArrayList<Double> EchoDoubleList(ArrayList<Double> req) throws Exception {
         return req;
     }
 
     @Override
-    public List<String> EchoStringList(List<String> req) throws Exception {
+    public ArrayList<String> EchoStringList(ArrayList<String> req) throws Exception {
         return req;
     }
 
     @Override
-    public List<byte[]> EchoBinaryList(List<byte[]> req) throws Exception {
+    public ArrayList<byte[]> EchoBinaryList(ArrayList<byte[]> req) throws Exception {
         return req;
     }
 
