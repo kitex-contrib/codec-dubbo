@@ -20,6 +20,7 @@
 package kitex2kitex
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net"
@@ -76,6 +77,48 @@ func TestMain(m *testing.M) {
 	<-startCh
 	initKitexClient("test", "127.0.0.1:20000")
 	m.Run()
+}
+
+func TestEchoBool(t *testing.T) {
+	req := true
+	resp, err := cli.EchoBool(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoByte(t *testing.T) {
+	var req int8 = 12
+	resp, err := cli.EchoByte(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoInt16(t *testing.T) {
+	var req int16 = 12
+	resp, err := cli.EchoInt16(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoInt32(t *testing.T) {
+	var req int32 = 12
+	resp, err := cli.EchoInt32(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoInt64(t *testing.T) {
+	var req int64 = 12
+	resp, err := cli.EchoInt64(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoDouble(t *testing.T) {
+	var req float64 = 12.3456
+	resp, err := cli.EchoDouble(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoString(t *testing.T) {
+	req := "12"
+	resp, err := cli.EchoString(context.Background(), req)
+	assertEcho(t, err, req, resp)
 }
 
 func assertEcho(t *testing.T, err error, req, resp interface{}) {
