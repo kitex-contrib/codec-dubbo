@@ -6,4 +6,4 @@ dubbo:
   provider:
     services:
       UserProviderImpl:
-        interface: org.apache.dubbo.UserProvider  # should be consistent with java class name
+        interface: org.apache.dubbo.tests.api.UserProvider  # should be consistent with java class name

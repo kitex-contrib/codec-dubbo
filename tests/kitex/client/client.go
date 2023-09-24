@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -9,7 +10,10 @@ import (
 )
 
 func main() {
-	cli, err := testservice.NewClient("org.apache.dubbo.UserProvider", client.WithHostPorts("127.0.0.1:20000"))
+	cli, err := testservice.NewClient("test",
+		client.WithHostPorts("127.0.0.1:20000"),
+		client.WithCodec(dubbo.NewDubboCodec()),
+	)
 	if err != nil {
 		panic(err)
 	}

@@ -97,8 +97,7 @@ func (m *DubboCodec) encodeRequestPayload(ctx context.Context, message remote.Me
 
 	service := &dubbo_spec.Service{
 		ProtocolVersion: dubbo_spec.DEFAULT_DUBBO_PROTOCOL_VERSION,
-		// todo: should be message.RPCInfo().Invocation.ServiceName
-		Path: message.RPCInfo().To().ServiceName(),
+		Path:            getJavaClassName(message),
 		// todo: kitex mapping
 		Version: "",
 		Method:  message.RPCInfo().Invocation().MethodName(),
@@ -315,8 +314,9 @@ func (m *DubboCodec) decodeRequestBody(ctx context.Context, header *dubbo_spec.D
 	if err := service.Decode(decoder); err != nil {
 		return err
 	}
-	if serviceName := message.ServiceInfo().ServiceName; service.Path != serviceName {
-		return fmt.Errorf("dubbo requested Path: %s, kitex ServiceName: %s", service.Path, serviceName)
+
+	if name := getJavaClassName(message); service.Path != name {
+		return fmt.Errorf("dubbo requested Path: %s, kitex generated JavaClassName: %s", service.Path, name)
 	}
 
 	// decode payload
@@ -442,4 +442,24 @@ func readBody(header *dubbo_spec.DubboHeader, in remote.ByteBuffer) ([]byte, err
 		return nil, errors.New("invalid dubbo package with body length being less than header specified")
 	}
 	return in.Next(length)
+}
+
+func getJavaClassName(message remote.Message) string {
+	extra := message.ServiceInfo().Extra
+	if extra == nil {
+		panic("extra field is missing in Hessian2 generated ServiceInfo")
+	}
+	annotationsRaw, ok := extra["IDLAnnotations"]
+	if !ok {
+		panic("IDLAnnotations is missing in Hessian2 generated ServiceInfo.extra")
+	}
+	annotations, ok := annotationsRaw.(map[string][]string)
+	if !ok {
+		panic("IDLAnnotations is not with type map[string][]string in Hessian2 generated ServiceInfo.extra")
+	}
+	names := annotations["JavaClassName"]
+	if len(names) <= 0 {
+		panic("JavaClassName is missing in Hessian2 generated ServiceInfo.extra[\"JavaClassName\"]")
+	}
+	return names[0]
 }

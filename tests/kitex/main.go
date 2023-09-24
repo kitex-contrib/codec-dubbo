@@ -1,6 +1,7 @@
 package main
 
 import (
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 	"log"
 	"net"
 
@@ -11,7 +12,10 @@ import (
 
 func main() {
 	addr, _ := net.ResolveTCPAddr("tcp", ":20000")
-	svr := echo.NewServer(new(TestServiceImpl), server.WithServiceAddr(addr))
+	svr := echo.NewServer(new(TestServiceImpl),
+		server.WithServiceAddr(addr),
+		server.WithCodec(dubbo.NewDubboCodec()),
+	)
 
 	err := svr.Run()
 	if err != nil {

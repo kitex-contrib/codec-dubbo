@@ -21,6 +21,7 @@ package dubbo2kitex
 
 import (
 	"context"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 	"helloworld/api"
 	"log"
 	"net"
@@ -44,6 +45,7 @@ func runKitexServer(startCh chan struct{}, exitCh chan error, addr string) {
 	svr := testservice.NewServer(
 		new(testsuite.TestServiceImpl),
 		server.WithServiceAddr(netAddr),
+		server.WithCodec(dubbo.NewDubboCodec()),
 		server.WithExitSignal(func() <-chan error {
 			return exitCh
 		}),

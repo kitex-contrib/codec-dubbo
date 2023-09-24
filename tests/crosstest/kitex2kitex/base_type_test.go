@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/server"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testservice"
 	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testsuite"
 	"log"
@@ -36,7 +37,10 @@ var cli testservice.Client
 // initKitexClient inits Kitex client with specified destService and hostPort
 func initKitexClient(destService string, hostPort string) {
 	var err error
-	cli, err = testservice.NewClient(destService, client.WithHostPorts(hostPort))
+	cli, err = testservice.NewClient(destService,
+		client.WithHostPorts(hostPort),
+		client.WithCodec(dubbo.NewDubboCodec()),
+	)
 	if err != nil {
 		panic(fmt.Sprintf("Kitex client initialized failed, err :%s", err))
 	}
@@ -50,6 +54,7 @@ func runKitexServer(startCh chan struct{}, exitCh chan error, addr string) {
 	svr := testservice.NewServer(
 		new(testsuite.TestServiceImpl),
 		server.WithServiceAddr(netAddr),
+		server.WithCodec(dubbo.NewDubboCodec()),
 		server.WithExitSignal(func() <-chan error {
 			return exitCh
 		}),
@@ -68,7 +73,7 @@ func TestMain(m *testing.M) {
 	exitCh := make(chan error)
 	go runKitexServer(startCh, exitCh, ":20000")
 	<-startCh
-	initKitexClient("org.apache.dubbo.tests.api.UserProvider", "127.0.0.1:20000")
+	initKitexClient("test", "127.0.0.1:20000")
 	m.Run()
 }
 

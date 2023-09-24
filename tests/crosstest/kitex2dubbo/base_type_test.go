@@ -24,6 +24,7 @@ import (
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"github.com/cloudwego/kitex/client"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testservice"
 	"helloworld/api"
 	"reflect"
@@ -53,11 +54,17 @@ func TestMain(m *testing.M) {
 	//wait for dubbo-go and dubbo-java server initialization
 	time.Sleep(10 * time.Second)
 	var err error
-	cli2Go, err = testservice.NewClient("org.apache.dubbo.UserProvider", client.WithHostPorts("127.0.0.1:20000"))
+	cli2Go, err = testservice.NewClient("test",
+		client.WithHostPorts("127.0.0.1:20000"),
+		client.WithCodec(dubbo.NewDubboCodec()),
+	)
 	if err != nil {
 		panic(err)
 	}
-	cli2Java, err = testservice.NewClient("org.apache.dubbo.samples.api.UserProvider", client.WithHostPorts("127.0.0.1:20001"))
+	cli2Java, err = testservice.NewClient("test",
+		client.WithHostPorts("127.0.0.1:20001"),
+		client.WithCodec(dubbo.NewDubboCodec()),
+	)
 	if err != nil {
 		panic(err)
 	}
