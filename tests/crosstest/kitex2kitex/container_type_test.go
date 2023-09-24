@@ -31,13 +31,13 @@ func TestEchoBoolList(t *testing.T) {
 }
 
 func TestEchoByteList(t *testing.T) {
-	var req = []int8{1, 2}
+	req := []int8{1, 2}
 	resp, err := cli.EchoByteList(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 
 func TestEchoInt16List(t *testing.T) {
-	var req = []int16{1, 2}
+	req := []int16{1, 2}
 	resp, err := cli.EchoInt16List(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }

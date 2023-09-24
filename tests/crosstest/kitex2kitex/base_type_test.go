@@ -21,21 +21,22 @@ package kitex2kitex
 
 import (
 	"fmt"
+	"log"
+	"net"
+	"reflect"
+	"testing"
+
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/server"
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testservice"
 	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testsuite"
-	"log"
-	"net"
-	"reflect"
-	"testing"
 )
 
 var cli testservice.Client
 
 // initKitexClient inits Kitex client with specified destService and hostPort
-func initKitexClient(destService string, hostPort string) {
+func initKitexClient(destService, hostPort string) {
 	var err error
 	cli, err = testservice.NewClient(destService,
 		client.WithHostPorts(hostPort),

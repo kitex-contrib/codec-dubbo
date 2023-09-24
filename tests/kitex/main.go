@@ -1,9 +1,10 @@
 package main
 
 import (
-	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 	"log"
 	"net"
+
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 
 	"github.com/cloudwego/kitex/server"
 
