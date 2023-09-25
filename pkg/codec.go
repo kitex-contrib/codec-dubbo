@@ -31,6 +31,16 @@ import (
 	"github.com/kitex-contrib/codec-dubbo/pkg/iface"
 )
 
+var (
+	annotationPrompt = `
+Please add JavaClassName annotation as Dubbo Interface Name for %s service.
+Assumed Interface Name is org.apache.dubbo.api.UserProvider, api.thrift would be:
+
+service %s {
+}(JavaClassName="org.apache.dubbo.api.UserProvider")
+`
+)
+
 var _ remote.Codec = (*DubboCodec)(nil)
 
 // DubboCodec NewDubboCodec creates the dubbo codec.
@@ -447,19 +457,24 @@ func readBody(header *dubbo_spec.DubboHeader, in remote.ByteBuffer) ([]byte, err
 func getJavaClassName(message remote.Message) string {
 	extra := message.ServiceInfo().Extra
 	if extra == nil {
-		panic("extra field is missing in Hessian2 generated ServiceInfo")
+		promptJavaClassName(message, "extra field is missing in Hessian2 generated ServiceInfo")
 	}
 	annotationsRaw, ok := extra["IDLAnnotations"]
 	if !ok {
-		panic("IDLAnnotations is missing in Hessian2 generated ServiceInfo.extra")
+		promptJavaClassName(message, "IDLAnnotations is missing in Hessian2 generated ServiceInfo.extra")
 	}
 	annotations, ok := annotationsRaw.(map[string][]string)
 	if !ok {
-		panic("IDLAnnotations is not with type map[string][]string in Hessian2 generated ServiceInfo.extra")
+		promptJavaClassName(message, "IDLAnnotations is not with type map[string][]string in Hessian2 generated ServiceInfo.extra")
 	}
 	names := annotations["JavaClassName"]
 	if len(names) <= 0 {
-		panic("JavaClassName is missing in Hessian2 generated ServiceInfo.extra[\"JavaClassName\"]")
+		promptJavaClassName(message, "JavaClassName is missing in Hessian2 generated ServiceInfo.extra[\"JavaClassName\"]")
 	}
 	return names[0]
+}
+
+func promptJavaClassName(message remote.Message, addition string) {
+	serviceName := message.ServiceInfo().ServiceName
+	panic(addition + fmt.Sprintf(annotationPrompt, serviceName, serviceName))
 }
