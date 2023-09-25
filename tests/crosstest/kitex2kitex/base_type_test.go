@@ -77,6 +77,7 @@ func TestMain(m *testing.M) {
 	<-startCh
 	initKitexClient("test", "127.0.0.1:20000")
 	m.Run()
+	exitCh <- nil
 }
 
 func TestEchoBool(t *testing.T) {
