@@ -33,7 +33,7 @@ import (
 
 var annotationPrompt = `
 Please add JavaClassName annotation as Dubbo Interface Name for %s service.
-Assumed Interface Name is org.apache.dubbo.api.UserProvider, api.thrift would be:
+Assuming Interface Name is org.apache.dubbo.api.UserProvider, api.thrift should be:
 
 service %s {
 }(JavaClassName="org.apache.dubbo.api.UserProvider")
