@@ -31,15 +31,13 @@ import (
 	"github.com/kitex-contrib/codec-dubbo/pkg/iface"
 )
 
-var (
-	annotationPrompt = `
+var annotationPrompt = `
 Please add JavaClassName annotation as Dubbo Interface Name for %s service.
 Assumed Interface Name is org.apache.dubbo.api.UserProvider, api.thrift would be:
 
 service %s {
 }(JavaClassName="org.apache.dubbo.api.UserProvider")
 `
-)
 
 var _ remote.Codec = (*DubboCodec)(nil)
 
