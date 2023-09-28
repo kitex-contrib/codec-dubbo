@@ -53,4 +53,4 @@ service TestService {
     map<bool, list<double>> EchoBool2DoubleListMap(1: map<bool, list<double>>req)
     map<bool, list<string>> EchoBool2StringListMap(1: map<bool, list<string>>req)
     map<bool, list<binary>> EchoBool2BinaryListMap(1: map<bool, list<binary>>req)
-}
+}(JavaClassName="org.apache.dubbo.tests.api.UserProvider")

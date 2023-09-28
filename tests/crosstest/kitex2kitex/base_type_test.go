@@ -17,26 +17,36 @@
  * limitations under the License.
  */
 
-package dubbo2kitex
+package kitex2kitex
 
 import (
 	"context"
-	"helloworld/api"
+	"fmt"
 	"log"
 	"net"
 	"reflect"
 	"testing"
 
-	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
-
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
+	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/server"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testservice"
 	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testsuite"
 )
 
-var cli = api.UserProviderClient
+var cli testservice.Client
+
+// initKitexClient inits Kitex client with specified destService and hostPort
+func initKitexClient(destService, hostPort string) {
+	var err error
+	cli, err = testservice.NewClient(destService,
+		client.WithHostPorts(hostPort),
+		client.WithCodec(dubbo.NewDubboCodec()),
+	)
+	if err != nil {
+		panic(fmt.Sprintf("Kitex client initialized failed, err :%s", err))
+	}
+}
 
 // runKitexServer starts Kitex server for testing based on specified address.
 // use startCh to tell outer layer that Kitex server has already started.
@@ -65,10 +75,7 @@ func TestMain(m *testing.M) {
 	exitCh := make(chan error)
 	go runKitexServer(startCh, exitCh, ":20000")
 	<-startCh
-	// init dubbo cli until kitex srv has started
-	if err := config.Load(config.WithPath("./conf/dubbogo.yaml")); err != nil {
-		panic(err)
-	}
+	initKitexClient("test", "127.0.0.1:20000")
 	m.Run()
 	exitCh <- nil
 }
