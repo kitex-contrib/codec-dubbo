@@ -1,0 +1,13 @@
+dubbo:
+  protocols:
+    dubbo:
+      name: dubbo
+      port: 20001
+  provider:
+    services:
+      UserProvider:
+        protocol: dubbo
+        interface: org.apache.dubbo.UserProvider
+  logger:
+    zap-config:
+      level: error
