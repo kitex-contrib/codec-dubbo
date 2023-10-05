@@ -24,44 +24,44 @@ var (
 	_ = thrift.TProtocol(nil)
 )
 
-type BenchmarkServiceGetUserArgs struct {
+type ProxyServiceGetUserArgs struct {
 	Req *Request `thrift:"req,1" frugal:"1,default,Request" json:"req"`
 }
 
-func NewBenchmarkServiceGetUserArgs() *BenchmarkServiceGetUserArgs {
-	return &BenchmarkServiceGetUserArgs{}
+func NewProxyServiceGetUserArgs() *ProxyServiceGetUserArgs {
+	return &ProxyServiceGetUserArgs{}
 }
 
-func (p *BenchmarkServiceGetUserArgs) InitDefault() {
-	*p = BenchmarkServiceGetUserArgs{}
+func (p *ProxyServiceGetUserArgs) InitDefault() {
+	*p = ProxyServiceGetUserArgs{}
 }
 
-var BenchmarkServiceGetUserArgs_Req_DEFAULT *Request
+var ProxyServiceGetUserArgs_Req_DEFAULT *Request
 
-func (p *BenchmarkServiceGetUserArgs) GetReq() (v *Request) {
+func (p *ProxyServiceGetUserArgs) GetReq() (v *Request) {
 	if !p.IsSetReq() {
-		return BenchmarkServiceGetUserArgs_Req_DEFAULT
+		return ProxyServiceGetUserArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *BenchmarkServiceGetUserArgs) SetReq(val *Request) {
+func (p *ProxyServiceGetUserArgs) SetReq(val *Request) {
 	p.Req = val
 }
 
-func (p *BenchmarkServiceGetUserArgs) IsSetReq() bool {
+func (p *ProxyServiceGetUserArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *BenchmarkServiceGetUserArgs) String() string {
+func (p *ProxyServiceGetUserArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("BenchmarkServiceGetUserArgs(%+v)", *p)
+	return fmt.Sprintf("ProxyServiceGetUserArgs(%+v)", *p)
 }
-func (p *BenchmarkServiceGetUserArgs) GetFirstArgument() interface{} {
+func (p *ProxyServiceGetUserArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
-func (p *BenchmarkServiceGetUserArgs) Encode(e codec.Encoder) error {
+func (p *ProxyServiceGetUserArgs) Encode(e codec.Encoder) error {
 	var err error
 	err = e.Encode(p.Req)
 	if err != nil {
@@ -71,7 +71,7 @@ func (p *BenchmarkServiceGetUserArgs) Encode(e codec.Encoder) error {
 	return nil
 }
 
-func (p *BenchmarkServiceGetUserArgs) Decode(d codec.Decoder) error {
+func (p *ProxyServiceGetUserArgs) Decode(d codec.Decoder) error {
 	var (
 		err error
 		v   interface{}
@@ -88,44 +88,44 @@ func (p *BenchmarkServiceGetUserArgs) Decode(d codec.Decoder) error {
 	return nil
 }
 
-type BenchmarkServiceGetUserResult struct {
+type ProxyServiceGetUserResult struct {
 	Success *User `thrift:"success,0,optional" frugal:"0,optional,User" json:"success,omitempty"`
 }
 
-func NewBenchmarkServiceGetUserResult() *BenchmarkServiceGetUserResult {
-	return &BenchmarkServiceGetUserResult{}
+func NewProxyServiceGetUserResult() *ProxyServiceGetUserResult {
+	return &ProxyServiceGetUserResult{}
 }
 
-func (p *BenchmarkServiceGetUserResult) InitDefault() {
-	*p = BenchmarkServiceGetUserResult{}
+func (p *ProxyServiceGetUserResult) InitDefault() {
+	*p = ProxyServiceGetUserResult{}
 }
 
-var BenchmarkServiceGetUserResult_Success_DEFAULT *User
+var ProxyServiceGetUserResult_Success_DEFAULT *User
 
-func (p *BenchmarkServiceGetUserResult) GetSuccess() (v *User) {
+func (p *ProxyServiceGetUserResult) GetSuccess() (v *User) {
 	if !p.IsSetSuccess() {
-		return BenchmarkServiceGetUserResult_Success_DEFAULT
+		return ProxyServiceGetUserResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *BenchmarkServiceGetUserResult) SetSuccess(x interface{}) {
+func (p *ProxyServiceGetUserResult) SetSuccess(x interface{}) {
 	p.Success = x.(*User)
 }
 
-func (p *BenchmarkServiceGetUserResult) IsSetSuccess() bool {
+func (p *ProxyServiceGetUserResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *BenchmarkServiceGetUserResult) String() string {
+func (p *ProxyServiceGetUserResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("BenchmarkServiceGetUserResult(%+v)", *p)
+	return fmt.Sprintf("ProxyServiceGetUserResult(%+v)", *p)
 }
-func (p *BenchmarkServiceGetUserResult) GetResult() interface{} {
+func (p *ProxyServiceGetUserResult) GetResult() interface{} {
 	return p.Success
 }
-func (p *BenchmarkServiceGetUserResult) Encode(e codec.Encoder) error {
+func (p *ProxyServiceGetUserResult) Encode(e codec.Encoder) error {
 	var err error
 	err = e.Encode(p.Success)
 	if err != nil {
@@ -135,7 +135,7 @@ func (p *BenchmarkServiceGetUserResult) Encode(e codec.Encoder) error {
 	return nil
 }
 
-func (p *BenchmarkServiceGetUserResult) Decode(d codec.Decoder) error {
+func (p *ProxyServiceGetUserResult) Decode(d codec.Decoder) error {
 	var (
 		err error
 		v   interface{}

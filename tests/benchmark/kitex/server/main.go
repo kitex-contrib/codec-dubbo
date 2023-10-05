@@ -1,8 +1,10 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net"
+	"strconv"
 
 	"github.com/cloudwego/kitex/server"
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
@@ -10,7 +12,10 @@ import (
 )
 
 func main() {
-	addr, _ := net.ResolveTCPAddr("tcp", ":20001")
+	var srvPort int
+	flag.IntVar(&srvPort, "p", 20001, "")
+	flag.Parse()
+	addr, _ := net.ResolveTCPAddr("tcp", ":"+strconv.Itoa(srvPort))
 	svr := userservice.NewServer(new(UserServiceImpl),
 		server.WithServiceAddr(addr),
 		server.WithCodec(dubbo.NewDubboCodec()),

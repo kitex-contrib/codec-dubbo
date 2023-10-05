@@ -1,42 +1,113 @@
 #!/bin/sh
 
-stress_name="stress"
-client_name="client"
-server_name="server"
+close_name="close"
+close_all_name="all"
 
-if $1 = "$stress_name"; then
-  stress "$2" "$3" "$4" "$5" "$6" "$7"
-elif $1 = "$client_name"; then
-  client "$2" "$3"
-elif $1 = "$server_name"; then
-  server "$2"
-else
-  echo "supporting parameter: $stress_name, $client_name, $server_name"
-  exit
-fi
+stress_name="stress"
+stress_dir="./stress"
+stress_main="stress_main"
+
+dubbo_client_name="dubbo_client"
+dubbo_client_dir="./dubbo/client"
+dubbo_client_main="dubbo_client_main"
+
+dubbo_server_name="dubbo_server"
+dubbo_server_dir="./dubbo/server"
+dubbo_server_main="dubbo_server_main"
+
+kitex_client_name="kitex_client"
+kitex_client_dir="./kitex/client"
+kitex_client_main="kitex_client_main"
+
+kitex_server_name="kitex_server"
+kitex_server_dir="./kitex/server"
+kitex_server_main="kitex_server_main"
+
+close_process() {
+  pid=$(ps -ef | grep -E "$1" | grep -v grep | awk '{print $2}')
+  if [ -n "$pid" ];
+  then
+    kill -9 "$pid"
+  fi
+}
+
+close() {
+  if test "$1" = "$close_all_name";
+  then
+    all_process=("$stress_main" "$dubbo_client_main" "$kitex_client_main" "$dubbo_server_main" "$kitex_server_main")
+    for p in "${all_process[@]}";
+    do
+      close_process "$p"
+    done
+    return
+  fi
+
+  if test "$1" = "$stress_name";
+  then
+    close_process "$stress_main"
+  fi
+  if test "$1" = "$dubbo_client_name";
+  then
+    close_process "$dubbo_client_main"
+  fi
+  if test "$1" = "$kitex_client_name";
+  then
+    close_process "$kitex_client_main"
+  fi
+  if test "$1" = "$dubbo_server_name";
+  then
+    close_process "$dubbo_server_main"
+  fi
+  if test "$1" = "$kitex_server_name";
+  then
+    close_process "$kitex_server_main"
+  fi
+  close_process "$1"
+}
 
 stress() {
-  cd ./stress || exit
-  go build -o stress_main .
-  chmod +x stress_main
-  pid=$(ps -ef | grep -E "stress_main" | grep -v grep | awk '{print $2}')
-  kill -9 "$pid" && nohup ./stress_main "$1" "$2" "$3" "$4" "$5" "$6"  >/dev/null 2>&1 &
+  cd "$stress_dir" || exit
+  p=$stress_main
+  go build -o "$p" .
+  chmod +x "$p"
+  ./"$p" "$1" "$2" "$3" "$4" "$5" "$6" >../stress_log 2>&1
 }
 
 client() {
-  cd ./client || exit
-  p=client_main
+  cd "$1" || exit
+  p=$2
   go build -o "$p" .
   chmod +x "$p"
-  pid=$(ps -ef | grep -E "$p" | grep -v grep | awk '{print $2}')
-  kill -9 "$pid" && nohup ./"$p" "$1" "$2" > /dev/null 2>&1 &
+  nohup ./"$p" "$3" "$4" "$5" "$6" >/dev/null 2>&1 &
 }
 
 server() {
-  cd ./server || exit
-  p=server_main
+  cd "$1" || exit
+  p=$2
   go build -o "$p" .
   chmod +x "$p"
-  pid=$(ps -ef | grep -E "$p" | grep -v grep | awk '{print $2}')
-  kill -9 "$pid" && nohup ./"$p" "$1" > /dev/null 2>&1 &
+  nohup ./"$p" "$3" "$4" >/dev/null 2>&1 &
 }
+
+if test "$1" = "$stress_name";
+then
+  stress "$2" "$3" "$4" "$5" "$6" "$7"
+elif test "$1" = "$dubbo_client_name";
+then
+  client "$dubbo_client_dir" "$dubbo_client_main" "$2" "$3" "$4" "$5"
+elif test "$1" = "$kitex_client_name";
+then
+  client "$kitex_client_dir" "$kitex_client_main" "$2" "$3" "$4" "$5"
+elif test "$1" = "$dubbo_server_name";
+then
+  server "$dubbo_server_dir" "$dubbo_server_main" "$2" "$3"
+elif test "$1" = "$kitex_server_name";
+then
+  server "$kitex_server_dir" "$kitex_server_main" "$2" "$3"
+elif test "$1" = "$close_name";
+then
+  close "$2"
+else
+  echo "supporting parameter: $stress_name, $dubbo_client_name, $kitex_client_name, $dubbo_server_name, $kitex_server_name, $close_name"
+  exit
+fi

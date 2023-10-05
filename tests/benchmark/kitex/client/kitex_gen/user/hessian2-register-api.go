@@ -45,7 +45,7 @@ func (p *Request) Decode(d codec.Decoder) error {
 }
 
 func (p *Request) JavaClassName() string {
-	return "org.apache.dubbo.Request"
+	return "org.apache.dubbo.proxy.Request"
 }
 
 func (p *User) Encode(e codec.Encoder) error {
@@ -104,5 +104,5 @@ func (p *User) Decode(d codec.Decoder) error {
 }
 
 func (p *User) JavaClassName() string {
-	return "org.apache.dubbo.User"
+	return "org.apache.dubbo.proxy.User"
 }
