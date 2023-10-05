@@ -1,6 +1,6 @@
 # Benchmark
 
-Make use of deploy.sh to deploy
+Make use of deploy.sh to deploy, results would be stored in stress_log
 
 ## Sub Commands
 
