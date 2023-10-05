@@ -1,6 +1,7 @@
 # Benchmark
 
-Make use of deploy.sh to deploy, results would be stored in stress_log
+Make use of deploy.sh to deploy. Benchmark results would be stored in **stress_log**, client
+and server logs would be stored in **client_log** and **server_log**
 
 ## Sub Commands
 
