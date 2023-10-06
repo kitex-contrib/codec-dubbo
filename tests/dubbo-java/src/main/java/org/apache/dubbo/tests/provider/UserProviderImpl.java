@@ -19,7 +19,7 @@
 
 package org.apache.dubbo.tests.provider;
 
-import org.apache.dubbo.tests.api.UserProvider;
+import org.apache.dubbo.tests.api.*;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -153,5 +153,40 @@ public class UserProviderImpl implements UserProvider {
     @Override
     public HashMap<Boolean, byte[]> EchoBool2BinaryMap(HashMap<Boolean, byte[]> req) throws Exception {
         return req;
+    }
+
+    @Override
+    public EchoMultiBoolResponse EchoMultiBool(boolean baseReq, ArrayList<Boolean> listReq, HashMap<Boolean, Boolean> mapReq) throws Exception {
+        return new EchoMultiBoolResponse(baseReq, listReq, mapReq);
+    }
+
+    @Override
+    public EchoMultiByteResponse EchoMultiByte(byte baseReq, ArrayList<Byte> listReq, HashMap<Byte, Byte> mapReq) throws Exception {
+        return new EchoMultiByteResponse(baseReq, listReq, mapReq);
+    }
+
+    @Override
+    public EchoMultiInt16Response EchoMultiInt16(short baseReq, ArrayList<Short> listReq, HashMap<Short, Short> mapReq) throws Exception {
+        return new EchoMultiInt16Response(baseReq, listReq, mapReq);
+    }
+
+    @Override
+    public EchoMultiInt32Response EchoMultiInt32(int baseReq, ArrayList<Integer> listReq, HashMap<Integer, Integer> mapReq) throws Exception {
+        return new EchoMultiInt32Response(baseReq, listReq, mapReq);
+    }
+
+    @Override
+    public EchoMultiInt64Response EchoMultiInt64(long baseReq, ArrayList<Long> listReq, HashMap<Long, Long> mapReq) throws Exception {
+        return new EchoMultiInt64Response(baseReq, listReq, mapReq);
+    }
+
+    @Override
+    public EchoMultiDoubleResponse EchoMultiDouble(double baseReq, ArrayList<Double> listReq, HashMap<Double, Double> mapReq) throws Exception {
+        return new EchoMultiDoubleResponse(baseReq, listReq, mapReq);
+    }
+
+    @Override
+    public EchoMultiStringResponse EchoMultiString(String baseReq, ArrayList<String> listReq, HashMap<String, String> mapReq) throws Exception {
+        return new EchoMultiStringResponse(baseReq, listReq, mapReq);
     }
 }

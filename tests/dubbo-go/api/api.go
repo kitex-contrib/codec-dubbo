@@ -41,6 +41,76 @@ func (u *User) JavaClassName() string {
 	return "org.apache.dubbo.User" // Should be same as Java class name for java compatibility
 }
 
+type EchoMultiBoolResponse struct {
+	BaseResp bool
+	ListResp []bool
+	MapResp  map[bool]bool
+}
+
+func (resp *EchoMultiBoolResponse) JavaClassName() string {
+	return "org.apache.dubbo.tests.api.EchoMultiBoolResponse"
+}
+
+type EchoMultiByteResponse struct {
+	BaseResp int8
+	ListResp []int8
+	MapResp  map[int8]int8
+}
+
+func (resp *EchoMultiByteResponse) JavaClassName() string {
+	return "org.apache.dubbo.tests.api.EchoMultiByteResponse"
+}
+
+type EchoMultiInt16Response struct {
+	BaseResp int16
+	ListResp []int16
+	MapResp  map[int16]int16
+}
+
+func (resp *EchoMultiInt16Response) JavaClassName() string {
+	return "org.apache.dubbo.tests.api.EchoMultiInt16Response"
+}
+
+type EchoMultiInt32Response struct {
+	BaseResp int32
+	ListResp []int32
+	MapResp  map[int32]int32
+}
+
+func (resp *EchoMultiInt32Response) JavaClassName() string {
+	return "org.apache.dubbo.tests.api.EchoMultiInt32Response"
+}
+
+type EchoMultiInt64Response struct {
+	BaseResp int64
+	ListResp []int64
+	MapResp  map[int64]int64
+}
+
+func (resp *EchoMultiInt64Response) JavaClassName() string {
+	return "org.apache.dubbo.tests.api.EchoMultiInt64Response"
+}
+
+type EchoMultiDoubleResponse struct {
+	BaseResp float64
+	ListResp []float64
+	MapResp  map[float64]float64
+}
+
+func (resp *EchoMultiDoubleResponse) JavaClassName() string {
+	return "org.apache.dubbo.tests.api.EchoMultiDoubleResponse"
+}
+
+type EchoMultiStringResponse struct {
+	BaseResp string
+	ListResp []string
+	MapResp  map[string]string
+}
+
+func (resp *EchoMultiStringResponse) JavaClassName() string {
+	return "org.apache.dubbo.tests.api.EchoMultiStringResponse"
+}
+
 var UserProviderClient = &UserProvider{} // client pointer
 
 // UserProvider client interface
@@ -80,6 +150,14 @@ type UserProvider struct {
 	EchoBool2DoubleMap func(ctx context.Context, req map[bool]float64) (map[bool]float64, error) //`dubbo:"echoBool2DoubleMap"`
 	EchoBool2StringMap func(ctx context.Context, req map[bool]string) (map[bool]string, error)   //`dubbo:"echoBool2StringMap"`
 	EchoBool2BinaryMap func(ctx context.Context, req map[bool][]byte) (map[bool][]byte, error)   //`dubbo:"echoBool2BinaryMap"`
+
+	EchoMultiBool   func(ctx context.Context, baseReq bool, listReq []bool, mapReq map[bool]bool) (*EchoMultiBoolResponse, error)               //`dubbo:"echoMultiBool"`
+	EchoMultiByte   func(ctx context.Context, baseReq int8, listReq []int8, mapReq map[int8]int8) (*EchoMultiByteResponse, error)               //`dubbo:"echoMultiByte"`
+	EchoMultiInt16  func(ctx context.Context, baseReq int16, listReq []int16, mapReq map[int16]int16) (*EchoMultiInt16Response, error)          //`dubbo:"echoMultiInt16"`
+	EchoMultiInt32  func(ctx context.Context, baseReq int32, listReq []int32, mapReq map[int32]int32) (*EchoMultiInt32Response, error)          //`dubbo:"echoMultiInt32"`
+	EchoMultiInt64  func(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64) (*EchoMultiInt64Response, error)          //`dubbo:"echoMultiInt64"`
+	EchoMultiDouble func(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (*EchoMultiDoubleResponse, error) //`dubbo:"echoMultiDouble"`
+	EchoMultiString func(ctx context.Context, baseReq string, listReq []string, mapReq map[string]string) (*EchoMultiStringResponse, error)     //`dubbo:"echoMultiString"`
 }
 
 type UserProviderImpl struct{}
@@ -213,6 +291,62 @@ func (u *UserProviderImpl) EchoBool2BinaryListMap(ctx context.Context, req map[b
 	return req, nil
 }
 
+func (u *UserProviderImpl) EchoMultiBool(ctx context.Context, baseReq bool, listReq []bool, mapReq map[bool]bool) (*EchoMultiBoolResponse, error) {
+	return &EchoMultiBoolResponse{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+func (u *UserProviderImpl) EchoMultiByte(ctx context.Context, baseReq int8, listReq []int8, mapReq map[int8]int8) (*EchoMultiByteResponse, error) {
+	return &EchoMultiByteResponse{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+func (u *UserProviderImpl) EchoMultiInt16(ctx context.Context, baseReq int16, listReq []int16, mapReq map[int16]int16) (*EchoMultiInt16Response, error) {
+	return &EchoMultiInt16Response{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+func (u *UserProviderImpl) EchoMultiInt32(ctx context.Context, baseReq int32, listReq []int32, mapReq map[int32]int32) (*EchoMultiInt32Response, error) {
+	return &EchoMultiInt32Response{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+func (u *UserProviderImpl) EchoMultiInt64(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64) (*EchoMultiInt64Response, error) {
+	return &EchoMultiInt64Response{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+func (u *UserProviderImpl) EchoMultiDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (*EchoMultiDoubleResponse, error) {
+	return &EchoMultiDoubleResponse{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+func (u *UserProviderImpl) EchoMultiString(ctx context.Context, baseReq string, listReq []string, mapReq map[string]string) (*EchoMultiStringResponse, error) {
+	return &EchoMultiStringResponse{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
 // GetUser implements the interface
 func (u *UserProviderImpl) GetUser(ctx context.Context, req int32) (*User, error) {
 	var err error
@@ -249,6 +383,13 @@ func (u *UserProviderImpl) EchoByte(ctx context.Context, req int8) (int8, error)
 
 func init() {
 	hessian.RegisterPOJO(&User{}) // Register all transmission struct to hessian lib
+	hessian.RegisterPOJO(&EchoMultiBoolResponse{})
+	hessian.RegisterPOJO(&EchoMultiByteResponse{})
+	hessian.RegisterPOJO(&EchoMultiInt16Response{})
+	hessian.RegisterPOJO(&EchoMultiInt32Response{})
+	hessian.RegisterPOJO(&EchoMultiInt64Response{})
+	hessian.RegisterPOJO(&EchoMultiDoubleResponse{})
+	hessian.RegisterPOJO(&EchoMultiStringResponse{})
 	// Register client interface to the framework
 	config.SetConsumerService(UserProviderClient)
 }

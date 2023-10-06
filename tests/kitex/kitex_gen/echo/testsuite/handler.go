@@ -184,3 +184,66 @@ func (s *TestServiceImpl) EchoBool2StringListMap(ctx context.Context, req map[bo
 func (s *TestServiceImpl) EchoBool2BinaryListMap(ctx context.Context, req map[bool][][]byte) (resp map[bool][][]byte, err error) {
 	return req, nil
 }
+
+// EchoMultiBool implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMultiBool(ctx context.Context, baseReq bool, listReq []bool, mapReq map[bool]bool) (resp *echo.EchoMultiBoolResponse, err error) {
+	return &echo.EchoMultiBoolResponse{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+// EchoMultiByte implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMultiByte(ctx context.Context, baseReq int8, listReq []int8, mapReq map[int8]int8) (resp *echo.EchoMultiByteResponse, err error) {
+	return &echo.EchoMultiByteResponse{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+// EchoMultiInt16 implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMultiInt16(ctx context.Context, baseReq int16, listReq []int16, mapReq map[int16]int16) (resp *echo.EchoMultiInt16Response, err error) {
+	return &echo.EchoMultiInt16Response{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+// EchoMultiInt32 implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMultiInt32(ctx context.Context, baseReq int32, listReq []int32, mapReq map[int32]int32) (resp *echo.EchoMultiInt32Response, err error) {
+	return &echo.EchoMultiInt32Response{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+// EchoMultiInt64 implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMultiInt64(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64) (resp *echo.EchoMultiInt64Response, err error) {
+	return &echo.EchoMultiInt64Response{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+// EchoMultiDouble implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMultiDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (resp *echo.EchoMultiDoubleResponse, err error) {
+	return &echo.EchoMultiDoubleResponse{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+// EchoMultiString implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMultiString(ctx context.Context, baseReq string, listReq []string, mapReq map[string]string) (resp *echo.EchoMultiStringResponse, err error) {
+	return &echo.EchoMultiStringResponse{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}

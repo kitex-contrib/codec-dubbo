@@ -4078,3 +4078,1144 @@ func (p *TestServiceEchoBool2BinaryListMapResult) Decode(d codec.Decoder) error 
 
 	return nil
 }
+
+type TestServiceEchoMultiBoolArgs struct {
+	BaseReq bool          `thrift:"baseReq,1" frugal:"1,default,bool" json:"baseReq"`
+	ListReq []bool        `thrift:"listReq,2" frugal:"2,default,list<bool>" json:"listReq"`
+	MapReq  map[bool]bool `thrift:"mapReq,3" frugal:"3,default,map<bool:bool>" json:"mapReq"`
+}
+
+func NewTestServiceEchoMultiBoolArgs() *TestServiceEchoMultiBoolArgs {
+	return &TestServiceEchoMultiBoolArgs{}
+}
+
+func (p *TestServiceEchoMultiBoolArgs) InitDefault() {
+	*p = TestServiceEchoMultiBoolArgs{}
+}
+
+func (p *TestServiceEchoMultiBoolArgs) GetBaseReq() (v bool) {
+	return p.BaseReq
+}
+
+func (p *TestServiceEchoMultiBoolArgs) GetListReq() (v []bool) {
+	return p.ListReq
+}
+
+func (p *TestServiceEchoMultiBoolArgs) GetMapReq() (v map[bool]bool) {
+	return p.MapReq
+}
+func (p *TestServiceEchoMultiBoolArgs) SetBaseReq(val bool) {
+	p.BaseReq = val
+}
+func (p *TestServiceEchoMultiBoolArgs) SetListReq(val []bool) {
+	p.ListReq = val
+}
+func (p *TestServiceEchoMultiBoolArgs) SetMapReq(val map[bool]bool) {
+	p.MapReq = val
+}
+
+func (p *TestServiceEchoMultiBoolArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiBoolArgs(%+v)", *p)
+}
+func (p *TestServiceEchoMultiBoolArgs) GetFirstArgument() interface{} {
+	return p.BaseReq
+}
+func (p *TestServiceEchoMultiBoolArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.BaseReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.ListReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.MapReq)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiBoolArgs) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.BaseReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.ListReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.MapReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+type TestServiceEchoMultiBoolResult struct {
+	Success *EchoMultiBoolResponse `thrift:"success,0,optional" frugal:"0,optional,EchoMultiBoolResponse" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoMultiBoolResult() *TestServiceEchoMultiBoolResult {
+	return &TestServiceEchoMultiBoolResult{}
+}
+
+func (p *TestServiceEchoMultiBoolResult) InitDefault() {
+	*p = TestServiceEchoMultiBoolResult{}
+}
+
+var TestServiceEchoMultiBoolResult_Success_DEFAULT *EchoMultiBoolResponse
+
+func (p *TestServiceEchoMultiBoolResult) GetSuccess() (v *EchoMultiBoolResponse) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoMultiBoolResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoMultiBoolResult) SetSuccess(x interface{}) {
+	p.Success = x.(*EchoMultiBoolResponse)
+}
+
+func (p *TestServiceEchoMultiBoolResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoMultiBoolResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiBoolResult(%+v)", *p)
+}
+func (p *TestServiceEchoMultiBoolResult) GetResult() interface{} {
+	return p.Success
+}
+func (p *TestServiceEchoMultiBoolResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiBoolResult) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+type TestServiceEchoMultiByteArgs struct {
+	BaseReq int8          `thrift:"baseReq,1" frugal:"1,default,byte" json:"baseReq"`
+	ListReq []int8        `thrift:"listReq,2" frugal:"2,default,list<byte>" json:"listReq"`
+	MapReq  map[int8]int8 `thrift:"mapReq,3" frugal:"3,default,map<byte:byte>" json:"mapReq"`
+}
+
+func NewTestServiceEchoMultiByteArgs() *TestServiceEchoMultiByteArgs {
+	return &TestServiceEchoMultiByteArgs{}
+}
+
+func (p *TestServiceEchoMultiByteArgs) InitDefault() {
+	*p = TestServiceEchoMultiByteArgs{}
+}
+
+func (p *TestServiceEchoMultiByteArgs) GetBaseReq() (v int8) {
+	return p.BaseReq
+}
+
+func (p *TestServiceEchoMultiByteArgs) GetListReq() (v []int8) {
+	return p.ListReq
+}
+
+func (p *TestServiceEchoMultiByteArgs) GetMapReq() (v map[int8]int8) {
+	return p.MapReq
+}
+func (p *TestServiceEchoMultiByteArgs) SetBaseReq(val int8) {
+	p.BaseReq = val
+}
+func (p *TestServiceEchoMultiByteArgs) SetListReq(val []int8) {
+	p.ListReq = val
+}
+func (p *TestServiceEchoMultiByteArgs) SetMapReq(val map[int8]int8) {
+	p.MapReq = val
+}
+
+func (p *TestServiceEchoMultiByteArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiByteArgs(%+v)", *p)
+}
+func (p *TestServiceEchoMultiByteArgs) GetFirstArgument() interface{} {
+	return p.BaseReq
+}
+func (p *TestServiceEchoMultiByteArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.BaseReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.ListReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.MapReq)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiByteArgs) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.BaseReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.ListReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.MapReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+type TestServiceEchoMultiByteResult struct {
+	Success *EchoMultiByteResponse `thrift:"success,0,optional" frugal:"0,optional,EchoMultiByteResponse" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoMultiByteResult() *TestServiceEchoMultiByteResult {
+	return &TestServiceEchoMultiByteResult{}
+}
+
+func (p *TestServiceEchoMultiByteResult) InitDefault() {
+	*p = TestServiceEchoMultiByteResult{}
+}
+
+var TestServiceEchoMultiByteResult_Success_DEFAULT *EchoMultiByteResponse
+
+func (p *TestServiceEchoMultiByteResult) GetSuccess() (v *EchoMultiByteResponse) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoMultiByteResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoMultiByteResult) SetSuccess(x interface{}) {
+	p.Success = x.(*EchoMultiByteResponse)
+}
+
+func (p *TestServiceEchoMultiByteResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoMultiByteResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiByteResult(%+v)", *p)
+}
+func (p *TestServiceEchoMultiByteResult) GetResult() interface{} {
+	return p.Success
+}
+func (p *TestServiceEchoMultiByteResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiByteResult) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+type TestServiceEchoMultiInt16Args struct {
+	BaseReq int16           `thrift:"baseReq,1" frugal:"1,default,i16" json:"baseReq"`
+	ListReq []int16         `thrift:"listReq,2" frugal:"2,default,list<i16>" json:"listReq"`
+	MapReq  map[int16]int16 `thrift:"mapReq,3" frugal:"3,default,map<i16:i16>" json:"mapReq"`
+}
+
+func NewTestServiceEchoMultiInt16Args() *TestServiceEchoMultiInt16Args {
+	return &TestServiceEchoMultiInt16Args{}
+}
+
+func (p *TestServiceEchoMultiInt16Args) InitDefault() {
+	*p = TestServiceEchoMultiInt16Args{}
+}
+
+func (p *TestServiceEchoMultiInt16Args) GetBaseReq() (v int16) {
+	return p.BaseReq
+}
+
+func (p *TestServiceEchoMultiInt16Args) GetListReq() (v []int16) {
+	return p.ListReq
+}
+
+func (p *TestServiceEchoMultiInt16Args) GetMapReq() (v map[int16]int16) {
+	return p.MapReq
+}
+func (p *TestServiceEchoMultiInt16Args) SetBaseReq(val int16) {
+	p.BaseReq = val
+}
+func (p *TestServiceEchoMultiInt16Args) SetListReq(val []int16) {
+	p.ListReq = val
+}
+func (p *TestServiceEchoMultiInt16Args) SetMapReq(val map[int16]int16) {
+	p.MapReq = val
+}
+
+func (p *TestServiceEchoMultiInt16Args) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiInt16Args(%+v)", *p)
+}
+func (p *TestServiceEchoMultiInt16Args) GetFirstArgument() interface{} {
+	return p.BaseReq
+}
+func (p *TestServiceEchoMultiInt16Args) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.BaseReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.ListReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.MapReq)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiInt16Args) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.BaseReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.ListReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.MapReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+type TestServiceEchoMultiInt16Result struct {
+	Success *EchoMultiInt16Response `thrift:"success,0,optional" frugal:"0,optional,EchoMultiInt16Response" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoMultiInt16Result() *TestServiceEchoMultiInt16Result {
+	return &TestServiceEchoMultiInt16Result{}
+}
+
+func (p *TestServiceEchoMultiInt16Result) InitDefault() {
+	*p = TestServiceEchoMultiInt16Result{}
+}
+
+var TestServiceEchoMultiInt16Result_Success_DEFAULT *EchoMultiInt16Response
+
+func (p *TestServiceEchoMultiInt16Result) GetSuccess() (v *EchoMultiInt16Response) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoMultiInt16Result_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoMultiInt16Result) SetSuccess(x interface{}) {
+	p.Success = x.(*EchoMultiInt16Response)
+}
+
+func (p *TestServiceEchoMultiInt16Result) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoMultiInt16Result) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiInt16Result(%+v)", *p)
+}
+func (p *TestServiceEchoMultiInt16Result) GetResult() interface{} {
+	return p.Success
+}
+func (p *TestServiceEchoMultiInt16Result) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiInt16Result) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+type TestServiceEchoMultiInt32Args struct {
+	BaseReq int32           `thrift:"baseReq,1" frugal:"1,default,i32" json:"baseReq"`
+	ListReq []int32         `thrift:"listReq,2" frugal:"2,default,list<i32>" json:"listReq"`
+	MapReq  map[int32]int32 `thrift:"mapReq,3" frugal:"3,default,map<i32:i32>" json:"mapReq"`
+}
+
+func NewTestServiceEchoMultiInt32Args() *TestServiceEchoMultiInt32Args {
+	return &TestServiceEchoMultiInt32Args{}
+}
+
+func (p *TestServiceEchoMultiInt32Args) InitDefault() {
+	*p = TestServiceEchoMultiInt32Args{}
+}
+
+func (p *TestServiceEchoMultiInt32Args) GetBaseReq() (v int32) {
+	return p.BaseReq
+}
+
+func (p *TestServiceEchoMultiInt32Args) GetListReq() (v []int32) {
+	return p.ListReq
+}
+
+func (p *TestServiceEchoMultiInt32Args) GetMapReq() (v map[int32]int32) {
+	return p.MapReq
+}
+func (p *TestServiceEchoMultiInt32Args) SetBaseReq(val int32) {
+	p.BaseReq = val
+}
+func (p *TestServiceEchoMultiInt32Args) SetListReq(val []int32) {
+	p.ListReq = val
+}
+func (p *TestServiceEchoMultiInt32Args) SetMapReq(val map[int32]int32) {
+	p.MapReq = val
+}
+
+func (p *TestServiceEchoMultiInt32Args) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiInt32Args(%+v)", *p)
+}
+func (p *TestServiceEchoMultiInt32Args) GetFirstArgument() interface{} {
+	return p.BaseReq
+}
+func (p *TestServiceEchoMultiInt32Args) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.BaseReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.ListReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.MapReq)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiInt32Args) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.BaseReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.ListReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.MapReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+type TestServiceEchoMultiInt32Result struct {
+	Success *EchoMultiInt32Response `thrift:"success,0,optional" frugal:"0,optional,EchoMultiInt32Response" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoMultiInt32Result() *TestServiceEchoMultiInt32Result {
+	return &TestServiceEchoMultiInt32Result{}
+}
+
+func (p *TestServiceEchoMultiInt32Result) InitDefault() {
+	*p = TestServiceEchoMultiInt32Result{}
+}
+
+var TestServiceEchoMultiInt32Result_Success_DEFAULT *EchoMultiInt32Response
+
+func (p *TestServiceEchoMultiInt32Result) GetSuccess() (v *EchoMultiInt32Response) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoMultiInt32Result_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoMultiInt32Result) SetSuccess(x interface{}) {
+	p.Success = x.(*EchoMultiInt32Response)
+}
+
+func (p *TestServiceEchoMultiInt32Result) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoMultiInt32Result) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiInt32Result(%+v)", *p)
+}
+func (p *TestServiceEchoMultiInt32Result) GetResult() interface{} {
+	return p.Success
+}
+func (p *TestServiceEchoMultiInt32Result) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiInt32Result) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+type TestServiceEchoMultiInt64Args struct {
+	BaseReq int64           `thrift:"baseReq,1" frugal:"1,default,i64" json:"baseReq"`
+	ListReq []int64         `thrift:"listReq,2" frugal:"2,default,list<i64>" json:"listReq"`
+	MapReq  map[int64]int64 `thrift:"mapReq,3" frugal:"3,default,map<i64:i64>" json:"mapReq"`
+}
+
+func NewTestServiceEchoMultiInt64Args() *TestServiceEchoMultiInt64Args {
+	return &TestServiceEchoMultiInt64Args{}
+}
+
+func (p *TestServiceEchoMultiInt64Args) InitDefault() {
+	*p = TestServiceEchoMultiInt64Args{}
+}
+
+func (p *TestServiceEchoMultiInt64Args) GetBaseReq() (v int64) {
+	return p.BaseReq
+}
+
+func (p *TestServiceEchoMultiInt64Args) GetListReq() (v []int64) {
+	return p.ListReq
+}
+
+func (p *TestServiceEchoMultiInt64Args) GetMapReq() (v map[int64]int64) {
+	return p.MapReq
+}
+func (p *TestServiceEchoMultiInt64Args) SetBaseReq(val int64) {
+	p.BaseReq = val
+}
+func (p *TestServiceEchoMultiInt64Args) SetListReq(val []int64) {
+	p.ListReq = val
+}
+func (p *TestServiceEchoMultiInt64Args) SetMapReq(val map[int64]int64) {
+	p.MapReq = val
+}
+
+func (p *TestServiceEchoMultiInt64Args) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiInt64Args(%+v)", *p)
+}
+func (p *TestServiceEchoMultiInt64Args) GetFirstArgument() interface{} {
+	return p.BaseReq
+}
+func (p *TestServiceEchoMultiInt64Args) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.BaseReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.ListReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.MapReq)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiInt64Args) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.BaseReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.ListReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.MapReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+type TestServiceEchoMultiInt64Result struct {
+	Success *EchoMultiInt64Response `thrift:"success,0,optional" frugal:"0,optional,EchoMultiInt64Response" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoMultiInt64Result() *TestServiceEchoMultiInt64Result {
+	return &TestServiceEchoMultiInt64Result{}
+}
+
+func (p *TestServiceEchoMultiInt64Result) InitDefault() {
+	*p = TestServiceEchoMultiInt64Result{}
+}
+
+var TestServiceEchoMultiInt64Result_Success_DEFAULT *EchoMultiInt64Response
+
+func (p *TestServiceEchoMultiInt64Result) GetSuccess() (v *EchoMultiInt64Response) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoMultiInt64Result_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoMultiInt64Result) SetSuccess(x interface{}) {
+	p.Success = x.(*EchoMultiInt64Response)
+}
+
+func (p *TestServiceEchoMultiInt64Result) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoMultiInt64Result) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiInt64Result(%+v)", *p)
+}
+func (p *TestServiceEchoMultiInt64Result) GetResult() interface{} {
+	return p.Success
+}
+func (p *TestServiceEchoMultiInt64Result) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiInt64Result) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+type TestServiceEchoMultiDoubleArgs struct {
+	BaseReq float64             `thrift:"baseReq,1" frugal:"1,default,double" json:"baseReq"`
+	ListReq []float64           `thrift:"listReq,2" frugal:"2,default,list<double>" json:"listReq"`
+	MapReq  map[float64]float64 `thrift:"mapReq,3" frugal:"3,default,map<double:double>" json:"mapReq"`
+}
+
+func NewTestServiceEchoMultiDoubleArgs() *TestServiceEchoMultiDoubleArgs {
+	return &TestServiceEchoMultiDoubleArgs{}
+}
+
+func (p *TestServiceEchoMultiDoubleArgs) InitDefault() {
+	*p = TestServiceEchoMultiDoubleArgs{}
+}
+
+func (p *TestServiceEchoMultiDoubleArgs) GetBaseReq() (v float64) {
+	return p.BaseReq
+}
+
+func (p *TestServiceEchoMultiDoubleArgs) GetListReq() (v []float64) {
+	return p.ListReq
+}
+
+func (p *TestServiceEchoMultiDoubleArgs) GetMapReq() (v map[float64]float64) {
+	return p.MapReq
+}
+func (p *TestServiceEchoMultiDoubleArgs) SetBaseReq(val float64) {
+	p.BaseReq = val
+}
+func (p *TestServiceEchoMultiDoubleArgs) SetListReq(val []float64) {
+	p.ListReq = val
+}
+func (p *TestServiceEchoMultiDoubleArgs) SetMapReq(val map[float64]float64) {
+	p.MapReq = val
+}
+
+func (p *TestServiceEchoMultiDoubleArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiDoubleArgs(%+v)", *p)
+}
+func (p *TestServiceEchoMultiDoubleArgs) GetFirstArgument() interface{} {
+	return p.BaseReq
+}
+func (p *TestServiceEchoMultiDoubleArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.BaseReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.ListReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.MapReq)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiDoubleArgs) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.BaseReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.ListReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.MapReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+type TestServiceEchoMultiDoubleResult struct {
+	Success *EchoMultiDoubleResponse `thrift:"success,0,optional" frugal:"0,optional,EchoMultiDoubleResponse" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoMultiDoubleResult() *TestServiceEchoMultiDoubleResult {
+	return &TestServiceEchoMultiDoubleResult{}
+}
+
+func (p *TestServiceEchoMultiDoubleResult) InitDefault() {
+	*p = TestServiceEchoMultiDoubleResult{}
+}
+
+var TestServiceEchoMultiDoubleResult_Success_DEFAULT *EchoMultiDoubleResponse
+
+func (p *TestServiceEchoMultiDoubleResult) GetSuccess() (v *EchoMultiDoubleResponse) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoMultiDoubleResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoMultiDoubleResult) SetSuccess(x interface{}) {
+	p.Success = x.(*EchoMultiDoubleResponse)
+}
+
+func (p *TestServiceEchoMultiDoubleResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoMultiDoubleResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiDoubleResult(%+v)", *p)
+}
+func (p *TestServiceEchoMultiDoubleResult) GetResult() interface{} {
+	return p.Success
+}
+func (p *TestServiceEchoMultiDoubleResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiDoubleResult) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+type TestServiceEchoMultiStringArgs struct {
+	BaseReq string            `thrift:"baseReq,1" frugal:"1,default,string" json:"baseReq"`
+	ListReq []string          `thrift:"listReq,2" frugal:"2,default,list<string>" json:"listReq"`
+	MapReq  map[string]string `thrift:"mapReq,3" frugal:"3,default,map<string:string>" json:"mapReq"`
+}
+
+func NewTestServiceEchoMultiStringArgs() *TestServiceEchoMultiStringArgs {
+	return &TestServiceEchoMultiStringArgs{}
+}
+
+func (p *TestServiceEchoMultiStringArgs) InitDefault() {
+	*p = TestServiceEchoMultiStringArgs{}
+}
+
+func (p *TestServiceEchoMultiStringArgs) GetBaseReq() (v string) {
+	return p.BaseReq
+}
+
+func (p *TestServiceEchoMultiStringArgs) GetListReq() (v []string) {
+	return p.ListReq
+}
+
+func (p *TestServiceEchoMultiStringArgs) GetMapReq() (v map[string]string) {
+	return p.MapReq
+}
+func (p *TestServiceEchoMultiStringArgs) SetBaseReq(val string) {
+	p.BaseReq = val
+}
+func (p *TestServiceEchoMultiStringArgs) SetListReq(val []string) {
+	p.ListReq = val
+}
+func (p *TestServiceEchoMultiStringArgs) SetMapReq(val map[string]string) {
+	p.MapReq = val
+}
+
+func (p *TestServiceEchoMultiStringArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiStringArgs(%+v)", *p)
+}
+func (p *TestServiceEchoMultiStringArgs) GetFirstArgument() interface{} {
+	return p.BaseReq
+}
+func (p *TestServiceEchoMultiStringArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.BaseReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.ListReq)
+	if err != nil {
+		return err
+	}
+
+	err = e.Encode(p.MapReq)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiStringArgs) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.BaseReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.ListReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.MapReq)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+type TestServiceEchoMultiStringResult struct {
+	Success *EchoMultiStringResponse `thrift:"success,0,optional" frugal:"0,optional,EchoMultiStringResponse" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoMultiStringResult() *TestServiceEchoMultiStringResult {
+	return &TestServiceEchoMultiStringResult{}
+}
+
+func (p *TestServiceEchoMultiStringResult) InitDefault() {
+	*p = TestServiceEchoMultiStringResult{}
+}
+
+var TestServiceEchoMultiStringResult_Success_DEFAULT *EchoMultiStringResponse
+
+func (p *TestServiceEchoMultiStringResult) GetSuccess() (v *EchoMultiStringResponse) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoMultiStringResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoMultiStringResult) SetSuccess(x interface{}) {
+	p.Success = x.(*EchoMultiStringResponse)
+}
+
+func (p *TestServiceEchoMultiStringResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoMultiStringResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiStringResult(%+v)", *p)
+}
+func (p *TestServiceEchoMultiStringResult) GetResult() interface{} {
+	return p.Success
+}
+func (p *TestServiceEchoMultiStringResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoMultiStringResult) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}

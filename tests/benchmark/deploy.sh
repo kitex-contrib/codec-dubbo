@@ -78,7 +78,7 @@ client() {
   p=$2
   go build -o "$p" .
   chmod +x "$p"
-  nohup ./"$p" "$3" "$4" "$5" "$6" >../client_log 2>&1 &
+  nohup ./"$p" "$3" "$4" "$5" "$6" >../../client_log 2>&1 &
 }
 
 server() {
@@ -86,7 +86,7 @@ server() {
   p=$2
   go build -o "$p" .
   chmod +x "$p"
-  nohup ./"$p" "$3" "$4" >../server_log 2>&1 &
+  nohup ./"$p" "$3" "$4" >../../server_log 2>&1 &
 }
 
 if test "$1" = "$stress_name";

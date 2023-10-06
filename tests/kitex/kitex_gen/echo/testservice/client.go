@@ -45,6 +45,13 @@ type Client interface {
 	EchoBool2DoubleListMap(ctx context.Context, req map[bool][]float64, callOptions ...callopt.Option) (r map[bool][]float64, err error)
 	EchoBool2StringListMap(ctx context.Context, req map[bool][]string, callOptions ...callopt.Option) (r map[bool][]string, err error)
 	EchoBool2BinaryListMap(ctx context.Context, req map[bool][][]byte, callOptions ...callopt.Option) (r map[bool][][]byte, err error)
+	EchoMultiBool(ctx context.Context, baseReq bool, listReq []bool, mapReq map[bool]bool, callOptions ...callopt.Option) (r *echo.EchoMultiBoolResponse, err error)
+	EchoMultiByte(ctx context.Context, baseReq int8, listReq []int8, mapReq map[int8]int8, callOptions ...callopt.Option) (r *echo.EchoMultiByteResponse, err error)
+	EchoMultiInt16(ctx context.Context, baseReq int16, listReq []int16, mapReq map[int16]int16, callOptions ...callopt.Option) (r *echo.EchoMultiInt16Response, err error)
+	EchoMultiInt32(ctx context.Context, baseReq int32, listReq []int32, mapReq map[int32]int32, callOptions ...callopt.Option) (r *echo.EchoMultiInt32Response, err error)
+	EchoMultiInt64(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64, callOptions ...callopt.Option) (r *echo.EchoMultiInt64Response, err error)
+	EchoMultiDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64, callOptions ...callopt.Option) (r *echo.EchoMultiDoubleResponse, err error)
+	EchoMultiString(ctx context.Context, baseReq string, listReq []string, mapReq map[string]string, callOptions ...callopt.Option) (r *echo.EchoMultiStringResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -244,4 +251,39 @@ func (p *kTestServiceClient) EchoBool2StringListMap(ctx context.Context, req map
 func (p *kTestServiceClient) EchoBool2BinaryListMap(ctx context.Context, req map[bool][][]byte, callOptions ...callopt.Option) (r map[bool][][]byte, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.EchoBool2BinaryListMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoMultiBool(ctx context.Context, baseReq bool, listReq []bool, mapReq map[bool]bool, callOptions ...callopt.Option) (r *echo.EchoMultiBoolResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoMultiBool(ctx, baseReq, listReq, mapReq)
+}
+
+func (p *kTestServiceClient) EchoMultiByte(ctx context.Context, baseReq int8, listReq []int8, mapReq map[int8]int8, callOptions ...callopt.Option) (r *echo.EchoMultiByteResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoMultiByte(ctx, baseReq, listReq, mapReq)
+}
+
+func (p *kTestServiceClient) EchoMultiInt16(ctx context.Context, baseReq int16, listReq []int16, mapReq map[int16]int16, callOptions ...callopt.Option) (r *echo.EchoMultiInt16Response, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoMultiInt16(ctx, baseReq, listReq, mapReq)
+}
+
+func (p *kTestServiceClient) EchoMultiInt32(ctx context.Context, baseReq int32, listReq []int32, mapReq map[int32]int32, callOptions ...callopt.Option) (r *echo.EchoMultiInt32Response, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoMultiInt32(ctx, baseReq, listReq, mapReq)
+}
+
+func (p *kTestServiceClient) EchoMultiInt64(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64, callOptions ...callopt.Option) (r *echo.EchoMultiInt64Response, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoMultiInt64(ctx, baseReq, listReq, mapReq)
+}
+
+func (p *kTestServiceClient) EchoMultiDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64, callOptions ...callopt.Option) (r *echo.EchoMultiDoubleResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoMultiDouble(ctx, baseReq, listReq, mapReq)
+}
+
+func (p *kTestServiceClient) EchoMultiString(ctx context.Context, baseReq string, listReq []string, mapReq map[string]string, callOptions ...callopt.Option) (r *echo.EchoMultiStringResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoMultiString(ctx, baseReq, listReq, mapReq)
 }
