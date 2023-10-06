@@ -141,6 +141,13 @@ func TestDubboJava(t *testing.T) {
 		"EchoBool2DoubleMap": false,
 		"EchoBool2StringMap": false,
 		//"EchoBool2BinaryMap": false,
+		"EchoMultiBool": false,
+		//"EchoMultiByte":   false,
+		//"EchoMultiInt16":  false,
+		"EchoMultiInt32":  false,
+		"EchoMultiInt64":  false,
+		"EchoMultiDouble": false,
+		"EchoMultiString": false,
 	})
 	for {
 		line, err := reader.ReadString('\n')

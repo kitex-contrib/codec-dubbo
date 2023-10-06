@@ -74,4 +74,18 @@ public interface UserProvider {
     HashMap<Boolean, String> EchoBool2StringMap(HashMap<Boolean, String> req) throws Exception;
 
     HashMap<Boolean, byte[]> EchoBool2BinaryMap(HashMap<Boolean, byte[]> req) throws Exception;
+
+    EchoMultiBoolResponse EchoMultiBool(boolean baseReq, ArrayList<Boolean> listReq, HashMap<Boolean, Boolean> mapReq) throws Exception;
+
+    EchoMultiByteResponse EchoMultiByte(byte baseReq, ArrayList<Byte> listReq, HashMap<Byte, Byte> mapReq) throws Exception;
+
+    EchoMultiInt16Response EchoMultiInt16(short baseReq, ArrayList<Short> listReq, HashMap<Short, Short> mapReq) throws Exception;
+
+    EchoMultiInt32Response EchoMultiInt32(int baseReq, ArrayList<Integer> listReq, HashMap<Integer, Integer> mapReq) throws Exception;
+
+    EchoMultiInt64Response EchoMultiInt64(long baseReq, ArrayList<Long> listReq, HashMap<Long, Long> mapReq) throws Exception;
+
+    EchoMultiDoubleResponse EchoMultiDouble(double baseReq, ArrayList<Double> listReq, HashMap<Double, Double> mapReq) throws Exception;
+
+    EchoMultiStringResponse EchoMultiString(String baseReq, ArrayList<String> listReq, HashMap<String, String> mapReq) throws Exception;
 }

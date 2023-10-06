@@ -1,6 +1,6 @@
 # About this directory
 
-This code is used for crosstest between dubbo and kitex. It is under developing.
+This code is used for crosstest between dubbo and kitex.
 
 ## Start the service consumer
 

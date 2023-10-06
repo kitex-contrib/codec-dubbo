@@ -26,7 +26,7 @@ import java.util.HashMap;
 
 import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
-import org.apache.dubbo.tests.api.UserProvider;
+import org.apache.dubbo.tests.api.*;
 
 public class Application {
     public static void main(String[] args) throws IOException {
@@ -43,6 +43,7 @@ public class Application {
         testBaseTypes(service);
         testContainerListType(service);
         testContainerMapType(service);
+        testMultiParams(service);
     }
 
     public static void logEchoFail(String methodName) {
@@ -88,6 +89,16 @@ public class Application {
         testEchoBool2DoubleMap(svc);
         testEchoBool2StringMap(svc);
         testEchoBool2BinaryMap(svc);
+    }
+
+    public static void testMultiParams(UserProvider svc) {
+        testEchoMultiBool(svc);
+        testEchoMultiByte(svc);
+        testEchoMultiInt16(svc);
+        testEchoMultiInt32(svc);
+        testEchoMultiInt64(svc);
+        testEchoMultiDouble(svc);
+        testEchoMultiString(svc);
     }
 
     public static void testEchoBool(UserProvider svc) {
@@ -221,7 +232,7 @@ public class Application {
         String methodName = "EchoByteList";
         try {
             ArrayList<Byte> req = new ArrayList<>();
-            req.add((byte)12);
+            req.add((byte) 12);
             ArrayList<Byte> resp = svc.EchoByteList(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
@@ -236,7 +247,7 @@ public class Application {
         String methodName = "EchoInt16List";
         try {
             ArrayList<Short> req = new ArrayList<>();
-            req.add((short)12);
+            req.add((short) 12);
             ArrayList<Short> resp = svc.EchoInt16List(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
@@ -266,7 +277,7 @@ public class Application {
         String methodName = "EchoInt64List";
         try {
             ArrayList<Long> req = new ArrayList<>();
-            req.add((long)12);
+            req.add((long) 12);
             ArrayList<Long> resp = svc.EchoInt64List(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
@@ -387,7 +398,7 @@ public class Application {
         String methodName = "EchoBool2Int64Map";
         try {
             HashMap<Boolean, Long> req = new HashMap<>();
-            req.put(true, (long)1);
+            req.put(true, (long) 1);
             HashMap<Boolean, Long> resp = svc.EchoBool2Int64Map(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
@@ -436,6 +447,139 @@ public class Application {
             req.put(true, bs);
             HashMap<Boolean, byte[]> resp = svc.EchoBool2BinaryMap(req);
             if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiBool(UserProvider svc) {
+        String methodName = "EchoMultiBool";
+        try {
+            boolean baseReq = true;
+            ArrayList<Boolean> listReq = new ArrayList<>();
+            listReq.add(true);
+            listReq.add(true);
+            HashMap<Boolean, Boolean> mapReq = new HashMap<>();
+            mapReq.put(true, true);
+            EchoMultiBoolResponse resp = svc.EchoMultiBool(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !listReq.equals(resp.getListResp()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiByte(UserProvider svc) {
+        String methodName = "EchoMultiByte";
+        try {
+            byte baseReq = 1;
+            ArrayList<Byte> listReq = new ArrayList<>();
+            listReq.add((byte) 12);
+            listReq.add((byte) 34);
+            HashMap<Byte, Byte> mapReq = new HashMap<>();
+            mapReq.put((byte) 12, (byte) 34);
+            EchoMultiByteResponse resp = svc.EchoMultiByte(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !listReq.equals(resp.getListResp()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiInt16(UserProvider svc) {
+        String methodName = "EchoMultiInt16";
+        try {
+            short baseReq = 1;
+            ArrayList<Short> listReq = new ArrayList<>();
+            listReq.add((short) 12);
+            listReq.add((short) 34);
+            HashMap<Short, Short> mapReq = new HashMap<>();
+            mapReq.put((short) 12, (short) 34);
+            EchoMultiInt16Response resp = svc.EchoMultiInt16(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !listReq.equals(resp.getListResp()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiInt32(UserProvider svc) {
+        String methodName = "EchoMultiInt32";
+        try {
+            int baseReq = 1;
+            ArrayList<Integer> listReq = new ArrayList<>();
+            listReq.add(12);
+            listReq.add(34);
+            HashMap<Integer, Integer> mapReq = new HashMap<>();
+            mapReq.put(12, 34);
+            EchoMultiInt32Response resp = svc.EchoMultiInt32(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !listReq.equals(resp.getListResp()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiInt64(UserProvider svc) {
+        String methodName = "EchoMultiInt64";
+        try {
+            long baseReq = 1;
+            ArrayList<Long> listReq = new ArrayList<>();
+            listReq.add((long) 12);
+            listReq.add((long) 34);
+            HashMap<Long, Long> mapReq = new HashMap<>();
+            mapReq.put((long) 12, (long) 34);
+            EchoMultiInt64Response resp = svc.EchoMultiInt64(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !listReq.equals(resp.getListResp()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiDouble(UserProvider svc) {
+        String methodName = "EchoMultiDouble";
+        try {
+            double baseReq = 12.34;
+            ArrayList<Double> listReq = new ArrayList<>();
+            listReq.add(12.34);
+            listReq.add(56.78);
+            HashMap<Double, Double> mapReq = new HashMap<>();
+            mapReq.put(12.34, 56.78);
+            EchoMultiDoubleResponse resp = svc.EchoMultiDouble(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !listReq.equals(resp.getListResp()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiString(UserProvider svc) {
+        String methodName = "EchoMultiString";
+        try {
+            String baseReq = "1";
+            ArrayList<String> listReq = new ArrayList<>();
+            listReq.add("12");
+            listReq.add("34");
+            HashMap<String, String> mapReq = new HashMap<>();
+            mapReq.put("12", "34");
+            EchoMultiStringResponse resp = svc.EchoMultiString(baseReq, listReq, mapReq);
+            if (!baseReq.equals(resp.getBaseResp()) || !listReq.equals(resp.getListResp()) || !mapReq.equals(resp.getMapResp())) {
                 logEchoFail(methodName);
             }
         } catch (Exception e) {
