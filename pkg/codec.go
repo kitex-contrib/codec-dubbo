@@ -21,7 +21,6 @@ package dubbo
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"github.com/cloudwego/kitex/pkg/remote"
@@ -446,9 +445,6 @@ func processAttachments(decoder iface.Decoder, message remote.Message) error {
 
 func readBody(header *dubbo_spec.DubboHeader, in remote.ByteBuffer) ([]byte, error) {
 	length := int(header.DataLength)
-	if in.ReadableLen() < length {
-		return nil, errors.New("invalid dubbo package with body length being less than header specified")
-	}
 	return in.Next(length)
 }
 
