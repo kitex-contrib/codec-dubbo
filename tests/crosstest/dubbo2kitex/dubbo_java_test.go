@@ -142,6 +142,7 @@ func TestDubboJava(t *testing.T) {
 		"EchoBool2StringMap": false,
 		//"EchoBool2BinaryMap": false,
 		"EchoMultiBool": false,
+		// hessian2 can not support
 		//"EchoMultiByte":   false,
 		//"EchoMultiInt16":  false,
 		"EchoMultiInt32":  false,

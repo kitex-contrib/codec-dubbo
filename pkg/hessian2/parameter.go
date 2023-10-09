@@ -135,55 +135,25 @@ func getParamType(param interface{}) string {
 	case nil:
 		return "V"
 	case bool:
-		return "Z"
-	case []bool:
-		return "[Z"
-	case byte:
-		return "B"
+		return "java.lang.Boolean"
+	case int8:
+		return "java.lang.Byte"
+	case int16:
+		return "java.lang.Short"
+	case int32:
+		return "java.lang.Integer"
+	case int64:
+		return "java.lang.Long"
+	case float64:
+		return "java.lang.Double"
 	case []byte:
 		return "[B"
-	case int8:
-		return "B"
-	case []int8:
-		return "[B"
-	case int16:
-		return "S"
-	case []int16:
-		return "[S"
-	case uint16: // Equivalent to Char of Java
-		return "C"
-	case []uint16:
-		return "[C"
-	// case rune:
-	//	return "C"
-	case int:
-		return "J"
-	case []int:
-		return "[J"
-	case int32:
-		return "I"
-	case []int32:
-		return "[I"
-	case int64:
-		return "J"
-	case []int64:
-		return "[J"
 	case time.Time:
 		return "java.util.Date"
 	case []time.Time:
 		return "[Ljava.util.Date"
-	case float32:
-		return "F"
-	case []float32:
-		return "[F"
-	case float64:
-		return "D"
-	case []float64:
-		return "[D"
 	case string:
 		return "java.lang.String"
-	case []string:
-		return "[Ljava.lang.String;"
 	case []hessian.Object:
 		return "[Ljava.lang.Object;"
 	case map[interface{}]interface{}:
@@ -191,22 +161,6 @@ func getParamType(param interface{}) string {
 		return "java.util.Map"
 	case hessian.POJOEnum:
 		return typ.JavaClassName()
-	case *int8:
-		return "java.lang.Byte"
-	case *int16:
-		return "java.lang.Short"
-	case *uint16:
-		return "java.lang.Character"
-	case *int:
-		return "java.lang.Long"
-	case *int32:
-		return "java.lang.Integer"
-	case *int64:
-		return "java.lang.Long"
-	case *float32:
-		return "java.lang.Float"
-	case *float64:
-		return "java.lang.Double"
 	//  Serialized tags for complex types
 	default:
 		reflectTyp := reflect.TypeOf(typ)

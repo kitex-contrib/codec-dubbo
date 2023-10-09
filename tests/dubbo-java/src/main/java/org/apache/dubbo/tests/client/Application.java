@@ -20,9 +20,7 @@
 package org.apache.dubbo.tests.client;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
 import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
@@ -218,7 +216,7 @@ public class Application {
         try {
             ArrayList<Boolean> req = new ArrayList<>();
             req.add(true);
-            ArrayList<Boolean> resp = svc.EchoBoolList(req);
+            List<Boolean> resp = svc.EchoBoolList(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -233,7 +231,7 @@ public class Application {
         try {
             ArrayList<Byte> req = new ArrayList<>();
             req.add((byte) 12);
-            ArrayList<Byte> resp = svc.EchoByteList(req);
+            List<Byte> resp = svc.EchoByteList(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -248,7 +246,7 @@ public class Application {
         try {
             ArrayList<Short> req = new ArrayList<>();
             req.add((short) 12);
-            ArrayList<Short> resp = svc.EchoInt16List(req);
+            List<Short> resp = svc.EchoInt16List(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -263,7 +261,7 @@ public class Application {
         try {
             ArrayList<Integer> req = new ArrayList<>();
             req.add(12);
-            ArrayList<Integer> resp = svc.EchoInt32List(req);
+            List<Integer> resp = svc.EchoInt32List(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -278,7 +276,7 @@ public class Application {
         try {
             ArrayList<Long> req = new ArrayList<>();
             req.add((long) 12);
-            ArrayList<Long> resp = svc.EchoInt64List(req);
+            List<Long> resp = svc.EchoInt64List(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -293,7 +291,7 @@ public class Application {
         try {
             ArrayList<Double> req = new ArrayList<>();
             req.add(12.34);
-            ArrayList<Double> resp = svc.EchoDoubleList(req);
+            List<Double> resp = svc.EchoDoubleList(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -308,7 +306,7 @@ public class Application {
         try {
             ArrayList<String> req = new ArrayList<>();
             req.add("12");
-            ArrayList<String> resp = svc.EchoStringList(req);
+            List<String> resp = svc.EchoStringList(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -324,7 +322,7 @@ public class Application {
             ArrayList<byte[]> req = new ArrayList<>();
             byte[] bs = new byte[]{1, 2};
             req.add(bs);
-            ArrayList<byte[]> resp = svc.EchoBinaryList(req);
+            List<byte[]> resp = svc.EchoBinaryList(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -339,7 +337,7 @@ public class Application {
         try {
             HashMap<Boolean, Boolean> req = new HashMap<>();
             req.put(true, true);
-            HashMap<Boolean, Boolean> resp = svc.EchoBool2BoolMap(req);
+            Map<Boolean, Boolean> resp = svc.EchoBool2BoolMap(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -354,7 +352,7 @@ public class Application {
         try {
             HashMap<Boolean, Byte> req = new HashMap<>();
             req.put(true, (byte) 12);
-            HashMap<Boolean, Byte> resp = svc.EchoBool2ByteMap(req);
+            Map<Boolean, Byte> resp = svc.EchoBool2ByteMap(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -369,7 +367,7 @@ public class Application {
         try {
             HashMap<Boolean, Short> req = new HashMap<>();
             req.put(true, (short) 12);
-            HashMap<Boolean, Short> resp = svc.EchoBool2Int16Map(req);
+            Map<Boolean, Short> resp = svc.EchoBool2Int16Map(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -384,7 +382,7 @@ public class Application {
         try {
             HashMap<Boolean, Integer> req = new HashMap<>();
             req.put(true, 1);
-            HashMap<Boolean, Integer> resp = svc.EchoBool2Int32Map(req);
+            Map<Boolean, Integer> resp = svc.EchoBool2Int32Map(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -399,7 +397,7 @@ public class Application {
         try {
             HashMap<Boolean, Long> req = new HashMap<>();
             req.put(true, (long) 1);
-            HashMap<Boolean, Long> resp = svc.EchoBool2Int64Map(req);
+            Map<Boolean, Long> resp = svc.EchoBool2Int64Map(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -414,7 +412,7 @@ public class Application {
         try {
             HashMap<Boolean, Double> req = new HashMap<>();
             req.put(true, 12.34);
-            HashMap<Boolean, Double> resp = svc.EchoBool2DoubleMap(req);
+            Map<Boolean, Double> resp = svc.EchoBool2DoubleMap(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -429,7 +427,7 @@ public class Application {
         try {
             HashMap<Boolean, String> req = new HashMap<>();
             req.put(true, "12");
-            HashMap<Boolean, String> resp = svc.EchoBool2StringMap(req);
+            Map<Boolean, String> resp = svc.EchoBool2StringMap(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -445,7 +443,7 @@ public class Application {
             HashMap<Boolean, byte[]> req = new HashMap<>();
             byte[] bs = new byte[]{1, 2};
             req.put(true, bs);
-            HashMap<Boolean, byte[]> resp = svc.EchoBool2BinaryMap(req);
+            Map<Boolean, byte[]> resp = svc.EchoBool2BinaryMap(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
