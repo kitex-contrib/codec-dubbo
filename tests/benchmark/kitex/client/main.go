@@ -20,18 +20,23 @@ func main() {
 	flag.StringVar(&srvAddr, "addr", "127.0.0.1:20001", "")
 	flag.Parse()
 
-	codec := dubbo.NewDubboCodec()
+	cliCodec := dubbo.NewDubboCodec(
+		dubbo.WithJavaClassName("org.apache.dubbo.UserProvider"),
+	)
 	cli, err := userservice.NewClient("test",
 		client.WithHostPorts(srvAddr),
-		client.WithCodec(codec),
+		client.WithCodec(cliCodec),
 	)
 	if err != nil {
 		panic(err)
 	}
+	srvCodec := dubbo.NewDubboCodec(
+		dubbo.WithJavaClassName("org.apache.dubbo.UserProviderProxy"),
+	)
 	addr, _ := net.ResolveTCPAddr("tcp", ":"+strconv.Itoa(cliPort))
 	svr := proxyservice.NewServer(&ProxyServiceImpl{cli: cli},
 		server.WithServiceAddr(addr),
-		server.WithCodec(codec),
+		server.WithCodec(srvCodec),
 	)
 
 	if err = svr.Run(); err != nil {
