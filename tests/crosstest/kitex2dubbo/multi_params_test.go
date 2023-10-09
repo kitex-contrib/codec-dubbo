@@ -19,6 +19,11 @@
 
 package kitex2dubbo
 
+import (
+	"context"
+	"testing"
+)
+
 // We have supported other map types (refer to /pkg/hessian2/response_test),
 // but ReflectResponse in dubbo-go side could not support. As a result dubbo-go could not parse
 // map types request correctly.
@@ -111,21 +116,19 @@ package kitex2dubbo
 
 // ----------kitex -> dubbo-java----------
 
-// dubbo-go-hessian2 Encode can not produce correct types for List and Map.
-// todo: improve hessian2 Encode
+func TestEchoMultiBool_Java(t *testing.T) {
+	baseReq := true
+	listReq := []bool{true, true}
+	mapReq := map[bool]bool{
+		true: true,
+	}
+	resp, err := cli2Java.EchoMultiBool(context.Background(), baseReq, listReq, mapReq)
+	assertEcho(t, err, baseReq, resp.BaseResp)
+	assertEcho(t, err, listReq, resp.ListResp)
+	assertEcho(t, err, mapReq, resp.MapResp)
+}
 
-//func TestEchoMultiBool_Java(t *testing.T) {
-//	baseReq := true
-//	listReq := []bool{true, true}
-//	mapReq := map[bool]bool{
-//		true: true,
-//	}
-//	resp, err := cli2Java.EchoMultiBool(context.Background(), baseReq, listReq, mapReq)
-//	assertEcho(t, err, baseReq, resp.BaseResp)
-//	assertEcho(t, err, listReq, resp.ListResp)
-//	assertEcho(t, err, mapReq, resp.MapResp)
-//}
-
+// hessian2.Decode does not support but dubbo-java supports
 //func TestEchoMultiByte_Java(t *testing.T) {
 //	baseReq := int8(1)
 //	listReq := []int8{12, 34}
@@ -138,6 +141,7 @@ package kitex2dubbo
 //	assertEcho(t, err, mapReq, resp.MapResp)
 //}
 
+// hessian2.Decode does not support but dubbo-java supports
 //func TestEchoMultiInt16_Java(t *testing.T) {
 //	baseReq := int16(1)
 //	listReq := []int16{12, 34}
@@ -150,50 +154,50 @@ package kitex2dubbo
 //	assertEcho(t, err, mapReq, resp.MapResp)
 //}
 
-//func TestEchoMultiInt32_Java(t *testing.T) {
-//	baseReq := int32(1)
-//	listReq := []int32{12, 34}
-//	mapReq := map[int32]int32{
-//		12: 34,
-//	}
-//	resp, err := cli2Java.EchoMultiInt32(context.Background(), baseReq, listReq, mapReq)
-//	assertEcho(t, err, baseReq, resp.BaseResp)
-//	assertEcho(t, err, listReq, resp.ListResp)
-//	assertEcho(t, err, mapReq, resp.MapResp)
-//}
+func TestEchoMultiInt32_Java(t *testing.T) {
+	baseReq := int32(1)
+	listReq := []int32{12, 34}
+	mapReq := map[int32]int32{
+		12: 34,
+	}
+	resp, err := cli2Java.EchoMultiInt32(context.Background(), baseReq, listReq, mapReq)
+	assertEcho(t, err, baseReq, resp.BaseResp)
+	assertEcho(t, err, listReq, resp.ListResp)
+	assertEcho(t, err, mapReq, resp.MapResp)
+}
 
-//func TestEchoMultiInt64_Java(t *testing.T) {
-//	baseReq := int64(1)
-//	listReq := []int64{12, 34}
-//	mapReq := map[int64]int64{
-//		12: 34,
-//	}
-//	resp, err := cli2Java.EchoMultiInt64(context.Background(), baseReq, listReq, mapReq)
-//	assertEcho(t, err, baseReq, resp.BaseResp)
-//	assertEcho(t, err, listReq, resp.ListResp)
-//	assertEcho(t, err, mapReq, resp.MapResp)
-//}
+func TestEchoMultiInt64_Java(t *testing.T) {
+	baseReq := int64(1)
+	listReq := []int64{12, 34}
+	mapReq := map[int64]int64{
+		12: 34,
+	}
+	resp, err := cli2Java.EchoMultiInt64(context.Background(), baseReq, listReq, mapReq)
+	assertEcho(t, err, baseReq, resp.BaseResp)
+	assertEcho(t, err, listReq, resp.ListResp)
+	assertEcho(t, err, mapReq, resp.MapResp)
+}
 
-//func TestEchoMultiDouble_Java(t *testing.T) {
-//	baseReq := 12.34
-//	listReq := []float64{12.34, 56.78}
-//	mapReq := map[float64]float64{
-//		12.34: 56.78,
-//	}
-//	resp, err := cli2Java.EchoMultiDouble(context.Background(), baseReq, listReq, mapReq)
-//	assertEcho(t, err, baseReq, resp.BaseResp)
-//	assertEcho(t, err, listReq, resp.ListResp)
-//	assertEcho(t, err, mapReq, resp.MapResp)
-//}
+func TestEchoMultiDouble_Java(t *testing.T) {
+	baseReq := 12.34
+	listReq := []float64{12.34, 56.78}
+	mapReq := map[float64]float64{
+		12.34: 56.78,
+	}
+	resp, err := cli2Java.EchoMultiDouble(context.Background(), baseReq, listReq, mapReq)
+	assertEcho(t, err, baseReq, resp.BaseResp)
+	assertEcho(t, err, listReq, resp.ListResp)
+	assertEcho(t, err, mapReq, resp.MapResp)
+}
 
-//func TestEchoMultiString_Java(t *testing.T) {
-//	baseReq := "1"
-//	listReq := []string{"12", "34"}
-//	mapReq := map[string]string{
-//		"12": "34",
-//	}
-//	resp, err := cli2Java.EchoMultiString(context.Background(), baseReq, listReq, mapReq)
-//	assertEcho(t, err, baseReq, resp.BaseResp)
-//	assertEcho(t, err, listReq, resp.ListResp)
-//	assertEcho(t, err, mapReq, resp.MapResp)
-//}
+func TestEchoMultiString_Java(t *testing.T) {
+	baseReq := "1"
+	listReq := []string{"12", "34"}
+	mapReq := map[string]string{
+		"12": "34",
+	}
+	resp, err := cli2Java.EchoMultiString(context.Background(), baseReq, listReq, mapReq)
+	assertEcho(t, err, baseReq, resp.BaseResp)
+	assertEcho(t, err, listReq, resp.ListResp)
+	assertEcho(t, err, mapReq, resp.MapResp)
+}

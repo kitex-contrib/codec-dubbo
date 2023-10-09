@@ -1,15 +1,15 @@
 package org.apache.dubbo.tests.api;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EchoMultiInt32Response implements Serializable {
     int baseResp;
-    ArrayList<Integer> listResp;
-    HashMap<Integer, Integer> mapResp;
+    List<Integer> listResp;
+    Map<Integer, Integer> mapResp;
 
-    public EchoMultiInt32Response(int baseResp, ArrayList<Integer> listResp, HashMap<Integer, Integer> mapResp) {
+    public EchoMultiInt32Response(int baseResp, List<Integer> listResp, Map<Integer, Integer> mapResp) {
         this.baseResp = baseResp;
         this.listResp = listResp;
         this.mapResp = mapResp;
@@ -19,11 +19,11 @@ public class EchoMultiInt32Response implements Serializable {
         return baseResp;
     }
 
-    public ArrayList<Integer> getListResp() {
+    public List<Integer> getListResp() {
         return listResp;
     }
 
-    public HashMap<Integer, Integer> getMapResp() {
+    public Map<Integer, Integer> getMapResp() {
         return mapResp;
     }
 }

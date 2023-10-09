@@ -28,11 +28,11 @@ import (
 )
 
 type testInternalStruct struct {
-	Field int
+	Field int8
 }
 
 type testStructA struct {
-	Field int
+	Field int8
 }
 
 type testStructB struct {
@@ -57,7 +57,7 @@ func TestTypesCache_getByData(t *testing.T) {
 				typ := reflect.ValueOf(data).Type()
 				types, ok := c.get(typ)
 				assert.Equal(t, true, ok)
-				assert.Equal(t, "J", types)
+				assert.Equal(t, "Ljava/lang/Byte;", types)
 			},
 		},
 		{
@@ -109,7 +109,7 @@ func TestTypesCache_getByData(t *testing.T) {
 				typB := reflect.ValueOf(dataB).Type()
 				types, ok := c.get(typA)
 				assert.Equal(t, true, ok)
-				assert.Equal(t, "J", types)
+				assert.Equal(t, "Ljava/lang/Byte;", types)
 				types, ok = c.get(typB)
 				assert.Equal(t, true, ok)
 				assert.Equal(t, "Ljava/lang/Object;", types)

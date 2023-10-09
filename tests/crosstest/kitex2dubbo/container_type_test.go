@@ -149,47 +149,49 @@ func TestEchoStringList(t *testing.T) {
 // dubbo-go-hessian2 Encode can not produce correct types for List and Map.
 // todo: improve hessian2 Encode
 
-//func TestEchoBoolList_Java(t *testing.T) {
-//	req := []bool{true, false}
-//	resp, err := cli2Java.EchoBoolList(context.Background(), req)
-//	assertEcho(t, err, req, resp)
-//}
+func TestEchoBoolList_Java(t *testing.T) {
+	req := []bool{true, false}
+	resp, err := cli2Java.EchoBoolList(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
 
+// dubbo-java -> dubbo-java does not support
 //func TestEchoByteList_Java(t *testing.T) {
 //	var req = []int8{1, 2}
 //	resp, err := cli2Java.EchoByteList(context.Background(), req)
 //	assertEcho(t, err, req, resp)
 //}
 
+// dubbo-java -> dubbo-java does not support
 //func TestEchoInt16List_Java(t *testing.T) {
 //	var req = []int16{1, 2}
 //	resp, err := cli2Java.EchoInt16List(context.Background(), req)
 //	assertEcho(t, err, req, resp)
 //}
 
-//func TestEchoInt32List_Java(t *testing.T) {
-//	req := []int32{1, 2}
-//	resp, err := cli2Java.EchoInt32List(context.Background(), req)
-//	assertEcho(t, err, req, resp)
-//}
+func TestEchoInt32List_Java(t *testing.T) {
+	req := []int32{1, 2}
+	resp, err := cli2Java.EchoInt32List(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
 
-//func TestEchoInt64List_Java(t *testing.T) {
-//	req := []int64{1, 2}
-//	resp, err := cli2Java.EchoInt64List(context.Background(), req)
-//	assertEcho(t, err, req, resp)
-//}
+func TestEchoInt64List_Java(t *testing.T) {
+	req := []int64{1, 2}
+	resp, err := cli2Java.EchoInt64List(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
 
-//func TestEchoDoubleList_Java(t *testing.T) {
-//	req := []float64{12.3456, 78.9012}
-//	resp, err := cli2Java.EchoDoubleList(context.Background(), req)
-//	assertEcho(t, err, req, resp)
-//}
+func TestEchoDoubleList_Java(t *testing.T) {
+	req := []float64{12.3456, 78.9012}
+	resp, err := cli2Java.EchoDoubleList(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
 
-//func TestEchoStringList_Java(t *testing.T) {
-//	req := []string{"1", "2"}
-//	resp, err := cli2Java.EchoStringList(context.Background(), req)
-//	assertEcho(t, err, req, resp)
-//}
+func TestEchoStringList_Java(t *testing.T) {
+	req := []string{"1", "2"}
+	resp, err := cli2Java.EchoStringList(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
 
 //func TestEchoBinaryList_Java(t *testing.T) {
 //	var req = [][]byte{{'1'}, {'2'}}
@@ -197,13 +199,13 @@ func TestEchoStringList(t *testing.T) {
 //	assertEcho(t, err, req, resp)
 //}
 
-//func TestEchoBool2BoolMap_Java(t *testing.T) {
-//	req := map[bool]bool{
-//		true: true,
-//	}
-//	resp, err := cli2Java.EchoBool2BoolMap(context.Background(), req)
-//	assertEcho(t, err, req, resp)
-//}
+func TestEchoBool2BoolMap_Java(t *testing.T) {
+	req := map[bool]bool{
+		true: true,
+	}
+	resp, err := cli2Java.EchoBool2BoolMap(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
 
 // dubbo-java -> dubbo-java does not support
 //func TestEchoBool2ByteMap_Java(t *testing.T) {
@@ -223,37 +225,37 @@ func TestEchoStringList(t *testing.T) {
 //	assertEcho(t, err, req, resp)
 //}
 
-//func TestEchoBool2Int32Map_Java(t *testing.T) {
-//	req := map[bool]int32{
-//		true: 1,
-//	}
-//	resp, err := cli2Java.EchoBool2Int32Map(context.Background(), req)
-//	assertEcho(t, err, req, resp)
-//}
+func TestEchoBool2Int32Map_Java(t *testing.T) {
+	req := map[bool]int32{
+		true: 1,
+	}
+	resp, err := cli2Java.EchoBool2Int32Map(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
 
-//func TestEchoBool2Int64Map_Java(t *testing.T) {
-//	req := map[bool]int64{
-//		true: 1,
-//	}
-//	resp, err := cli2Java.EchoBool2Int64Map(context.Background(), req)
-//	assertEcho(t, err, req, resp)
-//}
+func TestEchoBool2Int64Map_Java(t *testing.T) {
+	req := map[bool]int64{
+		true: 1,
+	}
+	resp, err := cli2Java.EchoBool2Int64Map(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
 
-//func TestEchoBool2DoubleMap_Java(t *testing.T) {
-//	req := map[bool]float64{
-//		true: 12.34,
-//	}
-//	resp, err := cli2Java.EchoBool2DoubleMap(context.Background(), req)
-//	assertEcho(t, err, req, resp)
-//}
+func TestEchoBool2DoubleMap_Java(t *testing.T) {
+	req := map[bool]float64{
+		true: 12.34,
+	}
+	resp, err := cli2Java.EchoBool2DoubleMap(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
 
-//func TestEchoBool2StringMap_Java(t *testing.T) {
-//	req := map[bool]string{
-//		true: "1",
-//	}
-//	resp, err := cli2Java.EchoBool2StringMap(context.Background(), req)
-//	assertEcho(t, err, req, resp)
-//}
+func TestEchoBool2StringMap_Java(t *testing.T) {
+	req := map[bool]string{
+		true: "1",
+	}
+	resp, err := cli2Java.EchoBool2StringMap(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
 
 // dubbo-java -> dubbo-java does not support
 //func TestEchoBool2BinaryMap_Java(t *testing.T) {
