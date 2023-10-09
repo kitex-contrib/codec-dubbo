@@ -385,13 +385,13 @@ func init() {
 	hessian.RegisterPOJO(&User{}) // Register all transmission struct to hessian lib
 	// these POJOs would override POJOs registered by Kitex generation with same JavaClassName.
 	// since we do not enforce interoperability with dubbo-go, comment these statements.
-	//hessian.RegisterPOJO(&EchoMultiBoolResponse{})
-	//hessian.RegisterPOJO(&EchoMultiByteResponse{})
-	//hessian.RegisterPOJO(&EchoMultiInt16Response{})
-	//hessian.RegisterPOJO(&EchoMultiInt32Response{})
-	//hessian.RegisterPOJO(&EchoMultiInt64Response{})
-	//hessian.RegisterPOJO(&EchoMultiDoubleResponse{})
-	//hessian.RegisterPOJO(&EchoMultiStringResponse{})
+	// hessian.RegisterPOJO(&EchoMultiBoolResponse{})
+	// hessian.RegisterPOJO(&EchoMultiByteResponse{})
+	// hessian.RegisterPOJO(&EchoMultiInt16Response{})
+	// hessian.RegisterPOJO(&EchoMultiInt32Response{})
+	// hessian.RegisterPOJO(&EchoMultiInt64Response{})
+	// hessian.RegisterPOJO(&EchoMultiDoubleResponse{})
+	// hessian.RegisterPOJO(&EchoMultiStringResponse{})
 	// Register client interface to the framework
 	config.SetConsumerService(UserProviderClient)
 }
