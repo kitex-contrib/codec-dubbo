@@ -18,7 +18,9 @@ func main() {
 	addr, _ := net.ResolveTCPAddr("tcp", ":"+strconv.Itoa(srvPort))
 	svr := userservice.NewServer(new(UserServiceImpl),
 		server.WithServiceAddr(addr),
-		server.WithCodec(dubbo.NewDubboCodec()),
+		server.WithCodec(dubbo.NewDubboCodec(
+			dubbo.WithJavaClassName("org.apache.dubbo.UserProvider"),
+		)),
 	)
 
 	err := svr.Run()
