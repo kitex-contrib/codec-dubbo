@@ -116,9 +116,6 @@ import (
 
 // ----------kitex -> dubbo-java----------
 
-// dubbo-go-hessian2 Encode can not produce correct types for List and Map.
-// todo: improve hessian2 Encode
-
 func TestEchoMultiBool_Java(t *testing.T) {
 	baseReq := true
 	listReq := []bool{true, true}

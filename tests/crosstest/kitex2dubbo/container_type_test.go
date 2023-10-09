@@ -207,6 +207,7 @@ func TestEchoBool2BoolMap_Java(t *testing.T) {
 	assertEcho(t, err, req, resp)
 }
 
+// dubbo-java -> dubbo-java does not support
 //func TestEchoBool2ByteMap_Java(t *testing.T) {
 //	req := map[bool]int8{
 //		true: 1,
@@ -215,6 +216,7 @@ func TestEchoBool2BoolMap_Java(t *testing.T) {
 //	assertEcho(t, err, req, resp)
 //}
 
+// dubbo-java -> dubbo-java does not support
 //func TestEchoBool2Int16Map_Java(t *testing.T) {
 //	req := map[bool]int16{
 //		true: 1,
