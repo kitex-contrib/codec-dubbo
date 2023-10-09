@@ -53,6 +53,13 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"EchoBool2DoubleListMap": kitex.NewMethodInfo(echoBool2DoubleListMapHandler, newTestServiceEchoBool2DoubleListMapArgs, newTestServiceEchoBool2DoubleListMapResult, false),
 		"EchoBool2StringListMap": kitex.NewMethodInfo(echoBool2StringListMapHandler, newTestServiceEchoBool2StringListMapArgs, newTestServiceEchoBool2StringListMapResult, false),
 		"EchoBool2BinaryListMap": kitex.NewMethodInfo(echoBool2BinaryListMapHandler, newTestServiceEchoBool2BinaryListMapArgs, newTestServiceEchoBool2BinaryListMapResult, false),
+		"EchoMultiBool":          kitex.NewMethodInfo(echoMultiBoolHandler, newTestServiceEchoMultiBoolArgs, newTestServiceEchoMultiBoolResult, false),
+		"EchoMultiByte":          kitex.NewMethodInfo(echoMultiByteHandler, newTestServiceEchoMultiByteArgs, newTestServiceEchoMultiByteResult, false),
+		"EchoMultiInt16":         kitex.NewMethodInfo(echoMultiInt16Handler, newTestServiceEchoMultiInt16Args, newTestServiceEchoMultiInt16Result, false),
+		"EchoMultiInt32":         kitex.NewMethodInfo(echoMultiInt32Handler, newTestServiceEchoMultiInt32Args, newTestServiceEchoMultiInt32Result, false),
+		"EchoMultiInt64":         kitex.NewMethodInfo(echoMultiInt64Handler, newTestServiceEchoMultiInt64Args, newTestServiceEchoMultiInt64Result, false),
+		"EchoMultiDouble":        kitex.NewMethodInfo(echoMultiDoubleHandler, newTestServiceEchoMultiDoubleArgs, newTestServiceEchoMultiDoubleResult, false),
+		"EchoMultiString":        kitex.NewMethodInfo(echoMultiStringHandler, newTestServiceEchoMultiStringArgs, newTestServiceEchoMultiStringResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "echo",
@@ -684,6 +691,132 @@ func newTestServiceEchoBool2BinaryListMapResult() interface{} {
 	return echo.NewTestServiceEchoBool2BinaryListMapResult()
 }
 
+func echoMultiBoolHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoMultiBoolArgs)
+	realResult := result.(*echo.TestServiceEchoMultiBoolResult)
+	success, err := handler.(echo.TestService).EchoMultiBool(ctx, realArg.BaseReq, realArg.ListReq, realArg.MapReq)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoMultiBoolArgs() interface{} {
+	return echo.NewTestServiceEchoMultiBoolArgs()
+}
+
+func newTestServiceEchoMultiBoolResult() interface{} {
+	return echo.NewTestServiceEchoMultiBoolResult()
+}
+
+func echoMultiByteHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoMultiByteArgs)
+	realResult := result.(*echo.TestServiceEchoMultiByteResult)
+	success, err := handler.(echo.TestService).EchoMultiByte(ctx, realArg.BaseReq, realArg.ListReq, realArg.MapReq)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoMultiByteArgs() interface{} {
+	return echo.NewTestServiceEchoMultiByteArgs()
+}
+
+func newTestServiceEchoMultiByteResult() interface{} {
+	return echo.NewTestServiceEchoMultiByteResult()
+}
+
+func echoMultiInt16Handler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoMultiInt16Args)
+	realResult := result.(*echo.TestServiceEchoMultiInt16Result)
+	success, err := handler.(echo.TestService).EchoMultiInt16(ctx, realArg.BaseReq, realArg.ListReq, realArg.MapReq)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoMultiInt16Args() interface{} {
+	return echo.NewTestServiceEchoMultiInt16Args()
+}
+
+func newTestServiceEchoMultiInt16Result() interface{} {
+	return echo.NewTestServiceEchoMultiInt16Result()
+}
+
+func echoMultiInt32Handler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoMultiInt32Args)
+	realResult := result.(*echo.TestServiceEchoMultiInt32Result)
+	success, err := handler.(echo.TestService).EchoMultiInt32(ctx, realArg.BaseReq, realArg.ListReq, realArg.MapReq)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoMultiInt32Args() interface{} {
+	return echo.NewTestServiceEchoMultiInt32Args()
+}
+
+func newTestServiceEchoMultiInt32Result() interface{} {
+	return echo.NewTestServiceEchoMultiInt32Result()
+}
+
+func echoMultiInt64Handler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoMultiInt64Args)
+	realResult := result.(*echo.TestServiceEchoMultiInt64Result)
+	success, err := handler.(echo.TestService).EchoMultiInt64(ctx, realArg.BaseReq, realArg.ListReq, realArg.MapReq)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoMultiInt64Args() interface{} {
+	return echo.NewTestServiceEchoMultiInt64Args()
+}
+
+func newTestServiceEchoMultiInt64Result() interface{} {
+	return echo.NewTestServiceEchoMultiInt64Result()
+}
+
+func echoMultiDoubleHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoMultiDoubleArgs)
+	realResult := result.(*echo.TestServiceEchoMultiDoubleResult)
+	success, err := handler.(echo.TestService).EchoMultiDouble(ctx, realArg.BaseReq, realArg.ListReq, realArg.MapReq)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoMultiDoubleArgs() interface{} {
+	return echo.NewTestServiceEchoMultiDoubleArgs()
+}
+
+func newTestServiceEchoMultiDoubleResult() interface{} {
+	return echo.NewTestServiceEchoMultiDoubleResult()
+}
+
+func echoMultiStringHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoMultiStringArgs)
+	realResult := result.(*echo.TestServiceEchoMultiStringResult)
+	success, err := handler.(echo.TestService).EchoMultiString(ctx, realArg.BaseReq, realArg.ListReq, realArg.MapReq)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoMultiStringArgs() interface{} {
+	return echo.NewTestServiceEchoMultiStringArgs()
+}
+
+func newTestServiceEchoMultiStringResult() interface{} {
+	return echo.NewTestServiceEchoMultiStringResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -1029,6 +1162,90 @@ func (p *kClient) EchoBool2BinaryListMap(ctx context.Context, req map[bool][][]b
 	_args.Req = req
 	var _result echo.TestServiceEchoBool2BinaryListMapResult
 	if err = p.c.Call(ctx, "EchoBool2BinaryListMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoMultiBool(ctx context.Context, baseReq bool, listReq []bool, mapReq map[bool]bool) (r *echo.EchoMultiBoolResponse, err error) {
+	var _args echo.TestServiceEchoMultiBoolArgs
+	_args.BaseReq = baseReq
+	_args.ListReq = listReq
+	_args.MapReq = mapReq
+	var _result echo.TestServiceEchoMultiBoolResult
+	if err = p.c.Call(ctx, "EchoMultiBool", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoMultiByte(ctx context.Context, baseReq int8, listReq []int8, mapReq map[int8]int8) (r *echo.EchoMultiByteResponse, err error) {
+	var _args echo.TestServiceEchoMultiByteArgs
+	_args.BaseReq = baseReq
+	_args.ListReq = listReq
+	_args.MapReq = mapReq
+	var _result echo.TestServiceEchoMultiByteResult
+	if err = p.c.Call(ctx, "EchoMultiByte", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoMultiInt16(ctx context.Context, baseReq int16, listReq []int16, mapReq map[int16]int16) (r *echo.EchoMultiInt16Response, err error) {
+	var _args echo.TestServiceEchoMultiInt16Args
+	_args.BaseReq = baseReq
+	_args.ListReq = listReq
+	_args.MapReq = mapReq
+	var _result echo.TestServiceEchoMultiInt16Result
+	if err = p.c.Call(ctx, "EchoMultiInt16", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoMultiInt32(ctx context.Context, baseReq int32, listReq []int32, mapReq map[int32]int32) (r *echo.EchoMultiInt32Response, err error) {
+	var _args echo.TestServiceEchoMultiInt32Args
+	_args.BaseReq = baseReq
+	_args.ListReq = listReq
+	_args.MapReq = mapReq
+	var _result echo.TestServiceEchoMultiInt32Result
+	if err = p.c.Call(ctx, "EchoMultiInt32", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoMultiInt64(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64) (r *echo.EchoMultiInt64Response, err error) {
+	var _args echo.TestServiceEchoMultiInt64Args
+	_args.BaseReq = baseReq
+	_args.ListReq = listReq
+	_args.MapReq = mapReq
+	var _result echo.TestServiceEchoMultiInt64Result
+	if err = p.c.Call(ctx, "EchoMultiInt64", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoMultiDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (r *echo.EchoMultiDoubleResponse, err error) {
+	var _args echo.TestServiceEchoMultiDoubleArgs
+	_args.BaseReq = baseReq
+	_args.ListReq = listReq
+	_args.MapReq = mapReq
+	var _result echo.TestServiceEchoMultiDoubleResult
+	if err = p.c.Call(ctx, "EchoMultiDouble", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoMultiString(ctx context.Context, baseReq string, listReq []string, mapReq map[string]string) (r *echo.EchoMultiStringResponse, err error) {
+	var _args echo.TestServiceEchoMultiStringArgs
+	_args.BaseReq = baseReq
+	_args.ListReq = listReq
+	_args.MapReq = mapReq
+	var _result echo.TestServiceEchoMultiStringResult
+	if err = p.c.Call(ctx, "EchoMultiString", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
