@@ -53,7 +53,7 @@ func TestMain(m *testing.M) {
 	go runDubboGoServer(exitChan)
 	cancel := runDubboJavaServer()
 	// wait for dubbo-go and dubbo-java server initialization
-	time.Sleep(10 * time.Second)
+	time.Sleep(15 * time.Second)
 	var err error
 	cli2Go, err = testservice.NewClient("test",
 		client.WithHostPorts("127.0.0.1:20000"),
