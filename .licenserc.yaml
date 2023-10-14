@@ -71,6 +71,7 @@ header: # `header` section is configurations for source codes license header.
     - 'LICENSE-APACHE'
     - 'OWNERS'
     - 'tests'
+    - 'samples'
   comment: on-failure # on what condition license-eye will comment on the pull request, `on-failure`, `always`, `never`.
 
   language:
