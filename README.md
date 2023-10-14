@@ -211,7 +211,7 @@ Memory: **192GB**
 
 ### Benchmark Code
 
-Refering to [dubbo-go-benchmark](https://github.com/dubbogo/dubbo-go-benchmark). Converting dubbo client and dubbo server
+Referring to [dubbo-go-benchmark](https://github.com/dubbogo/dubbo-go-benchmark). Converting dubbo client and dubbo server
 to kitex client and kitex server. Please see [this](https://github.com/kitex-contrib/codec-dubbo/tree/main/tests/benchmark).
 
 ### Benchmark Result
