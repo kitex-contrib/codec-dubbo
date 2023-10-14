@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/klog"
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"

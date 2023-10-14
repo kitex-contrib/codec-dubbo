@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+
 	hello "github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello"
 )
 

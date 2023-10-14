@@ -1,11 +1,12 @@
 package main
 
 import (
+	"log"
+	"net"
+
 	"github.com/cloudwego/kitex/server"
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 	hello "github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
-	"log"
-	"net"
 )
 
 func main() {
@@ -18,7 +19,6 @@ func main() {
 	)
 
 	err := svr.Run()
-
 	if err != nil {
 		log.Println(err.Error())
 	}
