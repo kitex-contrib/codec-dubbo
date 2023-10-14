@@ -132,6 +132,7 @@ func TestDubboJava(t *testing.T) {
 		"EchoDoubleList": false,
 		"EchoStringList": false,
 		// hessian2 can not support encoding [][]byte
+		// dubbo-java can not support
 		//"EchoBinaryList":   false,
 		"EchoBool2BoolMap": false,
 		//"EchoBool2ByteMap":   false,
