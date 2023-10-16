@@ -17,6 +17,12 @@ func init() {
 	hessian2.Register(objectsApi)
 }
 
+func GetUserServiceIDLAnnotations() map[string][]string {
+	return map[string][]string{
+		"JavaClassName": {"org.apache.dubbo.UserProvider"},
+	}
+}
+
 func (p *Request) Encode(e codec.Encoder) error {
 	var err error
 	err = e.Encode(p.Name)
@@ -105,4 +111,58 @@ func (p *User) Decode(d codec.Decoder) error {
 
 func (p *User) JavaClassName() string {
 	return "org.apache.dubbo.User"
+}
+
+func (p *UserServiceGetUserArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *UserServiceGetUserArgs) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *UserServiceGetUserResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *UserServiceGetUserResult) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
 }

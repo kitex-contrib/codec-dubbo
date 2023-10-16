@@ -17,6 +17,12 @@ func init() {
 	hessian2.Register(objectsApi)
 }
 
+func GetProxyServiceIDLAnnotations() map[string][]string {
+	return map[string][]string{
+		"JavaClassName": {"org.apache.dubbo.UserProviderProxy"},
+	}
+}
+
 func (p *Request) Encode(e codec.Encoder) error {
 	var err error
 	err = e.Encode(p.Name)
@@ -105,4 +111,58 @@ func (p *User) Decode(d codec.Decoder) error {
 
 func (p *User) JavaClassName() string {
 	return "org.apache.dubbo.proxy.User"
+}
+
+func (p *ProxyServiceGetUserArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *ProxyServiceGetUserArgs) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *ProxyServiceGetUserResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *ProxyServiceGetUserResult) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
 }
