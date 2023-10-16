@@ -243,6 +243,6 @@ We extend our sincere appreciation to the dubbo-go development team for their va
 - [**dubbo-go**](https://github.com/apache/dubbo-go)
 - [**dubbo-go-hessian2**](https://github.com/apache/dubbo-go-hessian2)
 
-## reference
+## Reference
 
 - [hessian serialization](http://hessian.caucho.com/doc/hessian-serialization.html)
