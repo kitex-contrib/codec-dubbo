@@ -235,7 +235,7 @@ Resource:
 
 Since the [**dubbo-go-hessian2**](https://github.com/apache/dubbo-go-hessian2) relies on reflect to encoding/decoding, 
 there's great potential to improve the performance with a codec based on generated Go code. 
-A fastCodec for Hessian2 (#46) is planned for better performance.
+A [**fastCodec for Hessian2**](https://github.com/kitex-contrib/codec-dubbo/issues/28) is planned for better performance.
 
 ## Acknowledgements
 
