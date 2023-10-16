@@ -38,6 +38,7 @@ Please do not use keys and values with **i8**, **i16** and **binary**.
 2. Currently only the thrift type and java type mappings documented in the table are supported.
 More mappings(e.g. **bool** <-> **boolean**) would be supported in the future.
 Please see [issue](https://github.com/kitex-contrib/codec-dubbo/issues/46).
+3. float32 is not supported by thrift.
 
 ### Kitex-Dubbo Interoperability
 
