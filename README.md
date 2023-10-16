@@ -42,10 +42,10 @@ Please see [issue](https://github.com/kitex-contrib/codec-dubbo/issues/46).
 ### Kitex-Dubbo Interoperability
 
 1. **kitex -> dubbo**  
-Writing **api.thrift** based on existing **dubbo Interface API** and [**Type Mapping Table**](#type-mapping). Then using
+Write **api.thrift** based on existing **dubbo Interface API** and [**Type Mapping Table**](#type-mapping). Then use
 latest kitex command tool and thriftgo to generate stub code.
 2. **dubbo -> kitex**  
-Writing dubbo client code based on existing **api.thrift** and [**Type Mapping Table**](#type-mapping).
+Write dubbo client code based on existing **api.thrift** and [**Type Mapping Table**](#type-mapping).
 
 ## Getting Started
 
@@ -54,27 +54,16 @@ Writing dubbo client code based on existing **api.thrift** and [**Type Mapping T
 ### Prerequisites
 
 ```shell
-# compile kitex cmd tool
-mkdir ~/dubbo && cd ~/dubbo
-git clone https://github.com/Lvnszn/kitex.git
-cd kitex
-git checkout feature_idl_for_hessian
-go get github.com/cloudwego/thriftgo@main
-go mod tidy
-cd tool/cmd/kitex
-go build
+# install kitex cmd tool
+go install github.com/cloudwego/kitex/tool/cmd/kitex@008f748
 
-# compile thriftgo
-cd ~/dubbo
-git clone https://github.com/cloudwego/thriftgo.git
-cd thriftgo
-go build
+# install thriftgo
+go install github.com/cloudwego/thriftgo@latest
 ```
 
 ### Generating kitex stub codes
 
 ```shell
-export PATH=~/dubbo/thriftgo:$PATH
 mkdir ~/kitex-dubbo-demo && cd ~/kitex-dubbo-demo
 go mod init kitex-dubbo-demo
 cat > api.thrift << EOF
@@ -94,7 +83,7 @@ service GreetService {
 }
 
 EOF
-~/dubbo/kitex/tool/cmd/kitex/kitex -module kitex-dubbo-demo -thrift template=slim -service GreetService -protocol Hessian2 ./api.thrift
+kitex -module kitex-dubbo-demo -thrift template=slim -service GreetService -protocol Hessian2 ./api.thrift
 ```
 
 Important Notes:
@@ -216,31 +205,6 @@ to kitex client and kitex server. Please see [this](https://github.com/kitex-con
 
 ### Benchmark Result
 
-#### dubbo -> dubbo
-
-```shell
-bash deploy.sh dubbo_server -p 21003
-bash deploy.sh dubbo_client -p 21004 -addr "127.0.0.1:21003"
-bash deploy.sh stress -addr '127.0.0.1:21004' -t 1000000 -p 100 -l 256
-```
-
-Result:  
-
-| average rt |  tps  | success rate |
-|:----------:|:-----:|:------------:|
-|  2659350   | 36974 |   1.000000   |
-|  2655246   | 38500 |   1.000000   |
-|  2511988   | 38489 |   1.000000   |
-|  2615031   | 37960 |   1.000000   |
-
-Resource:
-
-|   process_name    | %CPU  | %MEM |
-|:-----------------:|:-----:|:----:|
-| dubbo_client_main | 1807  | 0.1  |
-| dubbo_server_main | 792.1 | 0.0  |
-|    stress_main    | 904.6 | 0.1  |
-
 #### kitex -> kitex
 
 ```shell
@@ -268,9 +232,9 @@ Resource:
 
 ### Benchmark Summary
 
-1. Higher TPS: **46k** vs **38.5k**, **+19.5%**
-2. Low Latency: **2.36ms** vs **2.65ms**, **-11%**
-3. Low CPU Usage: (server) **520%** vs **792%**, **-34.3%**
+Since the [**dubbo-go-hessian2**](https://github.com/apache/dubbo-go-hessian2) relies on reflect to encoding/decoding, 
+there's great potential to improve the performance with a codec based on generated Go code. 
+A fastCodec for Hessian2 (#46) is planned for better performance.
 
 ## Acknowledgements
 
