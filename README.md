@@ -10,11 +10,11 @@
 
 1. **kitex -> dubbo**
 
-基于已有的 **dubbo Interface API** 和 [**类型映射表**](#type-mapping)，编写 **api.thrift**。然后使用最新的 kitex 命令行工具和 thriftgo 生成 kitex 的脚手架代码（包括用于编解码的stub代码）。
+基于已有的 **dubbo Interface API** 和 [**类型映射**](#类型映射)，编写 **api.thrift**。然后使用最新的 kitex 命令行工具和 thriftgo 生成 kitex 的脚手架代码（包括用于编解码的stub代码）。
 
 2. **dubbo -> kitex**
 
-基于已有的 **api.thrift** 和 [**类型映射表**](#type-mapping)，编写 dubbo 客户端代码。
+基于已有的 **api.thrift** 和 [**类型映射**](#类型映射)，编写 dubbo 客户端代码。
 
 ### 类型映射
 
