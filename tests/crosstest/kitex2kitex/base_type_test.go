@@ -41,7 +41,9 @@ func initKitexClient(destService, hostPort string) {
 	var err error
 	cli, err = testservice.NewClient(destService,
 		client.WithHostPorts(hostPort),
-		client.WithCodec(dubbo.NewDubboCodec()),
+		client.WithCodec(dubbo.NewDubboCodec(
+			dubbo.WithJavaClassName("org.apache.dubbo.tests.api.UserProvider"),
+		)),
 	)
 	if err != nil {
 		panic(fmt.Sprintf("Kitex client initialized failed, err :%s", err))
@@ -56,7 +58,9 @@ func runKitexServer(startCh chan struct{}, exitCh chan error, addr string) {
 	svr := testservice.NewServer(
 		new(testsuite.TestServiceImpl),
 		server.WithServiceAddr(netAddr),
-		server.WithCodec(dubbo.NewDubboCodec()),
+		server.WithCodec(dubbo.NewDubboCodec(
+			dubbo.WithJavaClassName("org.apache.dubbo.tests.api.UserProvider"),
+		)),
 		server.WithExitSignal(func() <-chan error {
 			return exitCh
 		}),

@@ -13,7 +13,9 @@ import (
 func main() {
 	cli, err := testservice.NewClient("test",
 		client.WithHostPorts("127.0.0.1:20000"),
-		client.WithCodec(dubbo.NewDubboCodec()),
+		client.WithCodec(dubbo.NewDubboCodec(
+			dubbo.WithJavaClassName("org.apache.dubbo.tests.api.UserProvider"),
+		)),
 	)
 	if err != nil {
 		panic(err)

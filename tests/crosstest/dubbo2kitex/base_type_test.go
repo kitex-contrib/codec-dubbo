@@ -46,7 +46,9 @@ func runKitexServer(startCh chan struct{}, exitCh chan error, addr string) {
 	svr := testservice.NewServer(
 		new(testsuite.TestServiceImpl),
 		server.WithServiceAddr(netAddr),
-		server.WithCodec(dubbo.NewDubboCodec()),
+		server.WithCodec(dubbo.NewDubboCodec(
+			dubbo.WithJavaClassName("org.apache.dubbo.tests.api.UserProvider"),
+		)),
 		server.WithExitSignal(func() <-chan error {
 			return exitCh
 		}),
