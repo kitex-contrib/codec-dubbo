@@ -1,13 +1,20 @@
 # codec-dubbo
 
-
----
-
-
-Golang dubbo library used by kitex (https://github.com/cloudwego/kitex) for **kitex-dubbo interoperability**.
+[Kitex](https://github.com/cloudwego/kitex)'s dubbo codec for **kitex \<-\> dubbo interoperability**.
 
 
 ## Feature List
+
+### Kitex-Dubbo Interoperability
+
+1. **kitex -> dubbo**
+
+Write **api.thrift** based on existing **dubbo Interface API** and [**Type Mapping Table**](#type-mapping). Then use
+the latest kitex command tool and thriftgo to generate Kitex's scaffold (including stub code).
+
+2. **dubbo -> kitex**
+
+Write dubbo client code based on existing **api.thrift** and [**Type Mapping Table**](#type-mapping).
 
 ### Type Mapping
 
@@ -38,15 +45,7 @@ Please do not use keys and values with **i8**, **i16** and **binary**.
 2. Currently only the thrift type and java type mappings documented in the table are supported.
 More mappings(e.g. **bool** <-> **boolean**) would be supported in the future.
 Please see [issue](https://github.com/kitex-contrib/codec-dubbo/issues/46).
-3. float32 is not supported by thrift.
-
-### Kitex-Dubbo Interoperability
-
-1. **kitex -> dubbo**  
-Write **api.thrift** based on existing **dubbo Interface API** and [**Type Mapping Table**](#type-mapping). Then use
-latest kitex command tool and thriftgo to generate stub code.
-2. **dubbo -> kitex**  
-Write dubbo client code based on existing **api.thrift** and [**Type Mapping Table**](#type-mapping).
+3. float32 is planned but currently not supported since it's not a valid type in thrift.
 
 ## Getting Started
 
@@ -62,11 +61,16 @@ go install github.com/cloudwego/kitex/tool/cmd/kitex@008f748
 go install github.com/cloudwego/thriftgo@latest
 ```
 
+> The commit in Kitex is merged but not released yet, so a specific commit of Kitex has to be installed. We'll soon release a new version of Kitex and after that the latest version of Kitex will apply.
+
+
 ### Generating kitex stub codes
 
 ```shell
 mkdir ~/kitex-dubbo-demo && cd ~/kitex-dubbo-demo
 go mod init kitex-dubbo-demo
+
+# Replace with your own Thrift IDL
 cat > api.thrift << EOF
 namespace go hello
 
@@ -84,11 +88,13 @@ service GreetService {
 }
 
 EOF
+
+# Generate Kitex scaffold with the `-protocol Hessian2` option
 kitex -module kitex-dubbo-demo -thrift template=slim -service GreetService -protocol Hessian2 ./api.thrift
 ```
 
 Important Notes:
-1. JavaClassName of struct in **api.thrift** must be consistent with the target one.
+1. Each struct in the `api.thrift` should have an annotation named `JavaClassName`, with a value consistent with the target class name in Dubbo Java.
 
 ### Finishing business logic and configuration
 
@@ -110,7 +116,7 @@ func (s *GreetServiceImpl) GreetWithStruct(ctx context.Context, req *hello.Greet
 }
 ```
 
-Implement interface in **handler.go**.
+Implement the interface in **handler.go**.
 
 #### initializing client
 
@@ -157,7 +163,7 @@ func main() {
 ```
 
 Important notes:
-1. Each dubbo Interface corresponds to a DubboCodec. Please do not configure multiple clients sharing a single DubboCodec.
+1. Each dubbo Interface corresponds to a `DubboCodec` instance. Please do not share the instance between multiple clients.
 
 #### initializing server
 
@@ -191,11 +197,12 @@ func main() {
 ```
 
 Important notes:
-1. Each Interface Name corresponds to a DubboCodec. Please do not configure multiple servers sharing a single DubboCodec.
+1. Each Interface Name corresponds to a `DubboCodec` instance. Please do not share the instance between multiple servers.
 
 ## Benchmark
 
 ### Benchmark Environment 
+
 CPU: **Intel(R) Xeon(R) Gold 5118 CPU @ 2.30GHz**  
 Memory: **192GB**
 
@@ -233,11 +240,14 @@ Resource:
 
 ### Benchmark Summary
 
-Since the [**dubbo-go-hessian2**](https://github.com/apache/dubbo-go-hessian2) relies on reflect to encoding/decoding, 
+Since the [**dubbo-go-hessian2**](https://github.com/apache/dubbo-go-hessian2) relies on reflection for encoding/decoding, 
 there's great potential to improve the performance with a codec based on generated Go code. 
+
 A [**fastCodec for Hessian2**](https://github.com/kitex-contrib/codec-dubbo/issues/28) is planned for better performance.
 
 ## Acknowledgements
+
+This is a community driven project maintained by [@DMwangnima](https://github.com/DMwangnima).
 
 We extend our sincere appreciation to the dubbo-go development team for their valuable contribution!
 - [**dubbo-go**](https://github.com/apache/dubbo-go)
