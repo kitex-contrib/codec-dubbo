@@ -1,76 +1,75 @@
 # codec-dubbo
 
-[Kitex](https://github.com/cloudwego/kitex)'s dubbo codec for **kitex \<-\> dubbo interoperability**.
+中文 | [English](README_ENG.md)
 
+[Kitex](https://github.com/cloudwego/kitex) 为了支持 **kitex \<-\> dubbo 互通** 推出的 dubbo 协议编解码器。
 
-## Feature List
+## 功能
 
-### Kitex-Dubbo Interoperability
+### Kitex-Dubbo 互通
 
 1. **kitex -> dubbo**
 
-Write **api.thrift** based on existing **dubbo Interface API** and [**Type Mapping Table**](#type-mapping). Then use
-the latest kitex command tool and thriftgo to generate Kitex's scaffold (including stub code).
+基于已有的 **dubbo Interface API** 和 [**类型映射**](#类型映射)，编写 **api.thrift**。然后使用最新的 kitex 命令行工具和 thriftgo 生成 kitex 的脚手架代码（包括用于编解码的stub代码）。
 
 2. **dubbo -> kitex**
 
-Write dubbo client code based on existing **api.thrift** and [**Type Mapping Table**](#type-mapping).
+基于已有的 **api.thrift** 和 [**类型映射**](#类型映射)，编写 dubbo 客户端代码。
 
-### Type Mapping
+### 类型映射
 
-|    thrift type     |   golang type    | hessian2 type |       java type        |
-|:------------------:|:----------------:|:-------------:|:----------------------:|
-|        bool        |       bool       |    boolean    |   java.lang.Boolean    |
-|        byte        |       int8       |      int      |     java.lang.Byte     |
-|        i16         |      int16       |      int      |    java.lang.Short     |
-|        i32         |      int32       |      int      |   java.lang.Integer    |
-|        i64         |      int64       |     long      |     java.lang.Long     |
-|       double       |     float64      |    double     |    java.lang.Double    |
-|       string       |      string      |    string     |    java.lang.String    |
-|       binary       |      []byte      |    binary     |         byte[]         |
-|    list\<bool>     |      []bool      |     list      |     List\<Boolean>     |
-|     list\<i32>     |     []int32      |     list      |     List\<Integer>     |
-|     list\<i64>     |     []int64      |     list      |      List\<Long>       |
-|   list\<double>    |    []float64     |     list      |     List\<Double>      |
-|   list\<string>    |     []string     |     list      |     List\<String>      |
-|  map\<bool, bool>  |  map[bool]bool   |      map      | Map\<Boolean, Boolean> |
-|  map\<bool, i32>   |  map[bool]int32  |      map      | Map\<Boolean, Integer> |
-|  map\<bool, i64>   |  map[bool]int64  |      map      |  Map\<Boolean, Long>   |
-| map\<bool, double> | map[bool]float64 |      map      | Map\<Boolean, Double>  |
-| map\<bool, string> | map[bool]string  |      map      | Map\<Boolean, String>  |
+|     thrift 类型      |    golang 类型     | hessian2 类型 |        java 类型         |
+|:------------------:|:----------------:|:-----------:|:----------------------:|
+|        bool        |       bool       |   boolean   |   java.lang.Boolean    |
+|        byte        |       int8       |     int     |     java.lang.Byte     |
+|        i16         |      int16       |     int     |    java.lang.Short     |
+|        i32         |      int32       |     int     |   java.lang.Integer    |
+|        i64         |      int64       |    long     |     java.lang.Long     |
+|       double       |     float64      |   double    |    java.lang.Double    |
+|       string       |      string      |   string    |    java.lang.String    |
+|       binary       |      []byte      |   binary    |         byte[]         |
+|    list\<bool>     |      []bool      |    list     |     List\<Boolean>     |
+|     list\<i32>     |     []int32      |    list     |     List\<Integer>     |
+|     list\<i64>     |     []int64      |    list     |      List\<Long>       |
+|   list\<double>    |    []float64     |    list     |     List\<Double>      |
+|   list\<string>    |     []string     |    list     |     List\<String>      |
+|  map\<bool, bool>  |  map[bool]bool   |     map     | Map\<Boolean, Boolean> |
+|  map\<bool, i32>   |  map[bool]int32  |     map     | Map\<Boolean, Integer> |
+|  map\<bool, i64>   |  map[bool]int64  |     map     |  Map\<Boolean, Long>   |
+| map\<bool, double> | map[bool]float64 |     map     | Map\<Boolean, Double>  |
+| map\<bool, string> | map[bool]string  |     map     | Map\<Boolean, String>  |
 
-**Important notes**:
-1. The list of map types is not exhaustive and includes only tested cases.
-Please do not use keys and values with **i8**, **i16** and **binary**.
-2. Currently only the thrift type and java type mappings documented in the table are supported.
-More mappings(e.g. **bool** <-> **boolean**) would be supported in the future.
-Please see [issue](https://github.com/kitex-contrib/codec-dubbo/issues/46).
-3. float32 is planned but currently not supported since it's not a valid type in thrift.
+**重要提示**：
+1. 映射表中的 map 类型并没有被完全列举，当前仅包含经过测试的用例。
+   请勿在map类型中使用包含 **i8**、**i16** 和 **binary** 的键值。
+2. 当前仅支持表格中所记录的 thrift 类型和 java 类型映射。
+   更多映射关系（例如，**bool** <-> **boolean**）将在未来支持，请参考 [issue](https://github.com/kitex-contrib/codec-dubbo/issues/46)。
+3. 目前不支持float32，因为它在 thrift 中不是有效的类型。计划在后续迭代中支持该类型。
 
-## Getting Started
+## 开始
 
-[**Concrete sample**](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples//helloworld/).
+[**完整代码**](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples//helloworld/).
 
-### Prerequisites
+### 安装命令行工具
 
 ```shell
-# install kitex cmd tool
+# 安装 kitex 命令行工具，需指定版本
 go install github.com/cloudwego/kitex/tool/cmd/kitex@008f748
 
-# install thriftgo
+# 安装 thriftgo 命令行工具
 go install github.com/cloudwego/thriftgo@latest
 ```
 
-> The commit in Kitex is merged but not released yet, so a specific commit of Kitex has to be installed. We'll soon release a new version of Kitex and after that the latest version of Kitex will apply.
+> 支持Hessian2协议的提交已经合并，但尚未发布，因此需要安装Kitex的特定版本。我们将很快发布Kitex的新版本，之后便可使用@latest进行安装。
 
 
-### Generating kitex stub codes
+### 生成 kitex stub 代码
 
 ```shell
 mkdir ~/kitex-dubbo-demo && cd ~/kitex-dubbo-demo
 go mod init kitex-dubbo-demo
 
-# Replace with your own Thrift IDL
+# 编写你所需的 Thrift IDL，此处仅为演示
 cat > api.thrift << EOF
 namespace go hello
 
@@ -89,16 +88,16 @@ service GreetService {
 
 EOF
 
-# Generate Kitex scaffold with the `-protocol Hessian2` option
+# 使用 `-protocol Hessian2` 配置项生成 Kitex 脚手架代码
 kitex -module kitex-dubbo-demo -thrift template=slim -service GreetService -protocol Hessian2 ./api.thrift
 ```
 
-Important Notes:
-1. Each struct in the `api.thrift` should have an annotation named `JavaClassName`, with a value consistent with the target class name in Dubbo Java.
+**重要提示**:
+1. api.thrift 中定义的每个结构体都应该有一个名为 JavaClassName 的注解，并且注解值与 Dubbo Java 中对应的类名必须一致。
 
-### Finishing business logic and configuration
+### 实现业务逻辑并完成初始化
 
-#### business logic
+#### 业务逻辑
 
 ```go
 import (
@@ -106,7 +105,6 @@ import (
     hello "github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello"
 )
 
-// implement interface in handler.go
 func (s *GreetServiceImpl) Greet(ctx context.Context, req string) (resp string, err error) {
 	return "Hello " + req, nil
 }
@@ -116,9 +114,9 @@ func (s *GreetServiceImpl) GreetWithStruct(ctx context.Context, req *hello.Greet
 }
 ```
 
-Implement the interface in **handler.go**.
+实现在 **handler.go** 中定义的接口.
 
-#### initializing client
+#### 客户端初始化
 
 ```go
 import (
@@ -132,12 +130,12 @@ import (
 
 func main() {
 	cli, err := greetservice.NewClient("helloworld",
-		// specify address of target server
+		// 指定想要访问的服务端地址
 		client.WithHostPorts("127.0.0.1:21001"),
-		// configure dubbo codec
+		// 配置 DubboCodec
 		client.WithCodec(
 			dubbo.NewDubboCodec(
-				// target dubbo Interface Name
+				// 指定想要调用的 Dubbo Interface
 				dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider"),
 			),
 		),
@@ -162,10 +160,10 @@ func main() {
 }
 ```
 
-Important notes:
-1. Each dubbo Interface corresponds to a `DubboCodec` instance. Please do not share the instance between multiple clients.
+**重要提示**:
+1. 每个 Dubbo Interface 对应一个 DubboCodec 实例，请不要在多个客户端之间共享同一个实例。
 
-#### initializing server
+#### 服务端初始化
 
 ```go
 import (
@@ -177,13 +175,13 @@ import (
 )
 
 func main() {
-	// server address to listen on
+	// 指定服务端将要监听的地址
 	addr, _ := net.ResolveTCPAddr("tcp", ":21000")
 	svr := hello.NewServer(new(GreetServiceImpl),
 		server.WithServiceAddr(addr),
-		// configure DubboCodec
+		// 配置 DubboCodec
 		server.WithCodec(dubbo.NewDubboCodec(
-			// Interface Name of kitex service. Other dubbo clients and kitex clients can refer to this name for invocation.
+			// 配置 Kitex 服务所对应的 Interface. 其他 dubbo 客户端和 kitex 客户端可以通过这个名字进行调用。
 			dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider"),
 		)),
 	)
@@ -196,22 +194,22 @@ func main() {
 }
 ```
 
-Important notes:
-1. Each Interface Name corresponds to a `DubboCodec` instance. Please do not share the instance between multiple servers.
+**重要提示**:
+1. 每个 Dubbo Interface 对应一个 DubboCodec 实例，请不要在多个服务端之间共享同一个实例。
 
-## Benchmark
+## 性能测试
 
-### Benchmark Environment 
+### 测试环境 
 
 CPU: **Intel(R) Xeon(R) Gold 5118 CPU @ 2.30GHz**  
-Memory: **192GB**
+内存: **192GB**
 
-### Benchmark Code
+### 测试代码
 
-Referring to [dubbo-go-benchmark](https://github.com/dubbogo/dubbo-go-benchmark). Converting dubbo client and dubbo server
-to kitex client and kitex server. Please see [this](https://github.com/kitex-contrib/codec-dubbo/tree/main/tests/benchmark).
+测试代码主要参考 [dubbo-go-benchmark](https://github.com/dubbogo/dubbo-go-benchmark). 将 dubbo 客户端和 dubbo 服务端替换成对应的 kitex 客户端和 kitex 服务端。
+具体实现请看[代码](https://github.com/kitex-contrib/codec-dubbo/tree/main/tests/benchmark)。
 
-### Benchmark Result
+### 测试结果
 
 #### kitex -> kitex
 
@@ -221,38 +219,38 @@ bash deploy.sh kitex_client -p 21002 -addr "127.0.0.1:21001"
 bash deploy.sh stress -addr '127.0.0.1:21002' -t 1000000 -p 100 -l 256
 ```
 
-Result:
+结果:
 
-| average rt |  tps  | success rate |
-|:----------:|:-----:|:------------:|
-|  2310628   | 46015 |   1.000000   |
-|  2363729   | 44202 |   1.000000   |
-|  2256177   | 43280 |   1.000000   |
-|  2194147   | 43171 |   1.000000   |
+| 平均响应时间(ns) |  tps  |   成功率    |
+|:----------:|:-----:|:--------:|
+|  2310628   | 46015 | 1.000000 |
+|  2363729   | 44202 | 1.000000 |
+|  2256177   | 43280 | 1.000000 |
+|  2194147   | 43171 | 1.000000 |
 
-Resource:
+资源占用:
 
-|   process_name    | %CPU  | %MEM |
-|:-----------------:|:-----:|:----:|
-| kitex_client_main | 914.6 | 0.0  |
-| kitex_server_main | 520.5 | 0.0  |
-|    stress_main    | 1029  | 0.1  |
+|        进程名        | %CPU  | %内存 |
+|:-----------------:|:-----:|:---:|
+| kitex_client_main | 914.6 | 0.0 |
+| kitex_server_main | 520.5 | 0.0 |
+|    stress_main    | 1029  | 0.1 |
 
-### Benchmark Summary
+### 测试总结
 
-Since the [**dubbo-go-hessian2**](https://github.com/apache/dubbo-go-hessian2) relies on reflection for encoding/decoding, 
-there's great potential to improve the performance with a codec based on generated Go code. 
+[**dubbo-go-hessian2**](https://github.com/apache/dubbo-go-hessian2) 依赖反射进行编解码，因此可以通过基于生成代码的编解码器来提升性能。
 
-A [**fastCodec for Hessian2**](https://github.com/kitex-contrib/codec-dubbo/issues/28) is planned for better performance.
+我们将在后续迭代中推出[**Hessian2 fastCodec**](https://github.com/kitex-contrib/codec-dubbo/issues/28)。
 
-## Acknowledgements
+## 致谢
 
-This is a community driven project maintained by [@DMwangnima](https://github.com/DMwangnima).
+这是一个由社区驱动的项目，由 @DMwangnima 维护。
 
-We extend our sincere appreciation to the dubbo-go development team for their valuable contribution!
+我们衷心感谢dubbo-go开发团队的宝贵贡献！
+
 - [**dubbo-go**](https://github.com/apache/dubbo-go)
 - [**dubbo-go-hessian2**](https://github.com/apache/dubbo-go-hessian2)
 
-## Reference
+## 参考
 
-- [hessian serialization](http://hessian.caucho.com/doc/hessian-serialization.html)
+- [hessian序列化协议](http://hessian.caucho.com/doc/hessian-serialization.html)
