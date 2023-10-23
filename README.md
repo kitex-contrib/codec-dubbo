@@ -53,15 +53,12 @@
 ### 安装命令行工具
 
 ```shell
-# 安装 kitex 命令行工具，需指定版本
-go install github.com/cloudwego/kitex/tool/cmd/kitex@008f748
+# 安装 kitex 命令行工具，需指定版本 (kitex >= 0.7.3)
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 
 # 安装 thriftgo 命令行工具
 go install github.com/cloudwego/thriftgo@latest
 ```
-
-> 支持Hessian2协议的提交已经合并，但尚未发布，因此需要安装Kitex的特定版本。我们将很快发布Kitex的新版本，之后便可使用@latest进行安装。
-
 
 ### 生成 kitex stub 代码
 
