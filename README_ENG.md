@@ -56,15 +56,12 @@ Write dubbo client code based on existing **api.thrift** and [**Type Mapping Tab
 ### Prerequisites
 
 ```shell
-# install kitex cmd tool
-go install github.com/cloudwego/kitex/tool/cmd/kitex@008f748
+# install the latest kitex cmd tool (kitex >= v0.7.3)
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 
 # install thriftgo
 go install github.com/cloudwego/thriftgo@latest
 ```
-
-> The commit in Kitex is merged but not released yet, so a specific commit of Kitex has to be installed. We'll soon release a new version of Kitex and after that the latest version of Kitex will apply.
-
 
 ### Generating kitex stub codes
 
