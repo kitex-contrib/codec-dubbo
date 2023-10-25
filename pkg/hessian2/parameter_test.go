@@ -125,7 +125,7 @@ func TestTypesCache_getByData(t *testing.T) {
 				testData := data
 				t.Run(fmt.Sprintf("struct%d", i), func(t *testing.T) {
 					t.Parallel()
-					_, err := tc.getByData(testData)
+					_, err := tc.getByData(testData, nil)
 					if err != nil {
 						t.Fatal(err)
 					}

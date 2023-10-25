@@ -19,8 +19,15 @@
 
 package dubbo
 
+import (
+
+	"github.com/cloudwego/thriftgo/thrift_reflection"
+	"github.com/kitex-contrib/codec-dubbo/pkg/hessian2"
+)
+
 type Options struct {
-	JavaClassName string
+	JavaClassName   string
+	TypeAnnotations map[string]*hessian2.MethodAnnotation
 }
 
 func (o *Options) Apply(opts []Option) {
@@ -48,5 +55,20 @@ type Option struct {
 func WithJavaClassName(name string) Option {
 	return Option{F: func(o *Options) {
 		o.JavaClassName = name
+	}}
+}
+
+// WithFileDescriptor
+func WithFileDescriptor(fd *thrift_reflection.FileDescriptor) Option {
+	return Option{F: func(o *Options) {
+		o.TypeAnnotations = make(map[string]*hessian2.MethodAnnotation)
+
+		for _, svc := range fd.GetServices() {
+			prefix := svc.GetName() + "."
+
+			for _, m := range svc.GetMethods() {
+				o.TypeAnnotations[prefix+m.GetName()] = hessian2.NewMethodAnnotation(m.GetAnnotations())
+			}
+		}
 	}}
 }
