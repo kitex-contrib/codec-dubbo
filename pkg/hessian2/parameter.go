@@ -33,25 +33,33 @@ import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-var cache = new(typesCache)
+var cache = new(methodCache)
 
-// typesCache maintains a cache from type of data(reflect.Type) to Types string used by Hessian2.
-type typesCache struct {
+// methodCache maintains a cache from method parameter types (reflect.Type) and method annotations to the type strings used by Hessian2.
+type methodCache struct {
 	group    Group
 	typesMap sync.Map
 }
 
-// getByData returns the Types string of given data.
+type methodKey struct {
+	typ  reflect.Type
+	anno string
+}
+
+// getTypes returns the Types string for the given method parameter data and method annotations.
 // It reads embedded sync.Map firstly. If cache misses, using singleFlight to process reflection and getParamsTypeList.
-func (tc *typesCache) getByData(data interface{}, ta *TypeAnnotation) (string, error) {
+func (mc *methodCache) getTypes(data interface{}, ta *TypeAnnotation) (string, error) {
 	val := reflect.ValueOf(data)
-	typ := val.Type()
-	typesRaw, ok := tc.typesMap.Load(typ)
+	key := methodKey{typ: val.Type()}
+	if ta != nil {
+		key.anno = ta.anno
+	}
+	typesRaw, ok := mc.typesMap.Load(key)
 	if ok {
 		return typesRaw.(string), nil
 	}
 
-	typesRaw, err, _ := tc.group.Do(typ, func() (interface{}, error) {
+	typesRaw, err, _ := mc.group.Do(key, func() (interface{}, error) {
 		elem := val.Elem()
 		numField := elem.NumField()
 		fields := make([]*parameter, numField)
@@ -68,7 +76,7 @@ func (tc *typesCache) getByData(data interface{}, ta *TypeAnnotation) (string, e
 		if err != nil {
 			return "", err
 		}
-		tc.typesMap.Store(typ, types)
+		mc.typesMap.Store(key, types)
 
 		return types, nil
 	})
@@ -81,8 +89,8 @@ func (tc *typesCache) getByData(data interface{}, ta *TypeAnnotation) (string, e
 
 // get retrieves Types string from reflect.Type directly.
 // For test.
-func (tc *typesCache) get(key reflect.Type) (string, bool) {
-	typesRaw, ok := tc.typesMap.Load(key)
+func (mc *methodCache) get(key methodKey) (string, bool) {
+	typesRaw, ok := mc.typesMap.Load(key)
 	if !ok {
 		return "", false
 	}
@@ -92,9 +100,9 @@ func (tc *typesCache) get(key reflect.Type) (string, bool) {
 
 // len returns the length of embedded sync.Map.
 // For test.
-func (tc *typesCache) len() int {
+func (mc *methodCache) len() int {
 	var length int
-	tc.typesMap.Range(func(key, value interface{}) bool {
+	mc.typesMap.Range(func(key, value interface{}) bool {
 		length++
 		return true
 	})
@@ -102,7 +110,7 @@ func (tc *typesCache) len() int {
 }
 
 func GetTypes(data interface{}, ta *TypeAnnotation) (string, error) {
-	return cache.getByData(data, ta)
+	return cache.getTypes(data, ta)
 }
 
 // GetParamsTypeList is copied from dubbo-go, it should be rewritten
@@ -189,8 +197,6 @@ func (p *parameter) getTypeByAnno() string {
 		return "C"
 	case "char[]":
 		return "[C"
-	case "java.lang.Object":
-		return "Ljava.lang.Object;"
 	default:
 		if strings.HasPrefix(p.typeAnno, "java.") {
 			if strings.HasSuffix(p.typeAnno, "[]") {
