@@ -23,20 +23,21 @@ import "strings"
 
 // TypeAnnotation is used to store and parse a type annotation.
 type TypeAnnotation struct {
-	anno  string
-	types []string
+	anno       string
+	fieldTypes []string
 }
 
 // NewTypeAnnotation is used to create a type annotation object.
-// This function only accepts and stores the annotation string; it does not directly parse it.
 func NewTypeAnnotation(anno string) *TypeAnnotation {
-	return &TypeAnnotation{anno: anno}
+	ta := &TypeAnnotation{anno: anno}
+	ta.fieldTypes = strings.Split(ta.anno, ",")
+	return ta
 }
 
 // GetFieldType retrieves the type annotation for a field by its index.
 func (ta *TypeAnnotation) GetFieldType(i int) string {
-	if ta != nil && len(ta.getTypes()) > i {
-		return ta.getTypes()[i]
+	if ta != nil && len(ta.getFieldTypes()) > i {
+		return ta.getFieldTypes()[i]
 	}
 	return ""
 }
@@ -44,12 +45,9 @@ func (ta *TypeAnnotation) GetFieldType(i int) string {
 // getTypes is used to retrieve the list of types from the type annotation.
 // This function will first return the existing type list if it exists. If not, it will parse the annotation string,
 // store the parsing result, and then return it.
-func (ta *TypeAnnotation) getTypes() []string {
+func (ta *TypeAnnotation) getFieldTypes() []string {
 	if ta == nil {
 		return nil
 	}
-	if ta.types == nil {
-		ta.types = strings.Split(ta.anno, ",")
-	}
-	return ta.types
+	return ta.fieldTypes
 }

@@ -27,11 +27,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type testStruct struct {
-	Data interface{}
-	Anno *TypeAnnotation
-}
-
 type testInternalStruct struct {
 	Field int8
 }
@@ -53,19 +48,19 @@ type testStructC struct {
 	FieldF []string
 }
 
-func TestTypesCache_getByData(t *testing.T) {
+func TestTypesCache_getTypes(t *testing.T) {
 	tests := []struct {
 		desc     string
-		datum    []testStruct
-		expected func(t *testing.T, c *methodCache)
+		datum    []parameter
+		expected func(t *testing.T, c *MethodCache)
 	}{
 		{
 			desc: "same structs with basic Type",
-			datum: []testStruct{
-				{Data: &testStructA{Field: 1}},
-				{Data: &testStructA{Field: 2}},
+			datum: []parameter{
+				{value: &testStructA{Field: 1}},
+				{value: &testStructA{Field: 2}},
 			},
-			expected: func(t *testing.T, c *methodCache) {
+			expected: func(t *testing.T, c *MethodCache) {
 				assert.Equal(t, 1, c.len())
 				data := &testStructA{Field: 3}
 				key := methodKey{typ: reflect.ValueOf(data).Type()}
@@ -76,19 +71,19 @@ func TestTypesCache_getByData(t *testing.T) {
 		},
 		{
 			desc: "same structs with embedded Type",
-			datum: []testStruct{
-				{Data: &testStructB{
+			datum: []parameter{
+				{value: &testStructB{
 					Internal: &testInternalStruct{
 						Field: 1,
 					},
 				}},
-				{Data: &testStructB{
+				{value: &testStructB{
 					Internal: &testInternalStruct{
 						Field: 2,
 					},
 				}},
 			},
-			expected: func(t *testing.T, c *methodCache) {
+			expected: func(t *testing.T, c *MethodCache) {
 				assert.Equal(t, 1, c.len())
 				data := &testStructB{
 					Internal: &testInternalStruct{
@@ -103,15 +98,15 @@ func TestTypesCache_getByData(t *testing.T) {
 		},
 		{
 			desc: "different structs",
-			datum: []testStruct{
-				{Data: &testStructA{Field: 1}},
-				{Data: &testStructB{
+			datum: []parameter{
+				{value: &testStructA{Field: 1}},
+				{value: &testStructB{
 					Internal: &testInternalStruct{
 						Field: 2,
 					},
 				}},
 			},
-			expected: func(t *testing.T, c *methodCache) {
+			expected: func(t *testing.T, c *MethodCache) {
 				assert.Equal(t, 2, c.len())
 				dataA := &testStructA{Field: 3}
 				dataB := &testStructB{
@@ -131,21 +126,21 @@ func TestTypesCache_getByData(t *testing.T) {
 		},
 		{
 			desc: "use annotations to specify types",
-			datum: []testStruct{
+			datum: []parameter{
 				{
-					Data: &testStructA{Field: 1},
-					Anno: NewTypeAnnotation("byte"),
+					value: &testStructA{Field: 1},
+					typeAnno: "byte",
 				},
 				{
-					Data: &testStructB{
+					value: &testStructB{
 						Internal: &testInternalStruct{
 							Field: 2,
 						},
 					},
-					Anno: NewTypeAnnotation("java.lang.Object"),
+					typeAnno: "java.lang.Object",
 				},
 				{
-					Data: &testStructC{
+					value: &testStructC{
 						FieldA: 3,
 						FieldB: 4,
 						FieldC: 5.0,
@@ -153,10 +148,10 @@ func TestTypesCache_getByData(t *testing.T) {
 						FieldE: []int32{7, 8},
 						FieldF: []string{"9", "10"},
 					},
-					Anno: NewTypeAnnotation("byte,long,double,java.lang.String,int[],java.lang.String[]"),
+					typeAnno: "byte,long,double,java.lang.String,int[],java.lang.String[]",
 				},
 				{
-					Data: &testStructC{
+					value: &testStructC{
 						FieldA: 3,
 						FieldB: 4,
 						FieldC: 5.0,
@@ -164,10 +159,10 @@ func TestTypesCache_getByData(t *testing.T) {
 						FieldE: []int32{7, 8},
 						FieldF: []string{"9", "10"},
 					},
-					Anno: NewTypeAnnotation("-,-,-,-,-,-"),
+					typeAnno: "-,-,-,-,-,-",
 				},
 			},
-			expected: func(t *testing.T, c *methodCache) {
+			expected: func(t *testing.T, c *MethodCache) {
 				assert.Equal(t, 4, c.len())
 
 				keyA := methodKey{typ: reflect.ValueOf(&testStructA{}).Type(), anno: "byte"}
@@ -195,13 +190,13 @@ func TestTypesCache_getByData(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.desc, func(t *testing.T) {
-			tc := new(methodCache)
+			tc := new(MethodCache)
 			// run getByData concurrently
 			for i, data := range test.datum {
 				testData := data
 				t.Run(fmt.Sprintf("struct%d", i), func(t *testing.T) {
 					t.Parallel()
-					_, err := tc.getTypes(testData.Data, testData.Anno)
+					_, err := tc.GetTypes(testData.value, NewTypeAnnotation(testData.typeAnno))
 					if err != nil {
 						t.Fatal(err)
 					}

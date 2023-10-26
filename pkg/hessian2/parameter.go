@@ -33,10 +33,8 @@ import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-var cache = new(methodCache)
-
-// methodCache maintains a cache from method parameter types (reflect.Type) and method annotations to the type strings used by Hessian2.
-type methodCache struct {
+// MethodCache maintains a cache from method parameter types (reflect.Type) and method annotations to the type strings used by Hessian2.
+type MethodCache struct {
 	group    Group
 	typesMap sync.Map
 }
@@ -46,9 +44,9 @@ type methodKey struct {
 	anno string
 }
 
-// getTypes returns the Types string for the given method parameter data and method annotations.
+// GetTypes returns the Types string for the given method parameter data and method annotations.
 // It reads embedded sync.Map firstly. If cache misses, using singleFlight to process reflection and getParamsTypeList.
-func (mc *methodCache) getTypes(data interface{}, ta *TypeAnnotation) (string, error) {
+func (mc *MethodCache) GetTypes(data interface{}, ta *TypeAnnotation) (string, error) {
 	val := reflect.ValueOf(data)
 	key := methodKey{typ: val.Type()}
 	if ta != nil {
@@ -89,7 +87,7 @@ func (mc *methodCache) getTypes(data interface{}, ta *TypeAnnotation) (string, e
 
 // get retrieves Types string from reflect.Type directly.
 // For test.
-func (mc *methodCache) get(key methodKey) (string, bool) {
+func (mc *MethodCache) get(key methodKey) (string, bool) {
 	typesRaw, ok := mc.typesMap.Load(key)
 	if !ok {
 		return "", false
@@ -100,17 +98,13 @@ func (mc *methodCache) get(key methodKey) (string, bool) {
 
 // len returns the length of embedded sync.Map.
 // For test.
-func (mc *methodCache) len() int {
+func (mc *MethodCache) len() int {
 	var length int
 	mc.typesMap.Range(func(key, value interface{}) bool {
 		length++
 		return true
 	})
 	return length
-}
-
-func GetTypes(data interface{}, ta *TypeAnnotation) (string, error) {
-	return cache.getTypes(data, ta)
 }
 
 // GetParamsTypeList is copied from dubbo-go, it should be rewritten

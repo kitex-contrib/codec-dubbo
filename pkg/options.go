@@ -57,25 +57,31 @@ func WithJavaClassName(name string) Option {
 	}}
 }
 
-// WithFileDescriptor provides method annotations for DubboCodec.
-// Adding method annotations allows specifying the Java types for DubboCodec encoding.
-//
-// Annotation format:
-// (hessian.argsType="arg1_type,arg2_type,arg3_type,...")
-// Use an empty or "-" for arg_type to use the default parsing method.
+// WithFileDescriptor provides method annotations for DubboCodec. Adding method
+// annotations allows specifying the Java types for DubboCodec encoding.
 func WithFileDescriptor(fd *thrift_reflection.FileDescriptor) Option {
 	return Option{F: func(o *Options) {
 		o.TypeAnnotations = make(map[string]*hessian2.TypeAnnotation)
+		extractAnnotations(fd, o)
+	}}
+}
 
-		for _, svc := range fd.GetServices() {
-			prefix := svc.GetName() + "."
+// extractAnnotations extracts method annotations from the given FileDescriptor
+// and stores them in the Options structure. These annotations allow specifying Java types for DubboCodec encoding.
+// The annotation format is (hessian.argsType="arg1_type,arg2_type,arg3_type,..."),
+// use an empty string or "-" as arg_type to use the default parsing method.
+func extractAnnotations(fd *thrift_reflection.FileDescriptor, o *Options) {
+	if fd == nil {
+		return
+	}
+	for _, svc := range fd.GetServices() {
+		prefix := svc.GetName() + "."
 
-			for _, m := range svc.GetMethods() {
-				annos := m.GetAnnotations()
-				if v, ok := annos[hessian2.HESSIAN_ARGS_TYPE_TAG]; ok && len(v) > 0 {
-					o.TypeAnnotations[prefix+m.GetName()] = hessian2.NewTypeAnnotation(v[0])
-				}
+		for _, m := range svc.GetMethods() {
+			annos := m.GetAnnotations()
+			if v, ok := annos[hessian2.HESSIAN_ARGS_TYPE_TAG]; ok && len(v) > 0 {
+				o.TypeAnnotations[prefix+m.GetName()] = hessian2.NewTypeAnnotation(v[0])
 			}
 		}
-	}}
+	}
 }
