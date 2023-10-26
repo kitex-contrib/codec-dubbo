@@ -128,7 +128,7 @@ func TestTypesCache_getTypes(t *testing.T) {
 			desc: "use annotations to specify types",
 			datum: []parameter{
 				{
-					value: &testStructA{Field: 1},
+					value:    &testStructA{Field: 1},
 					typeAnno: "byte",
 				},
 				{
