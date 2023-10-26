@@ -24,6 +24,5 @@ import hessian "github.com/apache/dubbo-go-hessian2"
 const (
 	NULL                 = hessian.BC_NULL
 
-	HESSIAN_REQUEST_TAG  = "hessian.req"
-	HESSIAN_RESPONSE_TAG = "hessian.resp"
+	HESSIAN_ARGS_TYPE_TAG  = "hessian.argsType"
 )

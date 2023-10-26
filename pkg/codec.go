@@ -228,11 +228,13 @@ func (m *DubboCodec) messageData(message remote.Message, e iface.Encoder) error 
 		return fmt.Errorf("invalid data: not hessian2.MessageWriter")
 	}
 
-	svcName := message.ServiceInfo().ServiceName
-	methodName := message.RPCInfo().To().Method()
-	methodAnno := m.opt.TypeAnnotations[svcName+"."+methodName]
+	var typeAnno *hessian2.TypeAnnotation
+	methodKey := message.ServiceInfo().ServiceName + "." + message.RPCInfo().To().Method()
+	if t, ok := m.opt.TypeAnnotations[methodKey]; ok {
+		typeAnno = t
+	}
 
-	types, err := hessian2.GetTypes(data, methodAnno)
+	types, err := hessian2.GetTypes(data, typeAnno)
 	if err != nil {
 		return err
 	}

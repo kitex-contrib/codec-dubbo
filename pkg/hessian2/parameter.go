@@ -41,14 +41,9 @@ type typesCache struct {
 	typesMap sync.Map
 }
 
-type parameter struct {
-	value interface{}
-	typ   string
-}
-
 // getByData returns the Types string of given data.
 // It reads embedded sync.Map firstly. If cache misses, using singleFlight to process reflection and getParamsTypeList.
-func (tc *typesCache) getByData(data interface{}, ma *MethodAnnotation) (string, error) {
+func (tc *typesCache) getByData(data interface{}, ta *TypeAnnotation) (string, error) {
 	val := reflect.ValueOf(data)
 	typ := val.Type()
 	typesRaw, ok := tc.typesMap.Load(typ)
@@ -64,8 +59,8 @@ func (tc *typesCache) getByData(data interface{}, ma *MethodAnnotation) (string,
 			fields[i] = &parameter{
 				value: elem.Field(i).Interface(),
 			}
-			if ma != nil {
-				fields[i].typ = ma.GetRequestTypeAnnos().GetType(i)
+			if ta != nil {
+				fields[i].typeAnno = ta.GetFieldType(i)
 			}
 		}
 
@@ -106,8 +101,8 @@ func (tc *typesCache) len() int {
 	return length
 }
 
-func GetTypes(data interface{}, ma *MethodAnnotation) (string, error) {
-	return cache.getByData(data, ma)
+func GetTypes(data interface{}, ta *TypeAnnotation) (string, error) {
+	return cache.getByData(data, ta)
 }
 
 // GetParamsTypeList is copied from dubbo-go, it should be rewritten
@@ -118,7 +113,7 @@ func getParamsTypeList(params []*parameter) (string, error) {
 	)
 
 	for i := range params {
-		typ = getparameter(params[i])
+		typ = params[i].getType()
 		if typ == "" {
 			return types, fmt.Errorf("cat not get arg %#v type", params[i])
 		}
@@ -135,67 +130,84 @@ func getParamsTypeList(params []*parameter) (string, error) {
 	return types, nil
 }
 
-func getparameter(param *parameter) string {
-	if param == nil {
+// parameter is used to store information about parameters.
+// value stores the actual value of the parameter, and typeAnno records the type annotation added by IDL to this parameter.
+type parameter struct {
+	value    interface{}
+	typeAnno string
+}
+
+// getType retrieves the parameter's type either through type annotation or by reflecting on the value.
+func (p *parameter) getType() string {
+	if p == nil {
 		return "V"
 	}
 
-	if len(param.typ) > 0 {
-		switch param.typ {
-		case "byte":
-			return "B"
-		case "byte[]":
-			return "[B"
-		case "short":
-			return "S"
-		case "short[]":
-			return "[S"
-		case "int":
-			return "I"
-		case "int[]":
-			return "[I"
-		case "long":
-			return "J"
-		case "long[]":
-			return "[J"
-		case "float":
-			return "F"
-		case "float[]":
-			return "[F"
-		case "double":
-			return "D"
-		case "double[]":
-			return "[D"
-		case "boolean":
-			return "Z"
-		case "boolean[]":
-			return "[Z"
-		case "char":
-			return "C"
-		case "char[]":
-			return "[C"
-		case "java.lang.String":
-			return "java.lang.String"
-		case "java.lang.String[]":
-			return "[Ljava.lang.String;"
-		case "java.util.Date":
-			return "java.util.Date"
-		case "java.util.Date[]":
-			return "[Ljava.util.Date;"
-		case "java.util.Map":
-			return "java.util.Map"
-		case "java.lang.Object":
-			return "Ljava.lang.Object;"
-		case "java.lang.Object[]":
-			return "[Ljava.lang.Object;"
+	// Preferentially use the type specified in the type annotation.
+	if ta := p.getTypeByAnno(); len(ta) > 0 {
+		return ta
+	}
+
+	return p.getTypeByValue()
+}
+
+func (p *parameter) getTypeByAnno() string {
+	switch p.typeAnno {
+	// When the annotation is "-", it will be skipped,
+	// use the default parsing method without annotations.
+	case "-":
+		return ""
+	case "byte":
+		return "B"
+	case "byte[]":
+		return "[B"
+	case "short":
+		return "S"
+	case "short[]":
+		return "[S"
+	case "int":
+		return "I"
+	case "int[]":
+		return "[I"
+	case "long":
+		return "J"
+	case "long[]":
+		return "[J"
+	case "float":
+		return "F"
+	case "float[]":
+		return "[F"
+	case "double":
+		return "D"
+	case "double[]":
+		return "[D"
+	case "boolean":
+		return "Z"
+	case "boolean[]":
+		return "[Z"
+	case "char":
+		return "C"
+	case "char[]":
+		return "[C"
+	case "java.lang.Object":
+		return "Ljava.lang.Object;"
+	default:
+		if strings.HasPrefix(p.typeAnno, "java.") {
+			if strings.HasSuffix(p.typeAnno, "[]") {
+				return "[L" + p.typeAnno[:len(p.typeAnno)-2] + ";"
+			}
+			return p.typeAnno
 		}
 	}
+	return ""
+}
 
-	if param.value == nil {
+func (p *parameter) getTypeByValue() string {
+	if p.value == nil {
 		return "V"
 	}
 
-	switch typ := param.value.(type) {
+	switch typ := p.value.(type) {
 	// Serialized tags for base types
 	case nil:
 		return "V"
