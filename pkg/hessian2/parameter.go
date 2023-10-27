@@ -163,34 +163,74 @@ func (p *parameter) getTypeByAnno() string {
 		return "B"
 	case "byte[]":
 		return "[B"
+	case "Byte":
+		return "java.lang.Byte"
+	case "Byte[]":
+		return "[Ljava.lang.Byte;"
 	case "short":
 		return "S"
 	case "short[]":
 		return "[S"
+	case "Short":
+		return "java.lang.Short"
+	case "Short[]":
+		return "[Ljava.lang.Short;"
 	case "int":
 		return "I"
 	case "int[]":
 		return "[I"
+	case "Integer":
+		return "java.lang.Integer"
+	case "Integer[]":
+		return "[Ljava.lang.Integer;"
 	case "long":
 		return "J"
 	case "long[]":
 		return "[J"
+	case "Long":
+		return "java.lang.Long"
+	case "Long[]":
+		return "[Ljava.lang.Long;"
 	case "float":
 		return "F"
 	case "float[]":
 		return "[F"
+	case "Float":
+		return "java.lang.Float"
+	case "Float[]":
+		return "[Ljava.lang.Float;"
 	case "double":
 		return "D"
 	case "double[]":
 		return "[D"
+	case "Double":
+		return "java.lang.Double"
+	case "Double[]":
+		return "[Ljava.lang.Double;"
 	case "boolean":
 		return "Z"
 	case "boolean[]":
 		return "[Z"
+	case "Boolean":
+		return "java.lang.Boolean"
+	case "Boolean[]":
+		return "[Ljava.lang.Boolean;"
 	case "char":
 		return "C"
 	case "char[]":
 		return "[C"
+	case "Character":
+		return "java.lang.Character"
+	case "Character[]":
+		return "[Ljava.lang.Character;"
+	case "String":
+		return "java.lang.String"
+	case "String[]":
+		return "[Ljava.lang.String;"
+	case "Object":
+		return "java.lang.Object"
+	case "Object[]":
+		return "[Ljava.lang.Object;"
 	default:
 		if strings.HasSuffix(p.typeAnno, "[]") {
 			return "[L" + p.typeAnno[:len(p.typeAnno)-2] + ";"

@@ -75,7 +75,7 @@ func extractAnnotations(fd *thrift_reflection.FileDescriptor) map[string]*hessia
 	}
 
 	annotations := make(map[string]*hessian2.TypeAnnotation)
-	
+
 	for _, svc := range fd.GetServices() {
 		prefix := svc.GetName() + "."
 
