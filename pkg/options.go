@@ -60,6 +60,10 @@ func WithJavaClassName(name string) Option {
 // WithFileDescriptor provides method annotations for DubboCodec. Adding method
 // annotations allows specifying the Java types for DubboCodec encoding.
 func WithFileDescriptor(fd *thrift_reflection.FileDescriptor) Option {
+	if fd == nil {
+		panic("Please pass in a valid FileDescriptor.")
+	}
+
 	return Option{F: func(o *Options) {
 		o.TypeAnnotations = extractAnnotations(fd)
 	}}
@@ -70,10 +74,6 @@ func WithFileDescriptor(fd *thrift_reflection.FileDescriptor) Option {
 // The annotation format is (hessian.argsType="arg1_type,arg2_type,arg3_type,..."),
 // use an empty string or "-" as arg_type to use the default parsing method.
 func extractAnnotations(fd *thrift_reflection.FileDescriptor) map[string]*hessian2.TypeAnnotation {
-	if fd == nil {
-		return nil
-	}
-
 	annotations := make(map[string]*hessian2.TypeAnnotation)
 
 	for _, svc := range fd.GetServices() {
