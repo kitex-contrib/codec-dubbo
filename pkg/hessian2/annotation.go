@@ -36,18 +36,8 @@ func NewTypeAnnotation(anno string) *TypeAnnotation {
 
 // GetFieldType retrieves the type annotation for a field by its index.
 func (ta *TypeAnnotation) GetFieldType(i int) string {
-	if ta != nil && len(ta.getFieldTypes()) > i {
-		return ta.getFieldTypes()[i]
+	if ta != nil && len(ta.fieldTypes) > i {
+		return ta.fieldTypes[i]
 	}
 	return ""
-}
-
-// getTypes is used to retrieve the list of types from the type annotation.
-// This function will first return the existing type list if it exists. If not, it will parse the annotation string,
-// store the parsing result, and then return it.
-func (ta *TypeAnnotation) getFieldTypes() []string {
-	if ta == nil {
-		return nil
-	}
-	return ta.fieldTypes
 }

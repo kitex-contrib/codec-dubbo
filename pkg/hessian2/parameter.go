@@ -192,14 +192,11 @@ func (p *parameter) getTypeByAnno() string {
 	case "char[]":
 		return "[C"
 	default:
-		if strings.HasPrefix(p.typeAnno, "java.") {
-			if strings.HasSuffix(p.typeAnno, "[]") {
-				return "[L" + p.typeAnno[:len(p.typeAnno)-2] + ";"
-			}
-			return p.typeAnno
+		if strings.HasSuffix(p.typeAnno, "[]") {
+			return "[L" + p.typeAnno[:len(p.typeAnno)-2] + ";"
 		}
+		return p.typeAnno
 	}
-	return ""
 }
 
 func (p *parameter) getTypeByValue() string {
