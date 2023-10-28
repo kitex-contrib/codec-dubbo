@@ -1,4 +1,4 @@
-package testsuite
+package main
 
 import (
 	"context"
@@ -242,6 +242,150 @@ func (s *TestServiceImpl) EchoMultiDouble(ctx context.Context, baseReq float64, 
 // EchoMultiString implements the TestServiceImpl interface.
 func (s *TestServiceImpl) EchoMultiString(ctx context.Context, baseReq string, listReq []string, mapReq map[string]string) (resp *echo.EchoMultiStringResponse, err error) {
 	return &echo.EchoMultiStringResponse{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+// EchoBaseBool implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseBool(ctx context.Context, req bool) (resp bool, err error) {
+	return req, nil
+}
+
+// EchoBaseByte implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseByte(ctx context.Context, req int8) (resp int8, err error) {
+	return req, nil
+}
+
+// EchoBaseInt16 implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseInt16(ctx context.Context, req int16) (resp int16, err error) {
+	return req, nil
+}
+
+// EchoBaseInt32 implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseInt32(ctx context.Context, req int32) (resp int32, err error) {
+	return req, nil
+}
+
+// EchoBaseInt64 implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseInt64(ctx context.Context, req int64) (resp int64, err error) {
+	return req, nil
+}
+
+// EchoBaseDouble implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseDouble(ctx context.Context, req float64) (resp float64, err error) {
+	return req, nil
+}
+
+// EchoBaseBoolList implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseBoolList(ctx context.Context, req []bool) (resp []bool, err error) {
+	return req, nil
+}
+
+// EchoBaseByteList implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseByteList(ctx context.Context, req []int8) (resp []int8, err error) {
+	return req, nil
+}
+
+// EchoBaseInt16List implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseInt16List(ctx context.Context, req []int16) (resp []int16, err error) {
+	return req, nil
+}
+
+// EchoBaseInt32List implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseInt32List(ctx context.Context, req []int32) (resp []int32, err error) {
+	return req, nil
+}
+
+// EchoBaseInt64List implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseInt64List(ctx context.Context, req []int64) (resp []int64, err error) {
+	return req, nil
+}
+
+// EchoBaseDoubleList implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseDoubleList(ctx context.Context, req []float64) (resp []float64, err error) {
+	return req, nil
+}
+
+// EchoBool2BoolBaseMap implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBool2BoolBaseMap(ctx context.Context, req map[bool]bool) (resp map[bool]bool, err error) {
+	return req, nil
+}
+
+// EchoBool2ByteBaseMap implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBool2ByteBaseMap(ctx context.Context, req map[bool]int8) (resp map[bool]int8, err error) {
+	return req, nil
+}
+
+// EchoBool2Int16BaseMap implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBool2Int16BaseMap(ctx context.Context, req map[bool]int16) (resp map[bool]int16, err error) {
+	return req, nil
+}
+
+// EchoBool2Int32BaseMap implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBool2Int32BaseMap(ctx context.Context, req map[bool]int32) (resp map[bool]int32, err error) {
+	return req, nil
+}
+
+// EchoBool2Int64BaseMap implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBool2Int64BaseMap(ctx context.Context, req map[bool]int64) (resp map[bool]int64, err error) {
+	return req, nil
+}
+
+// EchoBool2DoubleBaseMap implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBool2DoubleBaseMap(ctx context.Context, req map[bool]float64) (resp map[bool]float64, err error) {
+	return req, nil
+}
+
+// EchoMultiBaseBool implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMultiBaseBool(ctx context.Context, baseReq bool, listReq []bool, mapReq map[bool]bool) (resp *echo.EchoMultiBoolResponse, err error) {
+	return &echo.EchoMultiBoolResponse{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+// EchoMultiBaseByte implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMultiBaseByte(ctx context.Context, baseReq int8, listReq []int8, mapReq map[int8]int8) (resp *echo.EchoMultiByteResponse, err error) {
+	return &echo.EchoMultiByteResponse{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+// EchoMultiBaseInt16 implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMultiBaseInt16(ctx context.Context, baseReq int16, listReq []int16, mapReq map[int16]int16) (resp *echo.EchoMultiInt16Response, err error) {
+	return &echo.EchoMultiInt16Response{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+// EchoMultiBaseInt32 implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMultiBaseInt32(ctx context.Context, baseReq int32, listReq []int32, mapReq map[int32]int32) (resp *echo.EchoMultiInt32Response, err error) {
+	return &echo.EchoMultiInt32Response{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+// EchoMultiBaseInt64 implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMultiBaseInt64(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64) (resp *echo.EchoMultiInt64Response, err error) {
+	return &echo.EchoMultiInt64Response{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
+// EchoMultiBaseDouble implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMultiBaseDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (resp *echo.EchoMultiDoubleResponse, err error) {
+	return &echo.EchoMultiDoubleResponse{
 		BaseResp: baseReq,
 		ListResp: listReq,
 		MapResp:  mapReq,

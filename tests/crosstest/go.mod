@@ -5,6 +5,7 @@ go 1.20
 require (
 	dubbo.apache.org/dubbo-go/v3 v3.1.0
 	github.com/cloudwego/kitex v0.6.2-0.20230815060351-88ea60530d40
+	github.com/kitex-contrib/codec-dubbo v0.0.0-20230817144706-07db3a9b55f8
 	github.com/kitex-contrib/codec-dubbo/tests/kitex v0.0.0
 	helloworld v0.0.0
 )
@@ -85,7 +86,6 @@ require (
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/k0kubun/pp v3.0.1+incompatible // indirect
-	github.com/kitex-contrib/codec-dubbo v0.0.0-20230817144706-07db3a9b55f8 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/knadh/koanf v1.5.0 // indirect
 	github.com/leodido/go-urn v1.2.2 // indirect

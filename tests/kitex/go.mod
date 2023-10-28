@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/kitex v0.6.2-0.20230815060351-88ea60530d40
+	github.com/cloudwego/thriftgo v0.3.0
 	github.com/kitex-contrib/codec-dubbo v0.0.0-20230817144706-07db3a9b55f8
 	github.com/pkg/errors v0.9.1
 )
@@ -24,7 +25,6 @@ require (
 	github.com/cloudwego/frugal v0.1.7 // indirect
 	github.com/cloudwego/localsession v0.0.2 // indirect
 	github.com/cloudwego/netpoll v0.4.1 // indirect
-	github.com/cloudwego/thriftgo v0.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dubbogo/gost v1.14.0 // indirect
 	github.com/fatih/structtag v1.2.0 // indirect
