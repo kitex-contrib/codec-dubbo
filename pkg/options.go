@@ -19,8 +19,14 @@
 
 package dubbo
 
+import (
+	"github.com/cloudwego/thriftgo/thrift_reflection"
+	"github.com/kitex-contrib/codec-dubbo/pkg/hessian2"
+)
+
 type Options struct {
-	JavaClassName string
+	JavaClassName   string
+	TypeAnnotations map[string]*hessian2.TypeAnnotation
 }
 
 func (o *Options) Apply(opts []Option) {
@@ -49,4 +55,36 @@ func WithJavaClassName(name string) Option {
 	return Option{F: func(o *Options) {
 		o.JavaClassName = name
 	}}
+}
+
+// WithFileDescriptor provides method annotations for DubboCodec. Adding method
+// annotations allows specifying the Java types for DubboCodec encoding.
+func WithFileDescriptor(fd *thrift_reflection.FileDescriptor) Option {
+	if fd == nil {
+		panic("Please pass in a valid FileDescriptor.")
+	}
+
+	return Option{F: func(o *Options) {
+		o.TypeAnnotations = extractAnnotations(fd)
+	}}
+}
+
+// extractAnnotations extracts method annotations from the given FileDescriptor
+// and returns them as a map. These annotations allow specifying Java types for DubboCodec encoding.
+// The annotation format is (hessian.argsType="arg1_type,arg2_type,arg3_type,..."),
+// use an empty string or "-" as arg_type to use the default parsing method.
+func extractAnnotations(fd *thrift_reflection.FileDescriptor) map[string]*hessian2.TypeAnnotation {
+	annotations := make(map[string]*hessian2.TypeAnnotation)
+
+	for _, svc := range fd.GetServices() {
+		prefix := svc.GetName() + "."
+
+		for _, m := range svc.GetMethods() {
+			annos := m.GetAnnotations()
+			if v, ok := annos[hessian2.HESSIAN_ARGS_TYPE_TAG]; ok && len(v) > 0 {
+				annotations[prefix+m.GetName()] = hessian2.NewTypeAnnotation(v[0])
+			}
+		}
+	}
+	return annotations
 }

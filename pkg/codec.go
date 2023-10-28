@@ -34,7 +34,8 @@ var _ remote.Codec = (*DubboCodec)(nil)
 
 // DubboCodec NewDubboCodec creates the dubbo codec.
 type DubboCodec struct {
-	opt *Options
+	opt         *Options
+	methodCache hessian2.MethodCache
 }
 
 // NewDubboCodec creates a new codec instance.
@@ -227,7 +228,16 @@ func (m *DubboCodec) messageData(message remote.Message, e iface.Encoder) error 
 	if !ok {
 		return fmt.Errorf("invalid data: not hessian2.MessageWriter")
 	}
-	types, err := hessian2.GetTypes(data)
+
+	var typeAnno *hessian2.TypeAnnotation
+	methodKey := message.ServiceInfo().ServiceName + "." + message.RPCInfo().To().Method()
+	if m.opt.TypeAnnotations != nil {
+		if t, ok := m.opt.TypeAnnotations[methodKey]; ok {
+			typeAnno = t
+		}
+	}
+
+	types, err := m.methodCache.GetTypes(data, typeAnno)
 	if err != nil {
 		return err
 	}

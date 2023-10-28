@@ -27,7 +27,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"reflect"
 	"runtime"
 	"runtime/debug"
 	"sync"
@@ -73,8 +72,8 @@ type call struct {
 // The only difference between this Group and golang.org/x/sync/singleflight is that key is reflect.Type
 // cause reflect.Type.String() could not be guaranteed to be unique.
 type Group struct {
-	mu sync.Mutex             // protects m
-	m  map[reflect.Type]*call // lazily initialized
+	mu sync.Mutex          // protects m
+	m  map[methodKey]*call // lazily initialized
 }
 
 type Result struct {
@@ -83,10 +82,10 @@ type Result struct {
 	Shared bool
 }
 
-func (g *Group) Do(key reflect.Type, fn func() (interface{}, error)) (v interface{}, err error, shared bool) {
+func (g *Group) Do(key methodKey, fn func() (interface{}, error)) (v interface{}, err error, shared bool) {
 	g.mu.Lock()
 	if g.m == nil {
-		g.m = make(map[reflect.Type]*call)
+		g.m = make(map[methodKey]*call)
 	}
 	if c, ok := g.m[key]; ok {
 		c.dups++
@@ -109,11 +108,11 @@ func (g *Group) Do(key reflect.Type, fn func() (interface{}, error)) (v interfac
 	return c.val, c.err, c.dups > 0
 }
 
-func (g *Group) DoChan(key reflect.Type, fn func() (interface{}, error)) <-chan Result {
+func (g *Group) DoChan(key methodKey, fn func() (interface{}, error)) <-chan Result {
 	ch := make(chan Result, 1)
 	g.mu.Lock()
 	if g.m == nil {
-		g.m = make(map[reflect.Type]*call)
+		g.m = make(map[methodKey]*call)
 	}
 	if c, ok := g.m[key]; ok {
 		c.dups++
@@ -131,7 +130,7 @@ func (g *Group) DoChan(key reflect.Type, fn func() (interface{}, error)) <-chan 
 	return ch
 }
 
-func (g *Group) doCall(c *call, key reflect.Type, fn func() (interface{}, error)) {
+func (g *Group) doCall(c *call, key methodKey, fn func() (interface{}, error)) {
 	normalReturn := false
 	recovered := false
 
@@ -194,7 +193,7 @@ func (g *Group) doCall(c *call, key reflect.Type, fn func() (interface{}, error)
 	}
 }
 
-func (g *Group) Forget(key reflect.Type) {
+func (g *Group) Forget(key methodKey) {
 	g.mu.Lock()
 	if c, ok := g.m[key]; ok {
 		c.forgotten = true
