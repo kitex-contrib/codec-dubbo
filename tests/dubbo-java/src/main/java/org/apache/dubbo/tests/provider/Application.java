@@ -34,7 +34,7 @@ public class Application {
 
         DubboBootstrap.getInstance()
                 .application("first-dubbo-provider")
-                .protocol(new ProtocolConfig("dubbo", 20001))
+                .protocol(new ProtocolConfig("dubbo", 20000))
                 .service(service)
                 .start()
                 .await();
