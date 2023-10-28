@@ -23,6 +23,14 @@ public class EchoMultiByteResponse implements Serializable {
         return listResp;
     }
 
+    public byte[] getListRespToArray() {
+        byte[] arr = new byte[listResp.size()];
+        for (int i = 0; i < listResp.size(); i++) {
+            arr[i] = listResp.get(i);
+        }
+        return arr;
+    }
+
     public Map<Byte, Byte> getMapResp() {
         return mapResp;
     }

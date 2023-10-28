@@ -23,6 +23,14 @@ public class EchoMultiDoubleResponse implements Serializable {
         return listResp;
     }
 
+    public double[] getListRespToArray() {
+        double[] arr = new double[listResp.size()];
+        for (int i = 0; i < listResp.size(); i++) {
+            arr[i] = listResp.get(i);
+        }
+        return arr;
+    }
+
     public Map<Double, Double> getMapResp() {
         return mapResp;
     }
