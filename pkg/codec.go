@@ -229,14 +229,7 @@ func (m *DubboCodec) messageData(message remote.Message, e iface.Encoder) error 
 		return fmt.Errorf("invalid data: not hessian2.MessageWriter")
 	}
 
-	var typeAnno *hessian2.TypeAnnotation
-	methodKey := message.ServiceInfo().ServiceName + "." + message.RPCInfo().To().Method()
-	if m.opt.TypeAnnotations != nil {
-		if t, ok := m.opt.TypeAnnotations[methodKey]; ok {
-			typeAnno = t
-		}
-	}
-
+	typeAnno := m.getTypeAnnotation(message)
 	types, err := m.methodCache.GetTypes(data, typeAnno)
 	if err != nil {
 		return err
@@ -272,6 +265,17 @@ func (m *DubboCodec) messageAttachment(ctx context.Context, service *dubbo_spec.
 		service.Timeout,
 	)
 	return e.Encode(attachment)
+}
+
+func (m *DubboCodec) getTypeAnnotation(message remote.Message) *hessian2.TypeAnnotation {
+	var typeAnno *hessian2.TypeAnnotation
+	methodKey := message.ServiceInfo().ServiceName + "." + message.RPCInfo().To().Method()
+	if m.opt.TypeAnnotations != nil {
+		if t, ok := m.opt.TypeAnnotations[methodKey]; ok {
+			typeAnno = t
+		}
+	}
+	return typeAnno
 }
 
 // Unmarshal decode method

@@ -208,22 +208,22 @@ func TestEchoBool2BoolMap_Java(t *testing.T) {
 }
 
 // dubbo-java -> dubbo-java does not support
-func TestEchoBool2ByteMap_Java(t *testing.T) {
-	req := map[bool]int8{
-		true: 1,
-	}
-	resp, err := cli2Java.EchoBool2ByteMap(context.Background(), req)
-	assertEcho(t, err, req, resp)
-}
+// func TestEchoBool2ByteMap_Java(t *testing.T) {
+// 	req := map[bool]int8{
+// 		true: 1,
+// 	}
+// 	resp, err := cli2Java.EchoBool2ByteMap(context.Background(), req)
+// 	assertEcho(t, err, req, resp)
+// }
 
 // dubbo-java -> dubbo-java does not support
-func TestEchoBool2Int16Map_Java(t *testing.T) {
-	req := map[bool]int16{
-		true: 1,
-	}
-	resp, err := cli2Java.EchoBool2Int16Map(context.Background(), req)
-	assertEcho(t, err, req, resp)
-}
+// func TestEchoBool2Int16Map_Java(t *testing.T) {
+// 	req := map[bool]int16{
+// 		true: 1,
+// 	}
+// 	resp, err := cli2Java.EchoBool2Int16Map(context.Background(), req)
+// 	assertEcho(t, err, req, resp)
+// }
 
 func TestEchoBool2Int32Map_Java(t *testing.T) {
 	req := map[bool]int32{
