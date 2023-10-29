@@ -65,6 +65,8 @@ When initializing the client, use DubboCodec's `WithFileDescriptor` Option, and 
 ```thrift
 service EchoService {
    EchoResponse Echo(1: i32 req1, 2: list<i32> req2, 3: map<i32, i32> req3) (hessian.argsType="int,int[],java.util.HashMap")
+   // Use the default type mapping
+   EchoDefaultTypeResponse EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,,-")
 }
 ```
 
