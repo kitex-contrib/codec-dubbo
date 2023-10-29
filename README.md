@@ -63,6 +63,8 @@ DubboCodec 支持在 **thrift** 中使用 **方法注解** 指定请求参数需
 ```thrift
 service EchoService {
    EchoResponse Echo(1: i32 req1, 2: list<i32> req2, 3: map<i32, i32> req3) (hessian.argsType="int,int[],java.util.HashMap")
+   // 使用默认的类型映射
+   EchoDefaultTypeResponse EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,,-")
 }
 ```
 
