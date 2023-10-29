@@ -14,40 +14,59 @@ English | [中文](README.md)
 Write **api.thrift** based on existing **dubbo Interface API** and [**Type Mapping Table**](#type-mapping). Then use
 the latest kitex command tool and thriftgo to generate Kitex's scaffold (including stub code).
 
+In addition to the default type mapping, you can also specify the Java type for request parameter mapping in **thrift** using [**Method Annotation**](#method-annotation).
+
 2. **dubbo -> kitex**
 
 Write dubbo client code based on existing **api.thrift** and [**Type Mapping Table**](#type-mapping).
 
 ### Type Mapping
 
-|    thrift type     |   golang type    | hessian2 type |       java type        |
-|:------------------:|:----------------:|:-------------:|:----------------------:|
-|        bool        |       bool       |    boolean    |   java.lang.Boolean    |
-|        byte        |       int8       |      int      |     java.lang.Byte     |
-|        i16         |      int16       |      int      |    java.lang.Short     |
-|        i32         |      int32       |      int      |   java.lang.Integer    |
-|        i64         |      int64       |     long      |     java.lang.Long     |
-|       double       |     float64      |    double     |    java.lang.Double    |
-|       string       |      string      |    string     |    java.lang.String    |
-|       binary       |      []byte      |    binary     |         byte[]         |
-|    list\<bool>     |      []bool      |     list      |     List\<Boolean>     |
-|     list\<i32>     |     []int32      |     list      |     List\<Integer>     |
-|     list\<i64>     |     []int64      |     list      |      List\<Long>       |
-|   list\<double>    |    []float64     |     list      |     List\<Double>      |
-|   list\<string>    |     []string     |     list      |     List\<String>      |
-|  map\<bool, bool>  |  map[bool]bool   |      map      | Map\<Boolean, Boolean> |
-|  map\<bool, i32>   |  map[bool]int32  |      map      | Map\<Boolean, Integer> |
-|  map\<bool, i64>   |  map[bool]int64  |      map      |  Map\<Boolean, Long>   |
-| map\<bool, double> | map[bool]float64 |      map      | Map\<Boolean, Double>  |
-| map\<bool, string> | map[bool]string  |      map      | Map\<Boolean, String>  |
+|    thrift type     |   golang type    | hessian2 type |   default java type    |      extendable java type       |
+|:------------------:|:----------------:|:-------------:|:----------------------:|:-------------------------------:|
+|        bool        |       bool       |    boolean    |   java.lang.Boolean    |             boolean             |
+|        byte        |       int8       |      int      |     java.lang.Byte     |              byte               |
+|        i16         |      int16       |      int      |    java.lang.Short     |              short              |
+|        i32         |      int32       |      int      |   java.lang.Integer    |               int               |
+|        i64         |      int64       |     long      |     java.lang.Long     |              long               |
+|       double       |     float64      |    double     |    java.lang.Double    |             double              |
+|       string       |      string      |    string     |    java.lang.String    |                -                |
+|       binary       |      []byte      |    binary     |         byte[]         |                -                |
+|    list\<bool>     |      []bool      |     list      |     List\<Boolean>     | boolean[] / ArrayList\<Boolean> |
+|     list\<i32>     |     []int32      |     list      |     List\<Integer>     |   int[] / ArrayList\<Integer>   |
+|     list\<i64>     |     []int64      |     list      |      List\<Long>       |    long[] / ArrayList\<Long>    |
+|   list\<double>    |    []float64     |     list      |     List\<Double>      |  double[] / ArrayList\<Double>  |
+|   list\<string>    |     []string     |     list      |     List\<String>      |  String[] / ArrayList\<String>  |
+|  map\<bool, bool>  |  map[bool]bool   |      map      | Map\<Boolean, Boolean> |   HashMap\<Boolean, Boolean>    |
+|  map\<bool, i32>   |  map[bool]int32  |      map      | Map\<Boolean, Integer> |   HashMap\<Boolean, Integer>    |
+|  map\<bool, i64>   |  map[bool]int64  |      map      |  Map\<Boolean, Long>   |     HashMap\<Boolean, Long>     |
+| map\<bool, double> | map[bool]float64 |      map      | Map\<Boolean, Double>  |    HashMap\<Boolean, Double>    |
+| map\<bool, string> | map[bool]string  |      map      | Map\<Boolean, String>  |    HashMap\<Boolean, String>    |
 
 **Important notes**:
 1. The list of map types is not exhaustive and includes only tested cases.
    Please do not use keys and values with **i8**, **i16** and **binary**.
-2. Currently only the thrift type and java type mappings documented in the table are supported.
-   More mappings(e.g. **bool** <-> **boolean**) would be supported in the future.
-   Please see [issue](https://github.com/kitex-contrib/codec-dubbo/issues/46).
-3. float32 is planned but currently not supported since it's not a valid type in thrift.
+2. float32 is planned but currently not supported since it's not a valid type in thrift.
+
+### Method Annotation
+
+DubboCodec supports specifying the Java types needed for request parameter mapping in **thrift** using **method annotations**.
+
+**Method Annotation Format:**
+```thrift
+(hessian.argsType="req1JavaType,req2JavaType,req3JavaType,...")
+```
+Here, each `reqJavaType` can either be left blank or use a `-`, indicating that the default type mapping will be used for that parameter.
+
+After adding method annotations, use the kitex command line tool to generate code and add the option `-thrift with_reflection`. This will include the **FileDescriptor** of thrift in the generated scaffold code.
+When initializing the client, use DubboCodec's `WithFileDescriptor` Option, and pass in the generated **FileDescriptor** to specify the **kitex -> dubbo** type mapping.
+
+**Example:**
+```thrift
+service EchoService {
+   EchoResponse Echo(1: i32 req1, 2: list<i32> req2, 3: map<i32, i32> req3) (hessian.argsType="int,int[],java.util.HashMap")
+}
+```
 
 ## Getting Started
 
