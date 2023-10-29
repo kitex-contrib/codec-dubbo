@@ -23,6 +23,14 @@ public class EchoMultiInt32Response implements Serializable {
         return listResp;
     }
 
+    public int[] getListRespToArray() {
+        int[] arr = new int[listResp.size()];
+        for (int i = 0; i < listResp.size(); i++) {
+            arr[i] = listResp.get(i);
+        }
+        return arr;
+    }
+
     public Map<Integer, Integer> getMapResp() {
         return mapResp;
     }

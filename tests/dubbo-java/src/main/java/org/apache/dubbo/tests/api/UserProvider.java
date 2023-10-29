@@ -19,6 +19,7 @@
 
 package org.apache.dubbo.tests.api;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -85,4 +86,52 @@ public interface UserProvider {
     EchoMultiDoubleResponse EchoMultiDouble(Double baseReq, List<Double> listReq, Map<Double, Double> mapReq) throws Exception;
 
     EchoMultiStringResponse EchoMultiString(String baseReq, List<String> listReq, Map<String, String> mapReq) throws Exception;
+
+    boolean EchoBaseBool(boolean req) throws Exception;
+
+    byte EchoBaseByte(byte req) throws Exception;
+
+    short EchoBaseInt16(short req) throws Exception;
+
+    int EchoBaseInt32(int req) throws Exception;
+
+    long EchoBaseInt64(long req) throws Exception;
+
+    double EchoBaseDouble(double req) throws Exception;
+
+    boolean[] EchoBaseBoolList(boolean[] req) throws Exception;
+
+    byte[] EchoBaseByteList(byte[] req) throws Exception;
+
+    short[] EchoBaseInt16List(short[] req) throws Exception;
+
+    int[] EchoBaseInt32List(int[] req) throws Exception;
+
+    long[] EchoBaseInt64List(long[] req) throws Exception;
+
+    double[] EchoBaseDoubleList(double[] req) throws Exception;
+
+    HashMap<Boolean, Boolean> EchoBool2BoolBaseMap(HashMap<Boolean, Boolean> req) throws Exception;
+
+    HashMap<Boolean, Byte> EchoBool2ByteBaseMap(HashMap<Boolean, Byte> req) throws Exception;
+
+    HashMap<Boolean, Short> EchoBool2Int16BaseMap(HashMap<Boolean, Short> req) throws Exception;
+
+    HashMap<Boolean, Integer> EchoBool2Int32BaseMap(HashMap<Boolean, Integer> req) throws Exception;
+
+    HashMap<Boolean, Long> EchoBool2Int64BaseMap(HashMap<Boolean, Long> req) throws Exception;
+
+    HashMap<Boolean, Double> EchoBool2DoubleBaseMap(HashMap<Boolean, Double> req) throws Exception;
+
+    EchoMultiBoolResponse EchoMultiBaseBool(boolean baseReq, boolean[] listReq, HashMap<Boolean, Boolean> mapReq) throws Exception;
+
+    EchoMultiByteResponse EchoMultiBaseByte(byte baseReq, byte[] listReq, HashMap<Byte, Byte> mapReq) throws Exception;
+
+    EchoMultiInt16Response EchoMultiBaseInt16(short baseReq, short[] listReq, HashMap<Short, Short> mapReq) throws Exception;
+
+    EchoMultiInt32Response EchoMultiBaseInt32(int baseReq, int[] listReq, HashMap<Integer, Integer> mapReq) throws Exception;
+
+    EchoMultiInt64Response EchoMultiBaseInt64(long baseReq,long[] listReq, HashMap<Long, Long> mapReq) throws Exception;
+
+    EchoMultiDoubleResponse EchoMultiBaseDouble(double baseReq, double[] listReq, HashMap<Double, Double> mapReq) throws Exception;
 }

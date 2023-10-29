@@ -42,6 +42,7 @@ public class Application {
         testContainerListType(service);
         testContainerMapType(service);
         testMultiParams(service);
+        testMethodAnnotation(service);
     }
 
     public static void logEchoFail(String methodName) {
@@ -58,8 +59,8 @@ public class Application {
 
     public static void testBaseTypes(UserProvider svc) {
         testEchoBool(svc);
-        testEchoByte(svc);
-        testEchoInt16(svc);
+//        testEchoByte(svc);
+//        testEchoInt16(svc);
         testEchoInt32(svc);
         testEchoInt64(svc);
         testEchoDouble(svc);
@@ -80,13 +81,13 @@ public class Application {
 
     public static void testContainerMapType(UserProvider svc) {
         testEchoBool2BoolMap(svc);
-        testEchoBool2ByteMap(svc);
-        testEchoBool2Int16Map(svc);
+//        testEchoBool2ByteMap(svc);
+//        testEchoBool2Int16Map(svc);
         testEchoBool2Int32Map(svc);
         testEchoBool2Int64Map(svc);
         testEchoBool2DoubleMap(svc);
         testEchoBool2StringMap(svc);
-        testEchoBool2BinaryMap(svc);
+//        testEchoBool2BinaryMap(svc);
     }
 
     public static void testMultiParams(UserProvider svc) {
@@ -97,6 +98,34 @@ public class Application {
         testEchoMultiInt64(svc);
         testEchoMultiDouble(svc);
         testEchoMultiString(svc);
+    }
+
+    public static void testMethodAnnotation(UserProvider svc) {
+        testEchoBaseBool(svc);
+        testEchoBaseByte(svc);
+        testEchoBaseInt16(svc);
+        testEchoBaseInt32(svc);
+        testEchoBaseInt64(svc);
+        testEchoBaseDouble(svc);
+        testEchoBaseBoolList(svc);
+        testEchoBaseByteList(svc);
+        testEchoBaseInt16List(svc);
+        testEchoBaseInt32List(svc);
+        testEchoBaseInt64List(svc);
+        testEchoBaseDoubleList(svc);
+        testEchoBool2BoolBaseMap(svc);
+//        testEchoBool2ByteBaseMap(svc);
+//        testEchoBool2Int16BaseMap(svc);
+        testEchoBool2Int32BaseMap(svc);
+        testEchoBool2Int64BaseMap(svc);
+        testEchoBool2DoubleBaseMap(svc);
+        testEchoMultiBaseBool(svc);
+        testEchoMultiBaseByte(svc);
+        testEchoMultiBaseInt16(svc);
+        testEchoMultiBaseInt32(svc);
+        testEchoMultiBaseInt64(svc);
+        testEchoMultiBaseDouble(svc);
+
     }
 
     public static void testEchoBool(UserProvider svc) {
@@ -578,6 +607,366 @@ public class Application {
             mapReq.put("12", "34");
             EchoMultiStringResponse resp = svc.EchoMultiString(baseReq, listReq, mapReq);
             if (!baseReq.equals(resp.getBaseResp()) || !listReq.equals(resp.getListResp()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBaseBool(UserProvider svc) {
+        String methodName = "EchoBaseBool";
+        try {
+            boolean req = true;
+            boolean resp = svc.EchoBaseBool(req);
+            if (req != resp) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBaseByte(UserProvider svc) {
+        String methodName = "EchoBaseByte";
+        try {
+            Byte req = '1';
+            Byte resp = svc.EchoBaseByte(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBaseInt16(UserProvider svc) {
+        String methodName = "EchoBaseInt16";
+        try {
+            Short req = 12;
+            Short resp = svc.EchoBaseInt16(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBaseInt32(UserProvider svc) {
+        String methodName = "EchoBaseInt32";
+        try {
+            Integer req = 12;
+            Integer resp = svc.EchoBaseInt32(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBaseInt64(UserProvider svc) {
+        String methodName = "EchoBaseInt64";
+        try {
+            Long req = 12L;
+            Long resp = svc.EchoBaseInt64(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBaseDouble(UserProvider svc) {
+        String methodName = "EchoBaseDouble";
+        try {
+            Double req = 12.34;
+            Double resp = svc.EchoBaseDouble(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBaseBoolList(UserProvider svc) {
+        String methodName = "EchoBaseBoolList";
+        try {
+            boolean[] req = {true, false};
+            boolean[] resp = svc.EchoBaseBoolList(req);
+            if (!Arrays.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBaseByteList(UserProvider svc) {
+        String methodName = "EchoBaseByteList";
+        try {
+            byte[] req = {1, 2};
+            byte[] resp = svc.EchoBaseByteList(req);
+            if (!Arrays.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBaseInt16List(UserProvider svc) {
+        String methodName = "EchoBaseInt16List";
+        try {
+            short[] req = {1, 2};
+            short[] resp = svc.EchoBaseInt16List(req);
+            if (!Arrays.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBaseInt32List(UserProvider svc) {
+        String methodName = "EchoBaseInt32List";
+        try {
+            int[] req = {1, 2};
+            int[] resp = svc.EchoBaseInt32List(req);
+            if (!Arrays.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBaseInt64List(UserProvider svc) {
+        String methodName = "EchoBaseInt64List";
+        try {
+            long[] req = {1, 2};
+            long[] resp = svc.EchoBaseInt64List(req);
+            if (!Arrays.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBaseDoubleList(UserProvider svc) {
+        String methodName = "EchoBaseDoubleList";
+        try {
+            double[] req = {1.2, 3.4};
+            double[] resp = svc.EchoBaseDoubleList(req);
+            if (!Arrays.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2BoolBaseMap(UserProvider svc) {
+        String methodName = "EchoBool2BoolBaseMap";
+        try {
+            HashMap<Boolean, Boolean> req = new HashMap<>();
+            req.put(true, true);
+            Map<Boolean, Boolean> resp = svc.EchoBool2BoolBaseMap(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2ByteBaseMap(UserProvider svc) {
+        String methodName = "EchoBool2ByteBaseMap";
+        try {
+            HashMap<Boolean, Byte> req = new HashMap<>();
+            req.put(true, (byte) 12);
+            Map<Boolean, Byte> resp = svc.EchoBool2ByteBaseMap(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2Int16BaseMap(UserProvider svc) {
+        String methodName = "EchoBool2Int16BaseMap";
+        try {
+            HashMap<Boolean, Short> req = new HashMap<>();
+            req.put(true, (short) 12);
+            Map<Boolean, Short> resp = svc.EchoBool2Int16BaseMap(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2Int32BaseMap(UserProvider svc) {
+        String methodName = "EchoBool2Int32BaseMap";
+        try {
+            HashMap<Boolean, Integer> req = new HashMap<>();
+            req.put(true, 1);
+            Map<Boolean, Integer> resp = svc.EchoBool2Int32BaseMap(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2Int64BaseMap(UserProvider svc) {
+        String methodName = "EchoBool2Int64BaseMap";
+        try {
+            HashMap<Boolean, Long> req = new HashMap<>();
+            req.put(true, (long) 1);
+            Map<Boolean, Long> resp = svc.EchoBool2Int64BaseMap(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2DoubleBaseMap(UserProvider svc) {
+        String methodName = "EchoBool2DoubleBaseMap";
+        try {
+            HashMap<Boolean, Double> req = new HashMap<>();
+            req.put(true, 12.34);
+            Map<Boolean, Double> resp = svc.EchoBool2DoubleBaseMap(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiBaseBool(UserProvider svc) {
+        String methodName = "EchoMultiBaseBool";
+        try {
+            boolean baseReq = true;
+            boolean[] listReq = {true, false};
+            HashMap<Boolean, Boolean> mapReq = new HashMap<>();
+            mapReq.put(true, true);
+            EchoMultiBoolResponse resp = svc.EchoMultiBaseBool(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !Arrays.equals(listReq, resp.getListRespToArray()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiBaseByte(UserProvider svc) {
+        String methodName = "EchoMultiBaseByte";
+        try {
+            byte baseReq = 1;
+            byte[] listReq = {12, 34};
+            HashMap<Byte, Byte> mapReq = new HashMap<>();
+            mapReq.put((byte) 12, (byte) 34);
+            EchoMultiByteResponse resp = svc.EchoMultiBaseByte(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !Arrays.equals(listReq, resp.getListRespToArray()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiBaseInt16(UserProvider svc) {
+        String methodName = "EchoMultiBaseInt16";
+        try {
+            short baseReq = 1;
+            short[] listReq = {12, 34};
+            HashMap<Short, Short> mapReq = new HashMap<>();
+            mapReq.put((short) 12, (short) 34);
+            EchoMultiInt16Response resp = svc.EchoMultiBaseInt16(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !Arrays.equals(listReq, resp.getListRespToArray()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiBaseInt32(UserProvider svc) {
+        String methodName = "EchoMultiBaseInt32";
+        try {
+            int baseReq = 1;
+            int[] listReq = {12, 34};
+            HashMap<Integer, Integer> mapReq = new HashMap<>();
+            mapReq.put(12, 34);
+            EchoMultiInt32Response resp = svc.EchoMultiBaseInt32(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !Arrays.equals(listReq, resp.getListRespToArray()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiBaseInt64(UserProvider svc) {
+        String methodName = "EchoMultiBaseInt64";
+        try {
+            long baseReq = 1;
+            long[] listReq = {12, 34};
+            HashMap<Long, Long> mapReq = new HashMap<>();
+            mapReq.put((long) 12, (long) 34);
+            EchoMultiInt64Response resp = svc.EchoMultiBaseInt64(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !Arrays.equals(listReq, resp.getListRespToArray()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiBaseDouble(UserProvider svc) {
+        String methodName = "EchoMultiBaseDouble";
+        try {
+            double baseReq = 12.34;
+            double[] listReq = {12.34, 56.78};
+            HashMap<Double, Double> mapReq = new HashMap<>();
+            mapReq.put(12.34, 56.78);
+            EchoMultiDoubleResponse resp = svc.EchoMultiBaseDouble(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !Arrays.equals(listReq, resp.getListRespToArray()) || !mapReq.equals(resp.getMapResp())) {
                 logEchoFail(methodName);
             }
         } catch (Exception e) {

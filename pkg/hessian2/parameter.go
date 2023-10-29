@@ -33,37 +33,48 @@ import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-var cache = new(typesCache)
-
-// typesCache maintains a cache from type of data(reflect.Type) to Types string used by Hessian2.
-type typesCache struct {
+// MethodCache maintains a cache from method parameter types (reflect.Type) and method annotations to the type strings used by Hessian2.
+type MethodCache struct {
 	group    Group
 	typesMap sync.Map
 }
 
-// getByData returns the Types string of given data.
+type methodKey struct {
+	typ  reflect.Type
+	anno string
+}
+
+// GetTypes returns the Types string for the given method parameter data and method annotations.
 // It reads embedded sync.Map firstly. If cache misses, using singleFlight to process reflection and getParamsTypeList.
-func (tc *typesCache) getByData(data interface{}) (string, error) {
+func (mc *MethodCache) GetTypes(data interface{}, ta *TypeAnnotation) (string, error) {
 	val := reflect.ValueOf(data)
-	typ := val.Type()
-	typesRaw, ok := tc.typesMap.Load(typ)
+	key := methodKey{typ: val.Type()}
+	if ta != nil {
+		key.anno = ta.anno
+	}
+	typesRaw, ok := mc.typesMap.Load(key)
 	if ok {
 		return typesRaw.(string), nil
 	}
 
-	typesRaw, err, _ := tc.group.Do(typ, func() (interface{}, error) {
+	typesRaw, err, _ := mc.group.Do(key, func() (interface{}, error) {
 		elem := val.Elem()
 		numField := elem.NumField()
-		fields := make([]interface{}, numField)
+		fields := make([]*parameter, numField)
 		for i := 0; i < numField; i++ {
-			fields[i] = elem.Field(i).Interface()
+			fields[i] = &parameter{
+				value: elem.Field(i).Interface(),
+			}
+			if ta != nil {
+				fields[i].typeAnno = ta.GetFieldType(i)
+			}
 		}
 
 		types, err := getParamsTypeList(fields)
 		if err != nil {
 			return "", err
 		}
-		tc.typesMap.Store(typ, types)
+		mc.typesMap.Store(key, types)
 
 		return types, nil
 	})
@@ -76,8 +87,8 @@ func (tc *typesCache) getByData(data interface{}) (string, error) {
 
 // get retrieves Types string from reflect.Type directly.
 // For test.
-func (tc *typesCache) get(key reflect.Type) (string, bool) {
-	typesRaw, ok := tc.typesMap.Load(key)
+func (mc *MethodCache) get(key methodKey) (string, bool) {
+	typesRaw, ok := mc.typesMap.Load(key)
 	if !ok {
 		return "", false
 	}
@@ -87,28 +98,24 @@ func (tc *typesCache) get(key reflect.Type) (string, bool) {
 
 // len returns the length of embedded sync.Map.
 // For test.
-func (tc *typesCache) len() int {
+func (mc *MethodCache) len() int {
 	var length int
-	tc.typesMap.Range(func(key, value interface{}) bool {
+	mc.typesMap.Range(func(key, value interface{}) bool {
 		length++
 		return true
 	})
 	return length
 }
 
-func GetTypes(data interface{}) (string, error) {
-	return cache.getByData(data)
-}
-
 // GetParamsTypeList is copied from dubbo-go, it should be rewritten
-func getParamsTypeList(params []interface{}) (string, error) {
+func getParamsTypeList(params []*parameter) (string, error) {
 	var (
 		typ   string
 		types string
 	)
 
 	for i := range params {
-		typ = getParamType(params[i])
+		typ = params[i].getType()
 		if typ == "" {
 			return types, fmt.Errorf("cat not get arg %#v type", params[i])
 		}
@@ -125,12 +132,119 @@ func getParamsTypeList(params []interface{}) (string, error) {
 	return types, nil
 }
 
-func getParamType(param interface{}) string {
-	if param == nil {
+// parameter is used to store information about parameters.
+// value stores the actual value of the parameter, and typeAnno records the type annotation added by IDL to this parameter.
+type parameter struct {
+	value    interface{}
+	typeAnno string
+}
+
+// getType retrieves the parameter's type either through type annotation or by reflecting on the value.
+func (p *parameter) getType() string {
+	if p == nil {
 		return "V"
 	}
 
-	switch typ := param.(type) {
+	// Preferentially use the type specified in the type annotation.
+	if ta := p.getTypeByAnno(); len(ta) > 0 {
+		return ta
+	}
+
+	return p.getTypeByValue()
+}
+
+func (p *parameter) getTypeByAnno() string {
+	switch p.typeAnno {
+	// When the annotation is "-", it will be skipped,
+	// use the default parsing method without annotations.
+	case "-":
+		return ""
+	case "byte":
+		return "B"
+	case "byte[]":
+		return "[B"
+	case "Byte":
+		return "java.lang.Byte"
+	case "Byte[]":
+		return "[Ljava.lang.Byte;"
+	case "short":
+		return "S"
+	case "short[]":
+		return "[S"
+	case "Short":
+		return "java.lang.Short"
+	case "Short[]":
+		return "[Ljava.lang.Short;"
+	case "int":
+		return "I"
+	case "int[]":
+		return "[I"
+	case "Integer":
+		return "java.lang.Integer"
+	case "Integer[]":
+		return "[Ljava.lang.Integer;"
+	case "long":
+		return "J"
+	case "long[]":
+		return "[J"
+	case "Long":
+		return "java.lang.Long"
+	case "Long[]":
+		return "[Ljava.lang.Long;"
+	case "float":
+		return "F"
+	case "float[]":
+		return "[F"
+	case "Float":
+		return "java.lang.Float"
+	case "Float[]":
+		return "[Ljava.lang.Float;"
+	case "double":
+		return "D"
+	case "double[]":
+		return "[D"
+	case "Double":
+		return "java.lang.Double"
+	case "Double[]":
+		return "[Ljava.lang.Double;"
+	case "boolean":
+		return "Z"
+	case "boolean[]":
+		return "[Z"
+	case "Boolean":
+		return "java.lang.Boolean"
+	case "Boolean[]":
+		return "[Ljava.lang.Boolean;"
+	case "char":
+		return "C"
+	case "char[]":
+		return "[C"
+	case "Character":
+		return "java.lang.Character"
+	case "Character[]":
+		return "[Ljava.lang.Character;"
+	case "String":
+		return "java.lang.String"
+	case "String[]":
+		return "[Ljava.lang.String;"
+	case "Object":
+		return "java.lang.Object"
+	case "Object[]":
+		return "[Ljava.lang.Object;"
+	default:
+		if strings.HasSuffix(p.typeAnno, "[]") {
+			return "[L" + p.typeAnno[:len(p.typeAnno)-2] + ";"
+		}
+		return p.typeAnno
+	}
+}
+
+func (p *parameter) getTypeByValue() string {
+	if p.value == nil {
+		return "V"
+	}
+
+	switch typ := p.value.(type) {
 	// Serialized tags for base types
 	case nil:
 		return "V"

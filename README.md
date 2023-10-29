@@ -12,39 +12,61 @@
 
 基于已有的 **dubbo Interface API** 和 [**类型映射**](#类型映射)，编写 **api.thrift**。然后使用最新的 kitex 命令行工具和 thriftgo 生成 kitex 的脚手架代码（包括用于编解码的stub代码）。
 
+除了默认的类型映射外，还可以在 **thrift** 中使用 [**方法注解**](#方法注解) 指定请求参数映射的 java 类型。
+
 2. **dubbo -> kitex**
 
 基于已有的 **api.thrift** 和 [**类型映射**](#类型映射)，编写 dubbo 客户端代码。
 
 ### 类型映射
 
-|     thrift 类型      |    golang 类型     | hessian2 类型 |        java 类型         |
-|:------------------:|:----------------:|:-----------:|:----------------------:|
-|        bool        |       bool       |   boolean   |   java.lang.Boolean    |
-|        byte        |       int8       |     int     |     java.lang.Byte     |
-|        i16         |      int16       |     int     |    java.lang.Short     |
-|        i32         |      int32       |     int     |   java.lang.Integer    |
-|        i64         |      int64       |    long     |     java.lang.Long     |
-|       double       |     float64      |   double    |    java.lang.Double    |
-|       string       |      string      |   string    |    java.lang.String    |
-|       binary       |      []byte      |   binary    |         byte[]         |
-|    list\<bool>     |      []bool      |    list     |     List\<Boolean>     |
-|     list\<i32>     |     []int32      |    list     |     List\<Integer>     |
-|     list\<i64>     |     []int64      |    list     |      List\<Long>       |
-|   list\<double>    |    []float64     |    list     |     List\<Double>      |
-|   list\<string>    |     []string     |    list     |     List\<String>      |
-|  map\<bool, bool>  |  map[bool]bool   |     map     | Map\<Boolean, Boolean> |
-|  map\<bool, i32>   |  map[bool]int32  |     map     | Map\<Boolean, Integer> |
-|  map\<bool, i64>   |  map[bool]int64  |     map     |  Map\<Boolean, Long>   |
-| map\<bool, double> | map[bool]float64 |     map     | Map\<Boolean, Double>  |
-| map\<bool, string> | map[bool]string  |     map     | Map\<Boolean, String>  |
+|     thrift 类型      |    golang 类型     | hessian2 类型 |       默认 java 类型       |           可拓展 java 类型           |
+|:------------------:|:----------------:|:-----------:|:----------------------:|:-------------------------------:|
+|        bool        |       bool       |   boolean   |   java.lang.Boolean    |             boolean             |
+|        byte        |       int8       |     int     |     java.lang.Byte     |              byte               |
+|        i16         |      int16       |     int     |    java.lang.Short     |              short              |
+|        i32         |      int32       |     int     |   java.lang.Integer    |               int               |
+|        i64         |      int64       |    long     |     java.lang.Long     |              long               |
+|       double       |     float64      |   double    |    java.lang.Double    |             double              |
+|       string       |      string      |   string    |    java.lang.String    |                -                |
+|       binary       |      []byte      |   binary    |         byte[]         |                -                |
+|    list\<bool>     |      []bool      |    list     |     List\<Boolean>     | boolean[] / ArrayList\<Boolean> |
+|     list\<i32>     |     []int32      |    list     |     List\<Integer>     |   int[] / ArrayList\<Integer>   |
+|     list\<i64>     |     []int64      |    list     |      List\<Long>       |    long[] / ArrayList\<Long>    |
+|   list\<double>    |    []float64     |    list     |     List\<Double>      |  double[] / ArrayList\<Double>  |
+|   list\<string>    |     []string     |    list     |     List\<String>      |  String[] / ArrayList\<String>  |
+|  map\<bool, bool>  |  map[bool]bool   |     map     | Map\<Boolean, Boolean> |   HashMap\<Boolean, Boolean>    |
+|  map\<bool, i32>   |  map[bool]int32  |     map     | Map\<Boolean, Integer> |   HashMap\<Boolean, Integer>    |
+|  map\<bool, i64>   |  map[bool]int64  |     map     |  Map\<Boolean, Long>   |     HashMap\<Boolean, Long>     |
+| map\<bool, double> | map[bool]float64 |     map     | Map\<Boolean, Double>  |    HashMap\<Boolean, Double>    |
+| map\<bool, string> | map[bool]string  |     map     | Map\<Boolean, String>  |    HashMap\<Boolean, String>    |
 
 **重要提示**：
 1. 映射表中的 map 类型并没有被完全列举，当前仅包含经过测试的用例。
    请勿在map类型中使用包含 **i8**、**i16** 和 **binary** 的键值。
-2. 当前仅支持表格中所记录的 thrift 类型和 java 类型映射。
-   更多映射关系（例如，**bool** <-> **boolean**）将在未来支持，请参考 [issue](https://github.com/kitex-contrib/codec-dubbo/issues/46)。
-3. 目前不支持float32，因为它在 thrift 中不是有效的类型。计划在后续迭代中支持该类型。
+2. 目前不支持float32，因为它在 thrift 中不是有效的类型。计划在后续迭代中支持该类型。
+
+### 方法注解
+
+DubboCodec 支持在 **thrift** 中使用 **方法注解** 指定请求参数需要映射的 java 类型。
+
+**方法注解格式：**
+```thrift
+(hessian.argsType="req1JavaType,req2JavaType,req3JavaType,...")
+```
+其中，每个 reqJavaType 可以使用 `-` 或不填写，表示该参数将使用默认的类型映射。
+
+添加方法注解后，使用 kitex 命令行工具生成代码时添加选项 `-thrift with_reflection`，会在生成的脚手架代码中包含 thrift 的 **FileDescriptor**。
+在初始化 client 时使用 DubboCodec 提供的 `WithFileDescriptor` Option，传入生成的 **FileDescriptor**，即可指定 **kitex -> dubbo** 的类型映射。
+
+**举例：**
+```thrift
+service EchoService {
+   EchoResponse Echo(1: i32 req1, 2: list<i32> req2, 3: map<i32, i32> req3) (hessian.argsType="int,int[],java.util.HashMap")
+   // 使用默认的类型映射
+   EchoDefaultTypeResponse EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,,-")
+}
+```
 
 ## 开始
 
