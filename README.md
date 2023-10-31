@@ -108,7 +108,8 @@ service GreetService {
 EOF
 
 # 使用 `-protocol Hessian2` 配置项生成 Kitex 脚手架代码
-kitex -module kitex-dubbo-demo -thrift template=slim -service GreetService -protocol Hessian2 ./api.thrift
+# 使用 `-thrift template=slim,with_reflection` 不生成 thrift 编解码代码 && 支持 thrift 反射
+kitex -module kitex-dubbo-demo -thrift template=slim,with_reflection -protocol Hessian2 -service GreetService ./api.thrift
 ```
 
 **重要提示**:
