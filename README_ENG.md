@@ -110,7 +110,9 @@ service GreetService {
 EOF
 
 # Generate Kitex scaffold with the `-protocol Hessian2` option
-kitex -module kitex-dubbo-demo -thrift template=slim -service GreetService -protocol Hessian2 ./api.thrift
+# With `-thrift template=slim,with_reflection`, generate code without thrift encoder/decoder && support thrift reflection
+kitex -module kitex-dubbo-demo -thrift template=slim,with_reflection -protocol Hessian2 -service GreetService ./api.thrift
+
 ```
 
 Important Notes:
