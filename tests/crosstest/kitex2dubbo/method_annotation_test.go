@@ -68,7 +68,7 @@ func TestEchoBaseBoolList_Java(t *testing.T) {
 	assertEcho(t, err, req, resp)
 }
 
-// dubbo-java -> dubbo-java does not support
+// []int8 -> byte[] does not support
 // func TestEchoBaseByteList_Java(t *testing.T) {
 // 	var req = []int8{1, 2}
 // 	resp, err := cli2Java.EchoBaseByteList(context.Background(), req)
@@ -159,31 +159,30 @@ func TestEchoMultiBaseBool_Java(t *testing.T) {
 	assertEcho(t, err, mapReq, resp.MapResp)
 }
 
-// hessian2.Decode does not support but dubbo-java supports
-// func TestEchoMultiBaseByte_Java(t *testing.T) {
-// 	baseReq := int8(1)
-// 	listReq := []int8{12, 34}
-// 	mapReq := map[int8]int8{
-// 		12: 34,
-// 	}
-// 	resp, err := cli2Java.EchoMultiBaseByte(context.Background(), baseReq, listReq, mapReq)
-// 	assertEcho(t, err, baseReq, resp.BaseResp)
-// 	assertEcho(t, err, listReq, resp.ListResp)
-// 	assertEcho(t, err, mapReq, resp.MapResp)
-// }
+// []int8 -> byte[] does not support
+//func TestEchoMultiBaseByte_Java(t *testing.T) {
+//	baseReq := int8(1)
+//	listReq := []int8{12, 34}
+//	mapReq := map[int8]int8{
+//		12: 34,
+//	}
+//	resp, err := cli2Java.EchoMultiBaseByte(context.Background(), baseReq, listReq, mapReq)
+//	assertEcho(t, err, baseReq, resp.BaseResp)
+//	assertEcho(t, err, listReq, resp.ListResp)
+//	assertEcho(t, err, mapReq, resp.MapResp)
+//}
 
-// hessian2.Decode does not support but dubbo-java supports
-// func TestEchoMultiBaseInt16_Java(t *testing.T) {
-// 	baseReq := int16(1)
-// 	listReq := []int16{12, 34}
-// 	mapReq := map[int16]int16{
-// 		12: 34,
-// 	}
-// 	resp, err := cli2Java.EchoMultiBaseInt16(context.Background(), baseReq, listReq, mapReq)
-// 	assertEcho(t, err, baseReq, resp.BaseResp)
-// 	assertEcho(t, err, listReq, resp.ListResp)
-// 	assertEcho(t, err, mapReq, resp.MapResp)
-// }
+func TestEchoMultiBaseInt16_Java(t *testing.T) {
+	baseReq := int16(1)
+	listReq := []int16{12, 34}
+	mapReq := map[int16]int16{
+		12: 34,
+	}
+	resp, err := cli2Java.EchoMultiBaseInt16(context.Background(), baseReq, listReq, mapReq)
+	assertEcho(t, err, baseReq, resp.BaseResp)
+	assertEcho(t, err, listReq, resp.ListResp)
+	assertEcho(t, err, mapReq, resp.MapResp)
+}
 
 func TestEchoMultiBaseInt32_Java(t *testing.T) {
 	baseReq := int32(1)

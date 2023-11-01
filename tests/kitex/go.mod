@@ -13,7 +13,7 @@ require (
 replace github.com/kitex-contrib/codec-dubbo => ../../
 
 require (
-	github.com/apache/dubbo-go-hessian2 v1.12.2 // indirect
+	github.com/apache/dubbo-go-hessian2 v1.12.3-0.20231101125246-fb070d002a57 // indirect
 	github.com/bytedance/gopkg v0.0.0-20230728082804-614d0af6619b // indirect
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
