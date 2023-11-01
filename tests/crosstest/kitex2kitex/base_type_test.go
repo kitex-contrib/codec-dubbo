@@ -30,8 +30,8 @@ import (
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/server"
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	"github.com/kitex-contrib/codec-dubbo/tests/kitex/handler"
 	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testservice"
-	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testsuite"
 )
 
 var cli testservice.Client
@@ -56,7 +56,7 @@ func initKitexClient(destService, hostPort string) {
 func runKitexServer(startCh chan struct{}, exitCh chan error, addr string) {
 	netAddr, _ := net.ResolveTCPAddr("tcp", addr)
 	svr := testservice.NewServer(
-		new(testsuite.TestServiceImpl),
+		new(handler.TestServiceImpl),
 		server.WithServiceAddr(netAddr),
 		server.WithCodec(dubbo.NewDubboCodec(
 			dubbo.WithJavaClassName("org.apache.dubbo.tests.api.UserProvider"),
