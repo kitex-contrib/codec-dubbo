@@ -21,6 +21,8 @@ package org.apache.dubbo.tests.provider;
 
 import org.apache.dubbo.tests.api.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
@@ -178,5 +180,138 @@ public class UserProviderImpl implements UserProvider {
     @Override
     public EchoMultiStringResponse EchoMultiString(String baseReq, List<String> listReq, Map<String, String> mapReq) throws Exception {
         return new EchoMultiStringResponse(baseReq, listReq, mapReq);
+    }
+
+
+    @Override
+    public boolean EchoBaseBool(boolean req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public byte EchoBaseByte(byte req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public short EchoBaseInt16(short req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public int EchoBaseInt32(int req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public long EchoBaseInt64(long req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public double EchoBaseDouble(double req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public boolean[] EchoBaseBoolList(boolean[] req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public byte[] EchoBaseByteList(byte[] req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public short[] EchoBaseInt16List(short[] req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public int[] EchoBaseInt32List(int[] req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public long[] EchoBaseInt64List(long[] req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public double[] EchoBaseDoubleList(double[] req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public HashMap<Boolean, Boolean> EchoBool2BoolBaseMap(HashMap<Boolean, Boolean> req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public HashMap<Boolean, Byte> EchoBool2ByteBaseMap(HashMap<Boolean, Byte> req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public HashMap<Boolean, Short> EchoBool2Int16BaseMap(HashMap<Boolean, Short> req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public HashMap<Boolean, Integer> EchoBool2Int32BaseMap(HashMap<Boolean, Integer> req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public HashMap<Boolean, Long> EchoBool2Int64BaseMap(HashMap<Boolean, Long> req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public HashMap<Boolean, Double> EchoBool2DoubleBaseMap(HashMap<Boolean, Double> req) throws Exception {
+        return req;
+    }
+
+    @Override
+    public EchoMultiBoolResponse EchoMultiBaseBool(boolean baseReq, boolean[] listReq, HashMap<Boolean, Boolean> mapReq) throws Exception {
+        ArrayList<Boolean> arr = new ArrayList<>();
+        for (boolean b : listReq) arr.add(b);
+        return new EchoMultiBoolResponse(baseReq, arr, mapReq);
+    }
+
+    @Override
+    public EchoMultiByteResponse EchoMultiBaseByte(byte baseReq, byte[] listReq, HashMap<Byte, Byte> mapReq) throws Exception {
+        ArrayList<Byte> arr = new ArrayList<>();
+        for (byte b : listReq) arr.add(b);
+        return new EchoMultiByteResponse(baseReq, arr, mapReq);
+    }
+
+    @Override
+    public EchoMultiInt16Response EchoMultiBaseInt16(short baseReq, short[] listReq, HashMap<Short, Short> mapReq) throws Exception {
+        ArrayList<Short> arr = new ArrayList<>();
+        for (short s : listReq) arr.add(s);
+        return new EchoMultiInt16Response(baseReq, arr, mapReq);
+    }
+
+    @Override
+    public EchoMultiInt32Response EchoMultiBaseInt32(int baseReq, int[] listReq, HashMap<Integer, Integer> mapReq) throws Exception {
+        ArrayList<Integer> arr = new ArrayList<>();
+        for (int i : listReq) arr.add(i);
+        return new EchoMultiInt32Response(baseReq, arr, mapReq);
+    }
+
+    @Override
+    public EchoMultiInt64Response EchoMultiBaseInt64(long baseReq, long[] listReq, HashMap<Long, Long> mapReq) throws Exception {
+        ArrayList<Long> arr = new ArrayList<>();
+        for (long l : listReq) arr.add(l);
+        return new EchoMultiInt64Response(baseReq, arr, mapReq);
+    }
+
+    @Override
+    public EchoMultiDoubleResponse EchoMultiBaseDouble(double baseReq, double[] listReq, HashMap<Double, Double> mapReq) throws Exception {
+        ArrayList<Double> arr = new ArrayList<>();
+        for (double d : listReq) arr.add(d);
+        return new EchoMultiDoubleResponse(baseReq, arr, mapReq);
     }
 }

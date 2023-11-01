@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testservice"
 )
 
@@ -15,11 +16,18 @@ func main() {
 		client.WithHostPorts("127.0.0.1:20000"),
 		client.WithCodec(dubbo.NewDubboCodec(
 			dubbo.WithJavaClassName("org.apache.dubbo.tests.api.UserProvider"),
+			dubbo.WithFileDescriptor(echo.GetFileDescriptorForApi()),
 		)),
 	)
 	if err != nil {
 		panic(err)
 	}
+
+	res, err := cli.EchoBaseBool(context.Background(), true)
+	if err != nil {
+		panic(err)
+	}
+	klog.Infof("res: %v", res)
 
 	resp, err := cli.EchoInt(context.Background(), 0x12345678)
 	if err != nil {

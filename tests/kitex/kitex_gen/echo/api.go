@@ -435,4 +435,52 @@ type TestService interface {
 	EchoMultiDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (r *EchoMultiDoubleResponse, err error)
 
 	EchoMultiString(ctx context.Context, baseReq string, listReq []string, mapReq map[string]string) (r *EchoMultiStringResponse, err error)
+
+	EchoBaseBool(ctx context.Context, req bool) (r bool, err error)
+
+	EchoBaseByte(ctx context.Context, req int8) (r int8, err error)
+
+	EchoBaseInt16(ctx context.Context, req int16) (r int16, err error)
+
+	EchoBaseInt32(ctx context.Context, req int32) (r int32, err error)
+
+	EchoBaseInt64(ctx context.Context, req int64) (r int64, err error)
+
+	EchoBaseDouble(ctx context.Context, req float64) (r float64, err error)
+
+	EchoBaseBoolList(ctx context.Context, req []bool) (r []bool, err error)
+
+	EchoBaseByteList(ctx context.Context, req []int8) (r []int8, err error)
+
+	EchoBaseInt16List(ctx context.Context, req []int16) (r []int16, err error)
+
+	EchoBaseInt32List(ctx context.Context, req []int32) (r []int32, err error)
+
+	EchoBaseInt64List(ctx context.Context, req []int64) (r []int64, err error)
+
+	EchoBaseDoubleList(ctx context.Context, req []float64) (r []float64, err error)
+
+	EchoBool2BoolBaseMap(ctx context.Context, req map[bool]bool) (r map[bool]bool, err error)
+
+	EchoBool2ByteBaseMap(ctx context.Context, req map[bool]int8) (r map[bool]int8, err error)
+
+	EchoBool2Int16BaseMap(ctx context.Context, req map[bool]int16) (r map[bool]int16, err error)
+
+	EchoBool2Int32BaseMap(ctx context.Context, req map[bool]int32) (r map[bool]int32, err error)
+
+	EchoBool2Int64BaseMap(ctx context.Context, req map[bool]int64) (r map[bool]int64, err error)
+
+	EchoBool2DoubleBaseMap(ctx context.Context, req map[bool]float64) (r map[bool]float64, err error)
+
+	EchoMultiBaseBool(ctx context.Context, baseReq bool, listReq []bool, mapReq map[bool]bool) (r *EchoMultiBoolResponse, err error)
+
+	EchoMultiBaseByte(ctx context.Context, baseReq int8, listReq []int8, mapReq map[int8]int8) (r *EchoMultiByteResponse, err error)
+
+	EchoMultiBaseInt16(ctx context.Context, baseReq int16, listReq []int16, mapReq map[int16]int16) (r *EchoMultiInt16Response, err error)
+
+	EchoMultiBaseInt32(ctx context.Context, baseReq int32, listReq []int32, mapReq map[int32]int32) (r *EchoMultiInt32Response, err error)
+
+	EchoMultiBaseInt64(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64) (r *EchoMultiInt64Response, err error)
+
+	EchoMultiBaseDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (r *EchoMultiDoubleResponse, err error)
 }

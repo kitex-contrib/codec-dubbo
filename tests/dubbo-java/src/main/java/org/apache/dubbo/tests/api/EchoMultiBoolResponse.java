@@ -23,6 +23,14 @@ public class EchoMultiBoolResponse implements Serializable {
         return listResp;
     }
 
+    public boolean[] getListRespToArray() {
+        boolean[] arr = new boolean[listResp.size()];
+        for (int i = 0; i < listResp.size(); i++) {
+            arr[i] = listResp.get(i);
+        }
+        return arr;
+    }
+
     public Map<Boolean, Boolean> getMapResp() {
         return mapResp;
     }

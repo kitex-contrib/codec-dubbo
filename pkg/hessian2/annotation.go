@@ -19,10 +19,25 @@
 
 package hessian2
 
-import hessian "github.com/apache/dubbo-go-hessian2"
+import "strings"
 
-const (
-	NULL = hessian.BC_NULL
+// TypeAnnotation is used to store and parse a type annotation.
+type TypeAnnotation struct {
+	anno       string
+	fieldTypes []string
+}
 
-	HESSIAN_ARGS_TYPE_TAG = "hessian.argsType"
-)
+// NewTypeAnnotation is used to create a type annotation object.
+func NewTypeAnnotation(anno string) *TypeAnnotation {
+	ta := &TypeAnnotation{anno: anno}
+	ta.fieldTypes = strings.Split(ta.anno, ",")
+	return ta
+}
+
+// GetFieldType retrieves the type annotation for a field by its index.
+func (ta *TypeAnnotation) GetFieldType(i int) string {
+	if ta != nil && len(ta.fieldTypes) > i {
+		return ta.fieldTypes[i]
+	}
+	return ""
+}
