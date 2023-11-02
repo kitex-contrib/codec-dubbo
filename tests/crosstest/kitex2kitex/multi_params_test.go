@@ -36,31 +36,29 @@ func TestEchoMultiBool(t *testing.T) {
 	assertEcho(t, err, mapReq, resp.MapResp)
 }
 
-// hessian2.Decode does not support map[int8]int8
-//func TestEchoMultiByte(t *testing.T) {
-//	baseReq := int8(1)
-//	listReq := []int8{12, 34}
-//	mapReq := map[int8]int8{
-//		12: 34,
-//	}
-//	resp, err := cli.EchoMultiByte(context.Background(), baseReq, listReq, mapReq)
-//	assertEcho(t, err, baseReq, resp.BaseResp)
-//	assertEcho(t, err, listReq, resp.ListResp)
-//	assertEcho(t, err, mapReq, resp.MapResp)
-//}
+func TestEchoMultiByte(t *testing.T) {
+	baseReq := int8(1)
+	listReq := []int8{12, 34}
+	mapReq := map[int8]int8{
+		12: 34,
+	}
+	resp, err := cli.EchoMultiByte(context.Background(), baseReq, listReq, mapReq)
+	assertEcho(t, err, baseReq, resp.BaseResp)
+	assertEcho(t, err, listReq, resp.ListResp)
+	assertEcho(t, err, mapReq, resp.MapResp)
+}
 
-// hessian2.Decode does not support map[int8]int8
-//func TestEchoMultiInt16(t *testing.T) {
-//	baseReq := int16(1)
-//	listReq := []int16{12, 34}
-//	mapReq := map[int16]int16{
-//		12: 34,
-//	}
-//	resp, err := cli.EchoMultiInt16(context.Background(), baseReq, listReq, mapReq)
-//	assertEcho(t, err, baseReq, resp.BaseResp)
-//	assertEcho(t, err, listReq, resp.ListResp)
-//	assertEcho(t, err, mapReq, resp.MapResp)
-//}
+func TestEchoMultiInt16(t *testing.T) {
+	baseReq := int16(1)
+	listReq := []int16{12, 34}
+	mapReq := map[int16]int16{
+		12: 34,
+	}
+	resp, err := cli.EchoMultiInt16(context.Background(), baseReq, listReq, mapReq)
+	assertEcho(t, err, baseReq, resp.BaseResp)
+	assertEcho(t, err, listReq, resp.ListResp)
+	assertEcho(t, err, mapReq, resp.MapResp)
+}
 
 func TestEchoMultiInt32(t *testing.T) {
 	baseReq := int32(1)
