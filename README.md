@@ -42,12 +42,14 @@
 | map\<bool, string> | map[bool]string  |     map     | Map\<Boolean, String>  |    HashMap\<Boolean, String>    |
 
 **重要提示**：
+
 1. 映射表中的 map 类型并没有被完全列举，当前仅包含经过测试的用例。
 
-   请勿在 **map** 类型的 **返回值** 中使用包含 **i8**、**i16** 和 **binary** 的键值（dubbo-java -> dubbo-java 不支持），
-   但支持将该 map 包含到一个 **struct** 中使用。
+2. 不支持在 map 类型中使用包含和 **binary** 类型的键值。
 
-2. 目前不支持float32，因为它在 thrift 中不是有效的类型。计划在后续迭代中支持该类型。
+3. dubbo-java 不支持对包含 **i8**、**i16** 键值的 map 类型解码，建议避开 dubbo-java 不兼容的用法，可以在定义接口的响应字段时使用 **struct** 来包裹 map。
+
+4. 目前不支持 **float32**，因为它在 thrift 中不是有效的类型。计划在后续迭代中支持该类型。
 
 ### 方法注解
 
