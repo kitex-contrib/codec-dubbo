@@ -128,31 +128,29 @@ func TestEchoMultiBool_Java(t *testing.T) {
 	assertEcho(t, err, mapReq, resp.MapResp)
 }
 
-// hessian2.Decode does not support but dubbo-java supports
-//func TestEchoMultiByte_Java(t *testing.T) {
-//	baseReq := int8(1)
-//	listReq := []int8{12, 34}
-//	mapReq := map[int8]int8{
-//		12: 34,
-//	}
-//	resp, err := cli2Java.EchoMultiByte(context.Background(), baseReq, listReq, mapReq)
-//	assertEcho(t, err, baseReq, resp.BaseResp)
-//	assertEcho(t, err, listReq, resp.ListResp)
-//	assertEcho(t, err, mapReq, resp.MapResp)
-//}
+func TestEchoMultiByte_Java(t *testing.T) {
+	baseReq := int8(1)
+	listReq := []int8{12, 34}
+	mapReq := map[int8]int8{
+		12: 34,
+	}
+	resp, err := cli2Java.EchoMultiByte(context.Background(), baseReq, listReq, mapReq)
+	assertEcho(t, err, baseReq, resp.BaseResp)
+	assertEcho(t, err, listReq, resp.ListResp)
+	assertEcho(t, err, mapReq, resp.MapResp)
+}
 
-// hessian2.Decode does not support but dubbo-java supports
-//func TestEchoMultiInt16_Java(t *testing.T) {
-//	baseReq := int16(1)
-//	listReq := []int16{12, 34}
-//	mapReq := map[int16]int16{
-//		12: 34,
-//	}
-//	resp, err := cli2Java.EchoMultiInt16(context.Background(), baseReq, listReq, mapReq)
-//	assertEcho(t, err, baseReq, resp.BaseResp)
-//	assertEcho(t, err, listReq, resp.ListResp)
-//	assertEcho(t, err, mapReq, resp.MapResp)
-//}
+func TestEchoMultiInt16_Java(t *testing.T) {
+	baseReq := int16(1)
+	listReq := []int16{12, 34}
+	mapReq := map[int16]int16{
+		12: 34,
+	}
+	resp, err := cli2Java.EchoMultiInt16(context.Background(), baseReq, listReq, mapReq)
+	assertEcho(t, err, baseReq, resp.BaseResp)
+	assertEcho(t, err, listReq, resp.ListResp)
+	assertEcho(t, err, mapReq, resp.MapResp)
+}
 
 func TestEchoMultiInt32_Java(t *testing.T) {
 	baseReq := int32(1)

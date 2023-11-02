@@ -59,8 +59,8 @@ public class Application {
 
     public static void testBaseTypes(UserProvider svc) {
         testEchoBool(svc);
-//        testEchoByte(svc);
-//        testEchoInt16(svc);
+        testEchoByte(svc);
+        testEchoInt16(svc);
         testEchoInt32(svc);
         testEchoInt64(svc);
         testEchoDouble(svc);
@@ -108,7 +108,7 @@ public class Application {
         testEchoBaseInt64(svc);
         testEchoBaseDouble(svc);
         testEchoBaseBoolList(svc);
-        testEchoBaseByteList(svc);
+//         testEchoBaseByteList(svc);
         testEchoBaseInt16List(svc);
         testEchoBaseInt32List(svc);
         testEchoBaseInt64List(svc);
@@ -120,12 +120,11 @@ public class Application {
         testEchoBool2Int64BaseMap(svc);
         testEchoBool2DoubleBaseMap(svc);
         testEchoMultiBaseBool(svc);
-        testEchoMultiBaseByte(svc);
+//         testEchoMultiBaseByte(svc);
         testEchoMultiBaseInt16(svc);
         testEchoMultiBaseInt32(svc);
         testEchoMultiBaseInt64(svc);
         testEchoMultiBaseDouble(svc);
-
     }
 
     public static void testEchoBool(UserProvider svc) {

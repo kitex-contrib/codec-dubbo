@@ -22,6 +22,7 @@ package kitex2dubbo
 import (
 	"context"
 	"helloworld/api"
+	"net"
 	"reflect"
 	"testing"
 	"time"
@@ -49,12 +50,25 @@ func runDubboGoServer(exitChan chan struct{}) {
 	}
 }
 
+func waitForPort(port string) {
+	for {
+		conn, err := net.Dial("tcp", net.JoinHostPort("127.0.0.1", port))
+		if err != nil {
+			time.Sleep(time.Second * 2)
+		} else {
+			conn.Close()
+			return
+		}
+	}
+}
+
 func TestMain(m *testing.M) {
 	exitChan := make(chan struct{})
 	go runDubboGoServer(exitChan)
 	cancel := runDubboJavaServer()
 	// wait for dubbo-go and dubbo-java server initialization
-	time.Sleep(5 * time.Second)
+	waitForPort("20000")
+	waitForPort("20001")
 	var err error
 	cli2Go, err = testservice.NewClient("test",
 		client.WithHostPorts("127.0.0.1:20000"),
