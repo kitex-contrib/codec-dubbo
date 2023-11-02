@@ -45,7 +45,10 @@ Write dubbo client code based on existing **api.thrift** and [**Type Mapping Tab
 
 **Important notes**:
 1. The list of map types is not exhaustive and includes only tested cases.
-   Please do not use keys and values with **i8**, **i16** and **binary**.
+
+   Please avoid using keys that contain **i8**, **i16**, and **binary** in the **return value** of the **map** type (dubbo-java -> dubbo-java not supported),
+   but it is supported to include this map in a **struct** for use.
+
 2. float32 is planned but currently not supported since it's not a valid type in thrift.
 
 ### Method Annotation
