@@ -48,9 +48,9 @@ Write dubbo client code based on existing **api.thrift** and [**Type Mapping Tab
 
 2. Using keys of **binary** type in map types is not supported.
 
-3. dubbo-java does not support decoding map types that contain **i8** or **i16** key values. It is recommended to avoid practices incompatible with dubbo-java. You can use **struct** to wrap the map when defining response fields for interfaces.
+3. Since **float32** is not a valid type in Thrift, DubboCodec maps **float**(java) to **float64**(go). You can specify the mapping of **double** to **float** in the idl using method annotations.
 
-4. **float32** is planned but currently not supported since it's not a valid type in thrift.
+4. dubbo-java does not support decoding map types that contain **byte**, **short**, or **float** key values. It is recommended to avoid practices incompatible with dubbo-java. You can use **struct** to wrap the map when defining response fields for interfaces.
 
 ### Method Annotation
 

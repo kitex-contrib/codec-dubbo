@@ -20,26 +20,26 @@
 
 ### 类型映射
 
-|     thrift 类型      |    golang 类型     | hessian2 类型 |       默认 java 类型       |           可拓展 java 类型           |
-|:------------------:|:----------------:|:-----------:|:----------------------:|:-------------------------------:|
-|        bool        |       bool       |   boolean   |   java.lang.Boolean    |             boolean             |
-|        byte        |       int8       |     int     |     java.lang.Byte     |              byte               |
-|        i16         |      int16       |     int     |    java.lang.Short     |              short              |
-|        i32         |      int32       |     int     |   java.lang.Integer    |               int               |
-|        i64         |      int64       |    long     |     java.lang.Long     |              long               |
-|       double       |     float64      |   double    |    java.lang.Double    |             double              |
-|       string       |      string      |   string    |    java.lang.String    |                -                |
-|       binary       |      []byte      |   binary    |         byte[]         |                -                |
-|    list\<bool>     |      []bool      |    list     |     List\<Boolean>     | boolean[] / ArrayList\<Boolean> |
-|     list\<i32>     |     []int32      |    list     |     List\<Integer>     |   int[] / ArrayList\<Integer>   |
-|     list\<i64>     |     []int64      |    list     |      List\<Long>       |    long[] / ArrayList\<Long>    |
-|   list\<double>    |    []float64     |    list     |     List\<Double>      |  double[] / ArrayList\<Double>  |
-|   list\<string>    |     []string     |    list     |     List\<String>      |  String[] / ArrayList\<String>  |
-|  map\<bool, bool>  |  map[bool]bool   |     map     | Map\<Boolean, Boolean> |   HashMap\<Boolean, Boolean>    |
-|  map\<bool, i32>   |  map[bool]int32  |     map     | Map\<Boolean, Integer> |   HashMap\<Boolean, Integer>    |
-|  map\<bool, i64>   |  map[bool]int64  |     map     |  Map\<Boolean, Long>   |     HashMap\<Boolean, Long>     |
-| map\<bool, double> | map[bool]float64 |     map     | Map\<Boolean, Double>  |    HashMap\<Boolean, Double>    |
-| map\<bool, string> | map[bool]string  |     map     | Map\<Boolean, String>  |    HashMap\<Boolean, String>    |
+|     thrift 类型      |    golang 类型     | hessian2 类型 |       默认 java 类型       |                可拓展 java 类型                 |
+|:------------------:|:----------------:|:-----------:|:----------------------:|:------------------------------------------:|
+|        bool        |       bool       |   boolean   |   java.lang.Boolean    |                  boolean                   |
+|        byte        |       int8       |     int     |     java.lang.Byte     |                    byte                    |
+|        i16         |      int16       |     int     |    java.lang.Short     |                   short                    |
+|        i32         |      int32       |     int     |   java.lang.Integer    |                    int                     |
+|        i64         |      int64       |    long     |     java.lang.Long     |                    long                    |
+|       double       |     float64      |   double    |    java.lang.Double    |    double <br> float / java.lang.Float     |
+|       string       |      string      |   string    |    java.lang.String    |                     -                      |
+|       binary       |      []byte      |   binary    |         byte[]         |                     -                      |
+|    list\<bool>     |      []bool      |    list     |     List\<Boolean>     |      boolean[] / ArrayList\<Boolean>       |
+|     list\<i32>     |     []int32      |    list     |     List\<Integer>     |        int[] / ArrayList\<Integer>         |
+|     list\<i64>     |     []int64      |    list     |      List\<Long>       |         long[] / ArrayList\<Long>          |
+|   list\<double>    |    []float64     |    list     |     List\<Double>      | double[] / ArrayList\<Double> <br> float[] |
+|   list\<string>    |     []string     |    list     |     List\<String>      |       String[] / ArrayList\<String>        |
+|  map\<bool, bool>  |  map[bool]bool   |     map     | Map\<Boolean, Boolean> |         HashMap\<Boolean, Boolean>         |
+|  map\<bool, i32>   |  map[bool]int32  |     map     | Map\<Boolean, Integer> |         HashMap\<Boolean, Integer>         |
+|  map\<bool, i64>   |  map[bool]int64  |     map     |  Map\<Boolean, Long>   |          HashMap\<Boolean, Long>           |
+| map\<bool, double> | map[bool]float64 |     map     | Map\<Boolean, Double>  |         HashMap\<Boolean, Double>          |
+| map\<bool, string> | map[bool]string  |     map     | Map\<Boolean, String>  |         HashMap\<Boolean, String>          |
 
 **重要提示**：
 
@@ -47,9 +47,9 @@
 
 2. 不支持在 map 类型中使用包含和 **binary** 类型的键值。
 
-3. dubbo-java 不支持对包含 **i8**、**i16** 键值的 map 类型解码，建议避开 dubbo-java 不兼容的用法，可以在定义接口的响应字段时使用 **struct** 来包裹 map。
+3. 由于 **float32** 在 thrift 中不是有效的类型，DubboCodec 将 **float**(java) 映射到了 **float64**(go)，可以在 idl 中使用方法注解指定 **double** 映射为 **float**。
 
-4. 目前不支持 **float32**，因为它在 thrift 中不是有效的类型。计划在后续迭代中支持该类型。
+4. dubbo-java 不支持对包含 **byte**、**short**、**float** 键值的 Map 类型解码，建议避开 dubbo-java 不兼容的用法，可以在定义接口的响应字段时使用 **struct** 来包裹 map。
 
 ### 方法注解
 
