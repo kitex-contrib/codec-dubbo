@@ -34,6 +34,8 @@ public interface UserProvider {
 
     Long EchoInt64(Long req) throws Exception;
 
+    Float EchoFloat(Float req) throws Exception;
+
     Double EchoDouble(Double req) throws Exception;
 
     String EchoString(String req) throws Exception;
@@ -49,6 +51,8 @@ public interface UserProvider {
     List<Integer> EchoInt32List(List<Integer> req) throws Exception;
 
     List<Long> EchoInt64List(List<Long> req) throws Exception;
+
+    List<Float> EchoFloatList(List<Float> req) throws Exception;
 
     List<Double> EchoDoubleList(List<Double> req) throws Exception;
 
@@ -67,6 +71,8 @@ public interface UserProvider {
 
     Map<Boolean, Long> EchoBool2Int64Map(Map<Boolean, Long> req) throws Exception;
 
+    Map<Boolean, Float> EchoBool2FloatMap(Map<Boolean, Float> req) throws Exception;
+
     Map<Boolean, Double> EchoBool2DoubleMap(Map<Boolean, Double> req) throws Exception;
 
     Map<Boolean, String> EchoBool2StringMap(Map<Boolean, String> req) throws Exception;
@@ -83,6 +89,8 @@ public interface UserProvider {
 
     EchoMultiInt64Response EchoMultiInt64(Long baseReq, List<Long> listReq, Map<Long, Long> mapReq) throws Exception;
 
+    EchoMultiFloatResponse EchoMultiFloat(Float baseReq, List<Float> listReq, Map<Float, Float> mapReq) throws Exception;
+
     EchoMultiDoubleResponse EchoMultiDouble(Double baseReq, List<Double> listReq, Map<Double, Double> mapReq) throws Exception;
 
     EchoMultiStringResponse EchoMultiString(String baseReq, List<String> listReq, Map<String, String> mapReq) throws Exception;
@@ -97,6 +105,8 @@ public interface UserProvider {
 
     long EchoBaseInt64(long req) throws Exception;
 
+    float EchoBaseFloat(float req) throws Exception;
+
     double EchoBaseDouble(double req) throws Exception;
 
     boolean[] EchoBaseBoolList(boolean[] req) throws Exception;
@@ -108,6 +118,8 @@ public interface UserProvider {
     int[] EchoBaseInt32List(int[] req) throws Exception;
 
     long[] EchoBaseInt64List(long[] req) throws Exception;
+
+    float[] EchoBaseFloatList(float[] req) throws Exception;
 
     double[] EchoBaseDoubleList(double[] req) throws Exception;
 
@@ -121,6 +133,8 @@ public interface UserProvider {
 
     HashMap<Boolean, Long> EchoBool2Int64BaseMap(HashMap<Boolean, Long> req) throws Exception;
 
+    HashMap<Boolean, Float> EchoBool2FloatBaseMap(HashMap<Boolean, Float> req) throws Exception;
+
     HashMap<Boolean, Double> EchoBool2DoubleBaseMap(HashMap<Boolean, Double> req) throws Exception;
 
     EchoMultiBoolResponse EchoMultiBaseBool(boolean baseReq, boolean[] listReq, HashMap<Boolean, Boolean> mapReq) throws Exception;
@@ -131,7 +145,9 @@ public interface UserProvider {
 
     EchoMultiInt32Response EchoMultiBaseInt32(int baseReq, int[] listReq, HashMap<Integer, Integer> mapReq) throws Exception;
 
-    EchoMultiInt64Response EchoMultiBaseInt64(long baseReq,long[] listReq, HashMap<Long, Long> mapReq) throws Exception;
+    EchoMultiInt64Response EchoMultiBaseInt64(long baseReq, long[] listReq, HashMap<Long, Long> mapReq) throws Exception;
+
+    EchoMultiFloatResponse EchoMultiBaseFloat(float baseReq, float[] listReq, HashMap<Float, Float> mapReq) throws Exception;
 
     EchoMultiDoubleResponse EchoMultiBaseDouble(double baseReq, double[] listReq, HashMap<Double, Double> mapReq) throws Exception;
 }

@@ -56,6 +56,12 @@ func TestEchoInt64List(t *testing.T) {
 	assertEcho(t, err, req, resp)
 }
 
+func TestEchoFloatList(t *testing.T) {
+	req := []float64{12.3456, 78.9012}
+	resp, err := cli2Go.EchoFloatList(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
 func TestEchoDoubleList(t *testing.T) {
 	req := []float64{12.3456, 78.9012}
 	resp, err := cli2Go.EchoDoubleList(context.Background(), req)
@@ -120,6 +126,14 @@ func TestEchoStringList(t *testing.T) {
 //	assertEcho(t, err, req, resp)
 //}
 
+//func TestEchoBool2FloatMap(t *testing.T) {
+//	req := map[bool]float64{
+//		true: 12.34,
+//	}
+//	resp, err := cli2Go.EchoBool2FloatMap(context.Background(), req)
+//	assertEcho(t, err, req, resp)
+//}
+
 //func TestEchoBool2DoubleMap(t *testing.T) {
 //	req := map[bool]float64{
 //		true: 12.34,
@@ -181,6 +195,12 @@ func TestEchoInt64List_Java(t *testing.T) {
 	assertEcho(t, err, req, resp)
 }
 
+func TestEchoFloatList_Java(t *testing.T) {
+	req := []float64{12.3456, 78.9012}
+	resp, err := cli2Java.EchoFloatList(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
 func TestEchoDoubleList_Java(t *testing.T) {
 	req := []float64{12.3456, 78.9012}
 	resp, err := cli2Java.EchoDoubleList(context.Background(), req)
@@ -238,6 +258,14 @@ func TestEchoBool2Int64Map_Java(t *testing.T) {
 		true: 1,
 	}
 	resp, err := cli2Java.EchoBool2Int64Map(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoBool2FloatMap_Java(t *testing.T) {
+	req := map[bool]float64{
+		true: 12.34,
+	}
+	resp, err := cli2Java.EchoBool2FloatMap(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 

@@ -128,6 +128,12 @@ func TestEchoInt64(t *testing.T) {
 	assertEcho(t, err, req, resp)
 }
 
+func TestEchoFloat(t *testing.T) {
+	var req float64 = 12.3456
+	resp, err := cli2Go.EchoFloat(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
 func TestEchoDouble(t *testing.T) {
 	var req float64 = 12.3456
 	resp, err := cli2Go.EchoDouble(context.Background(), req)
@@ -169,6 +175,12 @@ func TestEchoInt32_Java(t *testing.T) {
 func TestEchoInt64_Java(t *testing.T) {
 	var req int64 = 12
 	resp, err := cli2Java.EchoInt64(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoFloat_Java(t *testing.T) {
+	var req float64 = 12.3456
+	resp, err := cli2Java.EchoFloat(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 

@@ -25,6 +25,7 @@ import java.util.*;
 import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.tests.api.*;
+import org.eclipse.jetty.server.Authentication;
 
 public class Application {
     public static void main(String[] args) throws IOException {
@@ -63,6 +64,7 @@ public class Application {
         testEchoInt16(svc);
         testEchoInt32(svc);
         testEchoInt64(svc);
+        testEchoFloat(svc);
         testEchoDouble(svc);
         testEchoString(svc);
         testEchoBinary(svc);
@@ -74,6 +76,7 @@ public class Application {
         testEchoInt16List(svc);
         testEchoInt32List(svc);
         testEchoInt64List(svc);
+//         testEchoFloatList(svc);
         testEchoDoubleList(svc);
         testEchoStringList(svc);
 //        testEchoBinaryList(svc);
@@ -85,6 +88,7 @@ public class Application {
 //        testEchoBool2Int16Map(svc);
         testEchoBool2Int32Map(svc);
         testEchoBool2Int64Map(svc);
+//         testEchoBool2FloatMap(svc);
         testEchoBool2DoubleMap(svc);
         testEchoBool2StringMap(svc);
 //        testEchoBool2BinaryMap(svc);
@@ -96,6 +100,7 @@ public class Application {
         testEchoMultiInt16(svc);
         testEchoMultiInt32(svc);
         testEchoMultiInt64(svc);
+        testEchoMultiFloat(svc);
         testEchoMultiDouble(svc);
         testEchoMultiString(svc);
     }
@@ -106,24 +111,28 @@ public class Application {
         testEchoBaseInt16(svc);
         testEchoBaseInt32(svc);
         testEchoBaseInt64(svc);
+        testEchoBaseFloat(svc);
         testEchoBaseDouble(svc);
         testEchoBaseBoolList(svc);
 //         testEchoBaseByteList(svc);
         testEchoBaseInt16List(svc);
         testEchoBaseInt32List(svc);
         testEchoBaseInt64List(svc);
+        testEchoBaseFloatList(svc);
         testEchoBaseDoubleList(svc);
         testEchoBool2BoolBaseMap(svc);
 //        testEchoBool2ByteBaseMap(svc);
 //        testEchoBool2Int16BaseMap(svc);
         testEchoBool2Int32BaseMap(svc);
         testEchoBool2Int64BaseMap(svc);
+//         testEchoBool2FloatBaseMap(svc);
         testEchoBool2DoubleBaseMap(svc);
         testEchoMultiBaseBool(svc);
 //         testEchoMultiBaseByte(svc);
         testEchoMultiBaseInt16(svc);
         testEchoMultiBaseInt32(svc);
         testEchoMultiBaseInt64(svc);
+        testEchoMultiBaseFloat(svc);
         testEchoMultiBaseDouble(svc);
     }
 
@@ -188,6 +197,20 @@ public class Application {
         try {
             Long req = 12L;
             Long resp = svc.EchoInt64(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoFloat(UserProvider svc) {
+        String methodName = "EchoFloat";
+        try {
+            Float req = 12.34F;
+            Float resp = svc.EchoFloat(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -314,6 +337,21 @@ public class Application {
         logEchoEnd(methodName);
     }
 
+    public static void testEchoFloatList(UserProvider svc) {
+        String methodName = "EchoFloatList";
+        try {
+            ArrayList<Float> req = new ArrayList<>();
+            req.add(12.34F);
+            List<Float> resp = svc.EchoFloatList(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
     public static void testEchoDoubleList(UserProvider svc) {
         String methodName = "EchoDoubleList";
         try {
@@ -426,6 +464,21 @@ public class Application {
             HashMap<Boolean, Long> req = new HashMap<>();
             req.put(true, (long) 1);
             Map<Boolean, Long> resp = svc.EchoBool2Int64Map(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2FloatMap(UserProvider svc) {
+        String methodName = "EchoBool2FloatMap";
+        try {
+            HashMap<Boolean, Float> req = new HashMap<>();
+            req.put(true, 12.34F);
+            Map<Boolean, Float> resp = svc.EchoBool2FloatMap(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -576,6 +629,25 @@ public class Application {
         logEchoEnd(methodName);
     }
 
+    public static void testEchoMultiFloat(UserProvider svc) {
+        String methodName = "EchoMultiFloat";
+        try {
+            float baseReq = 12.34F;
+            ArrayList<Float> listReq = new ArrayList<>();
+            listReq.add(12.34F);
+            listReq.add(56.78F);
+            HashMap<Float, Float> mapReq = new HashMap<>();
+            mapReq.put(12.34F, 56.78F);
+            EchoMultiFloatResponse resp = svc.EchoMultiFloat(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !listReq.equals(resp.getListResp()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
     public static void testEchoMultiDouble(UserProvider svc) {
         String methodName = "EchoMultiDouble";
         try {
@@ -684,6 +756,21 @@ public class Application {
         logEchoEnd(methodName);
     }
 
+
+    public static void testEchoBaseFloat(UserProvider svc) {
+        String methodName = "EchoBaseFloat";
+        try {
+            Float req = 12.34F;
+            Float resp = svc.EchoBaseFloat(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
     public static void testEchoBaseDouble(UserProvider svc) {
         String methodName = "EchoBaseDouble";
         try {
@@ -759,6 +846,20 @@ public class Application {
         try {
             long[] req = {1, 2};
             long[] resp = svc.EchoBaseInt64List(req);
+            if (!Arrays.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBaseFloatList(UserProvider svc) {
+        String methodName = "EchoBaseFloatList";
+        try {
+            float[] req = {1.2F, 3.4F};
+            float[] resp = svc.EchoBaseFloatList(req);
             if (!Arrays.equals(req, resp)) {
                 logEchoFail(methodName);
             }
@@ -848,6 +949,21 @@ public class Application {
             HashMap<Boolean, Long> req = new HashMap<>();
             req.put(true, (long) 1);
             Map<Boolean, Long> resp = svc.EchoBool2Int64BaseMap(req);
+            if (!req.equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoBool2FloatBaseMap(UserProvider svc) {
+        String methodName = "EchoBool2FloatBaseMap";
+        try {
+            HashMap<Boolean, Float> req = new HashMap<>();
+            req.put(true, 12.34F);
+            Map<Boolean, Float> resp = svc.EchoBool2FloatBaseMap(req);
             if (!req.equals(resp)) {
                 logEchoFail(methodName);
             }
@@ -948,6 +1064,23 @@ public class Application {
             HashMap<Long, Long> mapReq = new HashMap<>();
             mapReq.put((long) 12, (long) 34);
             EchoMultiInt64Response resp = svc.EchoMultiBaseInt64(baseReq, listReq, mapReq);
+            if (baseReq != resp.getBaseResp() || !Arrays.equals(listReq, resp.getListRespToArray()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMultiBaseFloat(UserProvider svc) {
+        String methodName = "EchoMultiBaseFloat";
+        try {
+            float baseReq = 12.34F;
+            float[] listReq = {12.34F, 56.78F};
+            HashMap<Float, Float> mapReq = new HashMap<>();
+            mapReq.put(12.34F, 56.78F);
+            EchoMultiFloatResponse resp = svc.EchoMultiBaseFloat(baseReq, listReq, mapReq);
             if (baseReq != resp.getBaseResp() || !Arrays.equals(listReq, resp.getListRespToArray()) || !mapReq.equals(resp.getMapResp())) {
                 logEchoFail(methodName);
             }

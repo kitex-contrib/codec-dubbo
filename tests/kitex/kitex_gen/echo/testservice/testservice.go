@@ -25,6 +25,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"EchoInt16":              kitex.NewMethodInfo(echoInt16Handler, newTestServiceEchoInt16Args, newTestServiceEchoInt16Result, false),
 		"EchoInt32":              kitex.NewMethodInfo(echoInt32Handler, newTestServiceEchoInt32Args, newTestServiceEchoInt32Result, false),
 		"EchoInt64":              kitex.NewMethodInfo(echoInt64Handler, newTestServiceEchoInt64Args, newTestServiceEchoInt64Result, false),
+		"EchoFloat":              kitex.NewMethodInfo(echoFloatHandler, newTestServiceEchoFloatArgs, newTestServiceEchoFloatResult, false),
 		"EchoDouble":             kitex.NewMethodInfo(echoDoubleHandler, newTestServiceEchoDoubleArgs, newTestServiceEchoDoubleResult, false),
 		"EchoString":             kitex.NewMethodInfo(echoStringHandler, newTestServiceEchoStringArgs, newTestServiceEchoStringResult, false),
 		"EchoBinary":             kitex.NewMethodInfo(echoBinaryHandler, newTestServiceEchoBinaryArgs, newTestServiceEchoBinaryResult, false),
@@ -34,6 +35,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"EchoInt16List":          kitex.NewMethodInfo(echoInt16ListHandler, newTestServiceEchoInt16ListArgs, newTestServiceEchoInt16ListResult, false),
 		"EchoInt32List":          kitex.NewMethodInfo(echoInt32ListHandler, newTestServiceEchoInt32ListArgs, newTestServiceEchoInt32ListResult, false),
 		"EchoInt64List":          kitex.NewMethodInfo(echoInt64ListHandler, newTestServiceEchoInt64ListArgs, newTestServiceEchoInt64ListResult, false),
+		"EchoFloatList":          kitex.NewMethodInfo(echoFloatListHandler, newTestServiceEchoFloatListArgs, newTestServiceEchoFloatListResult, false),
 		"EchoDoubleList":         kitex.NewMethodInfo(echoDoubleListHandler, newTestServiceEchoDoubleListArgs, newTestServiceEchoDoubleListResult, false),
 		"EchoStringList":         kitex.NewMethodInfo(echoStringListHandler, newTestServiceEchoStringListArgs, newTestServiceEchoStringListResult, false),
 		"EchoBinaryList":         kitex.NewMethodInfo(echoBinaryListHandler, newTestServiceEchoBinaryListArgs, newTestServiceEchoBinaryListResult, false),
@@ -42,6 +44,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"EchoBool2Int16Map":      kitex.NewMethodInfo(echoBool2Int16MapHandler, newTestServiceEchoBool2Int16MapArgs, newTestServiceEchoBool2Int16MapResult, false),
 		"EchoBool2Int32Map":      kitex.NewMethodInfo(echoBool2Int32MapHandler, newTestServiceEchoBool2Int32MapArgs, newTestServiceEchoBool2Int32MapResult, false),
 		"EchoBool2Int64Map":      kitex.NewMethodInfo(echoBool2Int64MapHandler, newTestServiceEchoBool2Int64MapArgs, newTestServiceEchoBool2Int64MapResult, false),
+		"EchoBool2FloatMap":      kitex.NewMethodInfo(echoBool2FloatMapHandler, newTestServiceEchoBool2FloatMapArgs, newTestServiceEchoBool2FloatMapResult, false),
 		"EchoBool2DoubleMap":     kitex.NewMethodInfo(echoBool2DoubleMapHandler, newTestServiceEchoBool2DoubleMapArgs, newTestServiceEchoBool2DoubleMapResult, false),
 		"EchoBool2StringMap":     kitex.NewMethodInfo(echoBool2StringMapHandler, newTestServiceEchoBool2StringMapArgs, newTestServiceEchoBool2StringMapResult, false),
 		"EchoBool2BinaryMap":     kitex.NewMethodInfo(echoBool2BinaryMapHandler, newTestServiceEchoBool2BinaryMapArgs, newTestServiceEchoBool2BinaryMapResult, false),
@@ -50,6 +53,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"EchoBool2Int16ListMap":  kitex.NewMethodInfo(echoBool2Int16ListMapHandler, newTestServiceEchoBool2Int16ListMapArgs, newTestServiceEchoBool2Int16ListMapResult, false),
 		"EchoBool2Int32ListMap":  kitex.NewMethodInfo(echoBool2Int32ListMapHandler, newTestServiceEchoBool2Int32ListMapArgs, newTestServiceEchoBool2Int32ListMapResult, false),
 		"EchoBool2Int64ListMap":  kitex.NewMethodInfo(echoBool2Int64ListMapHandler, newTestServiceEchoBool2Int64ListMapArgs, newTestServiceEchoBool2Int64ListMapResult, false),
+		"EchoBool2FloatListMap":  kitex.NewMethodInfo(echoBool2FloatListMapHandler, newTestServiceEchoBool2FloatListMapArgs, newTestServiceEchoBool2FloatListMapResult, false),
 		"EchoBool2DoubleListMap": kitex.NewMethodInfo(echoBool2DoubleListMapHandler, newTestServiceEchoBool2DoubleListMapArgs, newTestServiceEchoBool2DoubleListMapResult, false),
 		"EchoBool2StringListMap": kitex.NewMethodInfo(echoBool2StringListMapHandler, newTestServiceEchoBool2StringListMapArgs, newTestServiceEchoBool2StringListMapResult, false),
 		"EchoBool2BinaryListMap": kitex.NewMethodInfo(echoBool2BinaryListMapHandler, newTestServiceEchoBool2BinaryListMapArgs, newTestServiceEchoBool2BinaryListMapResult, false),
@@ -58,6 +62,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"EchoMultiInt16":         kitex.NewMethodInfo(echoMultiInt16Handler, newTestServiceEchoMultiInt16Args, newTestServiceEchoMultiInt16Result, false),
 		"EchoMultiInt32":         kitex.NewMethodInfo(echoMultiInt32Handler, newTestServiceEchoMultiInt32Args, newTestServiceEchoMultiInt32Result, false),
 		"EchoMultiInt64":         kitex.NewMethodInfo(echoMultiInt64Handler, newTestServiceEchoMultiInt64Args, newTestServiceEchoMultiInt64Result, false),
+		"EchoMultiFloat":         kitex.NewMethodInfo(echoMultiFloatHandler, newTestServiceEchoMultiFloatArgs, newTestServiceEchoMultiFloatResult, false),
 		"EchoMultiDouble":        kitex.NewMethodInfo(echoMultiDoubleHandler, newTestServiceEchoMultiDoubleArgs, newTestServiceEchoMultiDoubleResult, false),
 		"EchoMultiString":        kitex.NewMethodInfo(echoMultiStringHandler, newTestServiceEchoMultiStringArgs, newTestServiceEchoMultiStringResult, false),
 		"EchoBaseBool":           kitex.NewMethodInfo(echoBaseBoolHandler, newTestServiceEchoBaseBoolArgs, newTestServiceEchoBaseBoolResult, false),
@@ -65,24 +70,28 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"EchoBaseInt16":          kitex.NewMethodInfo(echoBaseInt16Handler, newTestServiceEchoBaseInt16Args, newTestServiceEchoBaseInt16Result, false),
 		"EchoBaseInt32":          kitex.NewMethodInfo(echoBaseInt32Handler, newTestServiceEchoBaseInt32Args, newTestServiceEchoBaseInt32Result, false),
 		"EchoBaseInt64":          kitex.NewMethodInfo(echoBaseInt64Handler, newTestServiceEchoBaseInt64Args, newTestServiceEchoBaseInt64Result, false),
+		"EchoBaseFloat":          kitex.NewMethodInfo(echoBaseFloatHandler, newTestServiceEchoBaseFloatArgs, newTestServiceEchoBaseFloatResult, false),
 		"EchoBaseDouble":         kitex.NewMethodInfo(echoBaseDoubleHandler, newTestServiceEchoBaseDoubleArgs, newTestServiceEchoBaseDoubleResult, false),
 		"EchoBaseBoolList":       kitex.NewMethodInfo(echoBaseBoolListHandler, newTestServiceEchoBaseBoolListArgs, newTestServiceEchoBaseBoolListResult, false),
 		"EchoBaseByteList":       kitex.NewMethodInfo(echoBaseByteListHandler, newTestServiceEchoBaseByteListArgs, newTestServiceEchoBaseByteListResult, false),
 		"EchoBaseInt16List":      kitex.NewMethodInfo(echoBaseInt16ListHandler, newTestServiceEchoBaseInt16ListArgs, newTestServiceEchoBaseInt16ListResult, false),
 		"EchoBaseInt32List":      kitex.NewMethodInfo(echoBaseInt32ListHandler, newTestServiceEchoBaseInt32ListArgs, newTestServiceEchoBaseInt32ListResult, false),
 		"EchoBaseInt64List":      kitex.NewMethodInfo(echoBaseInt64ListHandler, newTestServiceEchoBaseInt64ListArgs, newTestServiceEchoBaseInt64ListResult, false),
+		"EchoBaseFloatList":      kitex.NewMethodInfo(echoBaseFloatListHandler, newTestServiceEchoBaseFloatListArgs, newTestServiceEchoBaseFloatListResult, false),
 		"EchoBaseDoubleList":     kitex.NewMethodInfo(echoBaseDoubleListHandler, newTestServiceEchoBaseDoubleListArgs, newTestServiceEchoBaseDoubleListResult, false),
 		"EchoBool2BoolBaseMap":   kitex.NewMethodInfo(echoBool2BoolBaseMapHandler, newTestServiceEchoBool2BoolBaseMapArgs, newTestServiceEchoBool2BoolBaseMapResult, false),
 		"EchoBool2ByteBaseMap":   kitex.NewMethodInfo(echoBool2ByteBaseMapHandler, newTestServiceEchoBool2ByteBaseMapArgs, newTestServiceEchoBool2ByteBaseMapResult, false),
 		"EchoBool2Int16BaseMap":  kitex.NewMethodInfo(echoBool2Int16BaseMapHandler, newTestServiceEchoBool2Int16BaseMapArgs, newTestServiceEchoBool2Int16BaseMapResult, false),
 		"EchoBool2Int32BaseMap":  kitex.NewMethodInfo(echoBool2Int32BaseMapHandler, newTestServiceEchoBool2Int32BaseMapArgs, newTestServiceEchoBool2Int32BaseMapResult, false),
 		"EchoBool2Int64BaseMap":  kitex.NewMethodInfo(echoBool2Int64BaseMapHandler, newTestServiceEchoBool2Int64BaseMapArgs, newTestServiceEchoBool2Int64BaseMapResult, false),
+		"EchoBool2FloatBaseMap":  kitex.NewMethodInfo(echoBool2FloatBaseMapHandler, newTestServiceEchoBool2FloatBaseMapArgs, newTestServiceEchoBool2FloatBaseMapResult, false),
 		"EchoBool2DoubleBaseMap": kitex.NewMethodInfo(echoBool2DoubleBaseMapHandler, newTestServiceEchoBool2DoubleBaseMapArgs, newTestServiceEchoBool2DoubleBaseMapResult, false),
 		"EchoMultiBaseBool":      kitex.NewMethodInfo(echoMultiBaseBoolHandler, newTestServiceEchoMultiBaseBoolArgs, newTestServiceEchoMultiBaseBoolResult, false),
 		"EchoMultiBaseByte":      kitex.NewMethodInfo(echoMultiBaseByteHandler, newTestServiceEchoMultiBaseByteArgs, newTestServiceEchoMultiBaseByteResult, false),
 		"EchoMultiBaseInt16":     kitex.NewMethodInfo(echoMultiBaseInt16Handler, newTestServiceEchoMultiBaseInt16Args, newTestServiceEchoMultiBaseInt16Result, false),
 		"EchoMultiBaseInt32":     kitex.NewMethodInfo(echoMultiBaseInt32Handler, newTestServiceEchoMultiBaseInt32Args, newTestServiceEchoMultiBaseInt32Result, false),
 		"EchoMultiBaseInt64":     kitex.NewMethodInfo(echoMultiBaseInt64Handler, newTestServiceEchoMultiBaseInt64Args, newTestServiceEchoMultiBaseInt64Result, false),
+		"EchoMultiBaseFloat":     kitex.NewMethodInfo(echoMultiBaseFloatHandler, newTestServiceEchoMultiBaseFloatArgs, newTestServiceEchoMultiBaseFloatResult, false),
 		"EchoMultiBaseDouble":    kitex.NewMethodInfo(echoMultiBaseDoubleHandler, newTestServiceEchoMultiBaseDoubleArgs, newTestServiceEchoMultiBaseDoubleResult, false),
 	}
 	extra := map[string]interface{}{
@@ -205,6 +214,24 @@ func newTestServiceEchoInt64Args() interface{} {
 
 func newTestServiceEchoInt64Result() interface{} {
 	return echo.NewTestServiceEchoInt64Result()
+}
+
+func echoFloatHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoFloatArgs)
+	realResult := result.(*echo.TestServiceEchoFloatResult)
+	success, err := handler.(echo.TestService).EchoFloat(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newTestServiceEchoFloatArgs() interface{} {
+	return echo.NewTestServiceEchoFloatArgs()
+}
+
+func newTestServiceEchoFloatResult() interface{} {
+	return echo.NewTestServiceEchoFloatResult()
 }
 
 func echoDoubleHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -369,6 +396,24 @@ func newTestServiceEchoInt64ListResult() interface{} {
 	return echo.NewTestServiceEchoInt64ListResult()
 }
 
+func echoFloatListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoFloatListArgs)
+	realResult := result.(*echo.TestServiceEchoFloatListResult)
+	success, err := handler.(echo.TestService).EchoFloatList(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoFloatListArgs() interface{} {
+	return echo.NewTestServiceEchoFloatListArgs()
+}
+
+func newTestServiceEchoFloatListResult() interface{} {
+	return echo.NewTestServiceEchoFloatListResult()
+}
+
 func echoDoubleListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*echo.TestServiceEchoDoubleListArgs)
 	realResult := result.(*echo.TestServiceEchoDoubleListResult)
@@ -511,6 +556,24 @@ func newTestServiceEchoBool2Int64MapArgs() interface{} {
 
 func newTestServiceEchoBool2Int64MapResult() interface{} {
 	return echo.NewTestServiceEchoBool2Int64MapResult()
+}
+
+func echoBool2FloatMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2FloatMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2FloatMapResult)
+	success, err := handler.(echo.TestService).EchoBool2FloatMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2FloatMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2FloatMapArgs()
+}
+
+func newTestServiceEchoBool2FloatMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2FloatMapResult()
 }
 
 func echoBool2DoubleMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -657,6 +720,24 @@ func newTestServiceEchoBool2Int64ListMapResult() interface{} {
 	return echo.NewTestServiceEchoBool2Int64ListMapResult()
 }
 
+func echoBool2FloatListMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2FloatListMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2FloatListMapResult)
+	success, err := handler.(echo.TestService).EchoBool2FloatListMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2FloatListMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2FloatListMapArgs()
+}
+
+func newTestServiceEchoBool2FloatListMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2FloatListMapResult()
+}
+
 func echoBool2DoubleListMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*echo.TestServiceEchoBool2DoubleListMapArgs)
 	realResult := result.(*echo.TestServiceEchoBool2DoubleListMapResult)
@@ -801,6 +882,24 @@ func newTestServiceEchoMultiInt64Result() interface{} {
 	return echo.NewTestServiceEchoMultiInt64Result()
 }
 
+func echoMultiFloatHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoMultiFloatArgs)
+	realResult := result.(*echo.TestServiceEchoMultiFloatResult)
+	success, err := handler.(echo.TestService).EchoMultiFloat(ctx, realArg.BaseReq, realArg.ListReq, realArg.MapReq)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoMultiFloatArgs() interface{} {
+	return echo.NewTestServiceEchoMultiFloatArgs()
+}
+
+func newTestServiceEchoMultiFloatResult() interface{} {
+	return echo.NewTestServiceEchoMultiFloatResult()
+}
+
 func echoMultiDoubleHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*echo.TestServiceEchoMultiDoubleArgs)
 	realResult := result.(*echo.TestServiceEchoMultiDoubleResult)
@@ -927,6 +1026,24 @@ func newTestServiceEchoBaseInt64Result() interface{} {
 	return echo.NewTestServiceEchoBaseInt64Result()
 }
 
+func echoBaseFloatHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBaseFloatArgs)
+	realResult := result.(*echo.TestServiceEchoBaseFloatResult)
+	success, err := handler.(echo.TestService).EchoBaseFloat(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newTestServiceEchoBaseFloatArgs() interface{} {
+	return echo.NewTestServiceEchoBaseFloatArgs()
+}
+
+func newTestServiceEchoBaseFloatResult() interface{} {
+	return echo.NewTestServiceEchoBaseFloatResult()
+}
+
 func echoBaseDoubleHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*echo.TestServiceEchoBaseDoubleArgs)
 	realResult := result.(*echo.TestServiceEchoBaseDoubleResult)
@@ -1033,6 +1150,24 @@ func newTestServiceEchoBaseInt64ListArgs() interface{} {
 
 func newTestServiceEchoBaseInt64ListResult() interface{} {
 	return echo.NewTestServiceEchoBaseInt64ListResult()
+}
+
+func echoBaseFloatListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBaseFloatListArgs)
+	realResult := result.(*echo.TestServiceEchoBaseFloatListResult)
+	success, err := handler.(echo.TestService).EchoBaseFloatList(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBaseFloatListArgs() interface{} {
+	return echo.NewTestServiceEchoBaseFloatListArgs()
+}
+
+func newTestServiceEchoBaseFloatListResult() interface{} {
+	return echo.NewTestServiceEchoBaseFloatListResult()
 }
 
 func echoBaseDoubleListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -1143,6 +1278,24 @@ func newTestServiceEchoBool2Int64BaseMapResult() interface{} {
 	return echo.NewTestServiceEchoBool2Int64BaseMapResult()
 }
 
+func echoBool2FloatBaseMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoBool2FloatBaseMapArgs)
+	realResult := result.(*echo.TestServiceEchoBool2FloatBaseMapResult)
+	success, err := handler.(echo.TestService).EchoBool2FloatBaseMap(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoBool2FloatBaseMapArgs() interface{} {
+	return echo.NewTestServiceEchoBool2FloatBaseMapArgs()
+}
+
+func newTestServiceEchoBool2FloatBaseMapResult() interface{} {
+	return echo.NewTestServiceEchoBool2FloatBaseMapResult()
+}
+
 func echoBool2DoubleBaseMapHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*echo.TestServiceEchoBool2DoubleBaseMapArgs)
 	realResult := result.(*echo.TestServiceEchoBool2DoubleBaseMapResult)
@@ -1251,6 +1404,24 @@ func newTestServiceEchoMultiBaseInt64Result() interface{} {
 	return echo.NewTestServiceEchoMultiBaseInt64Result()
 }
 
+func echoMultiBaseFloatHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoMultiBaseFloatArgs)
+	realResult := result.(*echo.TestServiceEchoMultiBaseFloatResult)
+	success, err := handler.(echo.TestService).EchoMultiBaseFloat(ctx, realArg.BaseReq, realArg.ListReq, realArg.MapReq)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newTestServiceEchoMultiBaseFloatArgs() interface{} {
+	return echo.NewTestServiceEchoMultiBaseFloatArgs()
+}
+
+func newTestServiceEchoMultiBaseFloatResult() interface{} {
+	return echo.NewTestServiceEchoMultiBaseFloatResult()
+}
+
 func echoMultiBaseDoubleHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	realArg := arg.(*echo.TestServiceEchoMultiBaseDoubleArgs)
 	realResult := result.(*echo.TestServiceEchoMultiBaseDoubleResult)
@@ -1334,6 +1505,16 @@ func (p *kClient) EchoInt64(ctx context.Context, req int64) (r int64, err error)
 	_args.Req = req
 	var _result echo.TestServiceEchoInt64Result
 	if err = p.c.Call(ctx, "EchoInt64", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoFloat(ctx context.Context, req float64) (r float64, err error) {
+	var _args echo.TestServiceEchoFloatArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoFloatResult
+	if err = p.c.Call(ctx, "EchoFloat", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -1429,6 +1610,16 @@ func (p *kClient) EchoInt64List(ctx context.Context, req []int64) (r []int64, er
 	return _result.GetSuccess(), nil
 }
 
+func (p *kClient) EchoFloatList(ctx context.Context, req []float64) (r []float64, err error) {
+	var _args echo.TestServiceEchoFloatListArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoFloatListResult
+	if err = p.c.Call(ctx, "EchoFloatList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
 func (p *kClient) EchoDoubleList(ctx context.Context, req []float64) (r []float64, err error) {
 	var _args echo.TestServiceEchoDoubleListArgs
 	_args.Req = req
@@ -1509,6 +1700,16 @@ func (p *kClient) EchoBool2Int64Map(ctx context.Context, req map[bool]int64) (r 
 	return _result.GetSuccess(), nil
 }
 
+func (p *kClient) EchoBool2FloatMap(ctx context.Context, req map[bool]float64) (r map[bool]float64, err error) {
+	var _args echo.TestServiceEchoBool2FloatMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2FloatMapResult
+	if err = p.c.Call(ctx, "EchoBool2FloatMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
 func (p *kClient) EchoBool2DoubleMap(ctx context.Context, req map[bool]float64) (r map[bool]float64, err error) {
 	var _args echo.TestServiceEchoBool2DoubleMapArgs
 	_args.Req = req
@@ -1584,6 +1785,16 @@ func (p *kClient) EchoBool2Int64ListMap(ctx context.Context, req map[bool][]int6
 	_args.Req = req
 	var _result echo.TestServiceEchoBool2Int64ListMapResult
 	if err = p.c.Call(ctx, "EchoBool2Int64ListMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2FloatListMap(ctx context.Context, req map[bool][]float64) (r map[bool][]float64, err error) {
+	var _args echo.TestServiceEchoBool2FloatListMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2FloatListMapResult
+	if err = p.c.Call(ctx, "EchoBool2FloatListMap", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -1679,6 +1890,18 @@ func (p *kClient) EchoMultiInt64(ctx context.Context, baseReq int64, listReq []i
 	return _result.GetSuccess(), nil
 }
 
+func (p *kClient) EchoMultiFloat(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (r *echo.EchoMultiFloatResponse, err error) {
+	var _args echo.TestServiceEchoMultiFloatArgs
+	_args.BaseReq = baseReq
+	_args.ListReq = listReq
+	_args.MapReq = mapReq
+	var _result echo.TestServiceEchoMultiFloatResult
+	if err = p.c.Call(ctx, "EchoMultiFloat", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
 func (p *kClient) EchoMultiDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (r *echo.EchoMultiDoubleResponse, err error) {
 	var _args echo.TestServiceEchoMultiDoubleArgs
 	_args.BaseReq = baseReq
@@ -1753,6 +1976,16 @@ func (p *kClient) EchoBaseInt64(ctx context.Context, req int64) (r int64, err er
 	return _result.GetSuccess(), nil
 }
 
+func (p *kClient) EchoBaseFloat(ctx context.Context, req float64) (r float64, err error) {
+	var _args echo.TestServiceEchoBaseFloatArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBaseFloatResult
+	if err = p.c.Call(ctx, "EchoBaseFloat", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
 func (p *kClient) EchoBaseDouble(ctx context.Context, req float64) (r float64, err error) {
 	var _args echo.TestServiceEchoBaseDoubleArgs
 	_args.Req = req
@@ -1813,6 +2046,16 @@ func (p *kClient) EchoBaseInt64List(ctx context.Context, req []int64) (r []int64
 	return _result.GetSuccess(), nil
 }
 
+func (p *kClient) EchoBaseFloatList(ctx context.Context, req []float64) (r []float64, err error) {
+	var _args echo.TestServiceEchoBaseFloatListArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBaseFloatListResult
+	if err = p.c.Call(ctx, "EchoBaseFloatList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
 func (p *kClient) EchoBaseDoubleList(ctx context.Context, req []float64) (r []float64, err error) {
 	var _args echo.TestServiceEchoBaseDoubleListArgs
 	_args.Req = req
@@ -1868,6 +2111,16 @@ func (p *kClient) EchoBool2Int64BaseMap(ctx context.Context, req map[bool]int64)
 	_args.Req = req
 	var _result echo.TestServiceEchoBool2Int64BaseMapResult
 	if err = p.c.Call(ctx, "EchoBool2Int64BaseMap", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoBool2FloatBaseMap(ctx context.Context, req map[bool]float64) (r map[bool]float64, err error) {
+	var _args echo.TestServiceEchoBool2FloatBaseMapArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoBool2FloatBaseMapResult
+	if err = p.c.Call(ctx, "EchoBool2FloatBaseMap", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -1938,6 +2191,18 @@ func (p *kClient) EchoMultiBaseInt64(ctx context.Context, baseReq int64, listReq
 	_args.MapReq = mapReq
 	var _result echo.TestServiceEchoMultiBaseInt64Result
 	if err = p.c.Call(ctx, "EchoMultiBaseInt64", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoMultiBaseFloat(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (r *echo.EchoMultiFloatResponse, err error) {
+	var _args echo.TestServiceEchoMultiBaseFloatArgs
+	_args.BaseReq = baseReq
+	_args.ListReq = listReq
+	_args.MapReq = mapReq
+	var _result echo.TestServiceEchoMultiBaseFloatResult
+	if err = p.c.Call(ctx, "EchoMultiBaseFloat", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

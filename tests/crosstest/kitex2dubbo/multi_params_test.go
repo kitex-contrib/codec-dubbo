@@ -90,6 +90,18 @@ import (
 //	assertEcho(t, err, mapReq, resp.MapResp)
 //}
 
+//func TestEchoMultiFloat(t *testing.T) {
+//	baseReq := 12.34
+//	listReq := []float64{12.34, 56.78}
+//	mapReq := map[float64]float64{
+//		12.34: 56.78,
+//	}
+//	resp, err := cli2Go.EchoMultiFloat(context.Background(), baseReq, listReq, mapReq)
+//	assertEcho(t, err, baseReq, resp.BaseResp)
+//	assertEcho(t, err, listReq, resp.ListResp)
+//	assertEcho(t, err, mapReq, resp.MapResp)
+//}
+
 //func TestEchoMultiDouble(t *testing.T) {
 //	baseReq := 12.34
 //	listReq := []float64{12.34, 56.78}
@@ -171,6 +183,18 @@ func TestEchoMultiInt64_Java(t *testing.T) {
 		12: 34,
 	}
 	resp, err := cli2Java.EchoMultiInt64(context.Background(), baseReq, listReq, mapReq)
+	assertEcho(t, err, baseReq, resp.BaseResp)
+	assertEcho(t, err, listReq, resp.ListResp)
+	assertEcho(t, err, mapReq, resp.MapResp)
+}
+
+func TestEchoMultiFloat_Java(t *testing.T) {
+	baseReq := 1.0
+	listReq := []float64{1.0, 2.0}
+	mapReq := map[float64]float64{
+		1.0: 2.0,
+	}
+	resp, err := cli2Java.EchoMultiFloat(context.Background(), baseReq, listReq, mapReq)
 	assertEcho(t, err, baseReq, resp.BaseResp)
 	assertEcho(t, err, listReq, resp.ListResp)
 	assertEcho(t, err, mapReq, resp.MapResp)
