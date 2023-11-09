@@ -47,7 +47,7 @@
 
 2. 不支持在 map 类型中使用包含和 **binary** 类型的键值。
 
-3. 由于 **float32** 在 thrift 中不是有效的类型，DubboCodec 将 **float**(java) 映射到了 **float64**(go)，可以在 idl 中使用方法注解指定 **double** 映射为 **float**。
+3. 由于 **float32** 在 thrift 中不是有效的类型，DubboCodec 将 **float**(java) 映射到了 **float64**(go)，可以在 idl 中使用方法注解指定 **double** 映射为 **float**，具体可参考 [api.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/tests/kitex/api.thrift)。
 
 4. dubbo-java 不支持对包含 **byte**、**short**、**float** 键值的 Map 类型解码，建议避开 dubbo-java 不兼容的用法，可以在定义接口的响应字段时使用 **struct** 来包裹 map。
 

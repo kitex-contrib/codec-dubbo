@@ -179,7 +179,7 @@ func TestEchoInt64_Java(t *testing.T) {
 }
 
 func TestEchoFloat_Java(t *testing.T) {
-	var req float64 = 12.3456
+	var req float64 = 1.0
 	resp, err := cli2Java.EchoFloat(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }

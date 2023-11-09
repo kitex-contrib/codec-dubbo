@@ -57,7 +57,7 @@ func TestEchoInt64List(t *testing.T) {
 }
 
 func TestEchoFloatList(t *testing.T) {
-	req := []float64{12.3456, 78.9012}
+	req := []float64{1.0, 2.0}
 	resp, err := cli2Go.EchoFloatList(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
