@@ -17,6 +17,7 @@ type Client interface {
 	EchoInt16(ctx context.Context, req int16, callOptions ...callopt.Option) (r int16, err error)
 	EchoInt32(ctx context.Context, req int32, callOptions ...callopt.Option) (r int32, err error)
 	EchoInt64(ctx context.Context, req int64, callOptions ...callopt.Option) (r int64, err error)
+	EchoFloat(ctx context.Context, req float64, callOptions ...callopt.Option) (r float64, err error)
 	EchoDouble(ctx context.Context, req float64, callOptions ...callopt.Option) (r float64, err error)
 	EchoString(ctx context.Context, req string, callOptions ...callopt.Option) (r string, err error)
 	EchoBinary(ctx context.Context, req []byte, callOptions ...callopt.Option) (r []byte, err error)
@@ -26,6 +27,7 @@ type Client interface {
 	EchoInt16List(ctx context.Context, req []int16, callOptions ...callopt.Option) (r []int16, err error)
 	EchoInt32List(ctx context.Context, req []int32, callOptions ...callopt.Option) (r []int32, err error)
 	EchoInt64List(ctx context.Context, req []int64, callOptions ...callopt.Option) (r []int64, err error)
+	EchoFloatList(ctx context.Context, req []float64, callOptions ...callopt.Option) (r []float64, err error)
 	EchoDoubleList(ctx context.Context, req []float64, callOptions ...callopt.Option) (r []float64, err error)
 	EchoStringList(ctx context.Context, req []string, callOptions ...callopt.Option) (r []string, err error)
 	EchoBinaryList(ctx context.Context, req [][]byte, callOptions ...callopt.Option) (r [][]byte, err error)
@@ -34,6 +36,7 @@ type Client interface {
 	EchoBool2Int16Map(ctx context.Context, req map[bool]int16, callOptions ...callopt.Option) (r map[bool]int16, err error)
 	EchoBool2Int32Map(ctx context.Context, req map[bool]int32, callOptions ...callopt.Option) (r map[bool]int32, err error)
 	EchoBool2Int64Map(ctx context.Context, req map[bool]int64, callOptions ...callopt.Option) (r map[bool]int64, err error)
+	EchoBool2FloatMap(ctx context.Context, req map[bool]float64, callOptions ...callopt.Option) (r map[bool]float64, err error)
 	EchoBool2DoubleMap(ctx context.Context, req map[bool]float64, callOptions ...callopt.Option) (r map[bool]float64, err error)
 	EchoBool2StringMap(ctx context.Context, req map[bool]string, callOptions ...callopt.Option) (r map[bool]string, err error)
 	EchoBool2BinaryMap(ctx context.Context, req map[bool][]byte, callOptions ...callopt.Option) (r map[bool][]byte, err error)
@@ -42,6 +45,7 @@ type Client interface {
 	EchoBool2Int16ListMap(ctx context.Context, req map[bool][]int16, callOptions ...callopt.Option) (r map[bool][]int16, err error)
 	EchoBool2Int32ListMap(ctx context.Context, req map[bool][]int32, callOptions ...callopt.Option) (r map[bool][]int32, err error)
 	EchoBool2Int64ListMap(ctx context.Context, req map[bool][]int64, callOptions ...callopt.Option) (r map[bool][]int64, err error)
+	EchoBool2FloatListMap(ctx context.Context, req map[bool][]float64, callOptions ...callopt.Option) (r map[bool][]float64, err error)
 	EchoBool2DoubleListMap(ctx context.Context, req map[bool][]float64, callOptions ...callopt.Option) (r map[bool][]float64, err error)
 	EchoBool2StringListMap(ctx context.Context, req map[bool][]string, callOptions ...callopt.Option) (r map[bool][]string, err error)
 	EchoBool2BinaryListMap(ctx context.Context, req map[bool][][]byte, callOptions ...callopt.Option) (r map[bool][][]byte, err error)
@@ -50,6 +54,7 @@ type Client interface {
 	EchoMultiInt16(ctx context.Context, baseReq int16, listReq []int16, mapReq map[int16]int16, callOptions ...callopt.Option) (r *echo.EchoMultiInt16Response, err error)
 	EchoMultiInt32(ctx context.Context, baseReq int32, listReq []int32, mapReq map[int32]int32, callOptions ...callopt.Option) (r *echo.EchoMultiInt32Response, err error)
 	EchoMultiInt64(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64, callOptions ...callopt.Option) (r *echo.EchoMultiInt64Response, err error)
+	EchoMultiFloat(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64, callOptions ...callopt.Option) (r *echo.EchoMultiFloatResponse, err error)
 	EchoMultiDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64, callOptions ...callopt.Option) (r *echo.EchoMultiDoubleResponse, err error)
 	EchoMultiString(ctx context.Context, baseReq string, listReq []string, mapReq map[string]string, callOptions ...callopt.Option) (r *echo.EchoMultiStringResponse, err error)
 	EchoBaseBool(ctx context.Context, req bool, callOptions ...callopt.Option) (r bool, err error)
@@ -57,24 +62,28 @@ type Client interface {
 	EchoBaseInt16(ctx context.Context, req int16, callOptions ...callopt.Option) (r int16, err error)
 	EchoBaseInt32(ctx context.Context, req int32, callOptions ...callopt.Option) (r int32, err error)
 	EchoBaseInt64(ctx context.Context, req int64, callOptions ...callopt.Option) (r int64, err error)
+	EchoBaseFloat(ctx context.Context, req float64, callOptions ...callopt.Option) (r float64, err error)
 	EchoBaseDouble(ctx context.Context, req float64, callOptions ...callopt.Option) (r float64, err error)
 	EchoBaseBoolList(ctx context.Context, req []bool, callOptions ...callopt.Option) (r []bool, err error)
 	EchoBaseByteList(ctx context.Context, req []int8, callOptions ...callopt.Option) (r []int8, err error)
 	EchoBaseInt16List(ctx context.Context, req []int16, callOptions ...callopt.Option) (r []int16, err error)
 	EchoBaseInt32List(ctx context.Context, req []int32, callOptions ...callopt.Option) (r []int32, err error)
 	EchoBaseInt64List(ctx context.Context, req []int64, callOptions ...callopt.Option) (r []int64, err error)
+	EchoBaseFloatList(ctx context.Context, req []float64, callOptions ...callopt.Option) (r []float64, err error)
 	EchoBaseDoubleList(ctx context.Context, req []float64, callOptions ...callopt.Option) (r []float64, err error)
 	EchoBool2BoolBaseMap(ctx context.Context, req map[bool]bool, callOptions ...callopt.Option) (r map[bool]bool, err error)
 	EchoBool2ByteBaseMap(ctx context.Context, req map[bool]int8, callOptions ...callopt.Option) (r map[bool]int8, err error)
 	EchoBool2Int16BaseMap(ctx context.Context, req map[bool]int16, callOptions ...callopt.Option) (r map[bool]int16, err error)
 	EchoBool2Int32BaseMap(ctx context.Context, req map[bool]int32, callOptions ...callopt.Option) (r map[bool]int32, err error)
 	EchoBool2Int64BaseMap(ctx context.Context, req map[bool]int64, callOptions ...callopt.Option) (r map[bool]int64, err error)
+	EchoBool2FloatBaseMap(ctx context.Context, req map[bool]float64, callOptions ...callopt.Option) (r map[bool]float64, err error)
 	EchoBool2DoubleBaseMap(ctx context.Context, req map[bool]float64, callOptions ...callopt.Option) (r map[bool]float64, err error)
 	EchoMultiBaseBool(ctx context.Context, baseReq bool, listReq []bool, mapReq map[bool]bool, callOptions ...callopt.Option) (r *echo.EchoMultiBoolResponse, err error)
 	EchoMultiBaseByte(ctx context.Context, baseReq int8, listReq []int8, mapReq map[int8]int8, callOptions ...callopt.Option) (r *echo.EchoMultiByteResponse, err error)
 	EchoMultiBaseInt16(ctx context.Context, baseReq int16, listReq []int16, mapReq map[int16]int16, callOptions ...callopt.Option) (r *echo.EchoMultiInt16Response, err error)
 	EchoMultiBaseInt32(ctx context.Context, baseReq int32, listReq []int32, mapReq map[int32]int32, callOptions ...callopt.Option) (r *echo.EchoMultiInt32Response, err error)
 	EchoMultiBaseInt64(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64, callOptions ...callopt.Option) (r *echo.EchoMultiInt64Response, err error)
+	EchoMultiBaseFloat(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64, callOptions ...callopt.Option) (r *echo.EchoMultiFloatResponse, err error)
 	EchoMultiBaseDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64, callOptions ...callopt.Option) (r *echo.EchoMultiDoubleResponse, err error)
 }
 
@@ -137,6 +146,11 @@ func (p *kTestServiceClient) EchoInt64(ctx context.Context, req int64, callOptio
 	return p.kClient.EchoInt64(ctx, req)
 }
 
+func (p *kTestServiceClient) EchoFloat(ctx context.Context, req float64, callOptions ...callopt.Option) (r float64, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoFloat(ctx, req)
+}
+
 func (p *kTestServiceClient) EchoDouble(ctx context.Context, req float64, callOptions ...callopt.Option) (r float64, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.EchoDouble(ctx, req)
@@ -182,6 +196,11 @@ func (p *kTestServiceClient) EchoInt64List(ctx context.Context, req []int64, cal
 	return p.kClient.EchoInt64List(ctx, req)
 }
 
+func (p *kTestServiceClient) EchoFloatList(ctx context.Context, req []float64, callOptions ...callopt.Option) (r []float64, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoFloatList(ctx, req)
+}
+
 func (p *kTestServiceClient) EchoDoubleList(ctx context.Context, req []float64, callOptions ...callopt.Option) (r []float64, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.EchoDoubleList(ctx, req)
@@ -220,6 +239,11 @@ func (p *kTestServiceClient) EchoBool2Int32Map(ctx context.Context, req map[bool
 func (p *kTestServiceClient) EchoBool2Int64Map(ctx context.Context, req map[bool]int64, callOptions ...callopt.Option) (r map[bool]int64, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.EchoBool2Int64Map(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBool2FloatMap(ctx context.Context, req map[bool]float64, callOptions ...callopt.Option) (r map[bool]float64, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2FloatMap(ctx, req)
 }
 
 func (p *kTestServiceClient) EchoBool2DoubleMap(ctx context.Context, req map[bool]float64, callOptions ...callopt.Option) (r map[bool]float64, err error) {
@@ -262,6 +286,11 @@ func (p *kTestServiceClient) EchoBool2Int64ListMap(ctx context.Context, req map[
 	return p.kClient.EchoBool2Int64ListMap(ctx, req)
 }
 
+func (p *kTestServiceClient) EchoBool2FloatListMap(ctx context.Context, req map[bool][]float64, callOptions ...callopt.Option) (r map[bool][]float64, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2FloatListMap(ctx, req)
+}
+
 func (p *kTestServiceClient) EchoBool2DoubleListMap(ctx context.Context, req map[bool][]float64, callOptions ...callopt.Option) (r map[bool][]float64, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.EchoBool2DoubleListMap(ctx, req)
@@ -302,6 +331,11 @@ func (p *kTestServiceClient) EchoMultiInt64(ctx context.Context, baseReq int64, 
 	return p.kClient.EchoMultiInt64(ctx, baseReq, listReq, mapReq)
 }
 
+func (p *kTestServiceClient) EchoMultiFloat(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64, callOptions ...callopt.Option) (r *echo.EchoMultiFloatResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoMultiFloat(ctx, baseReq, listReq, mapReq)
+}
+
 func (p *kTestServiceClient) EchoMultiDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64, callOptions ...callopt.Option) (r *echo.EchoMultiDoubleResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.EchoMultiDouble(ctx, baseReq, listReq, mapReq)
@@ -337,6 +371,11 @@ func (p *kTestServiceClient) EchoBaseInt64(ctx context.Context, req int64, callO
 	return p.kClient.EchoBaseInt64(ctx, req)
 }
 
+func (p *kTestServiceClient) EchoBaseFloat(ctx context.Context, req float64, callOptions ...callopt.Option) (r float64, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBaseFloat(ctx, req)
+}
+
 func (p *kTestServiceClient) EchoBaseDouble(ctx context.Context, req float64, callOptions ...callopt.Option) (r float64, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.EchoBaseDouble(ctx, req)
@@ -365,6 +404,11 @@ func (p *kTestServiceClient) EchoBaseInt32List(ctx context.Context, req []int32,
 func (p *kTestServiceClient) EchoBaseInt64List(ctx context.Context, req []int64, callOptions ...callopt.Option) (r []int64, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.EchoBaseInt64List(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoBaseFloatList(ctx context.Context, req []float64, callOptions ...callopt.Option) (r []float64, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBaseFloatList(ctx, req)
 }
 
 func (p *kTestServiceClient) EchoBaseDoubleList(ctx context.Context, req []float64, callOptions ...callopt.Option) (r []float64, err error) {
@@ -397,6 +441,11 @@ func (p *kTestServiceClient) EchoBool2Int64BaseMap(ctx context.Context, req map[
 	return p.kClient.EchoBool2Int64BaseMap(ctx, req)
 }
 
+func (p *kTestServiceClient) EchoBool2FloatBaseMap(ctx context.Context, req map[bool]float64, callOptions ...callopt.Option) (r map[bool]float64, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoBool2FloatBaseMap(ctx, req)
+}
+
 func (p *kTestServiceClient) EchoBool2DoubleBaseMap(ctx context.Context, req map[bool]float64, callOptions ...callopt.Option) (r map[bool]float64, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.EchoBool2DoubleBaseMap(ctx, req)
@@ -425,6 +474,11 @@ func (p *kTestServiceClient) EchoMultiBaseInt32(ctx context.Context, baseReq int
 func (p *kTestServiceClient) EchoMultiBaseInt64(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64, callOptions ...callopt.Option) (r *echo.EchoMultiInt64Response, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.EchoMultiBaseInt64(ctx, baseReq, listReq, mapReq)
+}
+
+func (p *kTestServiceClient) EchoMultiBaseFloat(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64, callOptions ...callopt.Option) (r *echo.EchoMultiFloatResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoMultiBaseFloat(ctx, baseReq, listReq, mapReq)
 }
 
 func (p *kTestServiceClient) EchoMultiBaseDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64, callOptions ...callopt.Option) (r *echo.EchoMultiDoubleResponse, err error) {

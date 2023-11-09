@@ -269,6 +269,48 @@ func (p *EchoMultiInt64Response) String() string {
 	return fmt.Sprintf("EchoMultiInt64Response(%+v)", *p)
 }
 
+type EchoMultiFloatResponse struct {
+	BaseResp float64             `thrift:"baseResp,1,required" frugal:"1,required,double" json:"baseResp"`
+	ListResp []float64           `thrift:"listResp,2,required" frugal:"2,required,list<double>" json:"listResp"`
+	MapResp  map[float64]float64 `thrift:"mapResp,3,required" frugal:"3,required,map<double:double>" json:"mapResp"`
+}
+
+func NewEchoMultiFloatResponse() *EchoMultiFloatResponse {
+	return &EchoMultiFloatResponse{}
+}
+
+func (p *EchoMultiFloatResponse) InitDefault() {
+	*p = EchoMultiFloatResponse{}
+}
+
+func (p *EchoMultiFloatResponse) GetBaseResp() (v float64) {
+	return p.BaseResp
+}
+
+func (p *EchoMultiFloatResponse) GetListResp() (v []float64) {
+	return p.ListResp
+}
+
+func (p *EchoMultiFloatResponse) GetMapResp() (v map[float64]float64) {
+	return p.MapResp
+}
+func (p *EchoMultiFloatResponse) SetBaseResp(val float64) {
+	p.BaseResp = val
+}
+func (p *EchoMultiFloatResponse) SetListResp(val []float64) {
+	p.ListResp = val
+}
+func (p *EchoMultiFloatResponse) SetMapResp(val map[float64]float64) {
+	p.MapResp = val
+}
+
+func (p *EchoMultiFloatResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("EchoMultiFloatResponse(%+v)", *p)
+}
+
 type EchoMultiDoubleResponse struct {
 	BaseResp float64             `thrift:"baseResp,1,required" frugal:"1,required,double" json:"baseResp"`
 	ListResp []float64           `thrift:"listResp,2,required" frugal:"2,required,list<double>" json:"listResp"`
@@ -366,6 +408,8 @@ type TestService interface {
 
 	EchoInt64(ctx context.Context, req int64) (r int64, err error)
 
+	EchoFloat(ctx context.Context, req float64) (r float64, err error)
+
 	EchoDouble(ctx context.Context, req float64) (r float64, err error)
 
 	EchoString(ctx context.Context, req string) (r string, err error)
@@ -384,6 +428,8 @@ type TestService interface {
 
 	EchoInt64List(ctx context.Context, req []int64) (r []int64, err error)
 
+	EchoFloatList(ctx context.Context, req []float64) (r []float64, err error)
+
 	EchoDoubleList(ctx context.Context, req []float64) (r []float64, err error)
 
 	EchoStringList(ctx context.Context, req []string) (r []string, err error)
@@ -399,6 +445,8 @@ type TestService interface {
 	EchoBool2Int32Map(ctx context.Context, req map[bool]int32) (r map[bool]int32, err error)
 
 	EchoBool2Int64Map(ctx context.Context, req map[bool]int64) (r map[bool]int64, err error)
+
+	EchoBool2FloatMap(ctx context.Context, req map[bool]float64) (r map[bool]float64, err error)
 
 	EchoBool2DoubleMap(ctx context.Context, req map[bool]float64) (r map[bool]float64, err error)
 
@@ -416,6 +464,8 @@ type TestService interface {
 
 	EchoBool2Int64ListMap(ctx context.Context, req map[bool][]int64) (r map[bool][]int64, err error)
 
+	EchoBool2FloatListMap(ctx context.Context, req map[bool][]float64) (r map[bool][]float64, err error)
+
 	EchoBool2DoubleListMap(ctx context.Context, req map[bool][]float64) (r map[bool][]float64, err error)
 
 	EchoBool2StringListMap(ctx context.Context, req map[bool][]string) (r map[bool][]string, err error)
@@ -432,6 +482,8 @@ type TestService interface {
 
 	EchoMultiInt64(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64) (r *EchoMultiInt64Response, err error)
 
+	EchoMultiFloat(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (r *EchoMultiFloatResponse, err error)
+
 	EchoMultiDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (r *EchoMultiDoubleResponse, err error)
 
 	EchoMultiString(ctx context.Context, baseReq string, listReq []string, mapReq map[string]string) (r *EchoMultiStringResponse, err error)
@@ -446,6 +498,8 @@ type TestService interface {
 
 	EchoBaseInt64(ctx context.Context, req int64) (r int64, err error)
 
+	EchoBaseFloat(ctx context.Context, req float64) (r float64, err error)
+
 	EchoBaseDouble(ctx context.Context, req float64) (r float64, err error)
 
 	EchoBaseBoolList(ctx context.Context, req []bool) (r []bool, err error)
@@ -457,6 +511,8 @@ type TestService interface {
 	EchoBaseInt32List(ctx context.Context, req []int32) (r []int32, err error)
 
 	EchoBaseInt64List(ctx context.Context, req []int64) (r []int64, err error)
+
+	EchoBaseFloatList(ctx context.Context, req []float64) (r []float64, err error)
 
 	EchoBaseDoubleList(ctx context.Context, req []float64) (r []float64, err error)
 
@@ -470,6 +526,8 @@ type TestService interface {
 
 	EchoBool2Int64BaseMap(ctx context.Context, req map[bool]int64) (r map[bool]int64, err error)
 
+	EchoBool2FloatBaseMap(ctx context.Context, req map[bool]float64) (r map[bool]float64, err error)
+
 	EchoBool2DoubleBaseMap(ctx context.Context, req map[bool]float64) (r map[bool]float64, err error)
 
 	EchoMultiBaseBool(ctx context.Context, baseReq bool, listReq []bool, mapReq map[bool]bool) (r *EchoMultiBoolResponse, err error)
@@ -481,6 +539,8 @@ type TestService interface {
 	EchoMultiBaseInt32(ctx context.Context, baseReq int32, listReq []int32, mapReq map[int32]int32) (r *EchoMultiInt32Response, err error)
 
 	EchoMultiBaseInt64(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64) (r *EchoMultiInt64Response, err error)
+
+	EchoMultiBaseFloat(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (r *EchoMultiFloatResponse, err error)
 
 	EchoMultiBaseDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (r *EchoMultiDoubleResponse, err error)
 }

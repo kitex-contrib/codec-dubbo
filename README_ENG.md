@@ -22,35 +22,35 @@ Write dubbo client code based on existing **api.thrift** and [**Type Mapping Tab
 
 ### Type Mapping
 
-|    thrift type     |   golang type    | hessian2 type |   default java type    |      extendable java type       |
-|:------------------:|:----------------:|:-------------:|:----------------------:|:-------------------------------:|
-|        bool        |       bool       |    boolean    |   java.lang.Boolean    |             boolean             |
-|        byte        |       int8       |      int      |     java.lang.Byte     |              byte               |
-|        i16         |      int16       |      int      |    java.lang.Short     |              short              |
-|        i32         |      int32       |      int      |   java.lang.Integer    |               int               |
-|        i64         |      int64       |     long      |     java.lang.Long     |              long               |
-|       double       |     float64      |    double     |    java.lang.Double    |             double              |
-|       string       |      string      |    string     |    java.lang.String    |                -                |
-|       binary       |      []byte      |    binary     |         byte[]         |                -                |
-|    list\<bool>     |      []bool      |     list      |     List\<Boolean>     | boolean[] / ArrayList\<Boolean> |
-|     list\<i32>     |     []int32      |     list      |     List\<Integer>     |   int[] / ArrayList\<Integer>   |
-|     list\<i64>     |     []int64      |     list      |      List\<Long>       |    long[] / ArrayList\<Long>    |
-|   list\<double>    |    []float64     |     list      |     List\<Double>      |  double[] / ArrayList\<Double>  |
-|   list\<string>    |     []string     |     list      |     List\<String>      |  String[] / ArrayList\<String>  |
-|  map\<bool, bool>  |  map[bool]bool   |      map      | Map\<Boolean, Boolean> |   HashMap\<Boolean, Boolean>    |
-|  map\<bool, i32>   |  map[bool]int32  |      map      | Map\<Boolean, Integer> |   HashMap\<Boolean, Integer>    |
-|  map\<bool, i64>   |  map[bool]int64  |      map      |  Map\<Boolean, Long>   |     HashMap\<Boolean, Long>     |
-| map\<bool, double> | map[bool]float64 |      map      | Map\<Boolean, Double>  |    HashMap\<Boolean, Double>    |
-| map\<bool, string> | map[bool]string  |      map      | Map\<Boolean, String>  |    HashMap\<Boolean, String>    |
+|    thrift type     |   golang type    | hessian2 type |   default java type    |            extendable java type            |
+|:------------------:|:----------------:|:-------------:|:----------------------:|:------------------------------------------:|
+|        bool        |       bool       |    boolean    |   java.lang.Boolean    |                  boolean                   |
+|        byte        |       int8       |      int      |     java.lang.Byte     |                    byte                    |
+|        i16         |      int16       |      int      |    java.lang.Short     |                   short                    |
+|        i32         |      int32       |      int      |   java.lang.Integer    |                    int                     |
+|        i64         |      int64       |     long      |     java.lang.Long     |                    long                    |
+|       double       |     float64      |    double     |    java.lang.Double    |    double <br> float / java.lang.Float     |
+|       string       |      string      |    string     |    java.lang.String    |                     -                      |
+|       binary       |      []byte      |    binary     |         byte[]         |                     -                      |
+|    list\<bool>     |      []bool      |     list      |     List\<Boolean>     |      boolean[] / ArrayList\<Boolean>       |
+|     list\<i32>     |     []int32      |     list      |     List\<Integer>     |        int[] / ArrayList\<Integer>         |
+|     list\<i64>     |     []int64      |     list      |      List\<Long>       |         long[] / ArrayList\<Long>          |
+|   list\<double>    |    []float64     |     list      |     List\<Double>      | double[] / ArrayList\<Double> <br> float[] |
+|   list\<string>    |     []string     |     list      |     List\<String>      |       String[] / ArrayList\<String>        |
+|  map\<bool, bool>  |  map[bool]bool   |      map      | Map\<Boolean, Boolean> |         HashMap\<Boolean, Boolean>         |
+|  map\<bool, i32>   |  map[bool]int32  |      map      | Map\<Boolean, Integer> |         HashMap\<Boolean, Integer>         |
+|  map\<bool, i64>   |  map[bool]int64  |      map      |  Map\<Boolean, Long>   |          HashMap\<Boolean, Long>           |
+| map\<bool, double> | map[bool]float64 |      map      | Map\<Boolean, Double>  |         HashMap\<Boolean, Double>          |
+| map\<bool, string> | map[bool]string  |      map      | Map\<Boolean, String>  |         HashMap\<Boolean, String>          |
 
 **Important notes**:
 1. The list of map types is not exhaustive and includes only tested cases.
 
 2. Using keys of **binary** type in map types is not supported.
 
-3. dubbo-java does not support decoding map types that contain **i8** or **i16** key values. It is recommended to avoid practices incompatible with dubbo-java. You can use **struct** to wrap the map when defining response fields for interfaces.
+3. Since **float32** is not a valid type in Thrift, DubboCodec maps **float**(java) to **float64**(go). You can specify the mapping of **double** to **float** in the idl using method annotations, Please see [api.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/tests/kitex/api.thrift).
 
-4. **float32** is planned but currently not supported since it's not a valid type in thrift.
+4. dubbo-java does not support decoding map types that contain **byte**, **short**, or **float** key values. It is recommended to avoid practices incompatible with dubbo-java. You can use **struct** to wrap the map when defining response fields for interfaces.
 
 ### Method Annotation
 

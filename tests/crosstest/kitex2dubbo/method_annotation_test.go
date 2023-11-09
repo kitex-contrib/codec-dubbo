@@ -56,6 +56,12 @@ func TestEchoBaseInt64_Java(t *testing.T) {
 	assertEcho(t, err, req, resp)
 }
 
+func TestEchoBaseFloat_Java(t *testing.T) {
+	req := 1.0
+	resp, err := cli2Java.EchoBaseFloat(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
 func TestEchoBaseDouble_Java(t *testing.T) {
 	req := 1.0
 	resp, err := cli2Java.EchoBaseDouble(context.Background(), req)
@@ -90,6 +96,12 @@ func TestEchoBaseInt32List_Java(t *testing.T) {
 func TestEchoBaseInt64List_Java(t *testing.T) {
 	req := []int64{1, 2}
 	resp, err := cli2Java.EchoBaseInt64List(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoBaseFloatList_Java(t *testing.T) {
+	req := []float64{1.0, 2.0}
+	resp, err := cli2Java.EchoBaseFloatList(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 
@@ -136,6 +148,14 @@ func TestEchoBool2Int64BaseMap_Java(t *testing.T) {
 		true: 1,
 	}
 	resp, err := cli2Java.EchoBool2Int64BaseMap(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoBool2FloatBaseMap_Java(t *testing.T) {
+	req := map[bool]float64{
+		true: 12.34,
+	}
+	resp, err := cli2Java.EchoBool2FloatBaseMap(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 
@@ -203,6 +223,18 @@ func TestEchoMultiBaseInt64_Java(t *testing.T) {
 		12: 34,
 	}
 	resp, err := cli2Java.EchoMultiBaseInt64(context.Background(), baseReq, listReq, mapReq)
+	assertEcho(t, err, baseReq, resp.BaseResp)
+	assertEcho(t, err, listReq, resp.ListResp)
+	assertEcho(t, err, mapReq, resp.MapResp)
+}
+
+func TestEchoMultiBaseFloat_Java(t *testing.T) {
+	baseReq := 1.0
+	listReq := []float64{1.0, 2.0}
+	mapReq := map[float64]float64{
+		1.0: 2.0,
+	}
+	resp, err := cli2Java.EchoMultiBaseFloat(context.Background(), baseReq, listReq, mapReq)
 	assertEcho(t, err, baseReq, resp.BaseResp)
 	assertEcho(t, err, listReq, resp.ListResp)
 	assertEcho(t, err, mapReq, resp.MapResp)

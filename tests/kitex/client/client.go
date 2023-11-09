@@ -23,12 +23,6 @@ func main() {
 		panic(err)
 	}
 
-	res, err := cli.EchoBaseBool(context.Background(), true)
-	if err != nil {
-		panic(err)
-	}
-	klog.Infof("res: %v", res)
-
 	resp, err := cli.EchoInt(context.Background(), 0x12345678)
 	if err != nil {
 		panic(err)

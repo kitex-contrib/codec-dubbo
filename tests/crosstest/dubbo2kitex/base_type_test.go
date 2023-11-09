@@ -105,6 +105,12 @@ func TestEchoInt64(t *testing.T) {
 	assertEcho(t, err, req, resp)
 }
 
+func TestEchoFloat(t *testing.T) {
+	var req float64 = 1.0
+	resp, err := cli.EchoFloat(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
 func TestEchoDouble(t *testing.T) {
 	var req float64 = 12.3456
 	resp, err := cli.EchoDouble(context.Background(), req)

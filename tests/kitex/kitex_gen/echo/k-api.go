@@ -422,6 +422,73 @@ func (p *TestServiceEchoInt64Result) GetResult() interface{} {
 	return p.Success
 }
 
+type TestServiceEchoFloatArgs struct {
+	Req float64 `thrift:"req,1" frugal:"1,default,double" json:"req"`
+}
+
+func NewTestServiceEchoFloatArgs() *TestServiceEchoFloatArgs {
+	return &TestServiceEchoFloatArgs{}
+}
+
+func (p *TestServiceEchoFloatArgs) InitDefault() {
+	*p = TestServiceEchoFloatArgs{}
+}
+
+func (p *TestServiceEchoFloatArgs) GetReq() (v float64) {
+	return p.Req
+}
+func (p *TestServiceEchoFloatArgs) SetReq(val float64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoFloatArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoFloatArgs(%+v)", *p)
+}
+func (p *TestServiceEchoFloatArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoFloatResult struct {
+	Success *float64 `thrift:"success,0,optional" frugal:"0,optional,double" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoFloatResult() *TestServiceEchoFloatResult {
+	return &TestServiceEchoFloatResult{}
+}
+
+func (p *TestServiceEchoFloatResult) InitDefault() {
+	*p = TestServiceEchoFloatResult{}
+}
+
+var TestServiceEchoFloatResult_Success_DEFAULT float64
+
+func (p *TestServiceEchoFloatResult) GetSuccess() (v float64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoFloatResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoFloatResult) SetSuccess(x interface{}) {
+	p.Success = x.(*float64)
+}
+
+func (p *TestServiceEchoFloatResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoFloatResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoFloatResult(%+v)", *p)
+}
+func (p *TestServiceEchoFloatResult) GetResult() interface{} {
+	return p.Success
+}
+
 type TestServiceEchoDoubleArgs struct {
 	Req float64 `thrift:"req,1" frugal:"1,default,double" json:"req"`
 }
@@ -1034,6 +1101,73 @@ func (p *TestServiceEchoInt64ListResult) GetResult() interface{} {
 	return p.Success
 }
 
+type TestServiceEchoFloatListArgs struct {
+	Req []float64 `thrift:"req,1" frugal:"1,default,list<double>" json:"req"`
+}
+
+func NewTestServiceEchoFloatListArgs() *TestServiceEchoFloatListArgs {
+	return &TestServiceEchoFloatListArgs{}
+}
+
+func (p *TestServiceEchoFloatListArgs) InitDefault() {
+	*p = TestServiceEchoFloatListArgs{}
+}
+
+func (p *TestServiceEchoFloatListArgs) GetReq() (v []float64) {
+	return p.Req
+}
+func (p *TestServiceEchoFloatListArgs) SetReq(val []float64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoFloatListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoFloatListArgs(%+v)", *p)
+}
+func (p *TestServiceEchoFloatListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoFloatListResult struct {
+	Success []float64 `thrift:"success,0,optional" frugal:"0,optional,list<double>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoFloatListResult() *TestServiceEchoFloatListResult {
+	return &TestServiceEchoFloatListResult{}
+}
+
+func (p *TestServiceEchoFloatListResult) InitDefault() {
+	*p = TestServiceEchoFloatListResult{}
+}
+
+var TestServiceEchoFloatListResult_Success_DEFAULT []float64
+
+func (p *TestServiceEchoFloatListResult) GetSuccess() (v []float64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoFloatListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoFloatListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]float64)
+}
+
+func (p *TestServiceEchoFloatListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoFloatListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoFloatListResult(%+v)", *p)
+}
+func (p *TestServiceEchoFloatListResult) GetResult() interface{} {
+	return p.Success
+}
+
 type TestServiceEchoDoubleListArgs struct {
 	Req []float64 `thrift:"req,1" frugal:"1,default,list<double>" json:"req"`
 }
@@ -1570,6 +1704,73 @@ func (p *TestServiceEchoBool2Int64MapResult) GetResult() interface{} {
 	return p.Success
 }
 
+type TestServiceEchoBool2FloatMapArgs struct {
+	Req map[bool]float64 `thrift:"req,1" frugal:"1,default,map<bool:double>" json:"req"`
+}
+
+func NewTestServiceEchoBool2FloatMapArgs() *TestServiceEchoBool2FloatMapArgs {
+	return &TestServiceEchoBool2FloatMapArgs{}
+}
+
+func (p *TestServiceEchoBool2FloatMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2FloatMapArgs{}
+}
+
+func (p *TestServiceEchoBool2FloatMapArgs) GetReq() (v map[bool]float64) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2FloatMapArgs) SetReq(val map[bool]float64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2FloatMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2FloatMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2FloatMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2FloatMapResult struct {
+	Success map[bool]float64 `thrift:"success,0,optional" frugal:"0,optional,map<bool:double>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2FloatMapResult() *TestServiceEchoBool2FloatMapResult {
+	return &TestServiceEchoBool2FloatMapResult{}
+}
+
+func (p *TestServiceEchoBool2FloatMapResult) InitDefault() {
+	*p = TestServiceEchoBool2FloatMapResult{}
+}
+
+var TestServiceEchoBool2FloatMapResult_Success_DEFAULT map[bool]float64
+
+func (p *TestServiceEchoBool2FloatMapResult) GetSuccess() (v map[bool]float64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2FloatMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2FloatMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool]float64)
+}
+
+func (p *TestServiceEchoBool2FloatMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2FloatMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2FloatMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2FloatMapResult) GetResult() interface{} {
+	return p.Success
+}
+
 type TestServiceEchoBool2DoubleMapArgs struct {
 	Req map[bool]float64 `thrift:"req,1" frugal:"1,default,map<bool:double>" json:"req"`
 }
@@ -2103,6 +2304,73 @@ func (p *TestServiceEchoBool2Int64ListMapResult) String() string {
 	return fmt.Sprintf("TestServiceEchoBool2Int64ListMapResult(%+v)", *p)
 }
 func (p *TestServiceEchoBool2Int64ListMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2FloatListMapArgs struct {
+	Req map[bool][]float64 `thrift:"req,1" frugal:"1,default,map<bool:list<double>>" json:"req"`
+}
+
+func NewTestServiceEchoBool2FloatListMapArgs() *TestServiceEchoBool2FloatListMapArgs {
+	return &TestServiceEchoBool2FloatListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2FloatListMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2FloatListMapArgs{}
+}
+
+func (p *TestServiceEchoBool2FloatListMapArgs) GetReq() (v map[bool][]float64) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2FloatListMapArgs) SetReq(val map[bool][]float64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2FloatListMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2FloatListMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2FloatListMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2FloatListMapResult struct {
+	Success map[bool][]float64 `thrift:"success,0,optional" frugal:"0,optional,map<bool:list<double>>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2FloatListMapResult() *TestServiceEchoBool2FloatListMapResult {
+	return &TestServiceEchoBool2FloatListMapResult{}
+}
+
+func (p *TestServiceEchoBool2FloatListMapResult) InitDefault() {
+	*p = TestServiceEchoBool2FloatListMapResult{}
+}
+
+var TestServiceEchoBool2FloatListMapResult_Success_DEFAULT map[bool][]float64
+
+func (p *TestServiceEchoBool2FloatListMapResult) GetSuccess() (v map[bool][]float64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2FloatListMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2FloatListMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool][]float64)
+}
+
+func (p *TestServiceEchoBool2FloatListMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2FloatListMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2FloatListMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2FloatListMapResult) GetResult() interface{} {
 	return p.Success
 }
 
@@ -2722,6 +2990,89 @@ func (p *TestServiceEchoMultiInt64Result) GetResult() interface{} {
 	return p.Success
 }
 
+type TestServiceEchoMultiFloatArgs struct {
+	BaseReq float64             `thrift:"baseReq,1" frugal:"1,default,double" json:"baseReq"`
+	ListReq []float64           `thrift:"listReq,2" frugal:"2,default,list<double>" json:"listReq"`
+	MapReq  map[float64]float64 `thrift:"mapReq,3" frugal:"3,default,map<double:double>" json:"mapReq"`
+}
+
+func NewTestServiceEchoMultiFloatArgs() *TestServiceEchoMultiFloatArgs {
+	return &TestServiceEchoMultiFloatArgs{}
+}
+
+func (p *TestServiceEchoMultiFloatArgs) InitDefault() {
+	*p = TestServiceEchoMultiFloatArgs{}
+}
+
+func (p *TestServiceEchoMultiFloatArgs) GetBaseReq() (v float64) {
+	return p.BaseReq
+}
+
+func (p *TestServiceEchoMultiFloatArgs) GetListReq() (v []float64) {
+	return p.ListReq
+}
+
+func (p *TestServiceEchoMultiFloatArgs) GetMapReq() (v map[float64]float64) {
+	return p.MapReq
+}
+func (p *TestServiceEchoMultiFloatArgs) SetBaseReq(val float64) {
+	p.BaseReq = val
+}
+func (p *TestServiceEchoMultiFloatArgs) SetListReq(val []float64) {
+	p.ListReq = val
+}
+func (p *TestServiceEchoMultiFloatArgs) SetMapReq(val map[float64]float64) {
+	p.MapReq = val
+}
+
+func (p *TestServiceEchoMultiFloatArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiFloatArgs(%+v)", *p)
+}
+func (p *TestServiceEchoMultiFloatArgs) GetFirstArgument() interface{} {
+	return p.BaseReq
+}
+
+type TestServiceEchoMultiFloatResult struct {
+	Success *EchoMultiFloatResponse `thrift:"success,0,optional" frugal:"0,optional,EchoMultiFloatResponse" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoMultiFloatResult() *TestServiceEchoMultiFloatResult {
+	return &TestServiceEchoMultiFloatResult{}
+}
+
+func (p *TestServiceEchoMultiFloatResult) InitDefault() {
+	*p = TestServiceEchoMultiFloatResult{}
+}
+
+var TestServiceEchoMultiFloatResult_Success_DEFAULT *EchoMultiFloatResponse
+
+func (p *TestServiceEchoMultiFloatResult) GetSuccess() (v *EchoMultiFloatResponse) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoMultiFloatResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoMultiFloatResult) SetSuccess(x interface{}) {
+	p.Success = x.(*EchoMultiFloatResponse)
+}
+
+func (p *TestServiceEchoMultiFloatResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoMultiFloatResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiFloatResult(%+v)", *p)
+}
+func (p *TestServiceEchoMultiFloatResult) GetResult() interface{} {
+	return p.Success
+}
+
 type TestServiceEchoMultiDoubleArgs struct {
 	BaseReq float64             `thrift:"baseReq,1" frugal:"1,default,double" json:"baseReq"`
 	ListReq []float64           `thrift:"listReq,2" frugal:"2,default,list<double>" json:"listReq"`
@@ -3223,6 +3574,73 @@ func (p *TestServiceEchoBaseInt64Result) GetResult() interface{} {
 	return p.Success
 }
 
+type TestServiceEchoBaseFloatArgs struct {
+	Req float64 `thrift:"req,1" frugal:"1,default,double" json:"req"`
+}
+
+func NewTestServiceEchoBaseFloatArgs() *TestServiceEchoBaseFloatArgs {
+	return &TestServiceEchoBaseFloatArgs{}
+}
+
+func (p *TestServiceEchoBaseFloatArgs) InitDefault() {
+	*p = TestServiceEchoBaseFloatArgs{}
+}
+
+func (p *TestServiceEchoBaseFloatArgs) GetReq() (v float64) {
+	return p.Req
+}
+func (p *TestServiceEchoBaseFloatArgs) SetReq(val float64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBaseFloatArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBaseFloatArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBaseFloatArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBaseFloatResult struct {
+	Success *float64 `thrift:"success,0,optional" frugal:"0,optional,double" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBaseFloatResult() *TestServiceEchoBaseFloatResult {
+	return &TestServiceEchoBaseFloatResult{}
+}
+
+func (p *TestServiceEchoBaseFloatResult) InitDefault() {
+	*p = TestServiceEchoBaseFloatResult{}
+}
+
+var TestServiceEchoBaseFloatResult_Success_DEFAULT float64
+
+func (p *TestServiceEchoBaseFloatResult) GetSuccess() (v float64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBaseFloatResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoBaseFloatResult) SetSuccess(x interface{}) {
+	p.Success = x.(*float64)
+}
+
+func (p *TestServiceEchoBaseFloatResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBaseFloatResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBaseFloatResult(%+v)", *p)
+}
+func (p *TestServiceEchoBaseFloatResult) GetResult() interface{} {
+	return p.Success
+}
+
 type TestServiceEchoBaseDoubleArgs struct {
 	Req float64 `thrift:"req,1" frugal:"1,default,double" json:"req"`
 }
@@ -3625,6 +4043,73 @@ func (p *TestServiceEchoBaseInt64ListResult) GetResult() interface{} {
 	return p.Success
 }
 
+type TestServiceEchoBaseFloatListArgs struct {
+	Req []float64 `thrift:"req,1" frugal:"1,default,list<double>" json:"req"`
+}
+
+func NewTestServiceEchoBaseFloatListArgs() *TestServiceEchoBaseFloatListArgs {
+	return &TestServiceEchoBaseFloatListArgs{}
+}
+
+func (p *TestServiceEchoBaseFloatListArgs) InitDefault() {
+	*p = TestServiceEchoBaseFloatListArgs{}
+}
+
+func (p *TestServiceEchoBaseFloatListArgs) GetReq() (v []float64) {
+	return p.Req
+}
+func (p *TestServiceEchoBaseFloatListArgs) SetReq(val []float64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBaseFloatListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBaseFloatListArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBaseFloatListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBaseFloatListResult struct {
+	Success []float64 `thrift:"success,0,optional" frugal:"0,optional,list<double>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBaseFloatListResult() *TestServiceEchoBaseFloatListResult {
+	return &TestServiceEchoBaseFloatListResult{}
+}
+
+func (p *TestServiceEchoBaseFloatListResult) InitDefault() {
+	*p = TestServiceEchoBaseFloatListResult{}
+}
+
+var TestServiceEchoBaseFloatListResult_Success_DEFAULT []float64
+
+func (p *TestServiceEchoBaseFloatListResult) GetSuccess() (v []float64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBaseFloatListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBaseFloatListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]float64)
+}
+
+func (p *TestServiceEchoBaseFloatListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBaseFloatListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBaseFloatListResult(%+v)", *p)
+}
+func (p *TestServiceEchoBaseFloatListResult) GetResult() interface{} {
+	return p.Success
+}
+
 type TestServiceEchoBaseDoubleListArgs struct {
 	Req []float64 `thrift:"req,1" frugal:"1,default,list<double>" json:"req"`
 }
@@ -4024,6 +4509,73 @@ func (p *TestServiceEchoBool2Int64BaseMapResult) String() string {
 	return fmt.Sprintf("TestServiceEchoBool2Int64BaseMapResult(%+v)", *p)
 }
 func (p *TestServiceEchoBool2Int64BaseMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoBool2FloatBaseMapArgs struct {
+	Req map[bool]float64 `thrift:"req,1" frugal:"1,default,map<bool:double>" json:"req"`
+}
+
+func NewTestServiceEchoBool2FloatBaseMapArgs() *TestServiceEchoBool2FloatBaseMapArgs {
+	return &TestServiceEchoBool2FloatBaseMapArgs{}
+}
+
+func (p *TestServiceEchoBool2FloatBaseMapArgs) InitDefault() {
+	*p = TestServiceEchoBool2FloatBaseMapArgs{}
+}
+
+func (p *TestServiceEchoBool2FloatBaseMapArgs) GetReq() (v map[bool]float64) {
+	return p.Req
+}
+func (p *TestServiceEchoBool2FloatBaseMapArgs) SetReq(val map[bool]float64) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoBool2FloatBaseMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2FloatBaseMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoBool2FloatBaseMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoBool2FloatBaseMapResult struct {
+	Success map[bool]float64 `thrift:"success,0,optional" frugal:"0,optional,map<bool:double>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoBool2FloatBaseMapResult() *TestServiceEchoBool2FloatBaseMapResult {
+	return &TestServiceEchoBool2FloatBaseMapResult{}
+}
+
+func (p *TestServiceEchoBool2FloatBaseMapResult) InitDefault() {
+	*p = TestServiceEchoBool2FloatBaseMapResult{}
+}
+
+var TestServiceEchoBool2FloatBaseMapResult_Success_DEFAULT map[bool]float64
+
+func (p *TestServiceEchoBool2FloatBaseMapResult) GetSuccess() (v map[bool]float64) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoBool2FloatBaseMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoBool2FloatBaseMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool]float64)
+}
+
+func (p *TestServiceEchoBool2FloatBaseMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoBool2FloatBaseMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoBool2FloatBaseMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoBool2FloatBaseMapResult) GetResult() interface{} {
 	return p.Success
 }
 
@@ -4506,6 +5058,89 @@ func (p *TestServiceEchoMultiBaseInt64Result) String() string {
 	return fmt.Sprintf("TestServiceEchoMultiBaseInt64Result(%+v)", *p)
 }
 func (p *TestServiceEchoMultiBaseInt64Result) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoMultiBaseFloatArgs struct {
+	BaseReq float64             `thrift:"baseReq,1" frugal:"1,default,double" json:"baseReq"`
+	ListReq []float64           `thrift:"listReq,2" frugal:"2,default,list<double>" json:"listReq"`
+	MapReq  map[float64]float64 `thrift:"mapReq,3" frugal:"3,default,map<double:double>" json:"mapReq"`
+}
+
+func NewTestServiceEchoMultiBaseFloatArgs() *TestServiceEchoMultiBaseFloatArgs {
+	return &TestServiceEchoMultiBaseFloatArgs{}
+}
+
+func (p *TestServiceEchoMultiBaseFloatArgs) InitDefault() {
+	*p = TestServiceEchoMultiBaseFloatArgs{}
+}
+
+func (p *TestServiceEchoMultiBaseFloatArgs) GetBaseReq() (v float64) {
+	return p.BaseReq
+}
+
+func (p *TestServiceEchoMultiBaseFloatArgs) GetListReq() (v []float64) {
+	return p.ListReq
+}
+
+func (p *TestServiceEchoMultiBaseFloatArgs) GetMapReq() (v map[float64]float64) {
+	return p.MapReq
+}
+func (p *TestServiceEchoMultiBaseFloatArgs) SetBaseReq(val float64) {
+	p.BaseReq = val
+}
+func (p *TestServiceEchoMultiBaseFloatArgs) SetListReq(val []float64) {
+	p.ListReq = val
+}
+func (p *TestServiceEchoMultiBaseFloatArgs) SetMapReq(val map[float64]float64) {
+	p.MapReq = val
+}
+
+func (p *TestServiceEchoMultiBaseFloatArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiBaseFloatArgs(%+v)", *p)
+}
+func (p *TestServiceEchoMultiBaseFloatArgs) GetFirstArgument() interface{} {
+	return p.BaseReq
+}
+
+type TestServiceEchoMultiBaseFloatResult struct {
+	Success *EchoMultiFloatResponse `thrift:"success,0,optional" frugal:"0,optional,EchoMultiFloatResponse" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoMultiBaseFloatResult() *TestServiceEchoMultiBaseFloatResult {
+	return &TestServiceEchoMultiBaseFloatResult{}
+}
+
+func (p *TestServiceEchoMultiBaseFloatResult) InitDefault() {
+	*p = TestServiceEchoMultiBaseFloatResult{}
+}
+
+var TestServiceEchoMultiBaseFloatResult_Success_DEFAULT *EchoMultiFloatResponse
+
+func (p *TestServiceEchoMultiBaseFloatResult) GetSuccess() (v *EchoMultiFloatResponse) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoMultiBaseFloatResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoMultiBaseFloatResult) SetSuccess(x interface{}) {
+	p.Success = x.(*EchoMultiFloatResponse)
+}
+
+func (p *TestServiceEchoMultiBaseFloatResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoMultiBaseFloatResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMultiBaseFloatResult(%+v)", *p)
+}
+func (p *TestServiceEchoMultiBaseFloatResult) GetResult() interface{} {
 	return p.Success
 }
 

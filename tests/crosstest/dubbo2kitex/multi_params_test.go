@@ -85,6 +85,18 @@ package dubbo2kitex
 //	assertEcho(t, err, mapReq, resp.MapResp)
 //}
 
+//func TestEchoMultiFloat(t *testing.T) {
+//	baseReq := 1.0
+//	listReq := []float64{1.0, 2.0}
+//	mapReq := map[float64]float64{
+//		1.0: 2.0,
+//	}
+//	resp, err := cli.EchoMultiFloat(context.Background(), baseReq, listReq, mapReq)
+//	assertEcho(t, err, baseReq, resp.BaseResp)
+//	assertEcho(t, err, listReq, resp.ListResp)
+//	assertEcho(t, err, mapReq, resp.MapResp)
+//}
+
 //func TestEchoMultiDouble(t *testing.T) {
 //	baseReq := 12.34
 //	listReq := []float64{12.34, 56.78}
