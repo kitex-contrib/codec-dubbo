@@ -58,7 +58,6 @@ func (z *zookeeperResolver) Target(ctx context.Context, target rpcinfo.EndpointI
 }
 
 func (z *zookeeperResolver) Resolve(ctx context.Context, desc string) (discovery.Result, error) {
-	fmt.Printf("opt.Group: %s, opt.Version: %s\n", z.opt.ServiceGroup, z.opt.ServiceVersion)
 	rawURLs, _, err := z.conn.Children(desc)
 	if err != nil {
 		return discovery.Result{}, err

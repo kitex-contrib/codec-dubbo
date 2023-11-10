@@ -36,10 +36,9 @@ const (
 var RegistryServicesKey = "/%s/%s/providers"
 
 type URL struct {
-	protocol      string
-	host          string
-	interfacePath string
-	params        url.Values
+	protocol string
+	host     string
+	params   url.Values
 }
 
 func (u *URL) FromString(raw string) error {
