@@ -33,6 +33,7 @@ import (
 )
 
 const (
+	defaultRegistryGroup  = "dubbo"
 	defaultSessionTimeout = 30 * time.Second
 )
 

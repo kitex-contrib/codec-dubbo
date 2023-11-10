@@ -49,6 +49,9 @@ func newOptions(opts []Option) *Options {
 	if o.InterfaceName == "" {
 		panic("Please specify target InterfaceName. e.g. WithInterfaceName(\"org.cloudwego.kitex.samples.api.GreetProvider\")")
 	}
+	if o.RegistryGroup == "" {
+		o.RegistryGroup = defaultRegistryGroup
+	}
 	if o.SessionTimeout == 0 {
 		o.SessionTimeout = defaultSessionTimeout
 	}
