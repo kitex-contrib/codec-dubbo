@@ -381,6 +381,12 @@ func (u *UserProviderImpl) EchoByte(ctx context.Context, req int8) (int8, error)
 // 	}
 //
 
+type UserProviderImplV1 struct{}
+
+func (u *UserProviderImplV1) EchoBool(ctx context.Context, req bool) (bool, error) {
+	return !req, nil
+}
+
 func init() {
 	hessian.RegisterPOJO(&User{}) // Register all transmission struct to hessian lib
 	// these POJOs would override POJOs registered by Kitex generation with same JavaClassName.
