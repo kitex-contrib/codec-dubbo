@@ -21,19 +21,21 @@ package registry_test
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/config"
-	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"fmt"
-	"github.com/cloudwego/kitex/client"
-	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
-	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/resolver"
-	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testservice"
-	"github.com/stretchr/testify/assert"
 	"helloworld/api"
 	"net"
 	"os/exec"
 	"testing"
 	"time"
+
+	"dubbo.apache.org/dubbo-go/v3/config"
+	_ "dubbo.apache.org/dubbo-go/v3/imports"
+
+	"github.com/cloudwego/kitex/client"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/resolver"
+	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testservice"
+	"github.com/stretchr/testify/assert"
 )
 
 func runDubboGoServer(exitChan chan struct{}) {

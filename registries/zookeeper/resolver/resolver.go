@@ -22,13 +22,14 @@ package resolver
 import (
 	"context"
 	"fmt"
+	"strings"
+	"time"
+
 	"github.com/cloudwego/kitex/pkg/discovery"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/go-zookeeper/zk"
 	"github.com/kitex-contrib/codec-dubbo/registries"
-	"strings"
-	"time"
 )
 
 const (

@@ -20,8 +20,9 @@
 package registries
 
 import (
-	"github.com/cloudwego/kitex/pkg/discovery"
 	"net/url"
+
+	"github.com/cloudwego/kitex/pkg/discovery"
 )
 
 const (

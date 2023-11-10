@@ -22,6 +22,7 @@ package dubbo
 import (
 	"context"
 	"fmt"
+
 	"github.com/kitex-contrib/codec-dubbo/registries"
 
 	"github.com/cloudwego/kitex/pkg/remote"
