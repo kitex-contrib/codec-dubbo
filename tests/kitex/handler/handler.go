@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 )
@@ -302,6 +303,11 @@ func (s *TestServiceImpl) EchoBaseInt64(ctx context.Context, req int64) (resp in
 	return req, nil
 }
 
+// EchoBaseFloat implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseFloat(ctx context.Context, req float64) (resp float64, err error) {
+	return req, nil
+}
+
 // EchoBaseDouble implements the TestServiceImpl interface.
 func (s *TestServiceImpl) EchoBaseDouble(ctx context.Context, req float64) (resp float64, err error) {
 	return req, nil
@@ -332,6 +338,11 @@ func (s *TestServiceImpl) EchoBaseInt64List(ctx context.Context, req []int64) (r
 	return req, nil
 }
 
+// EchoBaseFloatList implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBaseFloatList(ctx context.Context, req []float64) (resp []float64, err error) {
+	return req, nil
+}
+
 // EchoBaseDoubleList implements the TestServiceImpl interface.
 func (s *TestServiceImpl) EchoBaseDoubleList(ctx context.Context, req []float64) (resp []float64, err error) {
 	return req, nil
@@ -359,6 +370,11 @@ func (s *TestServiceImpl) EchoBool2Int32BaseMap(ctx context.Context, req map[boo
 
 // EchoBool2Int64BaseMap implements the TestServiceImpl interface.
 func (s *TestServiceImpl) EchoBool2Int64BaseMap(ctx context.Context, req map[bool]int64) (resp map[bool]int64, err error) {
+	return req, nil
+}
+
+// EchoBool2FloatBaseMap implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoBool2FloatBaseMap(ctx context.Context, req map[bool]float64) (resp map[bool]float64, err error) {
 	return req, nil
 }
 
@@ -430,17 +446,22 @@ func (s *TestServiceImpl) EchoMultiBaseDouble(ctx context.Context, baseReq float
 	}, nil
 }
 
-// EchoBaseFloat implements the TestServiceImpl interface.
-func (s *TestServiceImpl) EchoBaseFloat(ctx context.Context, req float64) (resp float64, err error) {
-	return req, nil
+// EchoMethodA implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMethodA(ctx context.Context, req bool) (resp string, err error) {
+	return fmt.Sprintf("A:%v", req), nil
 }
 
-// EchoBaseFloatList implements the TestServiceImpl interface.
-func (s *TestServiceImpl) EchoBaseFloatList(ctx context.Context, req []float64) (resp []float64, err error) {
-	return req, nil
+// EchoMethodB implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMethodB(ctx context.Context, req int32) (resp string, err error) {
+	return fmt.Sprintf("B:%v", req), nil
 }
 
-// EchoBool2FloatBaseMap implements the TestServiceImpl interface.
-func (s *TestServiceImpl) EchoBool2FloatBaseMap(ctx context.Context, req map[bool]float64) (resp map[bool]float64, err error) {
-	return req, nil
+// EchoMethodC implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMethodC(ctx context.Context, req int32) (resp string, err error) {
+	return fmt.Sprintf("C:%v", req), nil
+}
+
+// EchoMethodD implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoMethodD(ctx context.Context, req1 bool, req2 int32) (resp string, err error) {
+	return fmt.Sprintf("D:%v,%v", req1, req2), nil
 }

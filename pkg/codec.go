@@ -22,7 +22,6 @@ package dubbo
 import (
 	"context"
 	"fmt"
-
 	"github.com/cloudwego/kitex/pkg/remote"
 	"github.com/cloudwego/kitex/pkg/remote/codec"
 	"github.com/kitex-contrib/codec-dubbo/pkg/dubbo_spec"
@@ -108,6 +107,11 @@ func (m *DubboCodec) encodeRequestPayload(ctx context.Context, message remote.Me
 		// todo: kitex mapping
 		Group: "",
 	}
+	// if a method name annotation exists, update the method name to the annotation value.
+	if methodName, ext := m.getMethodAnnotation(message).GetMethodName(); ext {
+		service.Method = methodName
+	}
+
 	if err = m.messageServiceInfo(ctx, service, encoder); err != nil {
 		return nil, err
 	}
@@ -229,8 +233,8 @@ func (m *DubboCodec) messageData(message remote.Message, e iface.Encoder) error 
 		return fmt.Errorf("invalid data: not hessian2.MessageWriter")
 	}
 
-	typeAnno := m.getTypeAnnotation(message)
-	types, err := m.methodCache.GetTypes(data, typeAnno)
+	methodAnno := m.getMethodAnnotation(message)
+	types, err := m.methodCache.GetTypes(data, methodAnno)
 	if err != nil {
 		return err
 	}
@@ -267,15 +271,15 @@ func (m *DubboCodec) messageAttachment(ctx context.Context, service *dubbo_spec.
 	return e.Encode(attachment)
 }
 
-func (m *DubboCodec) getTypeAnnotation(message remote.Message) *hessian2.TypeAnnotation {
-	var typeAnno *hessian2.TypeAnnotation
+func (m *DubboCodec) getMethodAnnotation(message remote.Message) *hessian2.MethodAnnotation {
+	var methodAnno *hessian2.MethodAnnotation
 	methodKey := message.ServiceInfo().ServiceName + "." + message.RPCInfo().To().Method()
-	if m.opt.TypeAnnotations != nil {
-		if t, ok := m.opt.TypeAnnotations[methodKey]; ok {
-			typeAnno = t
+	if m.opt.MethodAnnotations != nil {
+		if t, ok := m.opt.MethodAnnotations[methodKey]; ok {
+			methodAnno = t
 		}
 	}
-	return typeAnno
+	return methodAnno
 }
 
 // Unmarshal decode method
@@ -336,9 +340,12 @@ func (m *DubboCodec) decodeRequestBody(ctx context.Context, header *dubbo_spec.D
 	}
 
 	// decode payload
-	// there is no need to make use of types
-	if _, err = decoder.Decode(); err != nil {
+	if types, err := decoder.Decode(); err != nil {
 		return err
+	} else {
+		if method, ext := m.opt.MethodNames[service.Method+types.(string)]; ext {
+			service.Method = method
+		}
 	}
 	if err := codec.NewDataIfNeeded(service.Method, message); err != nil {
 		return err

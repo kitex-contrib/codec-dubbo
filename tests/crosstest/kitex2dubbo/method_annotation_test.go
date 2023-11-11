@@ -21,6 +21,7 @@ package kitex2dubbo
 
 import (
 	"context"
+	"fmt"
 	"testing"
 )
 
@@ -250,4 +251,29 @@ func TestEchoMultiBaseDouble_Java(t *testing.T) {
 	assertEcho(t, err, baseReq, resp.BaseResp)
 	assertEcho(t, err, listReq, resp.ListResp)
 	assertEcho(t, err, mapReq, resp.MapResp)
+}
+
+func TestEchoMethodA_Java(t *testing.T) {
+	var req bool = true
+	resp, err := cli2Java.EchoMethodA(context.Background(), req)
+	assertEcho(t, err, fmt.Sprintf("A:%v", req), resp)
+}
+
+func TestEchoMethodB_Java(t *testing.T) {
+	var req int32 = 1
+	resp, err := cli2Java.EchoMethodB(context.Background(), req)
+	assertEcho(t, err, fmt.Sprintf("B:%v", req), resp)
+}
+
+func TestEchoMethodC_Java(t *testing.T) {
+	var req int32 = 1
+	resp, err := cli2Java.EchoMethodC(context.Background(), req)
+	assertEcho(t, err, fmt.Sprintf("C:%v", req), resp)
+}
+
+func TestEchoMethodD_Java(t *testing.T) {
+	var req1 bool = true
+	var req2 int32 = 1
+	resp, err := cli2Java.EchoMethodD(context.Background(), req1, req2)
+	assertEcho(t, err, fmt.Sprintf("D:%v,%v", req1, req2), resp)
 }

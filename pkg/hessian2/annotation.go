@@ -19,25 +19,42 @@
 
 package hessian2
 
-import "strings"
+import (
+	"strings"
+)
 
-// TypeAnnotation is used to store and parse a type annotation.
-type TypeAnnotation struct {
-	anno       string
+// MethodAnnotation Used to store parameter types and parameter names in method annotations.
+type MethodAnnotation struct {
+	argsAnno   string
+	methodName string
 	fieldTypes []string
 }
 
-// NewTypeAnnotation is used to create a type annotation object.
-func NewTypeAnnotation(anno string) *TypeAnnotation {
-	ta := &TypeAnnotation{anno: anno}
-	ta.fieldTypes = strings.Split(ta.anno, ",")
-	return ta
+// NewMethodAnnotation is used to create a method annotation object.
+func NewMethodAnnotation(annos map[string][]string) *MethodAnnotation {
+	ma := new(MethodAnnotation)
+	if v, ok := annos[HESSIAN_ARGS_TYPE_TAG]; ok && len(v) > 0 {
+		ma.argsAnno = v[0]
+		ma.fieldTypes = strings.Split(ma.argsAnno, ",")
+	}
+	if v, ok := annos[HESSIAN_JAVA_METHOD_NAME_TAG]; ok && len(v) > 0 {
+		ma.methodName = v[0]
+	}
+	return ma
 }
 
 // GetFieldType retrieves the type annotation for a field by its index.
-func (ta *TypeAnnotation) GetFieldType(i int) string {
-	if ta != nil && len(ta.fieldTypes) > i {
-		return ta.fieldTypes[i]
+func (ma *MethodAnnotation) GetFieldType(i int) string {
+	if ma != nil && len(ma.fieldTypes) > i {
+		return ma.fieldTypes[i]
 	}
 	return ""
+}
+
+// GetMethodName get the method name specified by the method annotation.
+func (ma *MethodAnnotation) GetMethodName() (string, bool) {
+	if ma == nil || ma.methodName == "" {
+		return "", false
+	}
+	return ma.methodName, true
 }

@@ -20,13 +20,18 @@
 package dubbo
 
 import (
+	"fmt"
 	"github.com/cloudwego/thriftgo/thrift_reflection"
 	"github.com/kitex-contrib/codec-dubbo/pkg/hessian2"
+	"reflect"
 )
 
 type Options struct {
-	JavaClassName   string
-	TypeAnnotations map[string]*hessian2.TypeAnnotation
+	JavaClassName     string
+	MethodAnnotations map[string]*hessian2.MethodAnnotation
+	// store method name mapping of java -> go.
+	// use the annotation method name + parameter types as the unique identifier.
+	MethodNames map[string]string
 }
 
 func (o *Options) Apply(opts []Option) {
@@ -57,34 +62,52 @@ func WithJavaClassName(name string) Option {
 	}}
 }
 
-// WithFileDescriptor provides method annotations for DubboCodec. Adding method
-// annotations allows specifying the Java types for DubboCodec encoding.
+// WithFileDescriptor provides method annotations for DubboCodec.
+// Adding method annotations allows you to specify the method parameters and method name on the Java side.
 func WithFileDescriptor(fd *thrift_reflection.FileDescriptor) Option {
 	if fd == nil {
 		panic("Please pass in a valid FileDescriptor.")
 	}
 
 	return Option{F: func(o *Options) {
-		o.TypeAnnotations = extractAnnotations(fd)
+		parseAnnotations(o, fd)
 	}}
 }
 
-// extractAnnotations extracts method annotations from the given FileDescriptor
-// and returns them as a map. These annotations allow specifying Java types for DubboCodec encoding.
-// The annotation format is (hessian.argsType="arg1_type,arg2_type,arg3_type,..."),
-// use an empty string or "-" as arg_type to use the default parsing method.
-func extractAnnotations(fd *thrift_reflection.FileDescriptor) map[string]*hessian2.TypeAnnotation {
-	annotations := make(map[string]*hessian2.TypeAnnotation)
+// parseAnnotations parse method annotations and store them in options.
+func parseAnnotations(o *Options, fd *thrift_reflection.FileDescriptor) {
+	o.MethodAnnotations = make(map[string]*hessian2.MethodAnnotation)
+	o.MethodNames = make(map[string]string)
 
 	for _, svc := range fd.GetServices() {
 		prefix := svc.GetName() + "."
 
 		for _, m := range svc.GetMethods() {
-			annos := m.GetAnnotations()
-			if v, ok := annos[hessian2.HESSIAN_ARGS_TYPE_TAG]; ok && len(v) > 0 {
-				annotations[prefix+m.GetName()] = hessian2.NewTypeAnnotation(v[0])
+			ma := hessian2.NewMethodAnnotation(m.GetAnnotations())
+			o.MethodAnnotations[prefix+m.GetName()] = ma
+			params := getMethodParams(m, ma)
+
+			if method, ext := ma.GetMethodName(); ext {
+				types, err := hessian2.GetParamsTypeList(params)
+				if err != nil {
+					panic(fmt.Sprintf("Get method %s parameter types failed: %s", m.GetName(), err.Error()))
+				}
+				o.MethodNames[method+types] = m.GetName()
 			}
 		}
 	}
-	return annotations
+}
+
+// getMethodParams get the parameter list of a method.
+func getMethodParams(m *thrift_reflection.MethodDescriptor, ma *hessian2.MethodAnnotation) []*hessian2.Parameter {
+	params := make([]*hessian2.Parameter, len(m.GetArgs()))
+	for i, a := range m.GetArgs() {
+		typ, err := a.GetGoType()
+		if err != nil {
+			panic(fmt.Sprintf("obtain the type of parameter %s in method %s failed: %s", a.GetName(), m.GetName(), err.Error()))
+		}
+		val := reflect.New(typ).Elem().Interface()
+		params[i] = hessian2.NewParameter(val, ma.GetFieldType(i))
+	}
+	return params
 }

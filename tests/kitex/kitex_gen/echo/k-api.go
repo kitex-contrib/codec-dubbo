@@ -5226,3 +5226,279 @@ func (p *TestServiceEchoMultiBaseDoubleResult) String() string {
 func (p *TestServiceEchoMultiBaseDoubleResult) GetResult() interface{} {
 	return p.Success
 }
+
+type TestServiceEchoMethodAArgs struct {
+	Req bool `thrift:"req,1" frugal:"1,default,bool" json:"req"`
+}
+
+func NewTestServiceEchoMethodAArgs() *TestServiceEchoMethodAArgs {
+	return &TestServiceEchoMethodAArgs{}
+}
+
+func (p *TestServiceEchoMethodAArgs) InitDefault() {
+	*p = TestServiceEchoMethodAArgs{}
+}
+
+func (p *TestServiceEchoMethodAArgs) GetReq() (v bool) {
+	return p.Req
+}
+func (p *TestServiceEchoMethodAArgs) SetReq(val bool) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoMethodAArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMethodAArgs(%+v)", *p)
+}
+func (p *TestServiceEchoMethodAArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoMethodAResult struct {
+	Success *string `thrift:"success,0,optional" frugal:"0,optional,string" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoMethodAResult() *TestServiceEchoMethodAResult {
+	return &TestServiceEchoMethodAResult{}
+}
+
+func (p *TestServiceEchoMethodAResult) InitDefault() {
+	*p = TestServiceEchoMethodAResult{}
+}
+
+var TestServiceEchoMethodAResult_Success_DEFAULT string
+
+func (p *TestServiceEchoMethodAResult) GetSuccess() (v string) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoMethodAResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoMethodAResult) SetSuccess(x interface{}) {
+	p.Success = x.(*string)
+}
+
+func (p *TestServiceEchoMethodAResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoMethodAResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMethodAResult(%+v)", *p)
+}
+func (p *TestServiceEchoMethodAResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoMethodBArgs struct {
+	Req int32 `thrift:"req,1" frugal:"1,default,i32" json:"req"`
+}
+
+func NewTestServiceEchoMethodBArgs() *TestServiceEchoMethodBArgs {
+	return &TestServiceEchoMethodBArgs{}
+}
+
+func (p *TestServiceEchoMethodBArgs) InitDefault() {
+	*p = TestServiceEchoMethodBArgs{}
+}
+
+func (p *TestServiceEchoMethodBArgs) GetReq() (v int32) {
+	return p.Req
+}
+func (p *TestServiceEchoMethodBArgs) SetReq(val int32) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoMethodBArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMethodBArgs(%+v)", *p)
+}
+func (p *TestServiceEchoMethodBArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoMethodBResult struct {
+	Success *string `thrift:"success,0,optional" frugal:"0,optional,string" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoMethodBResult() *TestServiceEchoMethodBResult {
+	return &TestServiceEchoMethodBResult{}
+}
+
+func (p *TestServiceEchoMethodBResult) InitDefault() {
+	*p = TestServiceEchoMethodBResult{}
+}
+
+var TestServiceEchoMethodBResult_Success_DEFAULT string
+
+func (p *TestServiceEchoMethodBResult) GetSuccess() (v string) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoMethodBResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoMethodBResult) SetSuccess(x interface{}) {
+	p.Success = x.(*string)
+}
+
+func (p *TestServiceEchoMethodBResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoMethodBResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMethodBResult(%+v)", *p)
+}
+func (p *TestServiceEchoMethodBResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoMethodCArgs struct {
+	Req int32 `thrift:"req,1" frugal:"1,default,i32" json:"req"`
+}
+
+func NewTestServiceEchoMethodCArgs() *TestServiceEchoMethodCArgs {
+	return &TestServiceEchoMethodCArgs{}
+}
+
+func (p *TestServiceEchoMethodCArgs) InitDefault() {
+	*p = TestServiceEchoMethodCArgs{}
+}
+
+func (p *TestServiceEchoMethodCArgs) GetReq() (v int32) {
+	return p.Req
+}
+func (p *TestServiceEchoMethodCArgs) SetReq(val int32) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoMethodCArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMethodCArgs(%+v)", *p)
+}
+func (p *TestServiceEchoMethodCArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoMethodCResult struct {
+	Success *string `thrift:"success,0,optional" frugal:"0,optional,string" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoMethodCResult() *TestServiceEchoMethodCResult {
+	return &TestServiceEchoMethodCResult{}
+}
+
+func (p *TestServiceEchoMethodCResult) InitDefault() {
+	*p = TestServiceEchoMethodCResult{}
+}
+
+var TestServiceEchoMethodCResult_Success_DEFAULT string
+
+func (p *TestServiceEchoMethodCResult) GetSuccess() (v string) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoMethodCResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoMethodCResult) SetSuccess(x interface{}) {
+	p.Success = x.(*string)
+}
+
+func (p *TestServiceEchoMethodCResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoMethodCResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMethodCResult(%+v)", *p)
+}
+func (p *TestServiceEchoMethodCResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoMethodDArgs struct {
+	Req1 bool  `thrift:"req1,1" frugal:"1,default,bool" json:"req1"`
+	Req2 int32 `thrift:"req2,2" frugal:"2,default,i32" json:"req2"`
+}
+
+func NewTestServiceEchoMethodDArgs() *TestServiceEchoMethodDArgs {
+	return &TestServiceEchoMethodDArgs{}
+}
+
+func (p *TestServiceEchoMethodDArgs) InitDefault() {
+	*p = TestServiceEchoMethodDArgs{}
+}
+
+func (p *TestServiceEchoMethodDArgs) GetReq1() (v bool) {
+	return p.Req1
+}
+
+func (p *TestServiceEchoMethodDArgs) GetReq2() (v int32) {
+	return p.Req2
+}
+func (p *TestServiceEchoMethodDArgs) SetReq1(val bool) {
+	p.Req1 = val
+}
+func (p *TestServiceEchoMethodDArgs) SetReq2(val int32) {
+	p.Req2 = val
+}
+
+func (p *TestServiceEchoMethodDArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMethodDArgs(%+v)", *p)
+}
+func (p *TestServiceEchoMethodDArgs) GetFirstArgument() interface{} {
+	return p.Req1
+}
+
+type TestServiceEchoMethodDResult struct {
+	Success *string `thrift:"success,0,optional" frugal:"0,optional,string" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoMethodDResult() *TestServiceEchoMethodDResult {
+	return &TestServiceEchoMethodDResult{}
+}
+
+func (p *TestServiceEchoMethodDResult) InitDefault() {
+	*p = TestServiceEchoMethodDResult{}
+}
+
+var TestServiceEchoMethodDResult_Success_DEFAULT string
+
+func (p *TestServiceEchoMethodDResult) GetSuccess() (v string) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoMethodDResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoMethodDResult) SetSuccess(x interface{}) {
+	p.Success = x.(*string)
+}
+
+func (p *TestServiceEchoMethodDResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoMethodDResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoMethodDResult(%+v)", *p)
+}
+func (p *TestServiceEchoMethodDResult) GetResult() interface{} {
+	return p.Success
+}

@@ -51,12 +51,12 @@ type testStructC struct {
 func TestTypesCache_getTypes(t *testing.T) {
 	tests := []struct {
 		desc     string
-		datum    []parameter
+		datum    []Parameter
 		expected func(t *testing.T, c *MethodCache)
 	}{
 		{
 			desc: "same structs with basic Type",
-			datum: []parameter{
+			datum: []Parameter{
 				{value: &testStructA{Field: 1}},
 				{value: &testStructA{Field: 2}},
 			},
@@ -71,7 +71,7 @@ func TestTypesCache_getTypes(t *testing.T) {
 		},
 		{
 			desc: "same structs with embedded Type",
-			datum: []parameter{
+			datum: []Parameter{
 				{value: &testStructB{
 					Internal: &testInternalStruct{
 						Field: 1,
@@ -98,7 +98,7 @@ func TestTypesCache_getTypes(t *testing.T) {
 		},
 		{
 			desc: "different structs",
-			datum: []parameter{
+			datum: []Parameter{
 				{value: &testStructA{Field: 1}},
 				{value: &testStructB{
 					Internal: &testInternalStruct{
@@ -126,7 +126,7 @@ func TestTypesCache_getTypes(t *testing.T) {
 		},
 		{
 			desc: "use annotations to specify types",
-			datum: []parameter{
+			datum: []Parameter{
 				{
 					value:    &testStructA{Field: 1},
 					typeAnno: "byte",
@@ -196,7 +196,7 @@ func TestTypesCache_getTypes(t *testing.T) {
 				testData := data
 				t.Run(fmt.Sprintf("struct%d", i), func(t *testing.T) {
 					t.Parallel()
-					_, err := tc.GetTypes(testData.value, NewTypeAnnotation(testData.typeAnno))
+					_, err := tc.GetTypes(testData.value, NewMethodAnnotation(map[string][]string{HESSIAN_ARGS_TYPE_TAG: []string{testData.typeAnno}}))
 					if err != nil {
 						t.Fatal(err)
 					}
