@@ -74,6 +74,11 @@ service EchoService {
 }
 ```
 
+### Service Registry and Service Discovery
+
+Currently, only **Interface-Level** service discovery based on zookeeper is supported.
+**Application-Level** service discovery and service registration will be supported in subsequent iterations.
+
 ## Getting Started
 
 [**Concrete sample**](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples//helloworld/).
@@ -224,6 +229,70 @@ func main() {
 
 Important notes:
 1. Each Interface Name corresponds to a `DubboCodec` instance. Please do not share the instance between multiple servers.
+
+## Service Registry and Service Discovery
+
+### Interface-Level service discovery
+
+#### initializing client
+
+```go
+import (
+	"context"
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/klog"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	// this resolver is dedicated to interacting with the zookeeper in the dubbo system
+	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/resolver"
+	"github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello"
+	"github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
+)
+
+func main() {
+	intfName := "org.cloudwego.kitex.samples.api.GreetProvider"
+	res, err := resolver.NewZookeeperResolver(
+		// specify the addresses of the zookeeper servers, please specify at least one
+		resolver.WithServers("127.0.0.1:2181"),
+		// target dubbo Interface Name
+		resolver.WithInterfaceName(intfName),
+	)
+	if err != nil {
+		panic(err)
+	}
+	cli, err := greetservice.NewClient("helloworld",
+		// configure ZookeeperResolver
+		client.WithResolver(res),
+		// configure DubboCodec
+		client.WithCodec(
+			dubbo.NewDubboCodec(
+				// target dubbo Interface，this Interface should be consistent with the Resolver above
+				dubbo.WithJavaClassName(intfName),
+			),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := cli.Greet(context.Background(), "world")
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+	klog.Infof("resp: %s", resp)
+	
+	respWithStruct, err := cli.GreetWithStruct(context.Background(), &hello.GreetRequest{Req: "world"})
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+	klog.Infof("respWithStruct: %s", respWithStruct.Resp)
+}
+```
+
+Important notes:
+1. The ```WithJavaClassName``` for DubboCodec should be consistent with the ```WithInterfaceName``` for ZookeeperResolver.
+2. For more ZookeeperResolver configurations, please refer to [**this**](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go).
 
 ## Benchmark
 
