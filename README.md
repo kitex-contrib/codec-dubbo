@@ -289,7 +289,7 @@ func main() {
 ```
 
 **重要提示**
-1. 用于 DubboCodec 的 WithJavaClassName 应与用于 ZookeeperResolver 的 WithInterfaceName保持一致。
+1. 用于 DubboCodec 的```WithJavaClassName```应与用于 ZookeeperResolver 的```WithInterfaceName```保持一致。
 2. 更多 ZookeeperResolver 配置请参考[**这里**](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go)。
 
 ## 性能测试
