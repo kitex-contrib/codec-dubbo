@@ -21,6 +21,7 @@ package registry_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"helloworld/api"
 	"net"
@@ -51,7 +52,8 @@ func runDubboGoServer(exitChan chan struct{}) {
 	}
 }
 
-func runDubboJavaServer() context.CancelFunc {
+func runDubboJavaServer() (context.CancelFunc, chan struct{}) {
+	finishChan := make(chan struct{})
 	testDir := "../dubbo-java"
 	// initialize mvn packages
 	cleanCmd := exec.Command("mvn", "clean", "package")
@@ -68,12 +70,15 @@ func runDubboJavaServer() context.CancelFunc {
 	cmd.Dir = testDir
 
 	go func() {
-		if err := cmd.Run(); err != nil {
-			panic(fmt.Sprintf("mvn exec failed: %s", err))
+		var exitErr *exec.ExitError
+		if err := cmd.Run(); err == nil || !errors.As(err, &exitErr) {
+			panic("dubbo-java server should be terminated by this test process")
+		} else {
+			finishChan <- struct{}{}
 		}
 	}()
 
-	return cancel
+	return cancel, finishChan
 }
 
 func waitForPort(port string) {
@@ -91,7 +96,7 @@ func waitForPort(port string) {
 func TestMain(m *testing.M) {
 	exitChan := make(chan struct{})
 	go runDubboGoServer(exitChan)
-	cancel := runDubboJavaServer()
+	cancel, finishChan := runDubboJavaServer()
 	waitForPort("20000")
 	waitForPort("20001")
 	m.Run()
@@ -99,6 +104,8 @@ func TestMain(m *testing.M) {
 	close(exitChan)
 	// kill dubbo-java server
 	cancel()
+	// wait for dubbo-java server terminated
+	<-finishChan
 }
 
 func TestResolve(t *testing.T) {
