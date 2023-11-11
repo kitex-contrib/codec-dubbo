@@ -21,6 +21,7 @@ package registries
 
 import (
 	"net/url"
+	"strconv"
 
 	"github.com/cloudwego/kitex/pkg/discovery"
 )
@@ -57,11 +58,16 @@ func (u *URL) FromString(raw string) error {
 }
 
 func (u *URL) ToInstance() discovery.Instance {
+	weight := DefaultDubboServiceWeight
+	if weightStr := u.params.Get("weight"); weightStr != "" {
+		if weightParam, err := strconv.Atoi(weightStr); err == nil {
+			weight = weightParam
+		}
+	}
 	params := map[string]string{
 		DubboServiceProtocolKey: u.protocol,
 		DubboServiceGroupKey:    u.params.Get("group"),
 		DubboServiceVersionKey:  u.params.Get("version"),
 	}
-	// todo(DMwangnima): figure out dubbo weight mechanism and set default weight here temporarily.
-	return discovery.NewInstance("tcp", u.host, DefaultDubboServiceWeight, params)
+	return discovery.NewInstance("tcp", u.host, weight, params)
 }

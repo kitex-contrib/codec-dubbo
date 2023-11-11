@@ -40,6 +40,14 @@ const (
 type zookeeperResolver struct {
 	conn *zk.Conn
 	opt  *Options
+	// registryServicePath is the path used to retrieve instances information from zookeeper.
+	// format: /<RegistryGroup>/<InterfaceName>/providers
+	registryServicePath string
+	// uniqueName is the pre-calculated result returned by Name() and Target().
+	// format: /<registryServicePath>/<ServiceGroup>/<ServiceVersion>
+	// since each group or each version of the service belongs to a different BalancerFactory-Resolver,
+	// we should add group and version information to it for caching.
+	uniqueName string
 }
 
 func NewZookeeperResolver(opts ...Option) (discovery.Resolver, error) {
@@ -48,18 +56,22 @@ func NewZookeeperResolver(opts ...Option) (discovery.Resolver, error) {
 	if err != nil {
 		return nil, err
 	}
+	regSvcPath := fmt.Sprintf(registries.RegistryServicesKey, o.RegistryGroup, o.InterfaceName)
+	uniName := strings.Join([]string{"dubbo-zookeeper", regSvcPath, o.ServiceGroup, o.ServiceVersion}, "/")
 	return &zookeeperResolver{
-		conn: conn,
-		opt:  o,
+		conn:                conn,
+		opt:                 o,
+		registryServicePath: regSvcPath,
+		uniqueName:          uniName,
 	}, nil
 }
 
 func (z *zookeeperResolver) Target(ctx context.Context, target rpcinfo.EndpointInfo) (description string) {
-	return fmt.Sprintf(registries.RegistryServicesKey, z.opt.RegistryGroup, z.opt.InterfaceName)
+	return z.uniqueName
 }
 
 func (z *zookeeperResolver) Resolve(ctx context.Context, desc string) (discovery.Result, error) {
-	rawURLs, _, err := z.conn.Children(desc)
+	rawURLs, _, err := z.conn.Children(z.registryServicePath)
 	if err != nil {
 		return discovery.Result{}, err
 	}
@@ -91,6 +103,5 @@ func (z *zookeeperResolver) Diff(cacheKey string, prev, next discovery.Result) (
 }
 
 func (z *zookeeperResolver) Name() string {
-	// todo(DMwangnima): consider this Name since we do not want to share a common Resolver
-	return strings.Join([]string{"dubbo-zookeeper", z.opt.RegistryGroup, z.opt.InterfaceName, z.opt.ServiceGroup, z.opt.ServiceVersion}, ":")
+	return z.uniqueName
 }

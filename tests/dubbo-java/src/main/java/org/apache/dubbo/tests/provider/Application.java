@@ -50,6 +50,7 @@ public static void main(String[] args) {
             service1.setRef(new UserProviderImplV1());
             service1.setGroup("g1");
             service1.setVersion("v1");
+            service1.setWeight(1000);
             list.add(service1);
 
             // initialize zookeeper registry
