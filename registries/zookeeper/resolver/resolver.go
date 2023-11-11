@@ -91,6 +91,6 @@ func (z *zookeeperResolver) Diff(cacheKey string, prev, next discovery.Result) (
 }
 
 func (z *zookeeperResolver) Name() string {
-	// todo(DMwangnima): consider this Name since we do not want share a common Resolver
+	// todo(DMwangnima): consider this Name since we do not want to share a common Resolver
 	return strings.Join([]string{"dubbo-zookeeper", z.opt.RegistryGroup, z.opt.InterfaceName, z.opt.ServiceGroup, z.opt.ServiceVersion}, ":")
 }

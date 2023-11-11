@@ -16,9 +16,9 @@ mvn clean package
 mvn -Djava.net.preferIPv4Stack=true -Dexec.mainClass=org.apache.dubbo.tests.provider.Application exec:java
 ```
 
-## Start the service provider
+## Start the service provider with registry
 
 ```bash
 mvn clean package
-mvn -Djava.net.preferIPv4Stack=true -Dexec.mainClass=org.apache.dubbo.tests.provider.RegistryApplication exec:java
+mvn -Djava.net.preferIPv4Stack=true -Dexec.mainClass=org.apache.dubbo.tests.provider.Application -Dexec.args="withRegistry" exec:java
 ```

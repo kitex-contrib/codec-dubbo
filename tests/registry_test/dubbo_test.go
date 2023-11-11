@@ -62,7 +62,8 @@ func runDubboJavaServer() context.CancelFunc {
 	ctx, cancel := context.WithCancel(context.Background())
 	cmd := exec.CommandContext(ctx, "mvn",
 		"-Djava.net.preferIPv4Stack=true",
-		"-Dexec.mainClass=org.apache.dubbo.tests.provider.RegistryApplication",
+		"-Dexec.mainClass=org.apache.dubbo.tests.provider.Application",
+		"-Dexec.args=\"withRegistry\"",
 		"exec:java")
 	cmd.Dir = testDir
 
@@ -104,6 +105,7 @@ func TestResolve(t *testing.T) {
 	// please refer to ./conf/dubbogo.yaml
 	goInterfaceName := "org.apache.dubbo.tests.go.api.UserProvider"
 	javaInterfaceName := "org.apache.dubbo.tests.api.UserProvider"
+	zookeeperAddress1 := "127.0.0.1:2181"
 	tests := []struct {
 		resOpts   []resolver.Option
 		codecOpts []dubbo.Option
@@ -111,7 +113,7 @@ func TestResolve(t *testing.T) {
 	}{
 		{
 			resOpts: []resolver.Option{
-				resolver.WithServers("127.0.0.1:2181"),
+				resolver.WithServers(zookeeperAddress1),
 				resolver.WithInterfaceName(goInterfaceName),
 				resolver.WithRegistryGroup("myGroup"),
 			},
@@ -126,7 +128,7 @@ func TestResolve(t *testing.T) {
 		},
 		{
 			resOpts: []resolver.Option{
-				resolver.WithServers("127.0.0.1:2181"),
+				resolver.WithServers(zookeeperAddress1),
 				resolver.WithInterfaceName(goInterfaceName),
 				resolver.WithRegistryGroup("myGroup"),
 				resolver.WithServiceGroup("g1"),
@@ -143,7 +145,7 @@ func TestResolve(t *testing.T) {
 		},
 		{
 			resOpts: []resolver.Option{
-				resolver.WithServers("127.0.0.1:2181"),
+				resolver.WithServers(zookeeperAddress1),
 				resolver.WithInterfaceName(javaInterfaceName),
 				resolver.WithRegistryGroup("myGroup"),
 			},
@@ -158,7 +160,7 @@ func TestResolve(t *testing.T) {
 		},
 		{
 			resOpts: []resolver.Option{
-				resolver.WithServers("127.0.0.1:2181"),
+				resolver.WithServers(zookeeperAddress1),
 				resolver.WithInterfaceName(javaInterfaceName),
 				resolver.WithRegistryGroup("myGroup"),
 				resolver.WithServiceGroup("g1"),

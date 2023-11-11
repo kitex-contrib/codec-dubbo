@@ -79,7 +79,7 @@ func WithInterfaceName(name string) Option {
 }
 
 // WithRegistryGroup configures the group of the zookeepers serving the target dubbo Service.
-// In dubbo side, this group is referred to RegistryConfig.version.
+// In dubbo side, this group is referred to RegistryConfig.group.
 func WithRegistryGroup(group string) Option {
 	return Option{F: func(o *Options) {
 		o.RegistryGroup = group

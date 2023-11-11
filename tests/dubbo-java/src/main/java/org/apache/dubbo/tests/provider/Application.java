@@ -25,18 +25,44 @@ import org.apache.dubbo.config.ServiceConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.tests.api.UserProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Application {
 
-    public static void main(String[] args) {
+public static void main(String[] args) {
+        List<ServiceConfig> list = new ArrayList<>();
         ServiceConfig<UserProvider> service = new ServiceConfig<>();
         service.setInterface(UserProvider.class);
         service.setRef(new UserProviderImpl());
+        list.add(service);
 
-        DubboBootstrap.getInstance()
+        DubboBootstrap instance = DubboBootstrap.getInstance()
                 .application("first-dubbo-provider")
-                .protocol(new ProtocolConfig("dubbo", 20001))
-                .service(service)
-                .start()
-                .await();
+                .protocol(new ProtocolConfig("dubbo", 20001));
+
+
+        boolean withRegistryFlag = false;
+        if (args.length >= 1 && args[0].equals("withRegistry")) {
+            // initialize another version of UserProvider
+            ServiceConfig<UserProvider> service1 = new ServiceConfig<>();
+            service1.setInterface(UserProvider.class);
+            service1.setRef(new UserProviderImplV1());
+            service1.setGroup("g1");
+            service1.setVersion("v1");
+            list.add(service1);
+
+            // initialize zookeeper registry
+            String zookeeperAddress = "zookeeper://127.0.0.1:2181";
+            RegistryConfig zookeeper = new RegistryConfig(zookeeperAddress);
+            zookeeper.setGroup("myGroup");
+            zookeeper.setRegisterMode("interface");
+
+            instance = instance.registry(zookeeper);
+        }
+
+        instance.services(list).
+                start().
+                await();
     }
 }
