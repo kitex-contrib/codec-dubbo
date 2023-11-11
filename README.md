@@ -73,6 +73,10 @@ service EchoService {
 }
 ```
 
+### 服务注册与服务发现
+
+目前仅支持基于 zookeeper 的**接口级**服务发现，**应用级**服务发现以及服务注册将在后续迭代中支持。
+
 ## 开始
 
 [**完整代码**](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples//helloworld/).
@@ -221,6 +225,72 @@ func main() {
 
 **重要提示**:
 1. 每个 Dubbo Interface 对应一个 DubboCodec 实例，请不要在多个服务端之间共享同一个实例。
+
+## 服务注册与发现
+
+目前仅支持 zookeeper 作为注册中心。
+
+### 接口级服务发现
+
+#### 客户端初始化
+
+```go
+import (
+	"context"
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/klog"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	// 该resolver专门用于与dubbo体系下的zookeeper进行交互
+	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/resolver"
+	"github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello"
+	"github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
+)
+
+func main() {
+	intfName := "org.cloudwego.kitex.samples.api.GreetProvider"
+	res, err := resolver.NewZookeeperResolver(
+		// 指定 zookeeper 服务器的地址，可指定多个，请至少指定一个 
+		resolver.WithServers("127.0.0.1:2181"),
+		// 指定想要调用的 dubbo Interface
+		resolver.WithInterfaceName(intfName),
+	)
+	if err != nil {
+		panic(err)
+	}
+	cli, err := greetservice.NewClient("helloworld",
+		// 配置 ZookeeperResolver
+		client.WithResolver(res),
+		// 配置 DubboCodec
+		client.WithCodec(
+			dubbo.NewDubboCodec(
+				// 指定想要调用的 dubbo Interface，该 Interface 请与上方的 Resolver 保持一致
+				dubbo.WithJavaClassName(intfName),
+			),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := cli.Greet(context.Background(), "world")
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+	klog.Infof("resp: %s", resp)
+	
+	respWithStruct, err := cli.GreetWithStruct(context.Background(), &hello.GreetRequest{Req: "world"})
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+	klog.Infof("respWithStruct: %s", respWithStruct.Resp)
+}
+```
+
+**重要提示**
+1. 用于 DubboCodec 的 WithJavaClassName 应与用于 ZookeeperResolver 的 WithInterfaceName保持一致。
+2. 更多 ZookeeperResolver 配置请参考[**这里**](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go)。
 
 ## 性能测试
 
