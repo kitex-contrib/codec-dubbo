@@ -20,26 +20,26 @@
 
 ### 类型映射
 
-|     thrift 类型      |    golang 类型     | hessian2 类型 |       默认 java 类型       |           可拓展 java 类型           |
-|:------------------:|:----------------:|:-----------:|:----------------------:|:-------------------------------:|
-|        bool        |       bool       |   boolean   |   java.lang.Boolean    |             boolean             |
-|        byte        |       int8       |     int     |     java.lang.Byte     |              byte               |
-|        i16         |      int16       |     int     |    java.lang.Short     |              short              |
-|        i32         |      int32       |     int     |   java.lang.Integer    |               int               |
-|        i64         |      int64       |    long     |     java.lang.Long     |              long               |
-|       double       |     float64      |   double    |    java.lang.Double    |             double              |
-|       string       |      string      |   string    |    java.lang.String    |                -                |
-|       binary       |      []byte      |   binary    |         byte[]         |                -                |
-|    list\<bool>     |      []bool      |    list     |     List\<Boolean>     | boolean[] / ArrayList\<Boolean> |
-|     list\<i32>     |     []int32      |    list     |     List\<Integer>     |   int[] / ArrayList\<Integer>   |
-|     list\<i64>     |     []int64      |    list     |      List\<Long>       |    long[] / ArrayList\<Long>    |
-|   list\<double>    |    []float64     |    list     |     List\<Double>      |  double[] / ArrayList\<Double>  |
-|   list\<string>    |     []string     |    list     |     List\<String>      |  String[] / ArrayList\<String>  |
-|  map\<bool, bool>  |  map[bool]bool   |     map     | Map\<Boolean, Boolean> |   HashMap\<Boolean, Boolean>    |
-|  map\<bool, i32>   |  map[bool]int32  |     map     | Map\<Boolean, Integer> |   HashMap\<Boolean, Integer>    |
-|  map\<bool, i64>   |  map[bool]int64  |     map     |  Map\<Boolean, Long>   |     HashMap\<Boolean, Long>     |
-| map\<bool, double> | map[bool]float64 |     map     | Map\<Boolean, Double>  |    HashMap\<Boolean, Double>    |
-| map\<bool, string> | map[bool]string  |     map     | Map\<Boolean, String>  |    HashMap\<Boolean, String>    |
+|     thrift 类型      |    golang 类型     | hessian2 类型 |       默认 java 类型       |                可拓展 java 类型                 |
+|:------------------:|:----------------:|:-----------:|:----------------------:|:------------------------------------------:|
+|        bool        |       bool       |   boolean   |   java.lang.Boolean    |                  boolean                   |
+|        byte        |       int8       |     int     |     java.lang.Byte     |                    byte                    |
+|        i16         |      int16       |     int     |    java.lang.Short     |                   short                    |
+|        i32         |      int32       |     int     |   java.lang.Integer    |                    int                     |
+|        i64         |      int64       |    long     |     java.lang.Long     |                    long                    |
+|       double       |     float64      |   double    |    java.lang.Double    |    double <br> float / java.lang.Float     |
+|       string       |      string      |   string    |    java.lang.String    |                     -                      |
+|       binary       |      []byte      |   binary    |         byte[]         |                     -                      |
+|    list\<bool>     |      []bool      |    list     |     List\<Boolean>     |      boolean[] / ArrayList\<Boolean>       |
+|     list\<i32>     |     []int32      |    list     |     List\<Integer>     |        int[] / ArrayList\<Integer>         |
+|     list\<i64>     |     []int64      |    list     |      List\<Long>       |         long[] / ArrayList\<Long>          |
+|   list\<double>    |    []float64     |    list     |     List\<Double>      | double[] / ArrayList\<Double> <br> float[] |
+|   list\<string>    |     []string     |    list     |     List\<String>      |       String[] / ArrayList\<String>        |
+|  map\<bool, bool>  |  map[bool]bool   |     map     | Map\<Boolean, Boolean> |         HashMap\<Boolean, Boolean>         |
+|  map\<bool, i32>   |  map[bool]int32  |     map     | Map\<Boolean, Integer> |         HashMap\<Boolean, Integer>         |
+|  map\<bool, i64>   |  map[bool]int64  |     map     |  Map\<Boolean, Long>   |          HashMap\<Boolean, Long>           |
+| map\<bool, double> | map[bool]float64 |     map     | Map\<Boolean, Double>  |         HashMap\<Boolean, Double>          |
+| map\<bool, string> | map[bool]string  |     map     | Map\<Boolean, String>  |         HashMap\<Boolean, String>          |
 
 **重要提示**：
 
@@ -47,9 +47,9 @@
 
 2. 不支持在 map 类型中使用包含和 **binary** 类型的键值。
 
-3. dubbo-java 不支持对包含 **i8**、**i16** 键值的 map 类型解码，建议避开 dubbo-java 不兼容的用法，可以在定义接口的响应字段时使用 **struct** 来包裹 map。
+3. 由于 **float32** 在 thrift 中不是有效的类型，DubboCodec 将 **float**(java) 映射到了 **float64**(go)，可以在 idl 中使用方法注解指定 **double** 映射为 **float**，具体可参考 [api.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/tests/kitex/api.thrift)。
 
-4. 目前不支持 **float32**，因为它在 thrift 中不是有效的类型。计划在后续迭代中支持该类型。
+4. dubbo-java 不支持对包含 **byte**、**short**、**float** 键值的 Map 类型解码，建议避开 dubbo-java 不兼容的用法，可以在定义接口的响应字段时使用 **struct** 来包裹 map。
 
 ### 方法注解
 
@@ -72,6 +72,10 @@ service EchoService {
    EchoDefaultTypeResponse EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,,-")
 }
 ```
+
+### 服务注册与服务发现
+
+目前仅支持基于 zookeeper 的**接口级**服务发现，**应用级**服务发现以及服务注册将在后续迭代中支持。
 
 ## 开始
 
@@ -221,6 +225,72 @@ func main() {
 
 **重要提示**:
 1. 每个 Dubbo Interface 对应一个 DubboCodec 实例，请不要在多个服务端之间共享同一个实例。
+
+## 服务注册与发现
+
+目前仅支持 zookeeper 作为注册中心。
+
+### 接口级服务发现
+
+#### 客户端初始化
+
+```go
+import (
+	"context"
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/klog"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	// 该resolver专门用于与dubbo体系下的zookeeper进行交互
+	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/resolver"
+	"github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello"
+	"github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
+)
+
+func main() {
+	intfName := "org.cloudwego.kitex.samples.api.GreetProvider"
+	res, err := resolver.NewZookeeperResolver(
+		// 指定 zookeeper 服务器的地址，可指定多个，请至少指定一个 
+		resolver.WithServers("127.0.0.1:2181"),
+		// 指定想要调用的 dubbo Interface
+		resolver.WithInterfaceName(intfName),
+	)
+	if err != nil {
+		panic(err)
+	}
+	cli, err := greetservice.NewClient("helloworld",
+		// 配置 ZookeeperResolver
+		client.WithResolver(res),
+		// 配置 DubboCodec
+		client.WithCodec(
+			dubbo.NewDubboCodec(
+				// 指定想要调用的 dubbo Interface，该 Interface 请与上方的 Resolver 保持一致
+				dubbo.WithJavaClassName(intfName),
+			),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := cli.Greet(context.Background(), "world")
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+	klog.Infof("resp: %s", resp)
+	
+	respWithStruct, err := cli.GreetWithStruct(context.Background(), &hello.GreetRequest{Req: "world"})
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+	klog.Infof("respWithStruct: %s", respWithStruct.Resp)
+}
+```
+
+**重要提示**
+1. 用于 DubboCodec 的```WithJavaClassName```应与用于 ZookeeperResolver 的```WithInterfaceName```保持一致。
+2. 更多 ZookeeperResolver 配置请参考[**这里**](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go)。
 
 ## 性能测试
 

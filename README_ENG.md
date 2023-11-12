@@ -22,35 +22,35 @@ Write dubbo client code based on existing **api.thrift** and [**Type Mapping Tab
 
 ### Type Mapping
 
-|    thrift type     |   golang type    | hessian2 type |   default java type    |      extendable java type       |
-|:------------------:|:----------------:|:-------------:|:----------------------:|:-------------------------------:|
-|        bool        |       bool       |    boolean    |   java.lang.Boolean    |             boolean             |
-|        byte        |       int8       |      int      |     java.lang.Byte     |              byte               |
-|        i16         |      int16       |      int      |    java.lang.Short     |              short              |
-|        i32         |      int32       |      int      |   java.lang.Integer    |               int               |
-|        i64         |      int64       |     long      |     java.lang.Long     |              long               |
-|       double       |     float64      |    double     |    java.lang.Double    |             double              |
-|       string       |      string      |    string     |    java.lang.String    |                -                |
-|       binary       |      []byte      |    binary     |         byte[]         |                -                |
-|    list\<bool>     |      []bool      |     list      |     List\<Boolean>     | boolean[] / ArrayList\<Boolean> |
-|     list\<i32>     |     []int32      |     list      |     List\<Integer>     |   int[] / ArrayList\<Integer>   |
-|     list\<i64>     |     []int64      |     list      |      List\<Long>       |    long[] / ArrayList\<Long>    |
-|   list\<double>    |    []float64     |     list      |     List\<Double>      |  double[] / ArrayList\<Double>  |
-|   list\<string>    |     []string     |     list      |     List\<String>      |  String[] / ArrayList\<String>  |
-|  map\<bool, bool>  |  map[bool]bool   |      map      | Map\<Boolean, Boolean> |   HashMap\<Boolean, Boolean>    |
-|  map\<bool, i32>   |  map[bool]int32  |      map      | Map\<Boolean, Integer> |   HashMap\<Boolean, Integer>    |
-|  map\<bool, i64>   |  map[bool]int64  |      map      |  Map\<Boolean, Long>   |     HashMap\<Boolean, Long>     |
-| map\<bool, double> | map[bool]float64 |      map      | Map\<Boolean, Double>  |    HashMap\<Boolean, Double>    |
-| map\<bool, string> | map[bool]string  |      map      | Map\<Boolean, String>  |    HashMap\<Boolean, String>    |
+|    thrift type     |   golang type    | hessian2 type |   default java type    |            extendable java type            |
+|:------------------:|:----------------:|:-------------:|:----------------------:|:------------------------------------------:|
+|        bool        |       bool       |    boolean    |   java.lang.Boolean    |                  boolean                   |
+|        byte        |       int8       |      int      |     java.lang.Byte     |                    byte                    |
+|        i16         |      int16       |      int      |    java.lang.Short     |                   short                    |
+|        i32         |      int32       |      int      |   java.lang.Integer    |                    int                     |
+|        i64         |      int64       |     long      |     java.lang.Long     |                    long                    |
+|       double       |     float64      |    double     |    java.lang.Double    |    double <br> float / java.lang.Float     |
+|       string       |      string      |    string     |    java.lang.String    |                     -                      |
+|       binary       |      []byte      |    binary     |         byte[]         |                     -                      |
+|    list\<bool>     |      []bool      |     list      |     List\<Boolean>     |      boolean[] / ArrayList\<Boolean>       |
+|     list\<i32>     |     []int32      |     list      |     List\<Integer>     |        int[] / ArrayList\<Integer>         |
+|     list\<i64>     |     []int64      |     list      |      List\<Long>       |         long[] / ArrayList\<Long>          |
+|   list\<double>    |    []float64     |     list      |     List\<Double>      | double[] / ArrayList\<Double> <br> float[] |
+|   list\<string>    |     []string     |     list      |     List\<String>      |       String[] / ArrayList\<String>        |
+|  map\<bool, bool>  |  map[bool]bool   |      map      | Map\<Boolean, Boolean> |         HashMap\<Boolean, Boolean>         |
+|  map\<bool, i32>   |  map[bool]int32  |      map      | Map\<Boolean, Integer> |         HashMap\<Boolean, Integer>         |
+|  map\<bool, i64>   |  map[bool]int64  |      map      |  Map\<Boolean, Long>   |          HashMap\<Boolean, Long>           |
+| map\<bool, double> | map[bool]float64 |      map      | Map\<Boolean, Double>  |         HashMap\<Boolean, Double>          |
+| map\<bool, string> | map[bool]string  |      map      | Map\<Boolean, String>  |         HashMap\<Boolean, String>          |
 
 **Important notes**:
 1. The list of map types is not exhaustive and includes only tested cases.
 
 2. Using keys of **binary** type in map types is not supported.
 
-3. dubbo-java does not support decoding map types that contain **i8** or **i16** key values. It is recommended to avoid practices incompatible with dubbo-java. You can use **struct** to wrap the map when defining response fields for interfaces.
+3. Since **float32** is not a valid type in Thrift, DubboCodec maps **float**(java) to **float64**(go). You can specify the mapping of **double** to **float** in the idl using method annotations, Please see [api.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/tests/kitex/api.thrift).
 
-4. **float32** is planned but currently not supported since it's not a valid type in thrift.
+4. dubbo-java does not support decoding map types that contain **byte**, **short**, or **float** key values. It is recommended to avoid practices incompatible with dubbo-java. You can use **struct** to wrap the map when defining response fields for interfaces.
 
 ### Method Annotation
 
@@ -73,6 +73,11 @@ service EchoService {
    EchoDefaultTypeResponse EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,,-")
 }
 ```
+
+### Service Registry and Service Discovery
+
+Currently, only **Interface-Level** service discovery based on zookeeper is supported.
+**Application-Level** service discovery and service registration will be supported in subsequent iterations.
 
 ## Getting Started
 
@@ -224,6 +229,70 @@ func main() {
 
 Important notes:
 1. Each Interface Name corresponds to a `DubboCodec` instance. Please do not share the instance between multiple servers.
+
+## Service Registry and Service Discovery
+
+### Interface-Level service discovery
+
+#### initializing client
+
+```go
+import (
+	"context"
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/klog"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	// this resolver is dedicated to interacting with the zookeeper in the dubbo system
+	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/resolver"
+	"github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello"
+	"github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
+)
+
+func main() {
+	intfName := "org.cloudwego.kitex.samples.api.GreetProvider"
+	res, err := resolver.NewZookeeperResolver(
+		// specify the addresses of the zookeeper servers, please specify at least one
+		resolver.WithServers("127.0.0.1:2181"),
+		// target dubbo Interface Name
+		resolver.WithInterfaceName(intfName),
+	)
+	if err != nil {
+		panic(err)
+	}
+	cli, err := greetservice.NewClient("helloworld",
+		// configure ZookeeperResolver
+		client.WithResolver(res),
+		// configure DubboCodec
+		client.WithCodec(
+			dubbo.NewDubboCodec(
+				// target dubbo Interface，this Interface should be consistent with the Resolver above
+				dubbo.WithJavaClassName(intfName),
+			),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := cli.Greet(context.Background(), "world")
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+	klog.Infof("resp: %s", resp)
+	
+	respWithStruct, err := cli.GreetWithStruct(context.Background(), &hello.GreetRequest{Req: "world"})
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+	klog.Infof("respWithStruct: %s", respWithStruct.Resp)
+}
+```
+
+Important notes:
+1. The ```WithJavaClassName``` for DubboCodec should be consistent with the ```WithInterfaceName``` for ZookeeperResolver.
+2. For more ZookeeperResolver configurations, please refer to [**this**](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go).
 
 ## Benchmark
 

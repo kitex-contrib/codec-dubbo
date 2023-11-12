@@ -65,7 +65,7 @@ func waitForPort(port string) {
 func TestMain(m *testing.M) {
 	exitChan := make(chan struct{})
 	go runDubboGoServer(exitChan)
-	cancel := runDubboJavaServer()
+	cancel, finishChan := runDubboJavaServer()
 	// wait for dubbo-go and dubbo-java server initialization
 	waitForPort("20000")
 	waitForPort("20001")
@@ -94,6 +94,8 @@ func TestMain(m *testing.M) {
 	close(exitChan)
 	// kill dubbo-java server
 	cancel()
+	// wait for dubbo-java server terminated
+	<-finishChan
 }
 
 func TestEchoBool(t *testing.T) {
@@ -125,6 +127,12 @@ func TestEchoInt32(t *testing.T) {
 func TestEchoInt64(t *testing.T) {
 	var req int64 = 12
 	resp, err := cli2Go.EchoInt64(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoFloat(t *testing.T) {
+	var req float64 = 12.3456
+	resp, err := cli2Go.EchoFloat(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 
@@ -169,6 +177,12 @@ func TestEchoInt32_Java(t *testing.T) {
 func TestEchoInt64_Java(t *testing.T) {
 	var req int64 = 12
 	resp, err := cli2Java.EchoInt64(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoFloat_Java(t *testing.T) {
+	var req float64 = 1.0
+	resp, err := cli2Java.EchoFloat(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 

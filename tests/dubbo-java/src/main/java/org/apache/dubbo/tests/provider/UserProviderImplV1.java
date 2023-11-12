@@ -26,10 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-public class UserProviderImpl implements UserProvider {
+public class UserProviderImplV1 implements UserProvider {
     @Override
     public Boolean EchoBool(Boolean req) throws Exception {
-        return req;
+        return !req;
     }
 
     @Override
@@ -49,11 +49,6 @@ public class UserProviderImpl implements UserProvider {
 
     @Override
     public Long EchoInt64(Long req) throws Exception {
-        return req;
-    }
-
-    @Override
-    public Float EchoFloat(Float req) throws Exception {
         return req;
     }
 
@@ -98,11 +93,6 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public List<Float> EchoFloatList(List<Float> req) throws Exception {
-        return req;
-    }
-
-    @Override
     public List<Double> EchoDoubleList(List<Double> req) throws Exception {
         return req;
     }
@@ -139,11 +129,6 @@ public class UserProviderImpl implements UserProvider {
 
     @Override
     public Map<Boolean, Long> EchoBool2Int64Map(Map<Boolean, Long> req) throws Exception {
-        return req;
-    }
-
-    @Override
-    public Map<Boolean, Float> EchoBool2FloatMap(Map<Boolean, Float> req) throws Exception {
         return req;
     }
 
@@ -188,11 +173,6 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public EchoMultiFloatResponse EchoMultiFloat(Float baseReq, List<Float> listReq, Map<Float, Float> mapReq) throws Exception {
-        return new EchoMultiFloatResponse(baseReq, listReq, mapReq);
-    }
-
-    @Override
     public EchoMultiDoubleResponse EchoMultiDouble(Double baseReq, List<Double> listReq, Map<Double, Double> mapReq) throws Exception {
         return new EchoMultiDoubleResponse(baseReq, listReq, mapReq);
     }
@@ -229,11 +209,6 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public float EchoBaseFloat(float req) throws Exception {
-        return req;
-    }
-
-    @Override
     public double EchoBaseDouble(double req) throws Exception {
         return req;
     }
@@ -264,11 +239,6 @@ public class UserProviderImpl implements UserProvider {
     }
 
     @Override
-    public float[] EchoBaseFloatList(float[] req) throws Exception {
-        return req;
-    }
-
-    @Override
     public double[] EchoBaseDoubleList(double[] req) throws Exception {
         return req;
     }
@@ -295,11 +265,6 @@ public class UserProviderImpl implements UserProvider {
 
     @Override
     public HashMap<Boolean, Long> EchoBool2Int64BaseMap(HashMap<Boolean, Long> req) throws Exception {
-        return req;
-    }
-
-    @Override
-    public HashMap<Boolean, Float> EchoBool2FloatBaseMap(HashMap<Boolean, Float> req) throws Exception {
         return req;
     }
 
@@ -341,13 +306,6 @@ public class UserProviderImpl implements UserProvider {
         ArrayList<Long> arr = new ArrayList<>();
         for (long l : listReq) arr.add(l);
         return new EchoMultiInt64Response(baseReq, arr, mapReq);
-    }
-
-    @Override
-    public EchoMultiFloatResponse EchoMultiBaseFloat(float baseReq, float[] listReq, HashMap<Float, Float> mapReq) throws Exception {
-        ArrayList<Float> arr = new ArrayList<>();
-        for (float d : listReq) arr.add(d);
-        return new EchoMultiFloatResponse(baseReq, arr, mapReq);
     }
 
     @Override

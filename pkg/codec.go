@@ -23,6 +23,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/kitex-contrib/codec-dubbo/registries"
+
 	"github.com/cloudwego/kitex/pkg/remote"
 	"github.com/cloudwego/kitex/pkg/remote/codec"
 	"github.com/kitex-contrib/codec-dubbo/pkg/dubbo_spec"
@@ -101,12 +103,10 @@ func (m *DubboCodec) encodeRequestPayload(ctx context.Context, message remote.Me
 	service := &dubbo_spec.Service{
 		ProtocolVersion: dubbo_spec.DEFAULT_DUBBO_PROTOCOL_VERSION,
 		Path:            m.opt.JavaClassName,
-		// todo: kitex mapping
-		Version: "",
-		Method:  message.RPCInfo().Invocation().MethodName(),
-		Timeout: message.RPCInfo().Config().RPCTimeout(),
-		// todo: kitex mapping
-		Group: "",
+		Version:         message.RPCInfo().To().DefaultTag(registries.DubboServiceVersionKey, ""),
+		Method:          message.RPCInfo().Invocation().MethodName(),
+		Timeout:         message.RPCInfo().Config().RPCTimeout(),
+		Group:           message.RPCInfo().To().DefaultTag(registries.DubboServiceGroupKey, ""),
 	}
 	if err = m.messageServiceInfo(ctx, service, encoder); err != nil {
 		return nil, err

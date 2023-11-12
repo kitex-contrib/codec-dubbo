@@ -21,11 +21,13 @@ package kitex2dubbo
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os/exec"
 )
 
-func runDubboJavaServer() context.CancelFunc {
+func runDubboJavaServer() (context.CancelFunc, chan struct{}) {
+	finishChan := make(chan struct{})
 	testDir := "../../dubbo-java"
 	// initialize mvn packages
 	cleanCmd := exec.Command("mvn", "clean", "package")
@@ -41,10 +43,13 @@ func runDubboJavaServer() context.CancelFunc {
 	cmd.Dir = testDir
 
 	go func() {
-		if err := cmd.Run(); err != nil {
-			panic(fmt.Sprintf("mvn exec failed: %s", err))
+		var exitErr *exec.ExitError
+		if err := cmd.Run(); err == nil || !errors.As(err, &exitErr) {
+			panic("dubbo-java server should be terminated by this test process")
+		} else {
+			finishChan <- struct{}{}
 		}
 	}()
 
-	return cancel
+	return cancel, finishChan
 }

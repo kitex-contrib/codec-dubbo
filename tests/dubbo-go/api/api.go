@@ -91,6 +91,16 @@ func (resp *EchoMultiInt64Response) JavaClassName() string {
 	return "org.apache.dubbo.tests.api.EchoMultiInt64Response"
 }
 
+type EchoMultiFloatResponse struct {
+	BaseResp float64
+	ListResp []float64
+	MapResp  map[float64]float64
+}
+
+func (resp *EchoMultiFloatResponse) JavaClassName() string {
+	return "org.apache.dubbo.tests.api.EchoMultiFloatResponse"
+}
+
 type EchoMultiDoubleResponse struct {
 	BaseResp float64
 	ListResp []float64
@@ -125,6 +135,7 @@ type UserProvider struct {
 	EchoInt16  func(ctx context.Context, req int16) (int16, error)     //`dubbo:"echoInt16"`
 	EchoInt32  func(ctx context.Context, req int32) (int32, error)     //`dubbo:"echoInt32"`
 	EchoInt64  func(ctx context.Context, req int64) (int64, error)     //`dubbo:"echoInt64"`
+	EchoFloat  func(ctx context.Context, req float64) (float64, error) //`dubbo:"echoFloat"`
 	EchoDouble func(ctx context.Context, req float64) (float64, error) //`dubbo:"echoDouble"`
 	EchoString func(ctx context.Context, req string) (string, error)   //`dubbo:"echoString"`
 
@@ -137,6 +148,7 @@ type UserProvider struct {
 	EchoInt16List  func(ctx context.Context, req []int16) ([]int16, error)     //`dubbo:"echoInt16List"`
 	EchoInt32List  func(ctx context.Context, req []int32) ([]int32, error)     //`dubbo:"echoInt32List"`
 	EchoInt64List  func(ctx context.Context, req []int64) ([]int64, error)     //`dubbo:"echoInt64List"`
+	EchoFloatList  func(ctx context.Context, req []float64) ([]float64, error) //`dubbo:"echoFloatList"`
 	EchoDoubleList func(ctx context.Context, req []float64) ([]float64, error) //`dubbo:"echoDoubleList"`
 	EchoStringList func(ctx context.Context, req []string) ([]string, error)   //`dubbo:"echoStringList"`
 	EchoBinaryList func(ctx context.Context, req [][]byte) ([][]byte, error)   //`dubbo:"echoBinaryList"`
@@ -147,6 +159,7 @@ type UserProvider struct {
 	EchoBool2Int16Map  func(ctx context.Context, req map[bool]int16) (map[bool]int16, error)     //`dubbo:"echoBool2Int16Map"`
 	EchoBool2Int32Map  func(ctx context.Context, req map[bool]int32) (map[bool]int32, error)     //`dubbo:"echoBool2Int32Map"`
 	EchoBool2Int64Map  func(ctx context.Context, req map[bool]int64) (map[bool]int64, error)     //`dubbo:"echoBool2Int64Map"`
+	EchoBool2FloatMap  func(ctx context.Context, req map[bool]float64) (map[bool]float64, error) //`dubbo:"echoBool2FloatMap"`
 	EchoBool2DoubleMap func(ctx context.Context, req map[bool]float64) (map[bool]float64, error) //`dubbo:"echoBool2DoubleMap"`
 	EchoBool2StringMap func(ctx context.Context, req map[bool]string) (map[bool]string, error)   //`dubbo:"echoBool2StringMap"`
 	EchoBool2BinaryMap func(ctx context.Context, req map[bool][]byte) (map[bool][]byte, error)   //`dubbo:"echoBool2BinaryMap"`
@@ -156,6 +169,7 @@ type UserProvider struct {
 	EchoMultiInt16  func(ctx context.Context, baseReq int16, listReq []int16, mapReq map[int16]int16) (*EchoMultiInt16Response, error)          //`dubbo:"echoMultiInt16"`
 	EchoMultiInt32  func(ctx context.Context, baseReq int32, listReq []int32, mapReq map[int32]int32) (*EchoMultiInt32Response, error)          //`dubbo:"echoMultiInt32"`
 	EchoMultiInt64  func(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64) (*EchoMultiInt64Response, error)          //`dubbo:"echoMultiInt64"`
+	EchoMultiFloat  func(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (*EchoMultiDoubleResponse, error) //`dubbo:"echoMultiFloat"`
 	EchoMultiDouble func(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (*EchoMultiDoubleResponse, error) //`dubbo:"echoMultiDouble"`
 	EchoMultiString func(ctx context.Context, baseReq string, listReq []string, mapReq map[string]string) (*EchoMultiStringResponse, error)     //`dubbo:"echoMultiString"`
 }
@@ -175,6 +189,10 @@ func (u *UserProviderImpl) EchoInt32(ctx context.Context, req int32) (int32, err
 }
 
 func (u *UserProviderImpl) EchoInt64(ctx context.Context, req int64) (int64, error) {
+	return req, nil
+}
+
+func (u *UserProviderImpl) EchoFloat(ctx context.Context, req float64) (float64, error) {
 	return req, nil
 }
 
@@ -215,6 +233,10 @@ func (u *UserProviderImpl) EchoInt64List(ctx context.Context, req []int64) ([]in
 	return req, nil
 }
 
+func (u *UserProviderImpl) EchoFloatList(ctx context.Context, req []float64) ([]float64, error) {
+	return req, nil
+}
+
 func (u *UserProviderImpl) EchoDoubleList(ctx context.Context, req []float64) ([]float64, error) {
 	return req, nil
 }
@@ -247,6 +269,10 @@ func (u *UserProviderImpl) EchoBool2Int64Map(ctx context.Context, req map[bool]i
 	return req, nil
 }
 
+func (u *UserProviderImpl) EchoBool2FloatMap(ctx context.Context, req map[bool]float64) (map[bool]float64, error) {
+	return req, nil
+}
+
 func (u *UserProviderImpl) EchoBool2DoubleMap(ctx context.Context, req map[bool]float64) (map[bool]float64, error) {
 	return req, nil
 }
@@ -276,6 +302,10 @@ func (u *UserProviderImpl) EchoBool2Int32ListMap(ctx context.Context, req map[bo
 }
 
 func (u *UserProviderImpl) EchoBool2Int64ListMap(ctx context.Context, req map[bool][]int64) (map[bool][]int64, error) {
+	return req, nil
+}
+
+func (u *UserProviderImpl) EchoBool2FloatListMap(ctx context.Context, req map[bool][]float64) (map[bool][]float64, error) {
 	return req, nil
 }
 
@@ -331,6 +361,14 @@ func (u *UserProviderImpl) EchoMultiInt64(ctx context.Context, baseReq int64, li
 	}, nil
 }
 
+func (u *UserProviderImpl) EchoMultiFloat(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (*EchoMultiFloatResponse, error) {
+	return &EchoMultiFloatResponse{
+		BaseResp: baseReq,
+		ListResp: listReq,
+		MapResp:  mapReq,
+	}, nil
+}
+
 func (u *UserProviderImpl) EchoMultiDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (*EchoMultiDoubleResponse, error) {
 	return &EchoMultiDoubleResponse{
 		BaseResp: baseReq,
@@ -380,6 +418,12 @@ func (u *UserProviderImpl) EchoByte(ctx context.Context, req int8) (int8, error)
 // 		"GetUser": "getUser",
 // 	}
 //
+
+type UserProviderImplV1 struct{}
+
+func (u *UserProviderImplV1) EchoBool(ctx context.Context, req bool) (bool, error) {
+	return !req, nil
+}
 
 func init() {
 	hessian.RegisterPOJO(&User{}) // Register all transmission struct to hessian lib

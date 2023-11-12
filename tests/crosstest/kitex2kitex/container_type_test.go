@@ -54,6 +54,12 @@ func TestEchoInt64List(t *testing.T) {
 	assertEcho(t, err, req, resp)
 }
 
+func TestEchoFloatList(t *testing.T) {
+	req := []float64{1.0, 2.0}
+	resp, err := cli.EchoFloatList(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
 func TestEchoDoubleList(t *testing.T) {
 	req := []float64{12.3456, 78.9012}
 	resp, err := cli.EchoDoubleList(context.Background(), req)
@@ -110,6 +116,14 @@ func TestEchoBool2Int64Map(t *testing.T) {
 		true: 1,
 	}
 	resp, err := cli.EchoBool2Int64Map(context.Background(), req)
+	assertEcho(t, err, req, resp)
+}
+
+func TestEchoBool2FloatMap(t *testing.T) {
+	req := map[bool]float64{
+		true: 1.0,
+	}
+	resp, err := cli.EchoBool2FloatMap(context.Background(), req)
 	assertEcho(t, err, req, resp)
 }
 
