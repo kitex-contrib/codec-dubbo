@@ -49,8 +49,8 @@ func NewZookeeperRegistry(opts ...Option) (registry.Registry, error) {
 	if err != nil {
 		return nil, err
 	}
-	if o.User != "" && o.Password != "" {
-		if err := conn.AddAuth("digest", []byte(fmt.Sprintf("%s:%s", o.User, o.Password))); err != nil {
+	if o.Username != "" && o.Password != "" {
+		if err := conn.AddAuth("digest", []byte(fmt.Sprintf("%s:%s", o.Username, o.Password))); err != nil {
 			return nil, err
 		}
 	}
@@ -121,8 +121,8 @@ func (z *zookeeperRegistry) createNode(path string, content []byte, ephemeral bo
 		if ephemeral {
 			flag = zk.FlagEphemeral
 		}
-		if z.opt.User != "" && z.opt.Password != "" {
-			_, err = z.conn.Create(path, content, flag, zk.DigestACL(zk.PermAll, z.opt.User, z.opt.Password))
+		if z.opt.Username != "" && z.opt.Password != "" {
+			_, err = z.conn.Create(path, content, flag, zk.DigestACL(zk.PermAll, z.opt.Username, z.opt.Password))
 		} else {
 			_, err = z.conn.Create(path, content, flag, zk.WorldACL(zk.PermAll))
 		}

@@ -48,6 +48,11 @@ func NewZookeeperResolver(opts ...Option) (discovery.Resolver, error) {
 	if err != nil {
 		return nil, err
 	}
+	if o.Username != "" && o.Password != "" {
+		if err := conn.AddAuth("digest", []byte(fmt.Sprintf("%s:%s", o.Username, o.Password))); err != nil {
+			return nil, err
+		}
+	}
 	uniName := "dubbo-zookeeper" + "/" + o.RegistryGroup
 	return &zookeeperResolver{
 		conn:       conn,

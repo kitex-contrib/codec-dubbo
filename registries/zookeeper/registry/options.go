@@ -28,7 +28,7 @@ import (
 type Options struct {
 	Servers        []string
 	RegistryGroup  string
-	User           string
+	Username       string
 	Password       string
 	SessionTimeout time.Duration
 }
@@ -85,5 +85,23 @@ func WithRegistryGroup(group string) Option {
 func WithSessionTimeout(timeout time.Duration) Option {
 	return Option{F: func(o *Options) {
 		o.SessionTimeout = timeout
+	}}
+}
+
+// WithUsername configures the username to connect to zookeeper servers.
+// Please specify this Option with WithPassword together otherwise it
+// would not make any sense.
+func WithUsername(name string) Option {
+	return Option{F: func(o *Options) {
+		o.Username = name
+	}}
+}
+
+// WithPassword configures the password to connect to zookeeper servers.
+// Please specify this Option with WithUsername together otherwise it
+// would not make any sense.
+func WithPassword(password string) Option {
+	return Option{F: func(o *Options) {
+		o.Password = password
 	}}
 }
