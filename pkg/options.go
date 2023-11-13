@@ -21,9 +21,10 @@ package dubbo
 
 import (
 	"fmt"
+	"reflect"
+
 	"github.com/cloudwego/thriftgo/thrift_reflection"
 	"github.com/kitex-contrib/codec-dubbo/pkg/hessian2"
-	"reflect"
 )
 
 type Options struct {
@@ -87,7 +88,7 @@ func parseAnnotations(o *Options, fd *thrift_reflection.FileDescriptor) {
 			o.MethodAnnotations[prefix+m.GetName()] = ma
 			params := getMethodParams(m, ma)
 
-			if method, ext := ma.GetMethodName(); ext {
+			if method, exists := ma.GetMethodName(); exists {
 				types, err := hessian2.GetParamsTypeList(params)
 				if err != nil {
 					panic(fmt.Sprintf("Get method %s parameter types failed: %s", m.GetName(), err.Error()))

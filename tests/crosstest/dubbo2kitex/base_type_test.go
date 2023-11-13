@@ -21,12 +21,13 @@ package dubbo2kitex
 
 import (
 	"context"
-	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 	"helloworld/api"
 	"log"
 	"net"
 	"reflect"
 	"testing"
+
+	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 

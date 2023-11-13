@@ -196,7 +196,7 @@ func TestTypesCache_getTypes(t *testing.T) {
 				testData := data
 				t.Run(fmt.Sprintf("struct%d", i), func(t *testing.T) {
 					t.Parallel()
-					_, err := tc.GetTypes(testData.value, NewMethodAnnotation(map[string][]string{HESSIAN_ARGS_TYPE_TAG: []string{testData.typeAnno}}))
+					_, err := tc.GetTypes(testData.value, NewMethodAnnotation(map[string][]string{HESSIAN_ARGS_TYPE_TAG: {testData.typeAnno}}))
 					if err != nil {
 						t.Fatal(err)
 					}

@@ -22,6 +22,7 @@ package dubbo
 import (
 	"context"
 	"fmt"
+
 	"github.com/cloudwego/kitex/pkg/remote"
 	"github.com/cloudwego/kitex/pkg/remote/codec"
 	"github.com/kitex-contrib/codec-dubbo/pkg/dubbo_spec"
@@ -107,8 +108,10 @@ func (m *DubboCodec) encodeRequestPayload(ctx context.Context, message remote.Me
 		// todo: kitex mapping
 		Group: "",
 	}
+	methodAnno := m.getMethodAnnotation(message)
+
 	// if a method name annotation exists, update the method name to the annotation value.
-	if methodName, ext := m.getMethodAnnotation(message).GetMethodName(); ext {
+	if methodName, exists := methodAnno.GetMethodName(); exists {
 		service.Method = methodName
 	}
 
@@ -116,7 +119,7 @@ func (m *DubboCodec) encodeRequestPayload(ctx context.Context, message remote.Me
 		return nil, err
 	}
 
-	if err = m.messageData(message, encoder); err != nil {
+	if err = m.messageData(message, methodAnno, encoder); err != nil {
 		return nil, err
 	}
 
@@ -227,13 +230,12 @@ func (m *DubboCodec) buildDubboHeader(message remote.Message, status dubbo_spec.
 	}
 }
 
-func (m *DubboCodec) messageData(message remote.Message, e iface.Encoder) error {
+func (m *DubboCodec) messageData(message remote.Message, methodAnno *hessian2.MethodAnnotation, e iface.Encoder) error {
 	data, ok := message.Data().(iface.Message)
 	if !ok {
 		return fmt.Errorf("invalid data: not hessian2.MessageWriter")
 	}
 
-	methodAnno := m.getMethodAnnotation(message)
 	types, err := m.methodCache.GetTypes(data, methodAnno)
 	if err != nil {
 		return err
@@ -272,14 +274,13 @@ func (m *DubboCodec) messageAttachment(ctx context.Context, service *dubbo_spec.
 }
 
 func (m *DubboCodec) getMethodAnnotation(message remote.Message) *hessian2.MethodAnnotation {
-	var methodAnno *hessian2.MethodAnnotation
 	methodKey := message.ServiceInfo().ServiceName + "." + message.RPCInfo().To().Method()
 	if m.opt.MethodAnnotations != nil {
 		if t, ok := m.opt.MethodAnnotations[methodKey]; ok {
-			methodAnno = t
+			return t
 		}
 	}
-	return methodAnno
+	return nil
 }
 
 // Unmarshal decode method
@@ -342,10 +343,8 @@ func (m *DubboCodec) decodeRequestBody(ctx context.Context, header *dubbo_spec.D
 	// decode payload
 	if types, err := decoder.Decode(); err != nil {
 		return err
-	} else {
-		if method, ext := m.opt.MethodNames[service.Method+types.(string)]; ext {
-			service.Method = method
-		}
+	} else if method, exists := m.opt.MethodNames[service.Method+types.(string)]; exists {
+		service.Method = method
 	}
 	if err := codec.NewDataIfNeeded(service.Method, message); err != nil {
 		return err

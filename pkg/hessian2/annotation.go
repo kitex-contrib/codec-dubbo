@@ -25,9 +25,9 @@ import (
 
 // MethodAnnotation Used to store parameter types and parameter names in method annotations.
 type MethodAnnotation struct {
-	argsAnno   string
-	methodName string
-	fieldTypes []string
+	argsAnno       string
+	javaMethodName string // read from IDL annotation
+	fieldTypes     []string
 }
 
 // NewMethodAnnotation is used to create a method annotation object.
@@ -38,7 +38,7 @@ func NewMethodAnnotation(annos map[string][]string) *MethodAnnotation {
 		ma.fieldTypes = strings.Split(ma.argsAnno, ",")
 	}
 	if v, ok := annos[HESSIAN_JAVA_METHOD_NAME_TAG]; ok && len(v) > 0 {
-		ma.methodName = v[0]
+		ma.javaMethodName = v[0]
 	}
 	return ma
 }
@@ -53,8 +53,8 @@ func (ma *MethodAnnotation) GetFieldType(i int) string {
 
 // GetMethodName get the method name specified by the method annotation.
 func (ma *MethodAnnotation) GetMethodName() (string, bool) {
-	if ma == nil || ma.methodName == "" {
+	if ma == nil || ma.javaMethodName == "" {
 		return "", false
 	}
-	return ma.methodName, true
+	return ma.javaMethodName, true
 }
