@@ -22,7 +22,6 @@ package resolver
 import (
 	"context"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/cloudwego/kitex/pkg/discovery"
@@ -33,20 +32,13 @@ import (
 )
 
 const (
-	defaultRegistryGroup  = "dubbo"
 	defaultSessionTimeout = 30 * time.Second
+	groupVersionSeparator = ":"
 )
 
 type zookeeperResolver struct {
-	conn *zk.Conn
-	opt  *Options
-	// registryServicePath is the path used to retrieve instances information from zookeeper.
-	// format: /<RegistryGroup>/<InterfaceName>/providers
-	registryServicePath string
-	// uniqueName is the pre-calculated result returned by Name() and Target().
-	// format: /<registryServicePath>/<ServiceGroup>/<ServiceVersion>
-	// since each group or each version of the service belongs to a different BalancerFactory-Resolver,
-	// we should add group and version information to it for caching.
+	conn       *zk.Conn
+	opt        *Options
 	uniqueName string
 }
 
@@ -56,22 +48,28 @@ func NewZookeeperResolver(opts ...Option) (discovery.Resolver, error) {
 	if err != nil {
 		return nil, err
 	}
-	regSvcPath := fmt.Sprintf(registries.RegistryServicesKey, o.RegistryGroup, o.InterfaceName)
-	uniName := strings.Join([]string{"dubbo-zookeeper", regSvcPath, o.ServiceGroup, o.ServiceVersion}, "/")
+	uniName := "dubbo-zookeeper" + "/" + o.RegistryGroup
 	return &zookeeperResolver{
-		conn:                conn,
-		opt:                 o,
-		registryServicePath: regSvcPath,
-		uniqueName:          uniName,
+		conn:       conn,
+		opt:        o,
+		uniqueName: uniName,
 	}, nil
 }
 
 func (z *zookeeperResolver) Target(ctx context.Context, target rpcinfo.EndpointInfo) (description string) {
-	return z.uniqueName
+	interfaceName, ok := target.Tag(registries.DubboServiceInterfaceKey)
+	if !ok {
+		panic("please specify target dubbo interface with \"client.WithTag(registries.DubboServiceInterfaceKey, <interfaceName>)")
+	}
+	group := target.DefaultTag(registries.DubboServiceGroupKey, "")
+	version := target.DefaultTag(registries.DubboServiceVersionKey, "")
+	regSvcKey := fmt.Sprintf(registries.RegistryServicesKeyTemplate, z.opt.RegistryGroup, interfaceName)
+	return regSvcKey + groupVersionSeparator + group + groupVersionSeparator + version
 }
 
 func (z *zookeeperResolver) Resolve(ctx context.Context, desc string) (discovery.Result, error) {
-	rawURLs, _, err := z.conn.Children(z.registryServicePath)
+	regSvcKey, svcGroup, svcVersion := extractGroupVersion(desc)
+	rawURLs, _, err := z.conn.Children(regSvcKey)
 	if err != nil {
 		return discovery.Result{}, err
 	}
@@ -83,10 +81,10 @@ func (z *zookeeperResolver) Resolve(ctx context.Context, desc string) (discovery
 			continue
 		}
 		tmpInstance := u.ToInstance()
-		if group, _ := tmpInstance.Tag(registries.DubboServiceGroupKey); group != z.opt.ServiceGroup {
+		if group, _ := tmpInstance.Tag(registries.DubboServiceGroupKey); group != svcGroup {
 			continue
 		}
-		if ver, _ := tmpInstance.Tag(registries.DubboServiceVersionKey); ver != z.opt.ServiceVersion {
+		if ver, _ := tmpInstance.Tag(registries.DubboServiceVersionKey); ver != svcVersion {
 			continue
 		}
 		instances = append(instances, tmpInstance)
@@ -104,4 +102,23 @@ func (z *zookeeperResolver) Diff(cacheKey string, prev, next discovery.Result) (
 
 func (z *zookeeperResolver) Name() string {
 	return z.uniqueName
+}
+
+func extractGroupVersion(desc string) (remaining, group, version string) {
+	length := len(desc)
+	firstIdx, secondIdx := -1, -1
+	for i := length - 1; i >= 0; i-- {
+		if desc[i:i+1] == groupVersionSeparator {
+			if secondIdx < 0 {
+				secondIdx = i
+				continue
+			}
+			firstIdx = i
+			break
+		}
+	}
+	version = desc[secondIdx+1 : length]
+	group = desc[firstIdx+1 : secondIdx]
+	remaining = desc[0:firstIdx]
+	return
 }

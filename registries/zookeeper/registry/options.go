@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package resolver
+package registry
 
 import (
 	"time"
@@ -28,6 +28,8 @@ import (
 type Options struct {
 	Servers        []string
 	RegistryGroup  string
+	User           string
+	Password       string
 	SessionTimeout time.Duration
 }
 
@@ -67,14 +69,6 @@ func WithServers(servers ...string) Option {
 	}}
 }
 
-//// WithInterfaceName configures the Interface of the target dubbo Service.
-//// This configuration must be set, e.g. WithInterfaceName("org.cloudwego.kitex.samples.api.GreetProvider")
-//func WithInterfaceName(name string) Option {
-//	return Option{F: func(o *Options) {
-//		o.InterfaceName = name
-//	}}
-//}
-
 // WithRegistryGroup configures the group of the zookeepers serving the target dubbo Service.
 // In dubbo side, this group is referred to RegistryConfig.group.
 func WithRegistryGroup(group string) Option {
@@ -82,22 +76,6 @@ func WithRegistryGroup(group string) Option {
 		o.RegistryGroup = group
 	}}
 }
-
-//// WithServiceGroup configures the group of the target dubbo Service.
-//// In dubbo side, this group is referred to ServiceConfig.group.
-//func WithServiceGroup(group string) Option {
-//	return Option{F: func(o *Options) {
-//		o.ServiceGroup = group
-//	}}
-//}
-//
-//// WithServiceVersion configures the version of the target dubbo Service.
-//// In dubbo side, this version is referred to ServiceConfig.version.
-//func WithServiceVersion(version string) Option {
-//	return Option{F: func(o *Options) {
-//		o.ServiceVersion = version
-//	}}
-//}
 
 // WithSessionTimeout configures the amount of time for which a session
 // is considered valid after losing connection to a server.

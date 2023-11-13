@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package registry_test
+package resolver_test
 
 import (
 	"context"
@@ -28,6 +28,8 @@ import (
 	"os/exec"
 	"testing"
 	"time"
+
+	"github.com/kitex-contrib/codec-dubbo/registries"
 
 	"dubbo.apache.org/dubbo-go/v3/config"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
@@ -54,7 +56,7 @@ func runDubboGoServer(exitChan chan struct{}) {
 
 func runDubboJavaServer() (context.CancelFunc, chan struct{}) {
 	finishChan := make(chan struct{})
-	testDir := "../dubbo-java"
+	testDir := "../../dubbo-java"
 	// initialize mvn packages
 	cleanCmd := exec.Command("mvn", "clean", "package")
 	cleanCmd.Dir = testDir
@@ -116,16 +118,19 @@ func TestResolve(t *testing.T) {
 	tests := []struct {
 		resOpts   []resolver.Option
 		codecOpts []dubbo.Option
+		cliOpts   []client.Option
 		judge     func(t *testing.T, cli testservice.Client)
 	}{
 		{
 			resOpts: []resolver.Option{
 				resolver.WithServers(zookeeperAddress1),
-				resolver.WithInterfaceName(goInterfaceName),
 				resolver.WithRegistryGroup("myGroup"),
 			},
 			codecOpts: []dubbo.Option{
 				dubbo.WithJavaClassName(goInterfaceName),
+			},
+			cliOpts: []client.Option{
+				client.WithTag(registries.DubboServiceInterfaceKey, goInterfaceName),
 			},
 			judge: func(t *testing.T, cli testservice.Client) {
 				resp, err := cli.EchoBool(context.Background(), true)
@@ -136,13 +141,15 @@ func TestResolve(t *testing.T) {
 		{
 			resOpts: []resolver.Option{
 				resolver.WithServers(zookeeperAddress1),
-				resolver.WithInterfaceName(goInterfaceName),
 				resolver.WithRegistryGroup("myGroup"),
-				resolver.WithServiceGroup("g1"),
-				resolver.WithServiceVersion("v1"),
 			},
 			codecOpts: []dubbo.Option{
 				dubbo.WithJavaClassName(goInterfaceName),
+			},
+			cliOpts: []client.Option{
+				client.WithTag(registries.DubboServiceInterfaceKey, goInterfaceName),
+				client.WithTag(registries.DubboServiceGroupKey, "g1"),
+				client.WithTag(registries.DubboServiceVersionKey, "v1"),
 			},
 			judge: func(t *testing.T, cli testservice.Client) {
 				resp, err := cli.EchoBool(context.Background(), true)
@@ -153,11 +160,13 @@ func TestResolve(t *testing.T) {
 		{
 			resOpts: []resolver.Option{
 				resolver.WithServers(zookeeperAddress1),
-				resolver.WithInterfaceName(javaInterfaceName),
 				resolver.WithRegistryGroup("myGroup"),
 			},
 			codecOpts: []dubbo.Option{
 				dubbo.WithJavaClassName(javaInterfaceName),
+			},
+			cliOpts: []client.Option{
+				client.WithTag(registries.DubboServiceInterfaceKey, javaInterfaceName),
 			},
 			judge: func(t *testing.T, cli testservice.Client) {
 				resp, err := cli.EchoBool(context.Background(), true)
@@ -168,13 +177,15 @@ func TestResolve(t *testing.T) {
 		{
 			resOpts: []resolver.Option{
 				resolver.WithServers(zookeeperAddress1),
-				resolver.WithInterfaceName(javaInterfaceName),
 				resolver.WithRegistryGroup("myGroup"),
-				resolver.WithServiceGroup("g1"),
-				resolver.WithServiceVersion("v1"),
 			},
 			codecOpts: []dubbo.Option{
 				dubbo.WithJavaClassName(javaInterfaceName),
+			},
+			cliOpts: []client.Option{
+				client.WithTag(registries.DubboServiceInterfaceKey, javaInterfaceName),
+				client.WithTag(registries.DubboServiceGroupKey, "g1"),
+				client.WithTag(registries.DubboServiceVersionKey, "v1"),
 			},
 			judge: func(t *testing.T, cli testservice.Client) {
 				resp, err := cli.EchoBool(context.Background(), true)
@@ -187,10 +198,12 @@ func TestResolve(t *testing.T) {
 	for _, test := range tests {
 		res, err := resolver.NewZookeeperResolver(test.resOpts...)
 		assert.Nil(t, err)
-		cli, err := testservice.NewClient("testtest",
+		opts := []client.Option{
 			client.WithResolver(res),
 			client.WithCodec(dubbo.NewDubboCodec(test.codecOpts...)),
-		)
+		}
+		opts = append(opts, test.cliOpts...)
+		cli, err := testservice.NewClient("testtest", opts...)
 		assert.Nil(t, err)
 		test.judge(t, cli)
 	}

@@ -23,22 +23,39 @@ import java.io.IOException;
 import java.util.*;
 
 import org.apache.dubbo.config.ReferenceConfig;
+import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.tests.api.*;
 import org.eclipse.jetty.server.Authentication;
 
 public class Application {
     public static void main(String[] args) throws IOException {
+        DubboBootstrap instance = DubboBootstrap.getInstance()
+                    .application("dubbo");
         ReferenceConfig<UserProvider> reference = new ReferenceConfig<>();
         reference.setInterface(UserProvider.class);
-        reference.setUrl("127.0.0.1:20000");
 
-        DubboBootstrap.getInstance()
-                .application("first-dubbo-consumer")
-                .reference(reference)
+        boolean withRegistryFlag = false;
+        if (args.length >= 1 && args[0].equals("withRegistry")) {
+            withRegistryFlag = true;
+            // initialize zookeeper registry
+            String zookeeperAddress = "zookeeper://127.0.0.1:2181";
+            RegistryConfig zookeeper = new RegistryConfig(zookeeperAddress);
+            zookeeper.setGroup("myGroup");
+            zookeeper.setRegisterMode("interface");
+            instance = instance.registry(zookeeper);
+        } else {
+            reference.setUrl("127.0.0.1:20000");
+        }
+
+        instance.reference(reference)
                 .start();
-
         UserProvider service = reference.get();
+        if (withRegistryFlag) {
+            testEchoBool(service);
+            return;
+        }
+
         testBaseTypes(service);
         testContainerListType(service);
         testContainerMapType(service);

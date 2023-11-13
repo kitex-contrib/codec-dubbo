@@ -6,6 +6,7 @@ replace (
 	github.com/kitex-contrib/codec-dubbo => ../../
 	github.com/kitex-contrib/codec-dubbo/registries/zookeeper => ../../registries/zookeeper
 	github.com/kitex-contrib/codec-dubbo/tests/kitex => ../kitex
+	github.com/kitex-contrib/codec-dubbo/tests/util => ../util
 	helloworld => ../dubbo-go
 )
 
@@ -15,6 +16,7 @@ require (
 	github.com/kitex-contrib/codec-dubbo v0.0.0-20230817144706-07db3a9b55f8
 	github.com/kitex-contrib/codec-dubbo/registries/zookeeper v0.0.0-00010101000000-000000000000
 	github.com/kitex-contrib/codec-dubbo/tests/kitex v0.0.0-20231109145310-f16711f89b01
+	github.com/kitex-contrib/codec-dubbo/tests/util v0.0.0-00010101000000-000000000000
 	github.com/stretchr/testify v1.8.2
 	helloworld v0.0.0-00010101000000-000000000000
 )
