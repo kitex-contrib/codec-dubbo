@@ -356,4 +356,24 @@ public class UserProviderImpl implements UserProvider {
         for (double d : listReq) arr.add(d);
         return new EchoMultiDoubleResponse(baseReq, arr, mapReq);
     }
+
+    @Override
+    public String EchoMethod(Boolean req) throws Exception {
+        return String.format("A:%b", req);
+    }
+
+    @Override
+    public String EchoMethod(Integer req) throws Exception {
+        return String.format("B:%d", req);
+    }
+
+    @Override
+    public String EchoMethod(int req) throws Exception {
+        return String.format("C:%d", req);
+    }
+
+    @Override
+    public String EchoMethod(Boolean req1, Integer req2) throws Exception {
+        return String.format("D:%b,%d", req1, req2);
+    }
 }

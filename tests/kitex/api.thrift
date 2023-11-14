@@ -115,7 +115,7 @@ service TestService {
     EchoMultiDoubleResponse EchoMultiDouble(1: double baseReq, 2: list<double> listReq, 3: map<double, double> mapReq)
     EchoMultiStringResponse EchoMultiString(1: string baseReq, 2: list<string> listReq, 3: map<string, string> mapReq)
 
-    // method annotation
+    // method args annotation
     bool EchoBaseBool(1: bool req) (hessian.argsType="boolean")
     byte EchoBaseByte(1: byte req) (hessian.argsType="byte")
     i16 EchoBaseInt16(1: i16 req) (hessian.argsType="short")
@@ -144,4 +144,10 @@ service TestService {
     EchoMultiInt64Response EchoMultiBaseInt64(1: i64 baseReq, 2: list<i64> listReq, 3: map<i64, i64> mapReq) (hessian.argsType="long,long[],java.util.HashMap")
     EchoMultiFloatResponse EchoMultiBaseFloat(1: double baseReq, 2: list<double> listReq, 3: map<double, double> mapReq) (hessian.argsType="float,float[],java.util.HashMap")
     EchoMultiDoubleResponse EchoMultiBaseDouble(1: double baseReq, 2: list<double> listReq, 3: map<double, double> mapReq) (hessian.argsType="double,double[],java.util.HashMap")
+
+    // method name annotation
+    string EchoMethodA(1: bool req) (JavaMethodName="EchoMethod")
+    string EchoMethodB(1: i32 req) (JavaMethodName="EchoMethod")
+    string EchoMethodC(1: i32 req) (hessian.argsType="int",JavaMethodName="EchoMethod")
+    string EchoMethodD(1: bool req1, 2: i32 req2) (JavaMethodName="EchoMethod")
 }(JavaClassName="org.apache.dubbo.tests.api.UserProvider")

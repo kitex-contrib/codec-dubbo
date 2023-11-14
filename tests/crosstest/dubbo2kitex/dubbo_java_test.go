@@ -153,6 +153,10 @@ func TestDubboJava(t *testing.T) {
 		"EchoMultiFloat":  false,
 		"EchoMultiDouble": false,
 		"EchoMultiString": false,
+		"EchoMethodA":     false,
+		"EchoMethodB":     false,
+		"EchoMethodC":     false,
+		"EchoMethodD":     false,
 	})
 	for {
 		line, err := reader.ReadString('\n')

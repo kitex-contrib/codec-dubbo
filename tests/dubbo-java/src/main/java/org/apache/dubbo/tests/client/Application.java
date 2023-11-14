@@ -43,7 +43,8 @@ public class Application {
         testContainerListType(service);
         testContainerMapType(service);
         testMultiParams(service);
-        testMethodAnnotation(service);
+        testMethodArgsAnnotation(service);
+        testMethodNameAnnotation(service);
     }
 
     public static void logEchoFail(String methodName) {
@@ -105,7 +106,7 @@ public class Application {
         testEchoMultiString(svc);
     }
 
-    public static void testMethodAnnotation(UserProvider svc) {
+    public static void testMethodArgsAnnotation(UserProvider svc) {
         testEchoBaseBool(svc);
         testEchoBaseByte(svc);
         testEchoBaseInt16(svc);
@@ -134,6 +135,13 @@ public class Application {
         testEchoMultiBaseInt64(svc);
         testEchoMultiBaseFloat(svc);
         testEchoMultiBaseDouble(svc);
+    }
+
+    public static void testMethodNameAnnotation(UserProvider svc) {
+        testEchoMethodA(svc);
+        testEchoMethodB(svc);
+        testEchoMethodC(svc);
+        testEchoMethodD(svc);
     }
 
     public static void testEchoBool(UserProvider svc) {
@@ -1099,6 +1107,63 @@ public class Application {
             mapReq.put(12.34, 56.78);
             EchoMultiDoubleResponse resp = svc.EchoMultiBaseDouble(baseReq, listReq, mapReq);
             if (baseReq != resp.getBaseResp() || !Arrays.equals(listReq, resp.getListRespToArray()) || !mapReq.equals(resp.getMapResp())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMethodA(UserProvider svc) {
+        String methodName = "EchoMethodA";
+        try {
+            Boolean req = true;
+            String resp = svc.EchoMethod(req);
+            if (!String.format("A:%b", req).equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMethodB(UserProvider svc) {
+        String methodName = "EchoMethodB";
+        try {
+            Integer req = 1;
+            String resp = svc.EchoMethod(req);
+            if (!String.format("B:%d", req).equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMethodC(UserProvider svc) {
+        String methodName = "EchoMethodC";
+        try {
+            int req = 1;
+            String resp = svc.EchoMethod(req);
+            if (!String.format("C:%d", req).equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoMethodD(UserProvider svc) {
+        String methodName = "EchoMethodD";
+        try {
+            Boolean req1 = true;
+            Integer req2 = 1;
+            String resp = svc.EchoMethod(req1, req2);
+            if (!String.format("D:%b,%d", req1, req2).equals(resp)) {
                 logEchoFail(methodName);
             }
         } catch (Exception e) {

@@ -20,6 +20,7 @@ package api
 import (
 	"context"
 	"errors"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -172,6 +173,12 @@ type UserProvider struct {
 	EchoMultiFloat  func(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (*EchoMultiDoubleResponse, error) //`dubbo:"echoMultiFloat"`
 	EchoMultiDouble func(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (*EchoMultiDoubleResponse, error) //`dubbo:"echoMultiDouble"`
 	EchoMultiString func(ctx context.Context, baseReq string, listReq []string, mapReq map[string]string) (*EchoMultiStringResponse, error)     //`dubbo:"echoMultiString"`
+
+	// method name annotation
+	EchoMethodA func(ctx context.Context, req bool) (string, error)              // `dubbo:"echoMethod"`
+	EchoMethodB func(ctx context.Context, req int32) (string, error)             // `dubbo:"echoMethod"`
+	EchoMethodC func(ctx context.Context, req int32) (string, error)             // `dubbo:"echoMethod"`
+	EchoMethodD func(ctx context.Context, req1 bool, req2 int32) (string, error) // `dubbo:"echoMethod"`
 }
 
 type UserProviderImpl struct{}
@@ -383,6 +390,22 @@ func (u *UserProviderImpl) EchoMultiString(ctx context.Context, baseReq string, 
 		ListResp: listReq,
 		MapResp:  mapReq,
 	}, nil
+}
+
+func (u *UserProviderImpl) EchoMethodA(ctx context.Context, req bool) (string, error) {
+	return fmt.Sprintf("A:%v", req), nil
+}
+
+func (u *UserProviderImpl) EchoMethodB(ctx context.Context, req int32) (string, error) {
+	return fmt.Sprintf("B:%v", req), nil
+}
+
+func (u *UserProviderImpl) EchoMethodC(ctx context.Context, req int32) (string, error) {
+	return fmt.Sprintf("C:%v", req), nil
+}
+
+func (u *UserProviderImpl) EchoMethodD(ctx context.Context, req1 bool, req2 int32) (string, error) {
+	return fmt.Sprintf("D:%v,%v", req1, req2), nil
 }
 
 // GetUser implements the interface

@@ -93,6 +93,10 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"EchoMultiBaseInt64":     kitex.NewMethodInfo(echoMultiBaseInt64Handler, newTestServiceEchoMultiBaseInt64Args, newTestServiceEchoMultiBaseInt64Result, false),
 		"EchoMultiBaseFloat":     kitex.NewMethodInfo(echoMultiBaseFloatHandler, newTestServiceEchoMultiBaseFloatArgs, newTestServiceEchoMultiBaseFloatResult, false),
 		"EchoMultiBaseDouble":    kitex.NewMethodInfo(echoMultiBaseDoubleHandler, newTestServiceEchoMultiBaseDoubleArgs, newTestServiceEchoMultiBaseDoubleResult, false),
+		"EchoMethodA":            kitex.NewMethodInfo(echoMethodAHandler, newTestServiceEchoMethodAArgs, newTestServiceEchoMethodAResult, false),
+		"EchoMethodB":            kitex.NewMethodInfo(echoMethodBHandler, newTestServiceEchoMethodBArgs, newTestServiceEchoMethodBResult, false),
+		"EchoMethodC":            kitex.NewMethodInfo(echoMethodCHandler, newTestServiceEchoMethodCArgs, newTestServiceEchoMethodCResult, false),
+		"EchoMethodD":            kitex.NewMethodInfo(echoMethodDHandler, newTestServiceEchoMethodDArgs, newTestServiceEchoMethodDResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "echo",
@@ -1440,6 +1444,78 @@ func newTestServiceEchoMultiBaseDoubleResult() interface{} {
 	return echo.NewTestServiceEchoMultiBaseDoubleResult()
 }
 
+func echoMethodAHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoMethodAArgs)
+	realResult := result.(*echo.TestServiceEchoMethodAResult)
+	success, err := handler.(echo.TestService).EchoMethodA(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newTestServiceEchoMethodAArgs() interface{} {
+	return echo.NewTestServiceEchoMethodAArgs()
+}
+
+func newTestServiceEchoMethodAResult() interface{} {
+	return echo.NewTestServiceEchoMethodAResult()
+}
+
+func echoMethodBHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoMethodBArgs)
+	realResult := result.(*echo.TestServiceEchoMethodBResult)
+	success, err := handler.(echo.TestService).EchoMethodB(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newTestServiceEchoMethodBArgs() interface{} {
+	return echo.NewTestServiceEchoMethodBArgs()
+}
+
+func newTestServiceEchoMethodBResult() interface{} {
+	return echo.NewTestServiceEchoMethodBResult()
+}
+
+func echoMethodCHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoMethodCArgs)
+	realResult := result.(*echo.TestServiceEchoMethodCResult)
+	success, err := handler.(echo.TestService).EchoMethodC(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newTestServiceEchoMethodCArgs() interface{} {
+	return echo.NewTestServiceEchoMethodCArgs()
+}
+
+func newTestServiceEchoMethodCResult() interface{} {
+	return echo.NewTestServiceEchoMethodCResult()
+}
+
+func echoMethodDHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*echo.TestServiceEchoMethodDArgs)
+	realResult := result.(*echo.TestServiceEchoMethodDResult)
+	success, err := handler.(echo.TestService).EchoMethodD(ctx, realArg.Req1, realArg.Req2)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newTestServiceEchoMethodDArgs() interface{} {
+	return echo.NewTestServiceEchoMethodDArgs()
+}
+
+func newTestServiceEchoMethodDResult() interface{} {
+	return echo.NewTestServiceEchoMethodDResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -2215,6 +2291,47 @@ func (p *kClient) EchoMultiBaseDouble(ctx context.Context, baseReq float64, list
 	_args.MapReq = mapReq
 	var _result echo.TestServiceEchoMultiBaseDoubleResult
 	if err = p.c.Call(ctx, "EchoMultiBaseDouble", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoMethodA(ctx context.Context, req bool) (r string, err error) {
+	var _args echo.TestServiceEchoMethodAArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoMethodAResult
+	if err = p.c.Call(ctx, "EchoMethodA", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoMethodB(ctx context.Context, req int32) (r string, err error) {
+	var _args echo.TestServiceEchoMethodBArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoMethodBResult
+	if err = p.c.Call(ctx, "EchoMethodB", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoMethodC(ctx context.Context, req int32) (r string, err error) {
+	var _args echo.TestServiceEchoMethodCArgs
+	_args.Req = req
+	var _result echo.TestServiceEchoMethodCResult
+	if err = p.c.Call(ctx, "EchoMethodC", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) EchoMethodD(ctx context.Context, req1 bool, req2 int32) (r string, err error) {
+	var _args echo.TestServiceEchoMethodDArgs
+	_args.Req1 = req1
+	_args.Req2 = req2
+	var _result echo.TestServiceEchoMethodDResult
+	if err = p.c.Call(ctx, "EchoMethodD", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
