@@ -3,10 +3,11 @@ package main
 import (
 	"context"
 
+	"github.com/cloudwego/kitex/pkg/klog"
+
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 
 	"github.com/cloudwego/kitex/client"
-	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo/testservice"
 )

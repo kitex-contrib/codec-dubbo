@@ -27,6 +27,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
+
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 
 	"dubbo.apache.org/dubbo-go/v3/config"
@@ -48,6 +50,7 @@ func runKitexServer(startCh chan struct{}, exitCh chan error, addr string) {
 		server.WithServiceAddr(netAddr),
 		server.WithCodec(dubbo.NewDubboCodec(
 			dubbo.WithJavaClassName("org.apache.dubbo.tests.api.UserProvider"),
+			dubbo.WithFileDescriptor(echo.GetFileDescriptorForApi()),
 		)),
 		server.WithExitSignal(func() <-chan error {
 			return exitCh

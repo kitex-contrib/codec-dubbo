@@ -543,4 +543,12 @@ type TestService interface {
 	EchoMultiBaseFloat(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (r *EchoMultiFloatResponse, err error)
 
 	EchoMultiBaseDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64) (r *EchoMultiDoubleResponse, err error)
+
+	EchoMethodA(ctx context.Context, req bool) (r string, err error)
+
+	EchoMethodB(ctx context.Context, req int32) (r string, err error)
+
+	EchoMethodC(ctx context.Context, req int32) (r string, err error)
+
+	EchoMethodD(ctx context.Context, req1 bool, req2 int32) (r string, err error)
 }

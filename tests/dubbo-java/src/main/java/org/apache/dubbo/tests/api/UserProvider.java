@@ -150,4 +150,12 @@ public interface UserProvider {
     EchoMultiFloatResponse EchoMultiBaseFloat(float baseReq, float[] listReq, HashMap<Float, Float> mapReq) throws Exception;
 
     EchoMultiDoubleResponse EchoMultiBaseDouble(double baseReq, double[] listReq, HashMap<Double, Double> mapReq) throws Exception;
+
+    String EchoMethod(Boolean req) throws Exception;
+
+    String EchoMethod(Integer req) throws Exception;
+
+    String EchoMethod(int req) throws Exception;
+
+    String EchoMethod(Boolean req1, Integer req2) throws Exception;
 }

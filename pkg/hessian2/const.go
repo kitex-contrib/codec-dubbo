@@ -24,5 +24,6 @@ import hessian "github.com/apache/dubbo-go-hessian2"
 const (
 	NULL = hessian.BC_NULL
 
-	HESSIAN_ARGS_TYPE_TAG = "hessian.argsType"
+	HESSIAN_ARGS_TYPE_TAG        = "hessian.argsType"
+	HESSIAN_JAVA_METHOD_NAME_TAG = "JavaMethodName"
 )
