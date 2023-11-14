@@ -45,12 +45,12 @@ type methodKey struct {
 }
 
 // GetTypes returns the Types string for the given method parameter data and method annotations.
-// It reads embedded sync.Map firstly. If cache misses, using singleFlight to process reflection and getParamsTypeList.
-func (mc *MethodCache) GetTypes(data interface{}, ta *TypeAnnotation) (string, error) {
+// It reads embedded sync.Map firstly. If cache misses, using singleFlight to process reflection and GetParamsTypeList.
+func (mc *MethodCache) GetTypes(data interface{}, ma *MethodAnnotation) (string, error) {
 	val := reflect.ValueOf(data)
 	key := methodKey{typ: val.Type()}
-	if ta != nil {
-		key.anno = ta.anno
+	if ma != nil {
+		key.anno = ma.argsAnno
 	}
 	typesRaw, ok := mc.typesMap.Load(key)
 	if ok {
@@ -60,17 +60,12 @@ func (mc *MethodCache) GetTypes(data interface{}, ta *TypeAnnotation) (string, e
 	typesRaw, err, _ := mc.group.Do(key, func() (interface{}, error) {
 		elem := val.Elem()
 		numField := elem.NumField()
-		fields := make([]*parameter, numField)
+		fields := make([]*Parameter, numField)
 		for i := 0; i < numField; i++ {
-			fields[i] = &parameter{
-				value: elem.Field(i).Interface(),
-			}
-			if ta != nil {
-				fields[i].typeAnno = ta.GetFieldType(i)
-			}
+			fields[i] = NewParameter(elem.Field(i).Interface(), ma.GetFieldType(i))
 		}
 
-		types, err := getParamsTypeList(fields)
+		types, err := GetParamsTypeList(fields)
 		if err != nil {
 			return "", err
 		}
@@ -108,7 +103,7 @@ func (mc *MethodCache) len() int {
 }
 
 // GetParamsTypeList is copied from dubbo-go, it should be rewritten
-func getParamsTypeList(params []*parameter) (string, error) {
+func GetParamsTypeList(params []*Parameter) (string, error) {
 	var (
 		typ   string
 		types string
@@ -132,15 +127,20 @@ func getParamsTypeList(params []*parameter) (string, error) {
 	return types, nil
 }
 
-// parameter is used to store information about parameters.
+// Parameter is used to store information about parameters.
 // value stores the actual value of the parameter, and typeAnno records the type annotation added by IDL to this parameter.
-type parameter struct {
+type Parameter struct {
 	value    interface{}
 	typeAnno string
 }
 
+// NewParameter create a Parameter object.
+func NewParameter(value interface{}, typeAnno string) *Parameter {
+	return &Parameter{value: value, typeAnno: typeAnno}
+}
+
 // getType retrieves the parameter's type either through type annotation or by reflecting on the value.
-func (p *parameter) getType() string {
+func (p *Parameter) getType() string {
 	if p == nil {
 		return "V"
 	}
@@ -153,7 +153,7 @@ func (p *parameter) getType() string {
 	return p.getTypeByValue()
 }
 
-func (p *parameter) getTypeByAnno() string {
+func (p *Parameter) getTypeByAnno() string {
 	switch p.typeAnno {
 	// When the annotation is "-", it will be skipped,
 	// use the default parsing method without annotations.
@@ -239,7 +239,7 @@ func (p *parameter) getTypeByAnno() string {
 	}
 }
 
-func (p *parameter) getTypeByValue() string {
+func (p *Parameter) getTypeByValue() string {
 	if p.value == nil {
 		return "V"
 	}

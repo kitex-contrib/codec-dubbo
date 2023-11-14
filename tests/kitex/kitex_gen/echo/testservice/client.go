@@ -85,6 +85,10 @@ type Client interface {
 	EchoMultiBaseInt64(ctx context.Context, baseReq int64, listReq []int64, mapReq map[int64]int64, callOptions ...callopt.Option) (r *echo.EchoMultiInt64Response, err error)
 	EchoMultiBaseFloat(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64, callOptions ...callopt.Option) (r *echo.EchoMultiFloatResponse, err error)
 	EchoMultiBaseDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64, callOptions ...callopt.Option) (r *echo.EchoMultiDoubleResponse, err error)
+	EchoMethodA(ctx context.Context, req bool, callOptions ...callopt.Option) (r string, err error)
+	EchoMethodB(ctx context.Context, req int32, callOptions ...callopt.Option) (r string, err error)
+	EchoMethodC(ctx context.Context, req int32, callOptions ...callopt.Option) (r string, err error)
+	EchoMethodD(ctx context.Context, req1 bool, req2 int32, callOptions ...callopt.Option) (r string, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -484,4 +488,24 @@ func (p *kTestServiceClient) EchoMultiBaseFloat(ctx context.Context, baseReq flo
 func (p *kTestServiceClient) EchoMultiBaseDouble(ctx context.Context, baseReq float64, listReq []float64, mapReq map[float64]float64, callOptions ...callopt.Option) (r *echo.EchoMultiDoubleResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.EchoMultiBaseDouble(ctx, baseReq, listReq, mapReq)
+}
+
+func (p *kTestServiceClient) EchoMethodA(ctx context.Context, req bool, callOptions ...callopt.Option) (r string, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoMethodA(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoMethodB(ctx context.Context, req int32, callOptions ...callopt.Option) (r string, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoMethodB(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoMethodC(ctx context.Context, req int32, callOptions ...callopt.Option) (r string, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoMethodC(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoMethodD(ctx context.Context, req1 bool, req2 int32, callOptions ...callopt.Option) (r string, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoMethodD(ctx, req1, req2)
 }

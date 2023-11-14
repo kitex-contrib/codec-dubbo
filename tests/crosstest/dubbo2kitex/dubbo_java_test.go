@@ -67,6 +67,10 @@ func TestDubboJava(t *testing.T) {
 			"EchoMultiFloat",
 			"EchoMultiDouble",
 			"EchoMultiString",
+			"EchoMethodA",
+			"EchoMethodB",
+			"EchoMethodC",
+			"EchoMethodD",
 		},
 	)
 }
