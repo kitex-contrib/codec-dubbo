@@ -44,6 +44,7 @@ Write dubbo client code based on existing **api.thrift** and [**Type Mapping Tab
 | map\<bool, string> | map[bool]string  |      map      | Map\<Boolean, String>  |         HashMap\<Boolean, String>          |
 
 **Important notes**:
+
 1. The list of map types is not exhaustive and includes only tested cases.
 
 2. Using keys of **binary** type in map types is not supported.
@@ -67,13 +68,14 @@ Here, each `reqJavaType` can either be left blank or use a `-`, indicating that 
 When initializing the DubboCodec, use the WithFileDescriptor option and pass in the generated FileDescriptor to specify the type mapping from kitex -> dubbo-java.
 
 **Example**
+
 ```thrift
 namespace go echo
 
 service EchoService {
    i64 Echo(1: i32 req1, 2: list<i32> req2, 3: map<i32, i32> req3) (hessian.argsType="int,int[],java.util.HashMap")
-   // Use the default type mapping
-   i64 EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,,-")
+   // Use the default type mapping for the first 2 arguments
+   i64 EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,bool,string")
 }
 ```
 
@@ -81,9 +83,11 @@ service EchoService {
 
 Due to the limitations of the **thrift** type system, there are many incompatible types when mapping **kitex** to **dubbo-java**. The DubboCodec, located in the [codec-dubbo/java](https://github.com/kitex-contrib/codec-dubbo/tree/main/java) package, provides support for additional **java** types that are not supported by **thrift**.
 
-You can import these types into **thrift** using `include java.thrift` to use a wider range of java types. Additionally, when generating code using the **kitex** scaffolding tool, you can add the `-hessian2 java_extension` parameter to pull in this extension package.
+To enable these types, you should add into **Thrift IDL** `include "java.thrift"`, and generate code with the **kitex** scaffolding tool with the `-hessian2 java_extension` parameter.
 
-The currently supported types include `java.lang.Object`, `java.util.Date`, and so on. For more types, you can refer to [java.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/java/java.thrift).
+You can download [java.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/java/java.thrift) manually to the targeting path (especially when you need a special version), otherwise **kitex** will do it for you.
+
+The currently supported types include `java.lang.Object`, `java.util.Date`. For more details, you can refer to [java.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/java/java.thrift).
 
 **Example**
 ```thrift
@@ -124,16 +128,16 @@ Currently, only **Interface-Level** service discovery based on zookeeper is supp
 
 ## Getting Started
 
-[**Concrete sample**](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples//helloworld/).
+[**Example**](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples//helloworld/).
 
 ### Prerequisites
 
 ```shell
-# install the latest kitex cmd tool (kitex >= v0.7.3)
-go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
+# install the latest kitex cmd tool (switch to `@latest` after v0.8.0 is released)
+go install github.com/cloudwego/kitex/tool/cmd/kitex@4b3520fbdb5a7d347df1de79d6252efed08ebdf2
 
-# install thriftgo
-go install github.com/cloudwego/thriftgo@latest
+# install thriftgo (switch to `@latest` after v0.3.3 is released)
+go install github.com/cloudwego/thriftgo@d3508eeb6136bc20ba2f79a04ac878a1595c1cc5
 ```
 
 ### Generating kitex stub codes
@@ -162,12 +166,12 @@ service GreetService {
 EOF
 
 # Generate Kitex scaffold with the `-protocol Hessian2` option
-# With `-thrift template=slim,with_reflection`, generate code without thrift encoder/decoder && support thrift reflection
-kitex -module kitex-dubbo-demo -thrift template=slim,with_reflection -protocol Hessian2 -service GreetService ./api.thrift
+kitex -module kitex-dubbo-demo -protocol Hessian2 -service GreetService ./api.thrift
 
 ```
 
 Important Notes:
+
 1. Each struct in the `api.thrift` should have an annotation named `JavaClassName`, with a value consistent with the target class name in Dubbo Java.
 
 ### Finishing business logic and configuration
