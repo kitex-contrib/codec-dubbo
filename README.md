@@ -72,8 +72,8 @@ namespace go echo
 
 service EchoService {
    i64 Echo(1: i32 req1, 2: list<i32> req2, 3: map<i32, i32> req3) (hessian.argsType="int,int[],java.util.HashMap")
-   // 使用默认的类型映射
-   i64 EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,,-")
+   // 前两个字段使用默认的类型映射（可留空或填写 "-"）
+   i64 EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,bool,string")
 }
 ```
 
@@ -82,8 +82,9 @@ service EchoService {
 由于 **thrift** 类型的局限性，**kitex** 与 **dubbo-java** 映射时有很多不兼容的类型。 
 DubboCodec 在 [codec-dubbo/java](https://github.com/kitex-contrib/codec-dubbo/tree/main/java) 包中提供了更多 **thrift** 不支持的 **java** 类型。
 
-你可以在 **thrift** 中使用 `include java.thrift` 导入它们，以使用更多的 java 类型。
-并且在使用 **kitex** 脚手架工具生成代码时添加 `-hessian2 java_extension` 参数来拉取该拓展包。
+为了启用这些类型，你可以在 **Thrift IDL** 中使用 `include "java.thrift"` 导入它们，并且在使用 **kitex** 脚手架工具生成代码时添加 `-hessian2 java_extension` 参数来拉取该拓展包。
+
+kitex 脚手架工具会自动下载 [java.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/java/java.thrift)，你也可以手动下载后放到对应位置。
 
 目前支持的类型包含 `java.lang.Object`、`java.util.Date` 等，更多类型可以参考 [java.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/java/java.thrift)。
 
@@ -130,11 +131,11 @@ service EchoService {
 ### 安装命令行工具
 
 ```shell
-# 安装 kitex 命令行工具，需指定版本 (kitex >= 0.7.3)
-go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
+# 安装 kitex 命令行工具 (注：待发布 v0.8.0 后可改为 `@latest` )
+go install github.com/cloudwego/kitex/tool/cmd/kitex@4b3520fbdb5a7d347df1de79d6252efed08ebdf2
 
-# 安装 thriftgo 命令行工具
-go install github.com/cloudwego/thriftgo@latest
+# 安装 thriftgo 命令行工具 (注：待发布 v0.3.3 后可改为 `@latest` )
+go install github.com/cloudwego/thriftgo@d3508eeb6136bc20ba2f79a04ac878a1595c1cc5
 ```
 
 ### 生成 kitex stub 代码
@@ -163,11 +164,11 @@ service GreetService {
 EOF
 
 # 使用 `-protocol Hessian2` 配置项生成 Kitex 脚手架代码
-# 使用 `-thrift template=slim,with_reflection` 不生成 thrift 编解码代码 && 支持 thrift 反射
-kitex -module kitex-dubbo-demo -thrift template=slim,with_reflection -protocol Hessian2 -service GreetService ./api.thrift
+kitex -module kitex-dubbo-demo -protocol Hessian2 -service GreetService ./api.thrift
 ```
 
 **重要提示**:
+
 1. api.thrift 中定义的每个结构体都应该有一个名为 JavaClassName 的注解，并且注解值与 Dubbo Java 中对应的类名必须一致。
 
 ### 实现业务逻辑并完成初始化
