@@ -51,26 +51,72 @@
 
 4. dubbo-java 不支持对包含 **byte**、**short**、**float** 键值的 Map 类型解码，建议避开 dubbo-java 不兼容的用法，可以在定义接口的响应字段时使用 **struct** 来包裹 map。
 
-### 方法注解
 
-DubboCodec 支持在 **thrift** 中使用 **方法注解** 指定请求参数需要映射的 java 类型。
+### 类型拓展
 
-**方法注解格式：**
+#### 自定义映射
+
+在 **thrift** 的方法后面使用 `hessian.argsType` 注解标签可以指定每个参数映射到 **java** 的类型。
+
+**注解格式**
 ```thrift
 (hessian.argsType="req1JavaType,req2JavaType,req3JavaType,...")
 ```
 其中，每个 reqJavaType 可以使用 `-` 或不填写，表示该参数将使用默认的类型映射。
 
-添加方法注解后，使用 kitex 命令行工具生成代码时添加选项 `-thrift with_reflection`，会在生成的脚手架代码中包含 thrift 的 **FileDescriptor**。
-在初始化 client 时使用 DubboCodec 提供的 `WithFileDescriptor` Option，传入生成的 **FileDescriptor**，即可指定 **kitex -> dubbo** 的类型映射。
+在初始化 **DubboCodec** 时使用 `WithFileDescriptor` Option，传入生成的 `FileDescriptor`，即可指定 **kitex -> dubbo-java** 的类型映射。
 
-**举例：**
+**示例**
 ```thrift
+namespace go echo
+
 service EchoService {
-   EchoResponse Echo(1: i32 req1, 2: list<i32> req2, 3: map<i32, i32> req3) (hessian.argsType="int,int[],java.util.HashMap")
+   i64 Echo(1: i32 req1, 2: list<i32> req2, 3: map<i32, i32> req3) (hessian.argsType="int,int[],java.util.HashMap")
    // 使用默认的类型映射
-   EchoDefaultTypeResponse EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,,-")
+   i64 EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,,-")
 }
+```
+
+#### 其它类型
+
+由于 **thrift** 类型的局限性，**kitex** 与 **dubbo-java** 映射时有很多不兼容的类型。 
+DubboCodec 在 [codec-dubbo/java](https://github.com/kitex-contrib/codec-dubbo/tree/main/java) 包中提供了更多 **thrift** 不支持的 **java** 类型。
+
+你可以在 **thrift** 中使用 `include java.thrift` 导入它们，以使用更多的 java 类型。
+并且在使用 **kitex** 脚手架工具生成代码时添加 `-hessian2 java_extension` 参数来拉取该拓展包。
+
+目前支持的类型包含 `java.lang.Object`、`java.util.Date` 等，更多类型可以参考 [java.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/java/java.thrift)。
+
+**示例**
+```thrift
+namespace go echo
+include "java.thrift"
+
+service EchoService {
+    // java.lang.Object
+    i64 EchoString2ObjectMap(1: map<string, java.Object> req)
+    // java.util.Date
+    i64 EchoDate(1: java.Date req)
+}
+```
+
+### 方法重载
+
+在 **thrift** 的方法后面使用 `JavaMethodName` 注解标签可以指定该方法在 java 侧的名称。
+通过此方式可以实现调用 java 的重载方法。
+
+你可以将多个不同的方法指向 java 的同一个方法，DubboCodec 会根据不同的参数类型调用到 java 侧对应的方法。
+
+**示例**
+```thrift
+namespace go echo
+
+service EchoService {
+    string EchoMethodA(1: bool req) (JavaMethodName="EchoMethod")
+    string EchoMethodB(1: i32 req) (JavaMethodName="EchoMethod")
+    string EchoMethodC(1: i32 req) (JavaMethodName="EchoMethod", hessian.argsType="int")
+    string EchoMethodD(1: bool req1, 2: i32 req2) (JavaMethodName="EchoMethod")
+ }
 ```
 
 ### 服务注册与服务发现
