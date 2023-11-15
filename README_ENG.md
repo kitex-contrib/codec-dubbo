@@ -52,26 +52,69 @@ Write dubbo client code based on existing **api.thrift** and [**Type Mapping Tab
 
 4. dubbo-java does not support decoding map types that contain **byte**, **short**, or **float** key values. It is recommended to avoid practices incompatible with dubbo-java. You can use **struct** to wrap the map when defining response fields for interfaces.
 
-### Method Annotation
+### Type Extension
 
-DubboCodec supports specifying the Java types needed for request parameter mapping in **thrift** using **method annotations**.
+#### Custom Mapping
 
-**Method Annotation Format:**
+After a method in **thrift**, you can use the `hessian.argsType` annotation tag to specify the mapping of each parameter to Java types.
+
+**Annotation Format**
 ```thrift
 (hessian.argsType="req1JavaType,req2JavaType,req3JavaType,...")
 ```
 Here, each `reqJavaType` can either be left blank or use a `-`, indicating that the default type mapping will be used for that parameter.
 
-After adding method annotations, use the kitex command line tool to generate code and add the option `-thrift with_reflection`. This will include the **FileDescriptor** of thrift in the generated scaffold code.
-When initializing the client, use DubboCodec's `WithFileDescriptor` Option, and pass in the generated **FileDescriptor** to specify the **kitex -> dubbo** type mapping.
+When initializing the DubboCodec, use the WithFileDescriptor option and pass in the generated FileDescriptor to specify the type mapping from kitex -> dubbo-java.
 
-**Example:**
+**Example**
 ```thrift
+namespace go echo
+
 service EchoService {
-   EchoResponse Echo(1: i32 req1, 2: list<i32> req2, 3: map<i32, i32> req3) (hessian.argsType="int,int[],java.util.HashMap")
+   i64 Echo(1: i32 req1, 2: list<i32> req2, 3: map<i32, i32> req3) (hessian.argsType="int,int[],java.util.HashMap")
    // Use the default type mapping
-   EchoDefaultTypeResponse EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,,-")
+   i64 EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,,-")
 }
+```
+
+#### Other Types
+
+Due to the limitations of the **thrift** type system, there are many incompatible types when mapping **kitex** to **dubbo-java**. The DubboCodec, located in the [codec-dubbo/java](https://github.com/kitex-contrib/codec-dubbo/tree/main/java) package, provides support for additional **java** types that are not supported by **thrift**.
+
+You can import these types into **thrift** using `include java.thrift` to use a wider range of java types. Additionally, when generating code using the **kitex** scaffolding tool, you can add the `-hessian2 java_extension` parameter to pull in this extension package.
+
+The currently supported types include `java.lang.Object`, `java.util.Date`, and so on. For more types, you can refer to [java.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/java/java.thrift).
+
+**Example**
+```thrift
+namespace go echo
+include "java.thrift"
+
+service EchoService {
+    // java.lang.Object
+    i64 EchoString2ObjectMap(1: map<string, java.Object> req)
+    // java.util.Date
+    i64 EchoDate(1: java.Date req)
+}
+```
+
+### Method Overloading
+
+After a method in **thrift**, you can use the `JavaMethodName` annotation tag to specify the name of the method on the Java side.
+This allows you to invoke overloaded methods in Java.
+
+By doing so, you can point multiple different methods to the same Java method. DubboCodec will call the corresponding Java method on the basis of different parameter types.
+
+**Example**
+```thrift
+namespace go echo
+
+service EchoService {
+    string EchoMethodA(1: bool req) (JavaMethodName="EchoMethod")
+    string EchoMethodB(1: i32 req) (JavaMethodName="EchoMethod")
+    string EchoMethodC(1: i32 req) (JavaMethodName="EchoMethod", hessian.argsType="int")
+    string EchoMethodD(1: bool req1, 2: i32 req2) (JavaMethodName="EchoMethod")
+ }
 ```
 
 ### Service Registry and Service Discovery
