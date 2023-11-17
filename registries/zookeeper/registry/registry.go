@@ -37,10 +37,9 @@ const (
 )
 
 type zookeeperRegistry struct {
-	mu       sync.RWMutex
 	conn     *zk.Conn
 	opt      *Options
-	canceler map[string]context.CancelFunc
+	canceler *canceler
 }
 
 func NewZookeeperRegistry(opts ...Option) (registry.Registry, error) {
@@ -65,7 +64,7 @@ func NewZookeeperRegistry(opts ...Option) (registry.Registry, error) {
 				return &zookeeperRegistry{
 					conn:     conn,
 					opt:      o,
-					canceler: make(map[string]context.CancelFunc),
+					canceler: newCanceler(),
 				}, nil
 			}
 		case <-ticker.C:
@@ -89,9 +88,7 @@ func (z *zookeeperRegistry) Register(info *registry.Info) error {
 		return err
 	}
 	ctx, cancel := context.WithCancel(context.Background())
-	z.mu.Lock()
-	defer z.mu.Unlock()
-	z.canceler[path] = cancel
+	z.canceler.add(finalPath, cancel)
 	go z.keepalive(ctx, finalPath, nil)
 	return nil
 }
@@ -165,16 +162,46 @@ func (z *zookeeperRegistry) Deregister(info *registry.Info) error {
 	path := u.GetRegistryServiceKey(z.opt.RegistryGroup)
 	content := u.ToString()
 	finalPath := path + "/" + content
-	z.mu.Lock()
-	cancel, ok := z.canceler[finalPath]
+	cancel, ok := z.canceler.remove(finalPath)
 	if ok {
 		cancel()
-		delete(z.canceler, finalPath)
-		z.mu.Unlock()
 	}
 	return z.deleteNode(finalPath)
 }
 
 func (z *zookeeperRegistry) deleteNode(path string) error {
 	return z.conn.Delete(path, -1)
+}
+
+type canceler struct {
+	mu sync.Mutex
+	// key: zookeeper path, val: CancelFunc to stop the keepalive functionality of this zookeeper path
+	cancelMap map[string]context.CancelFunc
+}
+
+func newCanceler() *canceler {
+	return &canceler{
+		cancelMap: make(map[string]context.CancelFunc),
+	}
+}
+
+func (c *canceler) add(path string, f context.CancelFunc) {
+	c.mu.Lock()
+	c.cancelMap[path] = f
+	c.mu.Unlock()
+}
+
+// remove deletes the CancelFunc specified by path.
+// If this CancelFunc exists, returns it and true.
+// If not, returns nil and false.
+func (c *canceler) remove(path string) (context.CancelFunc, bool) {
+	c.mu.Lock()
+	cancel, ok := c.cancelMap[path]
+	if ok {
+		delete(c.cancelMap, path)
+		c.mu.Unlock()
+		return cancel, true
+	}
+	c.mu.Unlock()
+	return nil, false
 }
