@@ -20,8 +20,9 @@
 package resolver
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestExtractGroupVersion(t *testing.T) {

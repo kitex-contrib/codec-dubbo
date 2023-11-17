@@ -20,10 +20,11 @@
 package registries
 
 import (
-	"github.com/cloudwego/kitex/pkg/registry"
-	"github.com/stretchr/testify/assert"
 	"net"
 	"testing"
+
+	"github.com/cloudwego/kitex/pkg/registry"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestURL_FromInfo(t *testing.T) {
