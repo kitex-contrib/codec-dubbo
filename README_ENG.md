@@ -279,6 +279,21 @@ Important notes:
 
 ## Service Registry and Service Discovery
 
+The configurations used for this functionality are divided into the following two levels:
+1. The WithXXX functions in [registry/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/registry/options.go) and [resolver/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go) provide registry-level configurations; use these functions to generate ```registry.Registry```
+   and ```discovery.Resolver``` instances.
+2. Service level configurations are passed by ```client.WithTag``` with ```server.WithRegistryInfo```, and /registries/common.go provides Tag Keys:
+
+|            Tag Key             |                              client side effect                              |                                                              server side effect                                                               |
+|:------------------------------:|:----------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------:|
+|    **DubboServiceGroupKey**    |                The group to which the called service belongs                 | dubbo supports the division of multiple services into groups under an Interface, specifying the group to which the registered service belongs |
+|   **DubboServiceVersionKey**   |                      The version of the service called                       |                 dubbo supports versioning of multiple services under one Interface, specifying the registered service version                 |
+|  **DubboServiceInterfaceKey**  | The corresponding InterfaceName of the called service under the dubbo system |                               The corresponding InterfaceName of the registered service under the dubbo system                                |
+|   **DubboServiceWeightKey**    |                                                                              |                                                         Weight of registered service                                                          |
+| **DubboServiceApplicationKey** |                                                                              |                                      The name of the application to which the registered service belongs                                      |
+
+Currently only zookeeper is supported as a registry.
+
 ### Interface-Level service discovery
 
 #### initializing client
@@ -288,6 +303,7 @@ import (
 	"context"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/kitex-contrib/codec-dubbo/registries"
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 	// this resolver is dedicated to interacting with the zookeeper in the dubbo system
 	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/resolver"
@@ -300,8 +316,6 @@ func main() {
 	res, err := resolver.NewZookeeperResolver(
 		// specify the addresses of the zookeeper servers, please specify at least one
 		resolver.WithServers("127.0.0.1:2181"),
-		// target dubbo Interface Name
-		resolver.WithInterfaceName(intfName),
 	)
 	if err != nil {
 		panic(err)
@@ -312,10 +326,12 @@ func main() {
 		// configure DubboCodec
 		client.WithCodec(
 			dubbo.NewDubboCodec(
-				// target dubbo Interface，this Interface should be consistent with the Resolver above
+				// target dubbo Interface，this Interface should be consistent with the value of DubboServiceInterfaceKey below
 				dubbo.WithJavaClassName(intfName),
 			),
 		),
+		// target dubbo Interface Name
+        client.WithTag(registries.DubboServiceInterfaceKey, intfName),
 	)
 	if err != nil {
 		panic(err)
@@ -338,8 +354,61 @@ func main() {
 ```
 
 Important notes:
-1. The ```WithJavaClassName``` for DubboCodec should be consistent with the ```WithInterfaceName``` for ZookeeperResolver.
-2. For more ZookeeperResolver configurations, please refer to [**this**](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go).
+1. The ```WithJavaClassName``` for DubboCodec should be consistent with the value of ```registries.DubboServiceInterfaceKey```.
+
+#### initializing server
+
+```go
+import (
+	"github.com/cloudwego/kitex/server"
+	kitex_registry "github.com/cloudwego/kitex/pkg/registry"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	"github.com/kitex-contrib/codec-dubbo/registries"
+	// this registry is dedicated to interacting with the zookeeper in the dubbo system 
+	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/registry"
+	hello "github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
+	"log"
+	"net"
+)
+
+func main() {
+	intfName := "org.cloudwego.kitex.samples.api.GreetProvider"
+	reg, err := registry.NewZookeeperRegistry(
+        // specify the addresses of the zookeeper servers, please specify at least one 
+	    registry.WithServers("127.0.0.1:2181"),
+	)
+	if err != nil {
+	    panic(err)
+	}
+	// specify the address that the server will listen to
+	addr, _ := net.ResolveTCPAddr("tcp", ":21000")
+	svr := hello.NewServer(new(GreetServiceImpl),
+		server.WithServiceAddr(addr),
+		// configure DubboCodec
+		server.WithCodec(dubbo.NewDubboCodec(
+			dubbo.WithJavaClassName(intfName),
+		)),
+		server.WithRegistry(reg),
+		// configure dubbo URL metadata
+		server.WithRegistryInfo(&kitex_registry.Info{
+		    Tags: map[string]string{
+			    registries.DubboServiceInterfaceKey: intfName,
+				// application value should be consistent with ApplicationConfig set in dubbo, this is only an example
+				registries.DubboServiceApplicationKey: "application-name",
+            }
+        }),
+	)
+
+	err := svr.Run()
+
+	if err != nil {
+		log.Println(err.Error())
+	}
+}
+```
+
+Important notes:
+1. The ```WithJavaClassName``` for DubboCodec should be consistent with the value of ```registries.DubboServiceInterfaceKey```.
 
 ## Benchmark
 

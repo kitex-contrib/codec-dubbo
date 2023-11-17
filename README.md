@@ -122,7 +122,7 @@ service EchoService {
 
 ### 服务注册与服务发现
 
-目前仅支持基于 zookeeper 的**接口级**服务发现，**应用级**服务发现以及服务注册将在后续迭代中支持。
+目前仅支持基于 zookeeper 的**接口级**服务发现与服务注册，**应用级**服务发现以及服务注册将在后续迭代中支持。
 
 ## 开始
 
@@ -275,6 +275,19 @@ func main() {
 
 ## 服务注册与发现
 
+用于该功能的配置分为以下两个层次：
+1. [registry/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/registry/options.go) 与 [resolver/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go) 中的WithXXX函数提供注册中心级别的配置，请使用这些函数生成```registry.Registry```
+和```discovery.Resolver```实例。
+2. 服务级别的配置由```client.WithTag```与```server.WithRegistryInfo```进行传递，/registries/common.go提供Tag Keys:
+
+|            Tag Key             |           client侧作用            |                server侧作用                 |
+|:------------------------------:|:------------------------------:|:----------------------------------------:|
+|    **DubboServiceGroupKey**    |           调用的服务所属的组            | dubbo支持在一个Interface下对多个服务划分组，指定注册的服务所属的组 |
+|   **DubboServiceVersionKey**   |            调用的服务版本             | dubbo支持在一个Interface下对多个服务划分版本，指定注册的服务版本  |
+|  **DubboServiceInterfaceKey**  | 调用的服务在dubbo体系下对应的InterfaceName |      注册的服务在dubbo体系下对应的InterfaceName      |
+|   **DubboServiceWeightKey**    |                                |                注册的服务具有的权重                |
+| **DubboServiceApplicationKey** |                                |               注册的服务所属的应用名                |
+
 目前仅支持 zookeeper 作为注册中心。
 
 ### 接口级服务发现
@@ -287,6 +300,7 @@ import (
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/klog"
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	"github.com/kitex-contrib/codec-dubbo/registries"
 	// 该resolver专门用于与dubbo体系下的zookeeper进行交互
 	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/resolver"
 	"github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello"
@@ -298,8 +312,6 @@ func main() {
 	res, err := resolver.NewZookeeperResolver(
 		// 指定 zookeeper 服务器的地址，可指定多个，请至少指定一个 
 		resolver.WithServers("127.0.0.1:2181"),
-		// 指定想要调用的 dubbo Interface
-		resolver.WithInterfaceName(intfName),
 	)
 	if err != nil {
 		panic(err)
@@ -310,10 +322,12 @@ func main() {
 		// 配置 DubboCodec
 		client.WithCodec(
 			dubbo.NewDubboCodec(
-				// 指定想要调用的 dubbo Interface，该 Interface 请与上方的 Resolver 保持一致
+				// 指定想要调用的 dubbo Interface，该 Interface 请与下方的 DubboServiceInterfaceKey 值保持一致
 				dubbo.WithJavaClassName(intfName),
 			),
 		),
+		// 指定想要调用的 dubbo Interface
+		client.WithTag(registries.DubboServiceInterfaceKey, intfName),
 	)
 	if err != nil {
 		panic(err)
@@ -336,8 +350,63 @@ func main() {
 ```
 
 **重要提示**
-1. 用于 DubboCodec 的```WithJavaClassName```应与用于 ZookeeperResolver 的```WithInterfaceName```保持一致。
-2. 更多 ZookeeperResolver 配置请参考[**这里**](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go)。
+1. 用于 DubboCodec 的```WithJavaClassName```应与用于```regitries.DubboServiceInterfaceKey```的值保持一致。
+
+### 接口级服务注册
+
+#### 服务端初始化
+
+```go
+import (
+	"github.com/cloudwego/kitex/server"
+	kitex_registry "github.com/cloudwego/kitex/pkg/registry"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	"github.com/kitex-contrib/codec-dubbo/registries"
+	// 该resolver专门用于与dubbo体系下的zookeeper进行交互 
+	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/registry"
+	hello "github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
+	"log"
+	"net"
+)
+
+func main() {
+	intfName := "org.cloudwego.kitex.samples.api.GreetProvider"
+	reg, err := registry.NewZookeeperRegistry(
+	    // 指定 zookeeper 服务器的地址，可指定多个，请至少指定一个 
+	    registry.WithServers("127.0.0.1:2181"),
+	)
+	if err != nil {
+	    panic(err)
+	}
+	// 指定服务端将要监听的地址
+	addr, _ := net.ResolveTCPAddr("tcp", ":21000")
+	svr := hello.NewServer(new(GreetServiceImpl),
+		server.WithServiceAddr(addr),
+		// 配置 DubboCodec
+		server.WithCodec(dubbo.NewDubboCodec(
+			dubbo.WithJavaClassName(intfName),
+		)),
+		server.WithRegistry(reg),
+		// 配置dubbo URL元数据
+		server.WithRegistryInfo(&kitex_registry.Info{
+		    Tags: map[string]string{
+			    registries.DubboServiceInterfaceKey: intfName,
+				// application请与dubbo所设置的ApplicationConfig保持一致，此处仅为示例
+				registries.DubboServiceApplicationKey: "application-name",
+            }
+        }),
+	)
+
+	err := svr.Run()
+
+	if err != nil {
+		log.Println(err.Error())
+	}
+}
+```
+
+**重要提示**
+1. 用于 DubboCodec 的```WithJavaClassName```应与用于```regitries.DubboServiceInterfaceKey```的值保持一致。
 
 ## 性能测试
 

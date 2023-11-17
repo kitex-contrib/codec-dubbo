@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package resolver
+package registry
 
 import (
 	"time"
@@ -28,9 +28,9 @@ import (
 type Options struct {
 	Servers        []string
 	RegistryGroup  string
-	SessionTimeout time.Duration
 	Username       string
 	Password       string
+	SessionTimeout time.Duration
 }
 
 func (o *Options) Apply(opts []Option) {
