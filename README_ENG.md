@@ -256,7 +256,7 @@ import (
 	"context"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/klog"
-    "github.com/kitex-contrib/codec-dubbo/registries"
+	"github.com/kitex-contrib/codec-dubbo/registries"
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 	// this resolver is dedicated to interacting with the zookeeper in the dubbo system
 	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/resolver"
@@ -316,9 +316,9 @@ import (
 	"github.com/cloudwego/kitex/server"
 	kitex_registry "github.com/cloudwego/kitex/pkg/registry"
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
-    "github.com/kitex-contrib/codec-dubbo/registries"
-    // this registry is dedicated to interacting with the zookeeper in the dubbo system
-    "github.com/kitex-contrib/codec-dubbo/registries/zookeeper/registry"
+	"github.com/kitex-contrib/codec-dubbo/registries"
+	// this registry is dedicated to interacting with the zookeeper in the dubbo system 
+	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/registry"
 	hello "github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
 	"log"
 	"net"

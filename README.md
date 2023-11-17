@@ -314,9 +314,9 @@ import (
 	"github.com/cloudwego/kitex/server"
 	kitex_registry "github.com/cloudwego/kitex/pkg/registry"
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
-    "github.com/kitex-contrib/codec-dubbo/registries"
-    // 该resolver专门用于与dubbo体系下的zookeeper进行交互
-    "github.com/kitex-contrib/codec-dubbo/registries/zookeeper/registry"
+	"github.com/kitex-contrib/codec-dubbo/registries"
+	// 该resolver专门用于与dubbo体系下的zookeeper进行交互 
+	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/registry"
 	hello "github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
 	"log"
 	"net"
