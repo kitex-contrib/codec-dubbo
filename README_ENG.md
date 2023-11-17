@@ -234,8 +234,8 @@ Important notes:
 
 The configurations used for this functionality are divided into the following two levels:
 1. The WithXXX functions in [registry/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/registry/options.go) and [resolver/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go) provide registry-level configurations; use these functions to generate ```registry.Registry```
-   and ```discovey.Resolver``` instances.
-2. Service level configurations are passed by ```client.WithTag``` with ```server.WithRegistyInfo```, and /registries/common.go provides Tag Keys:
+   and ```discovery.Resolver``` instances.
+2. Service level configurations are passed by ```client.WithTag``` with ```server.WithRegistryInfo```, and /registries/common.go provides Tag Keys:
 
 |            Tag Key             |                              client side effect                              |                                                              server side effect                                                               |
 |:------------------------------:|:----------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------:|
@@ -346,7 +346,7 @@ func main() {
 		server.WithRegistryInfo(&kitex_registry.Info{
 		    Tags: map[string]string{
 			    registries.DubboServiceInterfaceKey: intfName,
-				// application value shoule be consistent with ApplicationConfig set in dubbo, this is only an example
+				// application value should be consistent with ApplicationConfig set in dubbo, this is only an example
 				registries.DubboServiceApplicationKey: "application-name",
             }
         }),

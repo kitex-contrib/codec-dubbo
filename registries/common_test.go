@@ -117,7 +117,7 @@ func TestURL_FromInfo(t *testing.T) {
 				Tags: nil,
 			},
 			expected: func(t *testing.T, u *URL, err error) {
-				assert.Equal(t, missingInterfaceErr, err)
+				assert.Equal(t, errMissingInterface, err)
 			},
 		},
 		{
@@ -129,7 +129,7 @@ func TestURL_FromInfo(t *testing.T) {
 				},
 			},
 			expected: func(t *testing.T, u *URL, err error) {
-				assert.Equal(t, missingInterfaceErr, err)
+				assert.Equal(t, errMissingInterface, err)
 			},
 		},
 		{

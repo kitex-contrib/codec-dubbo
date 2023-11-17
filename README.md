@@ -230,8 +230,8 @@ func main() {
 
 用于该功能的配置分为以下两个层次：
 1. [registry/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/registry/options.go) 与 [resolver/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go) 中的WithXXX函数提供注册中心级别的配置，请使用这些函数生成```registry.Registry```
-和```discovey.Resolver```实例。
-2. 服务级别的配置由```client.WithTag```与```server.WithRegistyInfo```进行传递，/registries/common.go提供Tag Keys:
+和```discovery.Resolver```实例。
+2. 服务级别的配置由```client.WithTag```与```server.WithRegistryInfo```进行传递，/registries/common.go提供Tag Keys:
 
 |            Tag Key             |           client侧作用            |                server侧作用                 |
 |:------------------------------:|:------------------------------:|:----------------------------------------:|

@@ -64,7 +64,7 @@ var (
 		DubboServiceApplicationKey: dubboInternalApplicationKey,
 	}
 
-	missingInterfaceErr = errors.New("tags must contain DubboServiceInterfaceKey:<interfaceName> pair")
+	errMissingInterface = errors.New("tags must contain DubboServiceInterfaceKey:<interfaceName> pair")
 )
 
 type URL struct {
@@ -151,7 +151,7 @@ func (u *URL) checkAndSetHost(addr string) error {
 func (u *URL) filterAndSetParams(params map[string]string) error {
 	missingInterfaceFlag := true
 	if len(params) <= 0 {
-		return missingInterfaceErr
+		return errMissingInterface
 	}
 	finalParams := make(url.Values)
 	for key, val := range params {
@@ -164,7 +164,7 @@ func (u *URL) filterAndSetParams(params map[string]string) error {
 		}
 	}
 	if missingInterfaceFlag {
-		return missingInterfaceErr
+		return errMissingInterface
 	}
 	u.params = finalParams
 	return nil
