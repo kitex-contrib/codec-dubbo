@@ -54,6 +54,8 @@ func NewZookeeperRegistry(opts ...Option) (registry.Registry, error) {
 			return nil, err
 		}
 	}
+	// This connection timeout should not exceed sessionTimeout and should not be too small.
+	// So just pick halfTimeout in the middle range.
 	halfTimeout := o.SessionTimeout / 2
 	ticker := time.NewTimer(halfTimeout)
 	for {
@@ -164,11 +166,11 @@ func (z *zookeeperRegistry) Deregister(info *registry.Info) error {
 	content := u.ToString()
 	finalPath := path + "/" + content
 	z.mu.Lock()
-	defer z.mu.Unlock()
 	cancel, ok := z.canceler[finalPath]
 	if ok {
 		cancel()
 		delete(z.canceler, finalPath)
+		z.mu.Unlock()
 	}
 	return z.deleteNode(finalPath)
 }

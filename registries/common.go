@@ -55,13 +55,17 @@ const (
 	RegistryServicesKeyTemplate = "/%s/%s/providers"
 )
 
-var outboundDubboRegistryKeysMapping = map[string]string{
-	DubboServiceGroupKey:       dubboInternalGroupKey,
-	DubboServiceVersionKey:     dubboInternalVersionKey,
-	DubboServiceInterfaceKey:   dubboInternalInterfaceKey,
-	DubboServiceWeightKey:      dubboInternalWeightKey,
-	DubboServiceApplicationKey: dubboInternalApplicationKey,
-}
+var (
+	outboundDubboRegistryKeysMapping = map[string]string{
+		DubboServiceGroupKey:       dubboInternalGroupKey,
+		DubboServiceVersionKey:     dubboInternalVersionKey,
+		DubboServiceInterfaceKey:   dubboInternalInterfaceKey,
+		DubboServiceWeightKey:      dubboInternalWeightKey,
+		DubboServiceApplicationKey: dubboInternalApplicationKey,
+	}
+
+	missingInterfaceErr = errors.New("tags must contain DubboServiceInterfaceKey:<interfaceName> pair")
+)
 
 type URL struct {
 	protocol      string
@@ -122,36 +126,32 @@ func (u *URL) GetRegistryServiceKey(registryGroup string) string {
 }
 
 func (u *URL) checkAndSetHost(addr string) error {
-	host, port, err := net.SplitHostPort(addr)
-	if err != nil {
-		return fmt.Errorf("parse addr %s error: %s", addr, err)
-	}
-	if port == "" {
+	sepInd := strings.LastIndex(addr, ":")
+	// there is no port part
+	if sepInd < 0 {
 		return fmt.Errorf("addr %s missing port", addr)
 	}
-	if host == "" || host == "::" {
+	host := addr[:sepInd]
+	port := addr[sepInd+1:]
+	finalHost := host
+	if host == "" || host == "[::]" {
 		ipv4, err := getLocalIPV4Address()
 		if err != nil {
 			return fmt.Errorf("get local ipv4 error, cause %s", err)
 		}
+		finalHost = ipv4
 		u.host = ipv4 + ":" + port
-	} else {
-		u.host = host + ":" + port
 	}
+
+	u.host = finalHost + ":" + port
+
 	return nil
 }
 
 func (u *URL) filterAndSetParams(params map[string]string) error {
-	var missingInterfaceFlag bool
-	var err error
-	defer func() {
-		if missingInterfaceFlag {
-			err = errors.New("tags must contain DubboServiceInterfaceKey:<interfaceName> pair")
-		}
-	}()
+	missingInterfaceFlag := true
 	if len(params) <= 0 {
-		missingInterfaceFlag = true
-		return err
+		return missingInterfaceErr
 	}
 	finalParams := make(url.Values)
 	for key, val := range params {
@@ -160,20 +160,23 @@ func (u *URL) filterAndSetParams(params map[string]string) error {
 		}
 		if key == DubboServiceInterfaceKey {
 			u.interfaceName = val
-			missingInterfaceFlag = true
+			missingInterfaceFlag = false
 		}
 	}
+	if missingInterfaceFlag {
+		return missingInterfaceErr
+	}
 	u.params = finalParams
-	return err
+	return nil
 }
 
 func getLocalIPV4Address() (string, error) {
-	addr, err := net.InterfaceAddrs()
+	addrs, err := net.InterfaceAddrs()
 	if err != nil {
 		return "", err
 	}
 
-	for _, addr := range addr {
+	for _, addr := range addrs {
 		ipNet, isIpNet := addr.(*net.IPNet)
 		if isIpNet && !ipNet.IP.IsLoopback() {
 			ipv4 := ipNet.IP.To4()
@@ -182,5 +185,5 @@ func getLocalIPV4Address() (string, error) {
 			}
 		}
 	}
-	return "", fmt.Errorf("not found ipv4 address")
+	return "", errors.New("there is not valid ip address found")
 }

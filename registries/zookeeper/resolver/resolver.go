@@ -22,6 +22,7 @@ package resolver
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/cloudwego/kitex/pkg/discovery"
@@ -109,21 +110,24 @@ func (z *zookeeperResolver) Name() string {
 	return z.uniqueName
 }
 
+// extractGroupVersion extract group and version from desc returned by Target()
+// e.g.
+// input: desc /dubbo/interfaceName:g1:v1
+//
+// output: remaining /dubbo/interfaceName
+//
+//	group g1
+//	version v1
 func extractGroupVersion(desc string) (remaining, group, version string) {
-	length := len(desc)
-	firstIdx, secondIdx := -1, -1
-	for i := length - 1; i >= 0; i-- {
-		if desc[i:i+1] == groupVersionSeparator {
-			if secondIdx < 0 {
-				secondIdx = i
-				continue
-			}
-			firstIdx = i
-			break
-		}
-	}
-	version = desc[secondIdx+1 : length]
-	group = desc[firstIdx+1 : secondIdx]
-	remaining = desc[0:firstIdx]
+	// retrieve version
+	verSepIdx := strings.LastIndex(desc, groupVersionSeparator)
+	version = desc[verSepIdx+1:]
+	remaining = desc[:verSepIdx]
+
+	// retrieve group
+	groSepIdx := strings.LastIndex(remaining, groupVersionSeparator)
+	group = remaining[groSepIdx+1:]
+	remaining = remaining[:groSepIdx]
+
 	return
 }
