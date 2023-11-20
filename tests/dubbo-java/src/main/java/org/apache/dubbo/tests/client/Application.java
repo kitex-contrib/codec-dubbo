@@ -23,28 +23,46 @@ import java.io.IOException;
 import java.util.*;
 
 import org.apache.dubbo.config.ReferenceConfig;
+import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.tests.api.*;
 import org.eclipse.jetty.server.Authentication;
 
 public class Application {
     public static void main(String[] args) throws IOException {
+        DubboBootstrap instance = DubboBootstrap.getInstance()
+                    .application("dubbo");
         ReferenceConfig<UserProvider> reference = new ReferenceConfig<>();
         reference.setInterface(UserProvider.class);
-        reference.setUrl("127.0.0.1:20000");
 
-        DubboBootstrap.getInstance()
-                .application("first-dubbo-consumer")
-                .reference(reference)
+        boolean withRegistryFlag = false;
+        if (args.length >= 1 && args[0].equals("withRegistry")) {
+            withRegistryFlag = true;
+            // initialize zookeeper registry
+            String zookeeperAddress = "zookeeper://127.0.0.1:2181";
+            RegistryConfig zookeeper = new RegistryConfig(zookeeperAddress);
+            zookeeper.setGroup("myGroup");
+            zookeeper.setRegisterMode("interface");
+            instance = instance.registry(zookeeper);
+        } else {
+            reference.setUrl("127.0.0.1:20000");
+        }
+
+        instance.reference(reference)
                 .start();
-
         UserProvider service = reference.get();
+        if (withRegistryFlag) {
+            testEchoBool(service);
+            return;
+        }
+
         testBaseTypes(service);
         testContainerListType(service);
         testContainerMapType(service);
         testMultiParams(service);
         testMethodArgsAnnotation(service);
         testMethodNameAnnotation(service);
+        testOptional(service);
     }
 
     public static void logEchoFail(String methodName) {
@@ -135,6 +153,24 @@ public class Application {
         testEchoMultiBaseInt64(svc);
         testEchoMultiBaseFloat(svc);
         testEchoMultiBaseDouble(svc);
+    }
+
+    public static void testOptional(UserProvider svc) {
+        testEchoOptionalBool(svc);
+        testEchoOptionalInt32(svc);
+        testEchoOptionalString(svc);
+        testEchoOptionalBoolList(svc);
+        testEchoOptionalInt32List(svc);
+        testEchoOptionalStringList(svc);
+        testEchoOptionalBool2BoolMap(svc);
+        testEchoOptionalBool2Int32Map(svc);
+        testEchoOptionalBool2StringMap(svc);
+        testEchoOptionalMultiBoolRequest(svc);
+        testEchoOptionalMultiInt32Request(svc);
+        testEchoOptionalMultiStringRequest(svc);
+        testEchoOptionalMultiBoolResponse(svc);
+        testEchoOptionalMultiInt32Response(svc);
+        testEchoOptionalMultiStringResponse(svc);
     }
 
     public static void testMethodNameAnnotation(UserProvider svc) {
@@ -1164,6 +1200,213 @@ public class Application {
             Integer req2 = 1;
             String resp = svc.EchoMethod(req1, req2);
             if (!String.format("D:%b,%d", req1, req2).equals(resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalBool(UserProvider svc) {
+        String methodName = "EchoOptionalBool";
+        try {
+            Boolean req = null;
+            Boolean resp = svc.EchoOptionalBool(req);
+            if (!Objects.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalInt32(UserProvider svc) {
+        String methodName = "EchoOptionalInt32";
+        try {
+            Integer req = null;
+            Integer resp = svc.EchoOptionalInt32(req);
+            if (!Objects.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalString(UserProvider svc) {
+        String methodName = "EchoOptionalString";
+        try {
+            String req = null;
+            String resp = svc.EchoOptionalString(req);
+            if (!Objects.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalBoolList(UserProvider svc) {
+        String methodName = "EchoOptionalBoolList";
+        try {
+            List<Boolean> req = null;
+            List<Boolean> resp = svc.EchoOptionalBoolList(req);
+            if (!Objects.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalInt32List(UserProvider svc) {
+        String methodName = "EchoOptionalInt32List";
+        try {
+            List<Integer> req = null;
+            List<Integer> resp = svc.EchoOptionalInt32List(req);
+            if (!Objects.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalStringList(UserProvider svc) {
+        String methodName = "EchoOptionalStringList";
+        try {
+            List<String> req = null;
+            List<String> resp = svc.EchoOptionalStringList(req);
+            if (!Objects.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalBool2BoolMap(UserProvider svc) {
+        String methodName = "EchoOptionalBool2BoolMap";
+        try {
+            Map<Boolean, Boolean> req = null;
+            Map<Boolean, Boolean> resp = svc.EchoOptionalBool2BoolMap(req);
+            if (!Objects.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalBool2Int32Map(UserProvider svc) {
+        String methodName = "EchoOptionalBool2Int32Map";
+        try {
+            Map<Boolean, Integer> req = null;
+            Map<Boolean, Integer> resp = svc.EchoOptionalBool2Int32Map(req);
+            if (!Objects.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalBool2StringMap(UserProvider svc) {
+        String methodName = "EchoOptionalBool2StringMap";
+        try {
+            Map<Boolean, String> req = null;
+            Map<Boolean, String> resp = svc.EchoOptionalBool2StringMap(req);
+            if (!Objects.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalMultiBoolRequest(UserProvider svc) {
+        String methodName = "EchoOptionalMultiBoolRequest";
+        try {
+            EchoOptionalMultiBoolRequest req = new EchoOptionalMultiBoolRequest(false, null, null, null);
+            Boolean resp = svc.EchoOptionalMultiBoolRequest(req);
+            if (!resp.equals(req.getBasicReq())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalMultiInt32Request(UserProvider svc) {
+        String methodName = "EchoOptionalMultiInt32Request";
+        try {
+            EchoOptionalMultiInt32Request req = new EchoOptionalMultiInt32Request(0, null, null, null);
+            Integer resp = svc.EchoOptionalMultiInt32Request(req);
+            if (!resp.equals(req.getBasicReq())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalMultiStringRequest(UserProvider svc) {
+        String methodName = "EchoOptionalMultiStringRequest";
+        try {
+            EchoOptionalMultiStringRequest req = new EchoOptionalMultiStringRequest(null, null, null);
+            String resp = svc.EchoOptionalMultiStringRequest(req);
+            if (resp.equals(req.getBaseReq())) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalMultiBoolResponse(UserProvider svc) {
+        String methodName = "EchoOptionalMultiBoolResponse";
+        try {
+            EchoOptionalMultiBoolResponse resp = svc.EchoOptionalMultiBoolResponse(false);
+            if (resp.getBasicResp() || resp.getPackResp() != null || resp.getListResp() != null || resp.getMapResp() != null) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalMultiInt32Response(UserProvider svc) {
+        String methodName = "EchoOptionalMultiInt32Response";
+        try {
+            EchoOptionalMultiInt32Response resp = svc.EchoOptionalMultiInt32Response(0);
+            if (resp.getBasicResp() != 0 || resp.getPackResp() != null || resp.getListResp() != null || resp.getMapResp() != null) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalMultiStringResponse(UserProvider svc) {
+        String methodName = "EchoOptionalMultiStringResponse";
+        try {
+            EchoOptionalMultiStringResponse resp = svc.EchoOptionalMultiStringResponse("");
+            if (resp.getBaseResp() != null || resp.getListResp() != null || resp.getMapResp() != null) {
                 logEchoFail(methodName);
             }
         } catch (Exception e) {

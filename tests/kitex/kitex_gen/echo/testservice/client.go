@@ -89,6 +89,21 @@ type Client interface {
 	EchoMethodB(ctx context.Context, req int32, callOptions ...callopt.Option) (r string, err error)
 	EchoMethodC(ctx context.Context, req int32, callOptions ...callopt.Option) (r string, err error)
 	EchoMethodD(ctx context.Context, req1 bool, req2 int32, callOptions ...callopt.Option) (r string, err error)
+	EchoOptionalBool(ctx context.Context, req bool, callOptions ...callopt.Option) (r bool, err error)
+	EchoOptionalInt32(ctx context.Context, req int32, callOptions ...callopt.Option) (r int32, err error)
+	EchoOptionalString(ctx context.Context, req string, callOptions ...callopt.Option) (r string, err error)
+	EchoOptionalBoolList(ctx context.Context, req []bool, callOptions ...callopt.Option) (r []bool, err error)
+	EchoOptionalInt32List(ctx context.Context, req []int32, callOptions ...callopt.Option) (r []int32, err error)
+	EchoOptionalStringList(ctx context.Context, req []string, callOptions ...callopt.Option) (r []string, err error)
+	EchoOptionalBool2BoolMap(ctx context.Context, req map[bool]bool, callOptions ...callopt.Option) (r map[bool]bool, err error)
+	EchoOptionalBool2Int32Map(ctx context.Context, req map[bool]int32, callOptions ...callopt.Option) (r map[bool]int32, err error)
+	EchoOptionalBool2StringMap(ctx context.Context, req map[bool]string, callOptions ...callopt.Option) (r map[bool]string, err error)
+	EchoOptionalMultiBoolRequest(ctx context.Context, req *echo.EchoOptionalMultiBoolRequest, callOptions ...callopt.Option) (r bool, err error)
+	EchoOptionalMultiInt32Request(ctx context.Context, req *echo.EchoOptionalMultiInt32Request, callOptions ...callopt.Option) (r int32, err error)
+	EchoOptionalMultiStringRequest(ctx context.Context, req *echo.EchoOptionalMultiStringRequest, callOptions ...callopt.Option) (r string, err error)
+	EchoOptionalMultiBoolResponse(ctx context.Context, req bool, callOptions ...callopt.Option) (r *echo.EchoOptionalMultiBoolResponse, err error)
+	EchoOptionalMultiInt32Response(ctx context.Context, req int32, callOptions ...callopt.Option) (r *echo.EchoOptionalMultiInt32Response, err error)
+	EchoOptionalMultiStringResponse(ctx context.Context, req string, callOptions ...callopt.Option) (r *echo.EchoOptionalMultiStringResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -508,4 +523,79 @@ func (p *kTestServiceClient) EchoMethodC(ctx context.Context, req int32, callOpt
 func (p *kTestServiceClient) EchoMethodD(ctx context.Context, req1 bool, req2 int32, callOptions ...callopt.Option) (r string, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.EchoMethodD(ctx, req1, req2)
+}
+
+func (p *kTestServiceClient) EchoOptionalBool(ctx context.Context, req bool, callOptions ...callopt.Option) (r bool, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalBool(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalInt32(ctx context.Context, req int32, callOptions ...callopt.Option) (r int32, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalInt32(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalString(ctx context.Context, req string, callOptions ...callopt.Option) (r string, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalString(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalBoolList(ctx context.Context, req []bool, callOptions ...callopt.Option) (r []bool, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalBoolList(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalInt32List(ctx context.Context, req []int32, callOptions ...callopt.Option) (r []int32, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalInt32List(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalStringList(ctx context.Context, req []string, callOptions ...callopt.Option) (r []string, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalStringList(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalBool2BoolMap(ctx context.Context, req map[bool]bool, callOptions ...callopt.Option) (r map[bool]bool, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalBool2BoolMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalBool2Int32Map(ctx context.Context, req map[bool]int32, callOptions ...callopt.Option) (r map[bool]int32, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalBool2Int32Map(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalBool2StringMap(ctx context.Context, req map[bool]string, callOptions ...callopt.Option) (r map[bool]string, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalBool2StringMap(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalMultiBoolRequest(ctx context.Context, req *echo.EchoOptionalMultiBoolRequest, callOptions ...callopt.Option) (r bool, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalMultiBoolRequest(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalMultiInt32Request(ctx context.Context, req *echo.EchoOptionalMultiInt32Request, callOptions ...callopt.Option) (r int32, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalMultiInt32Request(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalMultiStringRequest(ctx context.Context, req *echo.EchoOptionalMultiStringRequest, callOptions ...callopt.Option) (r string, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalMultiStringRequest(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalMultiBoolResponse(ctx context.Context, req bool, callOptions ...callopt.Option) (r *echo.EchoOptionalMultiBoolResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalMultiBoolResponse(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalMultiInt32Response(ctx context.Context, req int32, callOptions ...callopt.Option) (r *echo.EchoOptionalMultiInt32Response, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalMultiInt32Response(ctx, req)
+}
+
+func (p *kTestServiceClient) EchoOptionalMultiStringResponse(ctx context.Context, req string, callOptions ...callopt.Option) (r *echo.EchoOptionalMultiStringResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.EchoOptionalMultiStringResponse(ctx, req)
 }

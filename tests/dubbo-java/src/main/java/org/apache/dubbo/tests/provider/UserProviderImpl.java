@@ -376,4 +376,82 @@ public class UserProviderImpl implements UserProvider {
     public String EchoMethod(Boolean req1, Integer req2) throws Exception {
         return String.format("D:%b,%d", req1, req2);
     }
+
+    @Override
+    public Boolean EchoOptionalBool(Boolean req) throws Exception {
+        return null;
+    }
+
+    @Override
+    public Integer EchoOptionalInt32(Integer req) throws Exception {
+        return null;
+    }
+
+    @Override
+    public String EchoOptionalString(String req) throws Exception {
+        return null;
+    }
+
+    @Override
+    public List<Boolean> EchoOptionalBoolList(List<Boolean> req) throws Exception {
+        return null;
+    }
+
+    @Override
+    public List<Integer> EchoOptionalInt32List(List<Integer> req) throws Exception {
+        return null;
+    }
+
+    @Override
+    public List<String> EchoOptionalStringList(List<String> req) throws Exception {
+        return null;
+    }
+
+    @Override
+    public Map<Boolean, Boolean> EchoOptionalBool2BoolMap(Map<Boolean, Boolean> req) throws Exception {
+        return null;
+    }
+
+    @Override
+    public Map<Boolean, Integer> EchoOptionalBool2Int32Map(Map<Boolean, Integer> req) throws Exception {
+        return null;
+    }
+
+    @Override
+    public Map<Boolean, String> EchoOptionalBool2StringMap(Map<Boolean, String> req) throws Exception {
+        return null;
+    }
+
+    @Override
+    public Boolean EchoOptionalMultiBoolRequest(EchoOptionalMultiBoolRequest req) throws Exception {
+        System.out.println(req);
+        return req.getBasicReq();
+    }
+
+    @Override
+    public Integer EchoOptionalMultiInt32Request(EchoOptionalMultiInt32Request req) throws Exception {
+        System.out.println(req);
+        return req.getBasicReq();
+    }
+
+    @Override
+    public String EchoOptionalMultiStringRequest(EchoOptionalMultiStringRequest req) throws Exception {
+        System.out.println(req);
+        return req.getBaseReq();
+    }
+
+    @Override
+    public EchoOptionalMultiBoolResponse EchoOptionalMultiBoolResponse(Boolean req) throws Exception {
+        return new EchoOptionalMultiBoolResponse(false, null, null, null);
+    }
+
+    @Override
+    public EchoOptionalMultiInt32Response EchoOptionalMultiInt32Response(Integer req) throws Exception {
+        return new EchoOptionalMultiInt32Response(0, null, null, null);
+    }
+
+    @Override
+    public EchoOptionalMultiStringResponse EchoOptionalMultiStringResponse(String req) throws Exception {
+        return new EchoOptionalMultiStringResponse(null, null, null);
+    }
 }

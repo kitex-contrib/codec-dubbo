@@ -1,5 +1,7 @@
 namespace go echo
 
+include "java.thrift"
+
 struct EchoRequest {
     1: required i32 int32,
 }(JavaClassName="kitex.echo.EchoRequest")
@@ -55,6 +57,46 @@ struct EchoMultiStringResponse {
     2: required list<string> listResp,
     3: required map<string, string> mapResp,
 }(JavaClassName="org.apache.dubbo.tests.api.EchoMultiStringResponse")
+
+struct EchoOptionalMultiBoolRequest {
+    1: optional bool basicReq,
+    2: optional bool packReq,
+    3: optional list<bool> listReq,
+    4: optional map<bool, bool> mapReq
+}(JavaClassName="org.apache.dubbo.tests.api.EchoOptionalMultiBoolRequest")
+
+struct EchoOptionalMultiInt32Request {
+    1: optional i32 basicReq,
+    2: optional i32 packReq,
+    3: optional list<i32> listReq,
+    4: optional map<bool, i32> mapReq
+}(JavaClassName="org.apache.dubbo.tests.api.EchoOptionalMultiInt32Request")
+
+struct EchoOptionalMultiStringRequest {
+    1: optional string baseReq,
+    2: optional list<string> listReq,
+    3: optional map<bool, string> mapReq
+}(JavaClassName="org.apache.dubbo.tests.api.EchoOptionalMultiStringRequest")
+
+struct EchoOptionalMultiBoolResponse {
+    1: optional bool basicResp,
+    2: optional bool packResp,
+    3: optional list<bool> listResp,
+    4: optional map<bool, bool> mapResp
+}(JavaClassName="org.apache.dubbo.tests.api.EchoOptionalMultiBoolResponse")
+
+struct EchoOptionalMultiInt32Response {
+    1: optional i32 basicResp,
+    2: optional i32 packResp,
+    3: optional list<i32> listResp,
+    4: optional map<bool, i32> mapResp
+}(JavaClassName="org.apache.dubbo.tests.api.EchoOptionalMultiInt32Response")
+
+struct EchoOptionalMultiStringResponse {
+    1: optional string baseResp,
+    2: optional list<string> listResp,
+    3: optional map<bool, string> mapResp
+}(JavaClassName="org.apache.dubbo.tests.api.EchoOptionalMultiStringResponse")
 
 service TestService {
     i32 EchoInt(1: i32 req)
@@ -150,4 +192,21 @@ service TestService {
     string EchoMethodB(1: i32 req) (JavaMethodName="EchoMethod")
     string EchoMethodC(1: i32 req) (hessian.argsType="int",JavaMethodName="EchoMethod")
     string EchoMethodD(1: bool req1, 2: i32 req2) (JavaMethodName="EchoMethod")
+
+    // optional
+    bool EchoOptionalBool(1: optional bool req)
+    i32 EchoOptionalInt32(1: optional i32 req)
+    string EchoOptionalString(1: optional string req)
+    list<bool> EchoOptionalBoolList(1: optional list<bool> req)
+    list<i32> EchoOptionalInt32List(1: optional list<i32> req)
+    list<string> EchoOptionalStringList(1: optional list<string> req)
+    map<bool, bool> EchoOptionalBool2BoolMap(1: optional map<bool, bool> req)
+    map<bool, i32> EchoOptionalBool2Int32Map(1: optional map<bool, i32> req)
+    map<bool, string> EchoOptionalBool2StringMap(1: optional map<bool, string> req)
+    bool EchoOptionalMultiBoolRequest(1: EchoOptionalMultiBoolRequest req)
+    i32 EchoOptionalMultiInt32Request(1: EchoOptionalMultiInt32Request req)
+    string EchoOptionalMultiStringRequest(1: EchoOptionalMultiStringRequest req)
+    EchoOptionalMultiBoolResponse EchoOptionalMultiBoolResponse(bool req)
+    EchoOptionalMultiInt32Response EchoOptionalMultiInt32Response(i32 req)
+    EchoOptionalMultiStringResponse EchoOptionalMultiStringResponse(string req)
 }(JavaClassName="org.apache.dubbo.tests.api.UserProvider")

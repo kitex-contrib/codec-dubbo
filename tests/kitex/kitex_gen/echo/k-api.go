@@ -9,6 +9,8 @@ import (
 	"strings"
 
 	"github.com/apache/thrift/lib/go/thrift"
+
+	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/java"
 )
 
 // unused protection
@@ -18,6 +20,7 @@ var (
 	_ = (*strings.Builder)(nil)
 	_ = reflect.Type(nil)
 	_ = thrift.TProtocol(nil)
+	_ = java.KitexUnusedProtection
 )
 
 type TestServiceEchoIntArgs struct {
@@ -5500,5 +5503,1037 @@ func (p *TestServiceEchoMethodDResult) String() string {
 	return fmt.Sprintf("TestServiceEchoMethodDResult(%+v)", *p)
 }
 func (p *TestServiceEchoMethodDResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalBoolArgs struct {
+	Req bool `thrift:"req,1" frugal:"1,default,bool" json:"req"`
+}
+
+func NewTestServiceEchoOptionalBoolArgs() *TestServiceEchoOptionalBoolArgs {
+	return &TestServiceEchoOptionalBoolArgs{}
+}
+
+func (p *TestServiceEchoOptionalBoolArgs) InitDefault() {
+	*p = TestServiceEchoOptionalBoolArgs{}
+}
+
+func (p *TestServiceEchoOptionalBoolArgs) GetReq() (v bool) {
+	return p.Req
+}
+func (p *TestServiceEchoOptionalBoolArgs) SetReq(val bool) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalBoolArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalBoolArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalBoolArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalBoolResult struct {
+	Success *bool `thrift:"success,0,optional" frugal:"0,optional,bool" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalBoolResult() *TestServiceEchoOptionalBoolResult {
+	return &TestServiceEchoOptionalBoolResult{}
+}
+
+func (p *TestServiceEchoOptionalBoolResult) InitDefault() {
+	*p = TestServiceEchoOptionalBoolResult{}
+}
+
+var TestServiceEchoOptionalBoolResult_Success_DEFAULT bool
+
+func (p *TestServiceEchoOptionalBoolResult) GetSuccess() (v bool) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalBoolResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoOptionalBoolResult) SetSuccess(x interface{}) {
+	p.Success = x.(*bool)
+}
+
+func (p *TestServiceEchoOptionalBoolResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalBoolResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalBoolResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalBoolResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalInt32Args struct {
+	Req int32 `thrift:"req,1" frugal:"1,default,i32" json:"req"`
+}
+
+func NewTestServiceEchoOptionalInt32Args() *TestServiceEchoOptionalInt32Args {
+	return &TestServiceEchoOptionalInt32Args{}
+}
+
+func (p *TestServiceEchoOptionalInt32Args) InitDefault() {
+	*p = TestServiceEchoOptionalInt32Args{}
+}
+
+func (p *TestServiceEchoOptionalInt32Args) GetReq() (v int32) {
+	return p.Req
+}
+func (p *TestServiceEchoOptionalInt32Args) SetReq(val int32) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalInt32Args) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalInt32Args(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalInt32Args) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalInt32Result struct {
+	Success *int32 `thrift:"success,0,optional" frugal:"0,optional,i32" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalInt32Result() *TestServiceEchoOptionalInt32Result {
+	return &TestServiceEchoOptionalInt32Result{}
+}
+
+func (p *TestServiceEchoOptionalInt32Result) InitDefault() {
+	*p = TestServiceEchoOptionalInt32Result{}
+}
+
+var TestServiceEchoOptionalInt32Result_Success_DEFAULT int32
+
+func (p *TestServiceEchoOptionalInt32Result) GetSuccess() (v int32) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalInt32Result_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoOptionalInt32Result) SetSuccess(x interface{}) {
+	p.Success = x.(*int32)
+}
+
+func (p *TestServiceEchoOptionalInt32Result) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalInt32Result) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalInt32Result(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalInt32Result) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalStringArgs struct {
+	Req string `thrift:"req,1" frugal:"1,default,string" json:"req"`
+}
+
+func NewTestServiceEchoOptionalStringArgs() *TestServiceEchoOptionalStringArgs {
+	return &TestServiceEchoOptionalStringArgs{}
+}
+
+func (p *TestServiceEchoOptionalStringArgs) InitDefault() {
+	*p = TestServiceEchoOptionalStringArgs{}
+}
+
+func (p *TestServiceEchoOptionalStringArgs) GetReq() (v string) {
+	return p.Req
+}
+func (p *TestServiceEchoOptionalStringArgs) SetReq(val string) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalStringArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalStringArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalStringArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalStringResult struct {
+	Success *string `thrift:"success,0,optional" frugal:"0,optional,string" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalStringResult() *TestServiceEchoOptionalStringResult {
+	return &TestServiceEchoOptionalStringResult{}
+}
+
+func (p *TestServiceEchoOptionalStringResult) InitDefault() {
+	*p = TestServiceEchoOptionalStringResult{}
+}
+
+var TestServiceEchoOptionalStringResult_Success_DEFAULT string
+
+func (p *TestServiceEchoOptionalStringResult) GetSuccess() (v string) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalStringResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoOptionalStringResult) SetSuccess(x interface{}) {
+	p.Success = x.(*string)
+}
+
+func (p *TestServiceEchoOptionalStringResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalStringResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalStringResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalStringResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalBoolListArgs struct {
+	Req []bool `thrift:"req,1" frugal:"1,default,list<bool>" json:"req"`
+}
+
+func NewTestServiceEchoOptionalBoolListArgs() *TestServiceEchoOptionalBoolListArgs {
+	return &TestServiceEchoOptionalBoolListArgs{}
+}
+
+func (p *TestServiceEchoOptionalBoolListArgs) InitDefault() {
+	*p = TestServiceEchoOptionalBoolListArgs{}
+}
+
+func (p *TestServiceEchoOptionalBoolListArgs) GetReq() (v []bool) {
+	return p.Req
+}
+func (p *TestServiceEchoOptionalBoolListArgs) SetReq(val []bool) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalBoolListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalBoolListArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalBoolListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalBoolListResult struct {
+	Success []bool `thrift:"success,0,optional" frugal:"0,optional,list<bool>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalBoolListResult() *TestServiceEchoOptionalBoolListResult {
+	return &TestServiceEchoOptionalBoolListResult{}
+}
+
+func (p *TestServiceEchoOptionalBoolListResult) InitDefault() {
+	*p = TestServiceEchoOptionalBoolListResult{}
+}
+
+var TestServiceEchoOptionalBoolListResult_Success_DEFAULT []bool
+
+func (p *TestServiceEchoOptionalBoolListResult) GetSuccess() (v []bool) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalBoolListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoOptionalBoolListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]bool)
+}
+
+func (p *TestServiceEchoOptionalBoolListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalBoolListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalBoolListResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalBoolListResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalInt32ListArgs struct {
+	Req []int32 `thrift:"req,1" frugal:"1,default,list<i32>" json:"req"`
+}
+
+func NewTestServiceEchoOptionalInt32ListArgs() *TestServiceEchoOptionalInt32ListArgs {
+	return &TestServiceEchoOptionalInt32ListArgs{}
+}
+
+func (p *TestServiceEchoOptionalInt32ListArgs) InitDefault() {
+	*p = TestServiceEchoOptionalInt32ListArgs{}
+}
+
+func (p *TestServiceEchoOptionalInt32ListArgs) GetReq() (v []int32) {
+	return p.Req
+}
+func (p *TestServiceEchoOptionalInt32ListArgs) SetReq(val []int32) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalInt32ListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalInt32ListArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalInt32ListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalInt32ListResult struct {
+	Success []int32 `thrift:"success,0,optional" frugal:"0,optional,list<i32>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalInt32ListResult() *TestServiceEchoOptionalInt32ListResult {
+	return &TestServiceEchoOptionalInt32ListResult{}
+}
+
+func (p *TestServiceEchoOptionalInt32ListResult) InitDefault() {
+	*p = TestServiceEchoOptionalInt32ListResult{}
+}
+
+var TestServiceEchoOptionalInt32ListResult_Success_DEFAULT []int32
+
+func (p *TestServiceEchoOptionalInt32ListResult) GetSuccess() (v []int32) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalInt32ListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoOptionalInt32ListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]int32)
+}
+
+func (p *TestServiceEchoOptionalInt32ListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalInt32ListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalInt32ListResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalInt32ListResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalStringListArgs struct {
+	Req []string `thrift:"req,1" frugal:"1,default,list<string>" json:"req"`
+}
+
+func NewTestServiceEchoOptionalStringListArgs() *TestServiceEchoOptionalStringListArgs {
+	return &TestServiceEchoOptionalStringListArgs{}
+}
+
+func (p *TestServiceEchoOptionalStringListArgs) InitDefault() {
+	*p = TestServiceEchoOptionalStringListArgs{}
+}
+
+func (p *TestServiceEchoOptionalStringListArgs) GetReq() (v []string) {
+	return p.Req
+}
+func (p *TestServiceEchoOptionalStringListArgs) SetReq(val []string) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalStringListArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalStringListArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalStringListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalStringListResult struct {
+	Success []string `thrift:"success,0,optional" frugal:"0,optional,list<string>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalStringListResult() *TestServiceEchoOptionalStringListResult {
+	return &TestServiceEchoOptionalStringListResult{}
+}
+
+func (p *TestServiceEchoOptionalStringListResult) InitDefault() {
+	*p = TestServiceEchoOptionalStringListResult{}
+}
+
+var TestServiceEchoOptionalStringListResult_Success_DEFAULT []string
+
+func (p *TestServiceEchoOptionalStringListResult) GetSuccess() (v []string) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalStringListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoOptionalStringListResult) SetSuccess(x interface{}) {
+	p.Success = x.([]string)
+}
+
+func (p *TestServiceEchoOptionalStringListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalStringListResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalStringListResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalStringListResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalBool2BoolMapArgs struct {
+	Req map[bool]bool `thrift:"req,1" frugal:"1,default,map<bool:bool>" json:"req"`
+}
+
+func NewTestServiceEchoOptionalBool2BoolMapArgs() *TestServiceEchoOptionalBool2BoolMapArgs {
+	return &TestServiceEchoOptionalBool2BoolMapArgs{}
+}
+
+func (p *TestServiceEchoOptionalBool2BoolMapArgs) InitDefault() {
+	*p = TestServiceEchoOptionalBool2BoolMapArgs{}
+}
+
+func (p *TestServiceEchoOptionalBool2BoolMapArgs) GetReq() (v map[bool]bool) {
+	return p.Req
+}
+func (p *TestServiceEchoOptionalBool2BoolMapArgs) SetReq(val map[bool]bool) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalBool2BoolMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalBool2BoolMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalBool2BoolMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalBool2BoolMapResult struct {
+	Success map[bool]bool `thrift:"success,0,optional" frugal:"0,optional,map<bool:bool>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalBool2BoolMapResult() *TestServiceEchoOptionalBool2BoolMapResult {
+	return &TestServiceEchoOptionalBool2BoolMapResult{}
+}
+
+func (p *TestServiceEchoOptionalBool2BoolMapResult) InitDefault() {
+	*p = TestServiceEchoOptionalBool2BoolMapResult{}
+}
+
+var TestServiceEchoOptionalBool2BoolMapResult_Success_DEFAULT map[bool]bool
+
+func (p *TestServiceEchoOptionalBool2BoolMapResult) GetSuccess() (v map[bool]bool) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalBool2BoolMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoOptionalBool2BoolMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool]bool)
+}
+
+func (p *TestServiceEchoOptionalBool2BoolMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalBool2BoolMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalBool2BoolMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalBool2BoolMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalBool2Int32MapArgs struct {
+	Req map[bool]int32 `thrift:"req,1" frugal:"1,default,map<bool:i32>" json:"req"`
+}
+
+func NewTestServiceEchoOptionalBool2Int32MapArgs() *TestServiceEchoOptionalBool2Int32MapArgs {
+	return &TestServiceEchoOptionalBool2Int32MapArgs{}
+}
+
+func (p *TestServiceEchoOptionalBool2Int32MapArgs) InitDefault() {
+	*p = TestServiceEchoOptionalBool2Int32MapArgs{}
+}
+
+func (p *TestServiceEchoOptionalBool2Int32MapArgs) GetReq() (v map[bool]int32) {
+	return p.Req
+}
+func (p *TestServiceEchoOptionalBool2Int32MapArgs) SetReq(val map[bool]int32) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalBool2Int32MapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalBool2Int32MapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalBool2Int32MapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalBool2Int32MapResult struct {
+	Success map[bool]int32 `thrift:"success,0,optional" frugal:"0,optional,map<bool:i32>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalBool2Int32MapResult() *TestServiceEchoOptionalBool2Int32MapResult {
+	return &TestServiceEchoOptionalBool2Int32MapResult{}
+}
+
+func (p *TestServiceEchoOptionalBool2Int32MapResult) InitDefault() {
+	*p = TestServiceEchoOptionalBool2Int32MapResult{}
+}
+
+var TestServiceEchoOptionalBool2Int32MapResult_Success_DEFAULT map[bool]int32
+
+func (p *TestServiceEchoOptionalBool2Int32MapResult) GetSuccess() (v map[bool]int32) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalBool2Int32MapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoOptionalBool2Int32MapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool]int32)
+}
+
+func (p *TestServiceEchoOptionalBool2Int32MapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalBool2Int32MapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalBool2Int32MapResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalBool2Int32MapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalBool2StringMapArgs struct {
+	Req map[bool]string `thrift:"req,1" frugal:"1,default,map<bool:string>" json:"req"`
+}
+
+func NewTestServiceEchoOptionalBool2StringMapArgs() *TestServiceEchoOptionalBool2StringMapArgs {
+	return &TestServiceEchoOptionalBool2StringMapArgs{}
+}
+
+func (p *TestServiceEchoOptionalBool2StringMapArgs) InitDefault() {
+	*p = TestServiceEchoOptionalBool2StringMapArgs{}
+}
+
+func (p *TestServiceEchoOptionalBool2StringMapArgs) GetReq() (v map[bool]string) {
+	return p.Req
+}
+func (p *TestServiceEchoOptionalBool2StringMapArgs) SetReq(val map[bool]string) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalBool2StringMapArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalBool2StringMapArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalBool2StringMapArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalBool2StringMapResult struct {
+	Success map[bool]string `thrift:"success,0,optional" frugal:"0,optional,map<bool:string>" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalBool2StringMapResult() *TestServiceEchoOptionalBool2StringMapResult {
+	return &TestServiceEchoOptionalBool2StringMapResult{}
+}
+
+func (p *TestServiceEchoOptionalBool2StringMapResult) InitDefault() {
+	*p = TestServiceEchoOptionalBool2StringMapResult{}
+}
+
+var TestServiceEchoOptionalBool2StringMapResult_Success_DEFAULT map[bool]string
+
+func (p *TestServiceEchoOptionalBool2StringMapResult) GetSuccess() (v map[bool]string) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalBool2StringMapResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoOptionalBool2StringMapResult) SetSuccess(x interface{}) {
+	p.Success = x.(map[bool]string)
+}
+
+func (p *TestServiceEchoOptionalBool2StringMapResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalBool2StringMapResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalBool2StringMapResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalBool2StringMapResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalMultiBoolRequestArgs struct {
+	Req *EchoOptionalMultiBoolRequest `thrift:"req,1" frugal:"1,default,EchoOptionalMultiBoolRequest" json:"req"`
+}
+
+func NewTestServiceEchoOptionalMultiBoolRequestArgs() *TestServiceEchoOptionalMultiBoolRequestArgs {
+	return &TestServiceEchoOptionalMultiBoolRequestArgs{}
+}
+
+func (p *TestServiceEchoOptionalMultiBoolRequestArgs) InitDefault() {
+	*p = TestServiceEchoOptionalMultiBoolRequestArgs{}
+}
+
+var TestServiceEchoOptionalMultiBoolRequestArgs_Req_DEFAULT *EchoOptionalMultiBoolRequest
+
+func (p *TestServiceEchoOptionalMultiBoolRequestArgs) GetReq() (v *EchoOptionalMultiBoolRequest) {
+	if !p.IsSetReq() {
+		return TestServiceEchoOptionalMultiBoolRequestArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *TestServiceEchoOptionalMultiBoolRequestArgs) SetReq(val *EchoOptionalMultiBoolRequest) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalMultiBoolRequestArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *TestServiceEchoOptionalMultiBoolRequestArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalMultiBoolRequestArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalMultiBoolRequestArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalMultiBoolRequestResult struct {
+	Success *bool `thrift:"success,0,optional" frugal:"0,optional,bool" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalMultiBoolRequestResult() *TestServiceEchoOptionalMultiBoolRequestResult {
+	return &TestServiceEchoOptionalMultiBoolRequestResult{}
+}
+
+func (p *TestServiceEchoOptionalMultiBoolRequestResult) InitDefault() {
+	*p = TestServiceEchoOptionalMultiBoolRequestResult{}
+}
+
+var TestServiceEchoOptionalMultiBoolRequestResult_Success_DEFAULT bool
+
+func (p *TestServiceEchoOptionalMultiBoolRequestResult) GetSuccess() (v bool) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalMultiBoolRequestResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoOptionalMultiBoolRequestResult) SetSuccess(x interface{}) {
+	p.Success = x.(*bool)
+}
+
+func (p *TestServiceEchoOptionalMultiBoolRequestResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalMultiBoolRequestResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalMultiBoolRequestResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalMultiBoolRequestResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalMultiInt32RequestArgs struct {
+	Req *EchoOptionalMultiInt32Request `thrift:"req,1" frugal:"1,default,EchoOptionalMultiInt32Request" json:"req"`
+}
+
+func NewTestServiceEchoOptionalMultiInt32RequestArgs() *TestServiceEchoOptionalMultiInt32RequestArgs {
+	return &TestServiceEchoOptionalMultiInt32RequestArgs{}
+}
+
+func (p *TestServiceEchoOptionalMultiInt32RequestArgs) InitDefault() {
+	*p = TestServiceEchoOptionalMultiInt32RequestArgs{}
+}
+
+var TestServiceEchoOptionalMultiInt32RequestArgs_Req_DEFAULT *EchoOptionalMultiInt32Request
+
+func (p *TestServiceEchoOptionalMultiInt32RequestArgs) GetReq() (v *EchoOptionalMultiInt32Request) {
+	if !p.IsSetReq() {
+		return TestServiceEchoOptionalMultiInt32RequestArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *TestServiceEchoOptionalMultiInt32RequestArgs) SetReq(val *EchoOptionalMultiInt32Request) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalMultiInt32RequestArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *TestServiceEchoOptionalMultiInt32RequestArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalMultiInt32RequestArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalMultiInt32RequestArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalMultiInt32RequestResult struct {
+	Success *int32 `thrift:"success,0,optional" frugal:"0,optional,i32" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalMultiInt32RequestResult() *TestServiceEchoOptionalMultiInt32RequestResult {
+	return &TestServiceEchoOptionalMultiInt32RequestResult{}
+}
+
+func (p *TestServiceEchoOptionalMultiInt32RequestResult) InitDefault() {
+	*p = TestServiceEchoOptionalMultiInt32RequestResult{}
+}
+
+var TestServiceEchoOptionalMultiInt32RequestResult_Success_DEFAULT int32
+
+func (p *TestServiceEchoOptionalMultiInt32RequestResult) GetSuccess() (v int32) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalMultiInt32RequestResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoOptionalMultiInt32RequestResult) SetSuccess(x interface{}) {
+	p.Success = x.(*int32)
+}
+
+func (p *TestServiceEchoOptionalMultiInt32RequestResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalMultiInt32RequestResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalMultiInt32RequestResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalMultiInt32RequestResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalMultiStringRequestArgs struct {
+	Req *EchoOptionalMultiStringRequest `thrift:"req,1" frugal:"1,default,EchoOptionalMultiStringRequest" json:"req"`
+}
+
+func NewTestServiceEchoOptionalMultiStringRequestArgs() *TestServiceEchoOptionalMultiStringRequestArgs {
+	return &TestServiceEchoOptionalMultiStringRequestArgs{}
+}
+
+func (p *TestServiceEchoOptionalMultiStringRequestArgs) InitDefault() {
+	*p = TestServiceEchoOptionalMultiStringRequestArgs{}
+}
+
+var TestServiceEchoOptionalMultiStringRequestArgs_Req_DEFAULT *EchoOptionalMultiStringRequest
+
+func (p *TestServiceEchoOptionalMultiStringRequestArgs) GetReq() (v *EchoOptionalMultiStringRequest) {
+	if !p.IsSetReq() {
+		return TestServiceEchoOptionalMultiStringRequestArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *TestServiceEchoOptionalMultiStringRequestArgs) SetReq(val *EchoOptionalMultiStringRequest) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalMultiStringRequestArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *TestServiceEchoOptionalMultiStringRequestArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalMultiStringRequestArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalMultiStringRequestArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalMultiStringRequestResult struct {
+	Success *string `thrift:"success,0,optional" frugal:"0,optional,string" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalMultiStringRequestResult() *TestServiceEchoOptionalMultiStringRequestResult {
+	return &TestServiceEchoOptionalMultiStringRequestResult{}
+}
+
+func (p *TestServiceEchoOptionalMultiStringRequestResult) InitDefault() {
+	*p = TestServiceEchoOptionalMultiStringRequestResult{}
+}
+
+var TestServiceEchoOptionalMultiStringRequestResult_Success_DEFAULT string
+
+func (p *TestServiceEchoOptionalMultiStringRequestResult) GetSuccess() (v string) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalMultiStringRequestResult_Success_DEFAULT
+	}
+	return *p.Success
+}
+func (p *TestServiceEchoOptionalMultiStringRequestResult) SetSuccess(x interface{}) {
+	p.Success = x.(*string)
+}
+
+func (p *TestServiceEchoOptionalMultiStringRequestResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalMultiStringRequestResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalMultiStringRequestResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalMultiStringRequestResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalMultiBoolResponseArgs struct {
+	Req bool `thrift:"req,1" frugal:"1,default,bool" json:"req"`
+}
+
+func NewTestServiceEchoOptionalMultiBoolResponseArgs() *TestServiceEchoOptionalMultiBoolResponseArgs {
+	return &TestServiceEchoOptionalMultiBoolResponseArgs{}
+}
+
+func (p *TestServiceEchoOptionalMultiBoolResponseArgs) InitDefault() {
+	*p = TestServiceEchoOptionalMultiBoolResponseArgs{}
+}
+
+func (p *TestServiceEchoOptionalMultiBoolResponseArgs) GetReq() (v bool) {
+	return p.Req
+}
+func (p *TestServiceEchoOptionalMultiBoolResponseArgs) SetReq(val bool) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalMultiBoolResponseArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalMultiBoolResponseArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalMultiBoolResponseArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalMultiBoolResponseResult struct {
+	Success *EchoOptionalMultiBoolResponse `thrift:"success,0,optional" frugal:"0,optional,EchoOptionalMultiBoolResponse" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalMultiBoolResponseResult() *TestServiceEchoOptionalMultiBoolResponseResult {
+	return &TestServiceEchoOptionalMultiBoolResponseResult{}
+}
+
+func (p *TestServiceEchoOptionalMultiBoolResponseResult) InitDefault() {
+	*p = TestServiceEchoOptionalMultiBoolResponseResult{}
+}
+
+var TestServiceEchoOptionalMultiBoolResponseResult_Success_DEFAULT *EchoOptionalMultiBoolResponse
+
+func (p *TestServiceEchoOptionalMultiBoolResponseResult) GetSuccess() (v *EchoOptionalMultiBoolResponse) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalMultiBoolResponseResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoOptionalMultiBoolResponseResult) SetSuccess(x interface{}) {
+	p.Success = x.(*EchoOptionalMultiBoolResponse)
+}
+
+func (p *TestServiceEchoOptionalMultiBoolResponseResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalMultiBoolResponseResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalMultiBoolResponseResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalMultiBoolResponseResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalMultiInt32ResponseArgs struct {
+	Req int32 `thrift:"req,1" frugal:"1,default,i32" json:"req"`
+}
+
+func NewTestServiceEchoOptionalMultiInt32ResponseArgs() *TestServiceEchoOptionalMultiInt32ResponseArgs {
+	return &TestServiceEchoOptionalMultiInt32ResponseArgs{}
+}
+
+func (p *TestServiceEchoOptionalMultiInt32ResponseArgs) InitDefault() {
+	*p = TestServiceEchoOptionalMultiInt32ResponseArgs{}
+}
+
+func (p *TestServiceEchoOptionalMultiInt32ResponseArgs) GetReq() (v int32) {
+	return p.Req
+}
+func (p *TestServiceEchoOptionalMultiInt32ResponseArgs) SetReq(val int32) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalMultiInt32ResponseArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalMultiInt32ResponseArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalMultiInt32ResponseArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalMultiInt32ResponseResult struct {
+	Success *EchoOptionalMultiInt32Response `thrift:"success,0,optional" frugal:"0,optional,EchoOptionalMultiInt32Response" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalMultiInt32ResponseResult() *TestServiceEchoOptionalMultiInt32ResponseResult {
+	return &TestServiceEchoOptionalMultiInt32ResponseResult{}
+}
+
+func (p *TestServiceEchoOptionalMultiInt32ResponseResult) InitDefault() {
+	*p = TestServiceEchoOptionalMultiInt32ResponseResult{}
+}
+
+var TestServiceEchoOptionalMultiInt32ResponseResult_Success_DEFAULT *EchoOptionalMultiInt32Response
+
+func (p *TestServiceEchoOptionalMultiInt32ResponseResult) GetSuccess() (v *EchoOptionalMultiInt32Response) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalMultiInt32ResponseResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoOptionalMultiInt32ResponseResult) SetSuccess(x interface{}) {
+	p.Success = x.(*EchoOptionalMultiInt32Response)
+}
+
+func (p *TestServiceEchoOptionalMultiInt32ResponseResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalMultiInt32ResponseResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalMultiInt32ResponseResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalMultiInt32ResponseResult) GetResult() interface{} {
+	return p.Success
+}
+
+type TestServiceEchoOptionalMultiStringResponseArgs struct {
+	Req string `thrift:"req,1" frugal:"1,default,string" json:"req"`
+}
+
+func NewTestServiceEchoOptionalMultiStringResponseArgs() *TestServiceEchoOptionalMultiStringResponseArgs {
+	return &TestServiceEchoOptionalMultiStringResponseArgs{}
+}
+
+func (p *TestServiceEchoOptionalMultiStringResponseArgs) InitDefault() {
+	*p = TestServiceEchoOptionalMultiStringResponseArgs{}
+}
+
+func (p *TestServiceEchoOptionalMultiStringResponseArgs) GetReq() (v string) {
+	return p.Req
+}
+func (p *TestServiceEchoOptionalMultiStringResponseArgs) SetReq(val string) {
+	p.Req = val
+}
+
+func (p *TestServiceEchoOptionalMultiStringResponseArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalMultiStringResponseArgs(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalMultiStringResponseArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type TestServiceEchoOptionalMultiStringResponseResult struct {
+	Success *EchoOptionalMultiStringResponse `thrift:"success,0,optional" frugal:"0,optional,EchoOptionalMultiStringResponse" json:"success,omitempty"`
+}
+
+func NewTestServiceEchoOptionalMultiStringResponseResult() *TestServiceEchoOptionalMultiStringResponseResult {
+	return &TestServiceEchoOptionalMultiStringResponseResult{}
+}
+
+func (p *TestServiceEchoOptionalMultiStringResponseResult) InitDefault() {
+	*p = TestServiceEchoOptionalMultiStringResponseResult{}
+}
+
+var TestServiceEchoOptionalMultiStringResponseResult_Success_DEFAULT *EchoOptionalMultiStringResponse
+
+func (p *TestServiceEchoOptionalMultiStringResponseResult) GetSuccess() (v *EchoOptionalMultiStringResponse) {
+	if !p.IsSetSuccess() {
+		return TestServiceEchoOptionalMultiStringResponseResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *TestServiceEchoOptionalMultiStringResponseResult) SetSuccess(x interface{}) {
+	p.Success = x.(*EchoOptionalMultiStringResponse)
+}
+
+func (p *TestServiceEchoOptionalMultiStringResponseResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *TestServiceEchoOptionalMultiStringResponseResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("TestServiceEchoOptionalMultiStringResponseResult(%+v)", *p)
+}
+func (p *TestServiceEchoOptionalMultiStringResponseResult) GetResult() interface{} {
 	return p.Success
 }
