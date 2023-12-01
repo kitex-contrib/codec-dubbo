@@ -140,10 +140,10 @@ service EchoService {
 ### 安装命令行工具
 
 ```shell
-# 安装 kitex 命令行工具 
+# 安装 kitex 命令行工具 (version >= v0.8.0)
 go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 
-# 安装 thriftgo 命令行工具 
+# 安装 thriftgo 命令行工具 (version >= v0.3.3)
 go install github.com/cloudwego/thriftgo@latest
 ```
 
