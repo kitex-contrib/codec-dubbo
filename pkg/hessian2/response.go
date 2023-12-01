@@ -100,7 +100,6 @@ func ReflectResponse(in, out interface{}) error {
 		outElem := outValue.Elem()
 		switch outElem.Type().Kind() {
 		case reflect.Slice, reflect.Array, reflect.Map, reflect.Ptr:
-			outElem.SetZero()
 			return nil
 		default:
 			return fmt.Errorf("@in is nil")
