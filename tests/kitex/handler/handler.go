@@ -465,3 +465,97 @@ func (s *TestServiceImpl) EchoMethodC(ctx context.Context, req int32) (resp stri
 func (s *TestServiceImpl) EchoMethodD(ctx context.Context, req1 bool, req2 int32) (resp string, err error) {
 	return fmt.Sprintf("D:%v,%v", req1, req2), nil
 }
+
+// EchoOptionalBool implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalBool(ctx context.Context, req bool) (resp bool, err error) {
+	return req, nil
+}
+
+// EchoOptionalInt32 implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalInt32(ctx context.Context, req int32) (resp int32, err error) {
+	return req, nil
+}
+
+// EchoOptionalString implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalString(ctx context.Context, req string) (resp string, err error) {
+	return req, nil
+}
+
+// EchoOptionalBoolList implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalBoolList(ctx context.Context, req []bool) (resp []bool, err error) {
+	return req, nil
+}
+
+// EchoOptionalInt32List implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalInt32List(ctx context.Context, req []int32) (resp []int32, err error) {
+	return req, nil
+}
+
+// EchoOptionalStringList implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalStringList(ctx context.Context, req []string) (resp []string, err error) {
+	return req, nil
+}
+
+// EchoOptionalBool2BoolMap implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalBool2BoolMap(ctx context.Context, req map[bool]bool) (resp map[bool]bool, err error) {
+	return req, nil
+}
+
+// EchoOptionalBool2Int32Map implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalBool2Int32Map(ctx context.Context, req map[bool]int32) (resp map[bool]int32, err error) {
+	return req, nil
+}
+
+// EchoOptionalBool2StringMap implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalBool2StringMap(ctx context.Context, req map[bool]string) (resp map[bool]string, err error) {
+	return req, nil
+}
+
+// EchoOptionalStruct implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalStruct(ctx context.Context, req *echo.EchoOptionalStructRequest) (resp *echo.EchoOptionalStructResponse, err error) {
+	return nil, nil
+}
+
+// EchoOptionalMultiBoolRequest implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalMultiBoolRequest(ctx context.Context, req *echo.EchoOptionalMultiBoolRequest) (resp bool, err error) {
+	return req.GetBasicReq(), nil
+}
+
+// EchoOptionalMultiInt32Request implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalMultiInt32Request(ctx context.Context, req *echo.EchoOptionalMultiInt32Request) (resp int32, err error) {
+	return req.GetBasicReq(), nil
+}
+
+// EchoOptionalMultiStringRequest implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalMultiStringRequest(ctx context.Context, req *echo.EchoOptionalMultiStringRequest) (resp string, err error) {
+	return req.GetBaseReq(), nil
+}
+
+// EchoOptionalMultiBoolResponse implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalMultiBoolResponse(ctx context.Context, req bool) (resp *echo.EchoOptionalMultiBoolResponse, err error) {
+	return &echo.EchoOptionalMultiBoolResponse{
+		BasicResp: nil,
+		PackResp:  nil,
+		ListResp:  nil,
+		MapResp:   nil,
+	}, nil
+}
+
+// EchoOptionalMultiInt32Response implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalMultiInt32Response(ctx context.Context, req int32) (resp *echo.EchoOptionalMultiInt32Response, err error) {
+	return &echo.EchoOptionalMultiInt32Response{
+		BasicResp: nil,
+		PackResp:  nil,
+		ListResp:  nil,
+		MapResp:   nil,
+	}, nil
+}
+
+// EchoOptionalMultiStringResponse implements the TestServiceImpl interface.
+func (s *TestServiceImpl) EchoOptionalMultiStringResponse(ctx context.Context, req string) (resp *echo.EchoOptionalMultiStringResponse, err error) {
+	return &echo.EchoOptionalMultiStringResponse{
+		BaseResp: nil,
+		ListResp: nil,
+		MapResp:  nil,
+	}, nil
+}

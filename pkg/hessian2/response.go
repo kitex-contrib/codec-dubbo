@@ -86,10 +86,6 @@ var _refHolderPtrType = reflect.TypeOf(&_refHolder{})
 
 // ReflectResponse reflect return value
 func ReflectResponse(in, out interface{}) error {
-	if in == nil {
-		return fmt.Errorf("@in is nil")
-	}
-
 	if out == nil {
 		return fmt.Errorf("@out is nil")
 	}
@@ -99,6 +95,16 @@ func ReflectResponse(in, out interface{}) error {
 
 	inValue := ensurePackValue(in)
 	outValue := ensurePackValue(out)
+
+	if !inValue.IsValid() {
+		outElem := outValue.Elem()
+		switch outElem.Type().Kind() {
+		case reflect.Slice, reflect.Array, reflect.Map, reflect.Ptr:
+			return nil
+		default:
+			return fmt.Errorf("@in is nil")
+		}
+	}
 
 	outType := outValue.Type().String()
 	if outType == "interface {}" || outType == "*interface {}" {

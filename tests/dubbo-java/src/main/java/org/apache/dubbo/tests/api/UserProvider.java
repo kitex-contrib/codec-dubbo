@@ -158,4 +158,36 @@ public interface UserProvider {
     String EchoMethod(int req) throws Exception;
 
     String EchoMethod(Boolean req1, Integer req2) throws Exception;
+
+    Boolean EchoOptionalBool(Boolean req) throws Exception;
+
+    Integer EchoOptionalInt32(Integer req) throws Exception;
+
+    String EchoOptionalString(String req) throws Exception;
+
+    List<Boolean> EchoOptionalBoolList(List<Boolean> req) throws Exception;
+
+    List<Integer> EchoOptionalInt32List(List<Integer> req) throws Exception;
+
+    List<String> EchoOptionalStringList(List<String> req) throws Exception;
+
+    Map<Boolean, Boolean> EchoOptionalBool2BoolMap(Map<Boolean, Boolean> req) throws Exception;
+
+    Map<Boolean, Integer> EchoOptionalBool2Int32Map(Map<Boolean, Integer> req) throws Exception;
+
+    Map<Boolean, String> EchoOptionalBool2StringMap(Map<Boolean, String> req) throws Exception;
+
+    EchoOptionalStructResponse EchoOptionalStruct(EchoOptionalStructRequest req) throws Exception;
+
+    Boolean EchoOptionalMultiBoolRequest(EchoOptionalMultiBoolRequest req) throws Exception;
+
+    Integer EchoOptionalMultiInt32Request(EchoOptionalMultiInt32Request req) throws Exception;
+
+    String EchoOptionalMultiStringRequest(EchoOptionalMultiStringRequest req) throws Exception;
+
+    EchoOptionalMultiBoolResponse EchoOptionalMultiBoolResponse(Boolean req) throws Exception;
+
+    EchoOptionalMultiInt32Response EchoOptionalMultiInt32Response(Integer req) throws Exception;
+
+    EchoOptionalMultiStringResponse EchoOptionalMultiStringResponse(String req) throws Exception;
 }

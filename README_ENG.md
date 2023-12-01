@@ -53,6 +53,16 @@ Write dubbo client code based on existing **api.thrift** and [**Type Mapping Tab
 
 4. dubbo-java does not support decoding map types that contain **byte**, **short**, or **float** key values. It is recommended to avoid practices incompatible with dubbo-java. You can use **struct** to wrap the map when defining response fields for interfaces.
 
+**Null Compatibility**:
+
+1. Due to some basic types in Go not supporting null values (e.g., **bool**, **int64**, etc.), it is not recommended for the Java side to pass `null` values to non-nullable types in Go.
+
+2. When Java-server passes a `null` value to a non-nullable type in the Kitex-client, it will be converted to the zero value of the corresponding type.
+
+3. Java-client does not support passing `null` values to non-nullable types in the Kitex-server. There are plans to add extended types in future versions [#69](https://github.com/kitex-contrib/codec-dubbo/issues/69) to support Java null values.
+
+4. If there is a requirement for `null` values, it is recommended to wrap non-nullable types in a **struct**. On the Go side, the corresponding type's zero value will be received, and the DubboCodec provides good support for null values in **struct** fields.
+
 ### Type Extension
 
 #### Custom Mapping
@@ -133,11 +143,11 @@ Currently, only **Interface-Level** service discovery based on zookeeper is supp
 ### Prerequisites
 
 ```shell
-# install the latest kitex cmd tool (switch to `@latest` after v0.8.0 is released)
-go install github.com/cloudwego/kitex/tool/cmd/kitex@4b3520fbdb5a7d347df1de79d6252efed08ebdf2
+# install the latest kitex cmd tool
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 
-# install thriftgo (switch to `@latest` after v0.3.3 is released)
-go install github.com/cloudwego/thriftgo@d3508eeb6136bc20ba2f79a04ac878a1595c1cc5
+# install thriftgo
+go install github.com/cloudwego/thriftgo@latest
 ```
 
 ### Generating kitex stub codes

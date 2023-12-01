@@ -5,7 +5,7 @@ go 1.20
 replace github.com/kitex-contrib/codec-dubbo => ../..
 
 require (
-	github.com/cloudwego/kitex v0.7.3
+	github.com/cloudwego/kitex v0.8.0
 	github.com/go-zookeeper/zk v1.0.3
 	github.com/kitex-contrib/codec-dubbo v0.0.0-00010101000000-000000000000
 	github.com/stretchr/testify v1.8.2

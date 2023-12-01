@@ -51,6 +51,15 @@
 
 4. dubbo-java 不支持对包含 **byte**、**short**、**float** 键值的 Map 类型解码，建议避开 dubbo-java 不兼容的用法，可以在定义接口的响应字段时使用 **struct** 来包裹 map。
 
+**空值兼容**：
+
+1. 由于 go 中部分基础类型不支持空值（如：**bool**、**int64**等），不建议 java 端向 go 端不可为空的类型传递 `null` 值。
+
+2. java-server 向 kitex-client 不可为空的类型传递 `null` 值时，会被转换为对应类型的零值。
+
+3. 不支持 java-client 向 kitex-server 不可为空的类型传递 `null` 值，计划于后续版本 [#69](https://github.com/kitex-contrib/codec-dubbo/issues/69) 添加拓展类型以支持 java 空值。
+
+4. 如果对 `null` 值有需求，建议将不可为空的类型包装在 **struct** 中，在 go 端将接收到对应类型的零值，DubboCodec 对 **struct** 中字段的空值有较好的支持。
 
 ### 类型拓展
 
@@ -131,11 +140,11 @@ service EchoService {
 ### 安装命令行工具
 
 ```shell
-# 安装 kitex 命令行工具 (注：待发布 v0.8.0 后可改为 `@latest` )
-go install github.com/cloudwego/kitex/tool/cmd/kitex@4b3520fbdb5a7d347df1de79d6252efed08ebdf2
+# 安装 kitex 命令行工具 
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 
-# 安装 thriftgo 命令行工具 (注：待发布 v0.3.3 后可改为 `@latest` )
-go install github.com/cloudwego/thriftgo@d3508eeb6136bc20ba2f79a04ac878a1595c1cc5
+# 安装 thriftgo 命令行工具 
+go install github.com/cloudwego/thriftgo@latest
 ```
 
 ### 生成 kitex stub 代码
