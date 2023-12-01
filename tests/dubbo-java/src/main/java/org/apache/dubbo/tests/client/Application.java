@@ -49,6 +49,7 @@ public class Application {
 
         instance.reference(reference)
                 .start();
+
         UserProvider service = reference.get();
         if (withRegistryFlag) {
             testEchoBool(service);

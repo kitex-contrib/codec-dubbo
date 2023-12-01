@@ -44,6 +44,7 @@ Write dubbo client code based on existing **api.thrift** and [**Type Mapping Tab
 | map\<bool, string> | map[bool]string  |      map      | Map\<Boolean, String>  |         HashMap\<Boolean, String>          |
 
 **Important notes**:
+
 1. The list of map types is not exhaustive and includes only tested cases.
 
 2. Using keys of **binary** type in map types is not supported.
@@ -67,13 +68,14 @@ Here, each `reqJavaType` can either be left blank or use a `-`, indicating that 
 When initializing the DubboCodec, use the WithFileDescriptor option and pass in the generated FileDescriptor to specify the type mapping from kitex -> dubbo-java.
 
 **Example**
+
 ```thrift
 namespace go echo
 
 service EchoService {
    i64 Echo(1: i32 req1, 2: list<i32> req2, 3: map<i32, i32> req3) (hessian.argsType="int,int[],java.util.HashMap")
-   // Use the default type mapping
-   i64 EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,,-")
+   // Use the default type mapping for the first 2 arguments
+   i64 EchoDefaultType(1: i32 req1, 2: i64 req2, 3: bool req3, 4: string req4) (hessian.argsType=",-,bool,string")
 }
 ```
 
@@ -81,9 +83,11 @@ service EchoService {
 
 Due to the limitations of the **thrift** type system, there are many incompatible types when mapping **kitex** to **dubbo-java**. The DubboCodec, located in the [codec-dubbo/java](https://github.com/kitex-contrib/codec-dubbo/tree/main/java) package, provides support for additional **java** types that are not supported by **thrift**.
 
-You can import these types into **thrift** using `include java.thrift` to use a wider range of java types. Additionally, when generating code using the **kitex** scaffolding tool, you can add the `-hessian2 java_extension` parameter to pull in this extension package.
+To enable these types, you should add into **Thrift IDL** `include "java.thrift"`, and generate code with the **kitex** scaffolding tool with the `-hessian2 java_extension` parameter.
 
-The currently supported types include `java.lang.Object`, `java.util.Date`, and so on. For more types, you can refer to [java.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/java/java.thrift).
+You can download [java.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/java/java.thrift) manually to the targeting path (especially when you need a special version), otherwise **kitex** will do it for you.
+
+The currently supported types include `java.lang.Object`, `java.util.Date`. For more details, you can refer to [java.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/java/java.thrift).
 
 **Example**
 ```thrift
@@ -124,16 +128,16 @@ Currently, only **Interface-Level** service discovery based on zookeeper is supp
 
 ## Getting Started
 
-[**Concrete sample**](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples//helloworld/).
+[**Example**](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples//helloworld/).
 
 ### Prerequisites
 
 ```shell
-# install the latest kitex cmd tool (kitex >= v0.7.3)
-go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
+# install the latest kitex cmd tool (switch to `@latest` after v0.8.0 is released)
+go install github.com/cloudwego/kitex/tool/cmd/kitex@4b3520fbdb5a7d347df1de79d6252efed08ebdf2
 
-# install thriftgo
-go install github.com/cloudwego/thriftgo@latest
+# install thriftgo (switch to `@latest` after v0.3.3 is released)
+go install github.com/cloudwego/thriftgo@d3508eeb6136bc20ba2f79a04ac878a1595c1cc5
 ```
 
 ### Generating kitex stub codes
@@ -162,12 +166,12 @@ service GreetService {
 EOF
 
 # Generate Kitex scaffold with the `-protocol Hessian2` option
-# With `-thrift template=slim,with_reflection`, generate code without thrift encoder/decoder && support thrift reflection
-kitex -module kitex-dubbo-demo -thrift template=slim,with_reflection -protocol Hessian2 -service GreetService ./api.thrift
+kitex -module kitex-dubbo-demo -protocol Hessian2 -service GreetService ./api.thrift
 
 ```
 
 Important Notes:
+
 1. Each struct in the `api.thrift` should have an annotation named `JavaClassName`, with a value consistent with the target class name in Dubbo Java.
 
 ### Finishing business logic and configuration
@@ -275,6 +279,21 @@ Important notes:
 
 ## Service Registry and Service Discovery
 
+The configurations used for this functionality are divided into the following two levels:
+1. The WithXXX functions in [registry/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/registry/options.go) and [resolver/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go) provide registry-level configurations; use these functions to generate ```registry.Registry```
+   and ```discovery.Resolver``` instances.
+2. Service level configurations are passed by ```client.WithTag``` with ```server.WithRegistryInfo```, and /registries/common.go provides Tag Keys:
+
+|            Tag Key             |                              client side effect                              |                                                              server side effect                                                               |
+|:------------------------------:|:----------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------:|
+|    **DubboServiceGroupKey**    |                The group to which the called service belongs                 | dubbo supports the division of multiple services into groups under an Interface, specifying the group to which the registered service belongs |
+|   **DubboServiceVersionKey**   |                      The version of the service called                       |                 dubbo supports versioning of multiple services under one Interface, specifying the registered service version                 |
+|  **DubboServiceInterfaceKey**  | The corresponding InterfaceName of the called service under the dubbo system |                               The corresponding InterfaceName of the registered service under the dubbo system                                |
+|   **DubboServiceWeightKey**    |                                                                              |                                                         Weight of registered service                                                          |
+| **DubboServiceApplicationKey** |                                                                              |                                      The name of the application to which the registered service belongs                                      |
+
+Currently only zookeeper is supported as a registry.
+
 ### Interface-Level service discovery
 
 #### initializing client
@@ -284,6 +303,7 @@ import (
 	"context"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/kitex-contrib/codec-dubbo/registries"
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
 	// this resolver is dedicated to interacting with the zookeeper in the dubbo system
 	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/resolver"
@@ -296,8 +316,6 @@ func main() {
 	res, err := resolver.NewZookeeperResolver(
 		// specify the addresses of the zookeeper servers, please specify at least one
 		resolver.WithServers("127.0.0.1:2181"),
-		// target dubbo Interface Name
-		resolver.WithInterfaceName(intfName),
 	)
 	if err != nil {
 		panic(err)
@@ -308,10 +326,12 @@ func main() {
 		// configure DubboCodec
 		client.WithCodec(
 			dubbo.NewDubboCodec(
-				// target dubbo Interface，this Interface should be consistent with the Resolver above
+				// target dubbo Interface，this Interface should be consistent with the value of DubboServiceInterfaceKey below
 				dubbo.WithJavaClassName(intfName),
 			),
 		),
+		// target dubbo Interface Name
+        client.WithTag(registries.DubboServiceInterfaceKey, intfName),
 	)
 	if err != nil {
 		panic(err)
@@ -334,8 +354,61 @@ func main() {
 ```
 
 Important notes:
-1. The ```WithJavaClassName``` for DubboCodec should be consistent with the ```WithInterfaceName``` for ZookeeperResolver.
-2. For more ZookeeperResolver configurations, please refer to [**this**](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go).
+1. The ```WithJavaClassName``` for DubboCodec should be consistent with the value of ```registries.DubboServiceInterfaceKey```.
+
+#### initializing server
+
+```go
+import (
+	"github.com/cloudwego/kitex/server"
+	kitex_registry "github.com/cloudwego/kitex/pkg/registry"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	"github.com/kitex-contrib/codec-dubbo/registries"
+	// this registry is dedicated to interacting with the zookeeper in the dubbo system 
+	"github.com/kitex-contrib/codec-dubbo/registries/zookeeper/registry"
+	hello "github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
+	"log"
+	"net"
+)
+
+func main() {
+	intfName := "org.cloudwego.kitex.samples.api.GreetProvider"
+	reg, err := registry.NewZookeeperRegistry(
+        // specify the addresses of the zookeeper servers, please specify at least one 
+	    registry.WithServers("127.0.0.1:2181"),
+	)
+	if err != nil {
+	    panic(err)
+	}
+	// specify the address that the server will listen to
+	addr, _ := net.ResolveTCPAddr("tcp", ":21000")
+	svr := hello.NewServer(new(GreetServiceImpl),
+		server.WithServiceAddr(addr),
+		// configure DubboCodec
+		server.WithCodec(dubbo.NewDubboCodec(
+			dubbo.WithJavaClassName(intfName),
+		)),
+		server.WithRegistry(reg),
+		// configure dubbo URL metadata
+		server.WithRegistryInfo(&kitex_registry.Info{
+		    Tags: map[string]string{
+			    registries.DubboServiceInterfaceKey: intfName,
+				// application value should be consistent with ApplicationConfig set in dubbo, this is only an example
+				registries.DubboServiceApplicationKey: "application-name",
+            }
+        }),
+	)
+
+	err := svr.Run()
+
+	if err != nil {
+		log.Println(err.Error())
+	}
+}
+```
+
+Important notes:
+1. The ```WithJavaClassName``` for DubboCodec should be consistent with the value of ```registries.DubboServiceInterfaceKey```.
 
 ## Benchmark
 

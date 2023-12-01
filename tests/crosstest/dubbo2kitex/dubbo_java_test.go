@@ -20,174 +20,73 @@
 package dubbo2kitex
 
 import (
-	"bufio"
-	"context"
-	"fmt"
-	"io"
-	"os/exec"
-	"regexp"
 	"testing"
+
+	"github.com/kitex-contrib/codec-dubbo/tests/util"
 )
 
-type outputParser struct {
-	funcMap   map[string]bool
-	funcNum   int
-	finishNum int
-	fail      *regexp.Regexp
-	exception *regexp.Regexp
-	end       *regexp.Regexp
-}
-
-func (op *outputParser) init(set map[string]bool) {
-	op.funcMap = set
-	op.funcNum = len(set)
-	op.fail = regexp.MustCompile("^{(.*?)} fail")
-	op.exception = regexp.MustCompile("^{(.*?)} exception: {(.*?)}")
-	op.end = regexp.MustCompile("^{(.*?)} end")
-}
-
-func (op *outputParser) parse(output string) error {
-	if matches := op.end.FindStringSubmatch(output); len(matches) == 2 {
-		if _, ok := op.funcMap[matches[1]]; ok {
-			op.funcMap[matches[1]] = true
-			op.finishNum++
-		}
-		return nil
-	}
-	if matches := op.fail.FindStringSubmatch(output); len(matches) == 2 {
-		if _, ok := op.funcMap[matches[1]]; ok {
-			op.funcMap[matches[1]] = true
-			return fmt.Errorf("%s failed", matches[0])
-		}
-		return nil
-	}
-	if matches := op.exception.FindStringSubmatch(output); len(matches) == 3 {
-		if _, ok := op.funcMap[matches[1]]; ok {
-			op.funcMap[matches[1]] = true
-			return fmt.Errorf("%s catch exception: %s", matches[1], matches[2])
-		}
-		return nil
-	}
-
-	return nil
-}
-
-func (op *outputParser) checkStop() bool {
-	if op.finishNum == op.funcNum {
-		return true
-	}
-
-	return false
-}
-
-func (op *outputParser) missingFuncs() []string {
-	var res []string
-	for funcName, flag := range op.funcMap {
-		if !flag {
-			res = append(res, funcName)
-		}
-	}
-
-	return res
-}
-
 func TestDubboJava(t *testing.T) {
-	testDir := "../../dubbo-java"
-	// initialize mvn packages
-	cleanCmd := exec.Command("mvn", "clean", "package")
-	cleanCmd.Dir = testDir
-	if _, err := cleanCmd.Output(); err != nil {
-		t.Fatal(err)
-	}
-	ctx, cancel := context.WithCancel(context.Background())
-	cmd := exec.CommandContext(ctx, "mvn",
-		"-Djava.net.preferIPv4Stack=true",
-		"-Dexec.mainClass=org.apache.dubbo.tests.client.Application",
-		"exec:java")
-	cmd.Dir = testDir
-	pipe, err := cmd.StdoutPipe()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := cmd.Start(); err != nil {
-		t.Fatal(err)
-	}
-	reader := bufio.NewReader(pipe)
-	parser := new(outputParser)
-	parser.init(map[string]bool{
-		// comment lines mean dubbo-java can not support
-		"EchoBool":     false,
-		"EchoByte":     false,
-		"EchoInt16":    false,
-		"EchoInt32":    false,
-		"EchoInt64":    false,
-		"EchoFloat":    false,
-		"EchoDouble":   false,
-		"EchoString":   false,
-		"EchoBinary":   false,
-		"EchoBoolList": false,
-		//"EchoByteList":   false,
-		//"EchoInt16List":  false,
-		"EchoInt32List": false,
-		"EchoInt64List": false,
-		//"EchoFloatList":  false,
-		"EchoDoubleList": false,
-		"EchoStringList": false,
-		// hessian2 can not support encoding [][]byte
-		// dubbo-java can not support
-		//"EchoBinaryList":   false,
-		"EchoBool2BoolMap": false,
-		//"EchoBool2ByteMap":   false,
-		//"EchoBool2Int16Map":  false,
-		"EchoBool2Int32Map": false,
-		"EchoBool2Int64Map": false,
-		//"EchoBool2FloatMap":  false,
-		"EchoBool2DoubleMap": false,
-		"EchoBool2StringMap": false,
-		//"EchoBool2BinaryMap": false,
-		"EchoMultiBool":   false,
-		"EchoMultiByte":   false,
-		"EchoMultiInt16":  false,
-		"EchoMultiInt32":  false,
-		"EchoMultiInt64":  false,
-		"EchoMultiFloat":  false,
-		"EchoMultiDouble": false,
-		"EchoMultiString": false,
-		"EchoMethodA":     false,
-		"EchoMethodB":     false,
-		"EchoMethodC":     false,
-		"EchoMethodD":     false,
-		//"EchoOptionalBool":           false,
-		//"EchoOptionalInt32":          false,
-		//"EchoOptionalString":         false,
-		"EchoOptionalBoolList":            false,
-		"EchoOptionalInt32List":           false,
-		"EchoOptionalStringList":          false,
-		"EchoOptionalBool2BoolMap":        false,
-		"EchoOptionalBool2Int32Map":       false,
-		"EchoOptionalBool2StringMap":      false,
-		"EchoOptionalStruct":              false,
-		"EchoOptionalMultiBoolRequest":    false,
-		"EchoOptionalMultiInt32Request":   false,
-		"EchoOptionalMultiStringRequest":  false,
-		"EchoOptionalMultiBoolResponse":   false,
-		"EchoOptionalMultiInt32Response":  false,
-		"EchoOptionalMultiStringResponse": false,
-	})
-	for {
-		line, err := reader.ReadString('\n')
-		if err == io.EOF {
-			break
-		}
-		if err := parser.parse(line); err != nil {
-			t.Error(err)
-		}
-		if parser.checkStop() {
-			break
-		}
-	}
-	cancel()
-	if missing := parser.missingFuncs(); len(missing) > 0 {
-		t.Errorf("missing funcs: %s", missing)
-	}
+	util.RunAndTestDubboJavaClient(t, "../../dubbo-java", "org.apache.dubbo.tests.client.Application",
+		nil,
+		[]string{
+			// comment lines mean dubbo-java can not support
+			"EchoBool",
+			"EchoByte",
+			"EchoInt16",
+			"EchoInt32",
+			"EchoInt64",
+			"EchoFloat",
+			"EchoDouble",
+			"EchoString",
+			"EchoBinary",
+			"EchoBoolList",
+			//"EchoByteList",
+			//"EchoInt16List",
+			"EchoInt32List",
+			"EchoInt64List",
+			//"EchoFloatList",
+			"EchoDoubleList",
+			"EchoStringList",
+			// hessian2 can not support encoding [][]byte
+			// dubbo-java can not support
+			//"EchoBinaryList",
+			"EchoBool2BoolMap",
+			//"EchoBool2ByteMap",
+			//"EchoBool2Int16Map",
+			"EchoBool2Int32Map",
+			"EchoBool2Int64Map",
+			//"EchoBool2FloatMap",
+			"EchoBool2DoubleMap",
+			"EchoBool2StringMap",
+			//"EchoBool2BinaryMap",
+			"EchoMultiBool",
+			"EchoMultiByte",
+			"EchoMultiInt16",
+			"EchoMultiInt32",
+			"EchoMultiInt64",
+			"EchoMultiFloat",
+			"EchoMultiDouble",
+			"EchoMultiString",
+			"EchoMethodA",
+			"EchoMethodB",
+			"EchoMethodC",
+			"EchoMethodD",
+			//"EchoOptionalBool",
+			//"EchoOptionalInt32",
+			//"EchoOptionalString",
+			"EchoOptionalBoolList",
+			"EchoOptionalInt32List",
+			"EchoOptionalStringList",
+			"EchoOptionalBool2BoolMap",
+			"EchoOptionalBool2Int32Map",
+			"EchoOptionalBool2StringMap",
+			"EchoOptionalStruct",
+			"EchoOptionalMultiBoolRequest",
+			"EchoOptionalMultiInt32Request",
+			"EchoOptionalMultiStringRequest",
+			"EchoOptionalMultiBoolResponse",
+			"EchoOptionalMultiInt32Response",
+			"EchoOptionalMultiStringResponse",
+		},
+	)
 }

@@ -21,8 +21,9 @@ package kitex2dubbo
 
 import (
 	"context"
-	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 	"testing"
+
+	"github.com/kitex-contrib/codec-dubbo/tests/kitex/kitex_gen/echo"
 )
 
 func TestEchoOptionalBool_Java(t *testing.T) {
