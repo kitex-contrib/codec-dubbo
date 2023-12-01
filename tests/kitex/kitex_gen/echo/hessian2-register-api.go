@@ -19,6 +19,8 @@ var objectsApi = []interface{}{
 	&EchoMultiFloatResponse{},
 	&EchoMultiDoubleResponse{},
 	&EchoMultiStringResponse{},
+	&EchoOptionalStructRequest{},
+	&EchoOptionalStructResponse{},
 	&EchoOptionalMultiBoolRequest{},
 	&EchoOptionalMultiInt32Request{},
 	&EchoOptionalMultiStringRequest{},
@@ -569,6 +571,68 @@ func (p *EchoMultiStringResponse) Decode(d codec.Decoder) error {
 
 func (p *EchoMultiStringResponse) JavaClassName() string {
 	return "org.apache.dubbo.tests.api.EchoMultiStringResponse"
+}
+
+func (p *EchoOptionalStructRequest) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *EchoOptionalStructRequest) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *EchoOptionalStructRequest) JavaClassName() string {
+	return "org.apache.dubbo.tests.api.EchoOptionalStructRequest"
+}
+
+func (p *EchoOptionalStructResponse) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Resp)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *EchoOptionalStructResponse) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Resp)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *EchoOptionalStructResponse) JavaClassName() string {
+	return "org.apache.dubbo.tests.api.EchoOptionalStructResponse"
 }
 
 func (p *EchoOptionalMultiBoolRequest) Encode(e codec.Encoder) error {
@@ -6097,6 +6161,60 @@ func (p *TestServiceEchoOptionalBool2StringMapResult) Encode(e codec.Encoder) er
 }
 
 func (p *TestServiceEchoOptionalBool2StringMapResult) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Success)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoOptionalStructArgs) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoOptionalStructArgs) Decode(d codec.Decoder) error {
+	var (
+		err error
+		v   interface{}
+	)
+	v, err = d.Decode()
+	if err != nil {
+		return err
+	}
+	err = hessian2.ReflectResponse(v, &p.Req)
+	if err != nil {
+		return errors.Wrap(err, fmt.Sprintf("invalid data type: %T", v))
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoOptionalStructResult) Encode(e codec.Encoder) error {
+	var err error
+	err = e.Encode(p.Success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *TestServiceEchoOptionalStructResult) Decode(d codec.Decoder) error {
 	var (
 		err error
 		v   interface{}

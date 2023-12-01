@@ -58,6 +58,14 @@ struct EchoMultiStringResponse {
     3: required map<string, string> mapResp,
 }(JavaClassName="org.apache.dubbo.tests.api.EchoMultiStringResponse")
 
+struct EchoOptionalStructRequest {
+    1: optional bool req,
+}(JavaClassName="org.apache.dubbo.tests.api.EchoOptionalStructRequest")
+
+struct EchoOptionalStructResponse {
+    1: optional bool resp,
+}(JavaClassName="org.apache.dubbo.tests.api.EchoOptionalStructResponse")
+
 struct EchoOptionalMultiBoolRequest {
     1: optional bool basicReq,
     2: optional bool packReq,
@@ -97,7 +105,6 @@ struct EchoOptionalMultiStringResponse {
     2: optional list<string> listResp,
     3: optional map<bool, string> mapResp
 }(JavaClassName="org.apache.dubbo.tests.api.EchoOptionalMultiStringResponse")
-
 service TestService {
     i32 EchoInt(1: i32 req)
 
@@ -193,7 +200,7 @@ service TestService {
     string EchoMethodC(1: i32 req) (hessian.argsType="int",JavaMethodName="EchoMethod")
     string EchoMethodD(1: bool req1, 2: i32 req2) (JavaMethodName="EchoMethod")
 
-    // optional
+    // java null
     bool EchoOptionalBool(1: optional bool req)
     i32 EchoOptionalInt32(1: optional i32 req)
     string EchoOptionalString(1: optional string req)
@@ -203,6 +210,7 @@ service TestService {
     map<bool, bool> EchoOptionalBool2BoolMap(1: optional map<bool, bool> req)
     map<bool, i32> EchoOptionalBool2Int32Map(1: optional map<bool, i32> req)
     map<bool, string> EchoOptionalBool2StringMap(1: optional map<bool, string> req)
+    EchoOptionalStructResponse EchoOptionalStruct(1: optional EchoOptionalStructRequest req)
     bool EchoOptionalMultiBoolRequest(1: EchoOptionalMultiBoolRequest req)
     i32 EchoOptionalMultiInt32Request(1: EchoOptionalMultiInt32Request req)
     string EchoOptionalMultiStringRequest(1: EchoOptionalMultiStringRequest req)

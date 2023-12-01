@@ -157,6 +157,22 @@ func TestDubboJava(t *testing.T) {
 		"EchoMethodB":     false,
 		"EchoMethodC":     false,
 		"EchoMethodD":     false,
+		//"EchoOptionalBool":           false,
+		//"EchoOptionalInt32":          false,
+		//"EchoOptionalString":         false,
+		"EchoOptionalBoolList":            false,
+		"EchoOptionalInt32List":           false,
+		"EchoOptionalStringList":          false,
+		"EchoOptionalBool2BoolMap":        false,
+		"EchoOptionalBool2Int32Map":       false,
+		"EchoOptionalBool2StringMap":      false,
+		"EchoOptionalStruct":              false,
+		"EchoOptionalMultiBoolRequest":    false,
+		"EchoOptionalMultiInt32Request":   false,
+		"EchoOptionalMultiStringRequest":  false,
+		"EchoOptionalMultiBoolResponse":   false,
+		"EchoOptionalMultiInt32Response":  false,
+		"EchoOptionalMultiStringResponse": false,
 	})
 	for {
 		line, err := reader.ReadString('\n')

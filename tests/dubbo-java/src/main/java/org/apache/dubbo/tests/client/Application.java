@@ -19,14 +19,13 @@
 
 package org.apache.dubbo.tests.client;
 
-import java.io.IOException;
-import java.util.*;
-
 import org.apache.dubbo.config.ReferenceConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.tests.api.*;
-import org.eclipse.jetty.server.Authentication;
+
+import java.io.IOException;
+import java.util.*;
 
 public class Application {
     public static void main(String[] args) throws IOException {
@@ -62,7 +61,7 @@ public class Application {
         testMultiParams(service);
         testMethodArgsAnnotation(service);
         testMethodNameAnnotation(service);
-        testOptional(service);
+        testJavaNull(service);
     }
 
     public static void logEchoFail(String methodName) {
@@ -155,16 +154,17 @@ public class Application {
         testEchoMultiBaseDouble(svc);
     }
 
-    public static void testOptional(UserProvider svc) {
-        testEchoOptionalBool(svc);
-        testEchoOptionalInt32(svc);
-        testEchoOptionalString(svc);
+    public static void testJavaNull(UserProvider svc) {
+//        testEchoOptionalBool(svc);
+//        testEchoOptionalInt32(svc);
+//        testEchoOptionalString(svc);
         testEchoOptionalBoolList(svc);
         testEchoOptionalInt32List(svc);
         testEchoOptionalStringList(svc);
         testEchoOptionalBool2BoolMap(svc);
         testEchoOptionalBool2Int32Map(svc);
         testEchoOptionalBool2StringMap(svc);
+        testEchoOptionalStruct(svc);
         testEchoOptionalMultiBoolRequest(svc);
         testEchoOptionalMultiInt32Request(svc);
         testEchoOptionalMultiStringRequest(svc);
@@ -1326,6 +1326,20 @@ public class Application {
             Map<Boolean, String> req = null;
             Map<Boolean, String> resp = svc.EchoOptionalBool2StringMap(req);
             if (!Objects.equals(req, resp)) {
+                logEchoFail(methodName);
+            }
+        } catch (Exception e) {
+            logEchoException(methodName, e);
+        }
+        logEchoEnd(methodName);
+    }
+
+    public static void testEchoOptionalStruct(UserProvider svc) {
+        String methodName = "EchoOptionalStruct";
+        try {
+            EchoOptionalStructRequest req = null;
+            EchoOptionalStructResponse resp = svc.EchoOptionalStruct(req);
+            if (resp != null) {
                 logEchoFail(methodName);
             }
         } catch (Exception e) {

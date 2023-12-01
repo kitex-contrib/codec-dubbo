@@ -23,8 +23,8 @@ import org.apache.dubbo.tests.api.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 public class UserProviderImpl implements UserProvider {
     @Override
@@ -419,6 +419,11 @@ public class UserProviderImpl implements UserProvider {
 
     @Override
     public Map<Boolean, String> EchoOptionalBool2StringMap(Map<Boolean, String> req) throws Exception {
+        return null;
+    }
+
+    @Override
+    public EchoOptionalStructResponse EchoOptionalStruct(EchoOptionalStructRequest req) throws Exception {
         return null;
     }
 

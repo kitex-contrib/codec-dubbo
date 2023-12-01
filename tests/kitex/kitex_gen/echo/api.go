@@ -395,6 +395,76 @@ func (p *EchoMultiStringResponse) String() string {
 	return fmt.Sprintf("EchoMultiStringResponse(%+v)", *p)
 }
 
+type EchoOptionalStructRequest struct {
+	Req *bool `thrift:"req,1,optional" frugal:"1,optional,bool" json:"req,omitempty"`
+}
+
+func NewEchoOptionalStructRequest() *EchoOptionalStructRequest {
+	return &EchoOptionalStructRequest{}
+}
+
+func (p *EchoOptionalStructRequest) InitDefault() {
+	*p = EchoOptionalStructRequest{}
+}
+
+var EchoOptionalStructRequest_Req_DEFAULT bool
+
+func (p *EchoOptionalStructRequest) GetReq() (v bool) {
+	if !p.IsSetReq() {
+		return EchoOptionalStructRequest_Req_DEFAULT
+	}
+	return *p.Req
+}
+func (p *EchoOptionalStructRequest) SetReq(val *bool) {
+	p.Req = val
+}
+
+func (p *EchoOptionalStructRequest) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *EchoOptionalStructRequest) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("EchoOptionalStructRequest(%+v)", *p)
+}
+
+type EchoOptionalStructResponse struct {
+	Resp *bool `thrift:"resp,1,optional" frugal:"1,optional,bool" json:"resp,omitempty"`
+}
+
+func NewEchoOptionalStructResponse() *EchoOptionalStructResponse {
+	return &EchoOptionalStructResponse{}
+}
+
+func (p *EchoOptionalStructResponse) InitDefault() {
+	*p = EchoOptionalStructResponse{}
+}
+
+var EchoOptionalStructResponse_Resp_DEFAULT bool
+
+func (p *EchoOptionalStructResponse) GetResp() (v bool) {
+	if !p.IsSetResp() {
+		return EchoOptionalStructResponse_Resp_DEFAULT
+	}
+	return *p.Resp
+}
+func (p *EchoOptionalStructResponse) SetResp(val *bool) {
+	p.Resp = val
+}
+
+func (p *EchoOptionalStructResponse) IsSetResp() bool {
+	return p.Resp != nil
+}
+
+func (p *EchoOptionalStructResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("EchoOptionalStructResponse(%+v)", *p)
+}
+
 type EchoOptionalMultiBoolRequest struct {
 	BasicReq *bool         `thrift:"basicReq,1,optional" frugal:"1,optional,bool" json:"basicReq,omitempty"`
 	PackReq  *bool         `thrift:"packReq,2,optional" frugal:"2,optional,bool" json:"packReq,omitempty"`
@@ -1051,6 +1121,8 @@ type TestService interface {
 	EchoOptionalBool2Int32Map(ctx context.Context, req map[bool]int32) (r map[bool]int32, err error)
 
 	EchoOptionalBool2StringMap(ctx context.Context, req map[bool]string) (r map[bool]string, err error)
+
+	EchoOptionalStruct(ctx context.Context, req *EchoOptionalStructRequest) (r *EchoOptionalStructResponse, err error)
 
 	EchoOptionalMultiBoolRequest(ctx context.Context, req *EchoOptionalMultiBoolRequest) (r bool, err error)
 

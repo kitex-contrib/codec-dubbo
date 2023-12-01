@@ -177,6 +177,8 @@ public interface UserProvider {
 
     Map<Boolean, String> EchoOptionalBool2StringMap(Map<Boolean, String> req) throws Exception;
 
+    EchoOptionalStructResponse EchoOptionalStruct(EchoOptionalStructRequest req) throws Exception;
+
     Boolean EchoOptionalMultiBoolRequest(EchoOptionalMultiBoolRequest req) throws Exception;
 
     Integer EchoOptionalMultiInt32Request(EchoOptionalMultiInt32Request req) throws Exception;
