@@ -143,10 +143,10 @@ Currently, only **Interface-Level** service discovery based on zookeeper is supp
 ### Prerequisites
 
 ```shell
-# install the latest kitex cmd tool
+# install the latest kitex cmd tool (version >= v0.8.0)
 go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 
-# install thriftgo
+# install thriftgo (version >= v0.3.3)
 go install github.com/cloudwego/thriftgo@latest
 ```
 
