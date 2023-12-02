@@ -4,21 +4,204 @@ English | [中文](README.md)
 
 [Kitex](https://github.com/cloudwego/kitex)'s dubbo codec for **kitex \<-\> dubbo interoperability**.
 
+## Introduction
+
+1. Support Kitex Client to request Dubbo-Java/Dubbo-Go Server, and also support Dubbo-Java/Dubbo-Go Client to request Kitex Server.
+2. Generate project scaffolding based on IDL (compatible with Thrift syntax), including kiten_gen (Client/Server Stub, codec code, etc.), main.go (server initialization), and handler.go (method handler).
+3. IDL annotation extension: You can specify the corresponding Java Class for the an argument, the response or a field within a struct, and support non-standard Thrift types (such as `float32`, `interface{}` (java.lang.Object), `time.Time` (java.util.Date)).
+4. Support zookeeper service registration and discovery (interface level).
+
+## Getting Started
+
+**Full example in**: [samples/helloworld](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples/helloworld/).
+
+### Prerequisites
+
+```shell
+# install the latest kitex cmd tool (version >= v0.8.0)
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
+
+# install thriftgo (version >= v0.3.3)
+go install github.com/cloudwego/thriftgo@latest
+```
+
+### Kitex Server
+
+#### Generating kitex stub codes
+
+Create a project directory (let's say demo-server) and initialize the go module:
+```bash
+mkdir ~/demo-server && cd ~/demo-server
+go mod init demo-server
+```
+Write the IDL (compatible with Thrift syntax) under the directory as needed, for example `api.thrift`:
+```Thrift
+namespace go hello
+
+struct GreetRequest {
+    1: required string req,
+}(JavaClassName="org.cloudwego.kitex.samples.api.GreetRequest")
+
+struct GreetResponse {
+    1: required string resp,
+}(JavaClassName="org.cloudwego.kitex.samples.api.GreetResponse")
+
+service GreetService {
+    string Greet(1: string req)
+    GreetResponse GreetWithStruct(1: GreetRequest req)
+}
+```
+
+Generate the project scaffold using the Kitex command-line tool (note that you need to specify `-protocol Hessian2`):
+```bash
+kitex -module demo-server -protocol Hessian2 -service GreetService ./api.thrift
+go mod tidy
+```
+
+**Notes:**
+
+1. For interoperatability with Dubbo Java, each structure defined in your IDL should add an annotation `JavaClassName` with the value corresponding to the Java class name.
+
+#### Server Initialization
+
+Modify `main.go` and specify DubboCodec in `NewServer`:
+
+```go
+import (
+	"github.com/cloudwego/kitex/server"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	hello "demo-server/helloworld/kitex/kitex_gen/hello/greetservice"
+	"log"
+	"net"
+)
+
+func main() {
+	// Specify the address to listen
+	addr, _ := net.ResolveTCPAddr("tcp", ":21000")
+	svr := hello.NewServer(new(GreetServiceImpl),
+		server.WithServiceAddr(addr),
+		// Config DubboCodec
+		server.WithCodec(dubbo.NewDubboCodec(
+			// Config the corresponding Java Interface; other client should call with this name.
+			dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider"),
+		)),
+	)
+
+	err := svr.Run()
+
+	if err != nil {
+		log.Println(err.Error())
+	}
+}
+```
+
+**Note:**
+
+1. Each Kitex Server corresponds to an instance of a DubboCodec, please do not share the same instance among multiple Servers.
+2. For service registry, please refer to the relevant sections later.
+
+#### Server Handler: business logic
+
+Add your business loginc to `handler.go`, such as:
+
+```go
+import (
+    "context"
+    hello "demo-server/kitex_gen/hello"
+)
+
+func (s *GreetServiceImpl) Greet(ctx context.Context, req string) (resp string, err error) {
+	return "Hello " + req, nil
+}
+
+func (s *GreetServiceImpl) GreetWithStruct(ctx context.Context, req *hello.GreetRequest) (resp *hello.GreetResponse, err error) {
+	return &hello.GreetResponse{Resp: "Hello " + req.Req}, nil
+}
+````
+
+#### Run your server
+
+Compile: generate the `output` directory with the binary and necessary scripts
+```bash
+sh build.sh
+```
+
+Start the server：
+```bash
+sh output/bootstrap.sh
+```
+
+### Kitex Client
+
+#### Generating kitex stub codes
+
+(For a new project) Prepare the project directory:
+```bash
+mkdir demo-client && cd demo-client
+go mod init demo-client
+```
+
+Prepare the IDL (please refer to the same section in `Kitex Server` above).
+
+Generate the scaffold:
+> No need the paramteter `-service`, only generating the kitex_gen directory
+```bash
+kitex -module demo-client -protocol Hessian2 ./api.thrift
+go mod tidy
+```
+
+#### Use Kitex Dubbo Client
+
+Code for reference
+```go
+package main
+
+import (
+	"context"
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/klog"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"  
+	"demo-client/kitex_gen/hello"
+	"demo-client/kitex_gen/hello/greetservice"
+)
+
+func main() {
+	cli, err := greetservice.NewClient("helloworld",
+		// Specify the targeting service
+		client.WithHostPorts("127.0.0.1:21000"),
+		// Config DubboCodec
+		client.WithCodec(
+			dubbo.NewDubboCodec(
+				// Specify the targeting interface, should be same as the server side
+				dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider"),
+			),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := cli.Greet(context.Background(), "world")
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+	klog.Infof("resp: %s", resp)
+	
+	respWithStruct, err := cli.GreetWithStruct(context.Background(), &hello.GreetRequest{Req: "world"})
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+	klog.Infof("respWithStruct: %s", respWithStruct.Resp)
+}
+```
+
+**Note:**
+
+1. Each Kitex Client corresponds to an instance of a DubboCodec, please do not share the same instance among multiple Clients.
 
 ## Feature List
-
-### Kitex-Dubbo Interoperability
-
-1. **kitex -> dubbo**
-
-Write **api.thrift** based on existing **dubbo Interface API** and [**Type Mapping Table**](#type-mapping). Then use
-the latest kitex command tool and thriftgo to generate Kitex's scaffold (including stub code).
-
-In addition to the default type mapping, you can also specify the Java type for request parameter mapping in **thrift** using [**Method Annotation**](#method-annotation).
-
-2. **dubbo -> kitex**
-
-Write dubbo client code based on existing **api.thrift** and [**Type Mapping Table**](#type-mapping).
 
 ### Type Mapping
 
@@ -49,7 +232,7 @@ Write dubbo client code based on existing **api.thrift** and [**Type Mapping Tab
 
 2. Using keys of **binary** type in map types is not supported.
 
-3. Since **float32** is not a valid type in Thrift, DubboCodec maps **float**(java) to **float64**(go). You can specify the mapping of **double** to **float** in the idl using method annotations, Please see [api.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/tests/kitex/api.thrift).
+3. Since **float32** is not a valid type in Thrift, DubboCodec maps **float**(java) to **float64**(go). You can specify the mapping of **double** to **float** in the IDL with method annotations. For an example, please refer to [api.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/tests/kitex/api.thrift).
 
 4. dubbo-java does not support decoding map types that contain **byte**, **short**, or **float** key values. It is recommended to avoid practices incompatible with dubbo-java. You can use **struct** to wrap the map when defining response fields for interfaces.
 
@@ -89,9 +272,9 @@ service EchoService {
 }
 ```
 
-#### Other Types
+#### Other Types (java.lang.Object, java.util.Date)
 
-Due to the limitations of the **thrift** type system, there are many incompatible types when mapping **kitex** to **dubbo-java**. The DubboCodec, located in the [codec-dubbo/java](https://github.com/kitex-contrib/codec-dubbo/tree/main/java) package, provides support for additional **java** types that are not supported by **thrift**.
+Due to the limitations of the **thrift** type system, there are some incompatible types when mapping **kitex** to **dubbo-java**. The DubboCodec, located in the [codec-dubbo/java](https://github.com/kitex-contrib/codec-dubbo/tree/main/java) package, provides support for additional **java** types that are not supported by **thrift**.
 
 To enable these types, you should add into **Thrift IDL** `include "java.thrift"`, and generate code with the **kitex** scaffolding tool with the `-hessian2 java_extension` parameter.
 
@@ -136,156 +319,6 @@ service EchoService {
 Currently, only **Interface-Level** service discovery based on zookeeper is supported.
 **Application-Level** service discovery and service registration will be supported in subsequent iterations.
 
-## Getting Started
-
-[**Example**](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples//helloworld/).
-
-### Prerequisites
-
-```shell
-# install the latest kitex cmd tool (version >= v0.8.0)
-go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
-
-# install thriftgo (version >= v0.3.3)
-go install github.com/cloudwego/thriftgo@latest
-```
-
-### Generating kitex stub codes
-
-```shell
-mkdir ~/kitex-dubbo-demo && cd ~/kitex-dubbo-demo
-go mod init kitex-dubbo-demo
-
-# Replace with your own Thrift IDL
-cat > api.thrift << EOF
-namespace go hello
-
-struct GreetRequest {
-    1: required string req,
-}(JavaClassName="org.cloudwego.kitex.samples.api.GreetRequest")
-
-struct GreetResponse {
-    1: required string resp,
-}(JavaClassName="org.cloudwego.kitex.samples.api.GreetResponse")
-
-service GreetService {
-    string Greet(1: string req)
-    GreetResponse GreetWithStruct(1: GreetRequest req)
-}
-
-EOF
-
-# Generate Kitex scaffold with the `-protocol Hessian2` option
-kitex -module kitex-dubbo-demo -protocol Hessian2 -service GreetService ./api.thrift
-
-```
-
-Important Notes:
-
-1. Each struct in the `api.thrift` should have an annotation named `JavaClassName`, with a value consistent with the target class name in Dubbo Java.
-
-### Finishing business logic and configuration
-
-#### business logic
-
-```go
-import (
-    "context"
-    hello "github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello"
-)
-
-// implement interface in handler.go
-func (s *GreetServiceImpl) Greet(ctx context.Context, req string) (resp string, err error) {
-	return "Hello " + req, nil
-}
-
-func (s *GreetServiceImpl) GreetWithStruct(ctx context.Context, req *hello.GreetRequest) (resp *hello.GreetResponse, err error) {
-	return &hello.GreetResponse{Resp: "Hello " + req.Req}, nil
-}
-```
-
-Implement the interface in **handler.go**.
-
-#### initializing client
-
-```go
-import (
-	"context"
-	"github.com/cloudwego/kitex/client"
-	"github.com/cloudwego/kitex/pkg/klog"
-	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"  
-	"github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello"
-	"github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
-)
-
-func main() {
-	cli, err := greetservice.NewClient("helloworld",
-		// specify address of target server
-		client.WithHostPorts("127.0.0.1:21001"),
-		// configure dubbo codec
-		client.WithCodec(
-			dubbo.NewDubboCodec(
-				// target dubbo Interface Name
-				dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider"),
-			),
-		),
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	resp, err := cli.Greet(context.Background(), "world")
-	if err != nil {
-		klog.Error(err)
-		return
-	}
-	klog.Infof("resp: %s", resp)
-	
-	respWithStruct, err := cli.GreetWithStruct(context.Background(), &hello.GreetRequest{Req: "world"})
-	if err != nil {
-		klog.Error(err)
-		return
-	}
-	klog.Infof("respWithStruct: %s", respWithStruct.Resp)
-}
-```
-
-Important notes:
-1. Each dubbo Interface corresponds to a `DubboCodec` instance. Please do not share the instance between multiple clients.
-
-#### initializing server
-
-```go
-import (
-	"github.com/cloudwego/kitex/server"
-	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
-	hello "github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
-	"log"
-	"net"
-)
-
-func main() {
-	// server address to listen on
-	addr, _ := net.ResolveTCPAddr("tcp", ":21000")
-	svr := hello.NewServer(new(GreetServiceImpl),
-		server.WithServiceAddr(addr),
-		// configure DubboCodec
-		server.WithCodec(dubbo.NewDubboCodec(
-			// Interface Name of kitex service. Other dubbo clients and kitex clients can refer to this name for invocation.
-			dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider"),
-		)),
-	)
-
-	err := svr.Run()
-
-	if err != nil {
-		log.Println(err.Error())
-	}
-}
-```
-
-Important notes:
-1. Each Interface Name corresponds to a `DubboCodec` instance. Please do not share the instance between multiple servers.
 
 ## Service Registry and Service Discovery
 
