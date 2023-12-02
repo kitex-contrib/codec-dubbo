@@ -4,23 +4,214 @@
 
 [Kitex](https://github.com/cloudwego/kitex) 为了支持 **kitex \<-\> dubbo 互通** 推出的 dubbo 协议编解码器。
 
-## 功能
 
-### Kitex-Dubbo 互通
+## 简介
 
-1. **kitex -> dubbo**
+1. 支持 Kitex Client 请求 Dubbo-Java、Dubbo-Go Server，也支持 Dubbo-Java、Dubbo-Go Client 请求 Kitex Server。
+2. 基于 IDL（兼容 Thrift 语法）生成项目脚手架，包括 kiten_gen (Client/Server Stub，编解码代码等）、main.go（server 初始化）和 handler.go（method handler）。
+3. IDL 注解扩展：可指定类型对应的 Java Class，扩展支持 Thrift 非标类型（如 `float32`、`interface{}`(java.lang.Object)、`time.Time`(java.util.Date)）。
+4. 支持 zookeeper 服务注册和发现（接口级别）
 
-基于已有的 **dubbo Interface API** 和 [**类型映射**](#类型映射)，编写 **api.thrift**。然后使用最新的 kitex 命令行工具和 thriftgo 生成 kitex 的脚手架代码（包括用于编解码的stub代码）。
+## 开始
 
-除了默认的类型映射外，还可以在 **thrift** 中使用 [**方法注解**](#方法注解) 指定请求参数映射的 java 类型。
+- 完整代码参见: [samples/helloworld](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples/helloworld/)
+- 由于 dubbo-java、dubbo-go-hessian2 编解码器的原因，使用时存在一些限制，详见后文
 
-2. **dubbo -> kitex**
+### 安装命令行工具
 
-基于已有的 **api.thrift** 和 [**类型映射**](#类型映射)，编写 dubbo 客户端代码。
+```shell
+# 安装 kitex 命令行工具 (version >= v0.8.0)
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
+
+# 安装 thriftgo 命令行工具 (version >= v0.3.3)
+go install github.com/cloudwego/thriftgo@latest
+```
+
+### Server 端
+
+#### 生成脚手架
+
+创建项目目录（以 `demo-server` 为例），并初始化 go module:
+```bash
+mkdir ~/demo-server && cd ~/demo-server
+go mod init demo-server
+```
+
+在目录下按需编写 IDL (兼容 Thrift 语法），例如 `api.thrift`：
+```thrift
+namespace go hello
+
+struct GreetRequest {
+    1: required string req,
+}(JavaClassName="org.cloudwego.kitex.samples.api.GreetRequest")
+
+struct GreetResponse {
+    1: required string resp,
+}(JavaClassName="org.cloudwego.kitex.samples.api.GreetResponse")
+
+service GreetService {
+    string Greet(1: string req)
+    GreetResponse GreetWithStruct(1: GreetRequest req)
+}
+```
+
+Kitex 命令行工具生成项目脚手架（注意需指定 `-protocol Hessian2`）：
+> 需 `-service` 参数，生成 `kitex_gen` 目录、server 初始化代码 `main.go` 和 method handler `handler.go`
+```bash
+kitex -module demo-server -protocol Hessian2 -service GreetService ./api.thrift
+go mod tidy
+```
+
+**注意**:
+
+1. 如需与 Dubbo Java 互通，`api.thrift` 中定义的每个结构体都应添加注解 `JavaClassName`，值为对应的 Java 类名称。
+
+#### Server 初始化
+
+修改 `main.go`，在 `NewServer` 中指定 DubboCodec：
+
+```go
+import (
+	"github.com/cloudwego/kitex/server"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	hello "demo-server/helloworld/kitex/kitex_gen/hello/greetservice"
+	"log"
+	"net"
+)
+
+func main() {
+	// 指定服务端将要监听的地址
+	addr, _ := net.ResolveTCPAddr("tcp", ":21000")
+	svr := hello.NewServer(new(GreetServiceImpl),
+		server.WithServiceAddr(addr),
+		// 配置 DubboCodec
+		server.WithCodec(dubbo.NewDubboCodec(
+			// 配置 Kitex 服务所对应的 Java Interface. 其他 dubbo 客户端和 kitex 客户端可以通过这个名字进行调用。
+			dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider"),
+		)),
+	)
+
+	err := svr.Run()
+
+	if err != nil {
+		log.Println(err.Error())
+	}
+}
+```
+
+**注意**:
+
+1. 每个 Kitex Server 对应一个 DubboCodec 实例，请不要在多个 Server 间共享同一个实例。
+2. 如需注册到服务发现中心，请参考后文相关章节。
+
+
+#### Server Handler: 业务逻辑
+
+在 **handler.go** 中添加业务逻辑，例如：
+
+```go
+import (
+    "context"
+    hello "demo-server/kitex_gen/hello"
+)
+
+func (s *GreetServiceImpl) Greet(ctx context.Context, req string) (resp string, err error) {
+	return "Hello " + req, nil
+}
+
+func (s *GreetServiceImpl) GreetWithStruct(ctx context.Context, req *hello.GreetRequest) (resp *hello.GreetResponse, err error) {
+	return &hello.GreetResponse{Resp: "Hello " + req.Req}, nil
+}
+```
+
+#### 启动 server：
+
+编译：生成到 output 目录
+```bash
+sh build.sh
+```
+
+启动 Server：
+```bash
+sh output/bootstrap.sh
+```
+
+### Client 端
+
+#### 生成项目脚手架
+
+（新项目）准备项目目录：
+```bash
+mkdir demo-client && cd demo-client
+go mod init demo-client
+```
+
+准备 IDL（参考上文 server 端相关内容）。
+
+生成脚手架：
+> 无需 `-service`，只生成 `kitex_gen` 目录
+```bash
+kitex -module demo-client -protocol Hessian2 ./api.thrift
+go mod tidy
+```
+
+#### 使用 Kitex Dubbo Client
+
+参考代码：
+
+```go
+package main
+
+import (
+	"context"
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/pkg/klog"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"  
+	"demo-client/kitex_gen/hello"
+	"demo-client/kitex_gen/hello/greetservice"
+)
+
+func main() {
+	cli, err := greetservice.NewClient("helloworld",
+		// 指定想要访问的服务端地址
+		client.WithHostPorts("127.0.0.1:21000"),
+		// 配置 DubboCodec
+		client.WithCodec(
+			dubbo.NewDubboCodec(
+				// 指定想要调用的 Dubbo Interface
+				dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider"),
+			),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := cli.Greet(context.Background(), "world")
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+	klog.Infof("resp: %s", resp)
+	
+	respWithStruct, err := cli.GreetWithStruct(context.Background(), &hello.GreetRequest{Req: "world"})
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+	klog.Infof("respWithStruct: %s", respWithStruct.Resp)
+}
+```
+
+**注意**:
+
+1. 每个 Kitex Client 对应一个 DubboCodec 实例，请不要在多个客户端之间共享同一个实例。
+
+## 功能特性
 
 ### 类型映射
 
-|     thrift 类型      |    golang 类型     | hessian2 类型 |       默认 java 类型       |                可拓展 java 类型                 |
+|     thrift 类型     |    golang 类型   | hessian2 类型 |       默认 java 类型   |                可拓展 java 类型              |
 |:------------------:|:----------------:|:-----------:|:----------------------:|:------------------------------------------:|
 |        bool        |       bool       |   boolean   |   java.lang.Boolean    |                  boolean                   |
 |        byte        |       int8       |     int     |     java.lang.Byte     |                    byte                    |
@@ -47,11 +238,11 @@
 
 2. 不支持在 map 类型中使用包含和 **binary** 类型的键值。
 
-3. 由于 **float32** 在 thrift 中不是有效的类型，DubboCodec 将 **float**(java) 映射到了 **float64**(go)，可以在 idl 中使用方法注解指定 **double** 映射为 **float**，具体可参考 [api.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/tests/kitex/api.thrift)。
+3. 由于 **float32** 在 thrift 支持的类型，DubboCodec 将 **float**(java) 映射到了 **float64**(go)，可在 idl 中使用方法注解指定 **double** 映射为 **float**，具体可参考 [api.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/tests/kitex/api.thrift)。
 
 4. dubbo-java 不支持对包含 **byte**、**short**、**float** 键值的 Map 类型解码，建议避开 dubbo-java 不兼容的用法，可以在定义接口的响应字段时使用 **struct** 来包裹 map。
 
-**空值兼容**：
+** 空值(null) 兼容性**：
 
 1. 由于 go 中部分基础类型不支持空值（如：**bool**、**int64**等），不建议 java 端向 go 端不可为空的类型传递 `null` 值。
 
@@ -86,9 +277,9 @@ service EchoService {
 }
 ```
 
-#### 其它类型
+#### 其它类型（java.lang.Object, java.util.Date）
 
-由于 **thrift** 类型的局限性，**kitex** 与 **dubbo-java** 映射时有很多不兼容的类型。 
+由于 **thrift** 类型的局限性，**kitex** 与 **dubbo-java** 映射时有一些不兼容的类型。 
 DubboCodec 在 [codec-dubbo/java](https://github.com/kitex-contrib/codec-dubbo/tree/main/java) 包中提供了更多 **thrift** 不支持的 **java** 类型。
 
 为了启用这些类型，你可以在 **Thrift IDL** 中使用 `include "java.thrift"` 导入它们，并且在使用 **kitex** 脚手架工具生成代码时添加 `-hessian2 java_extension` 参数来拉取该拓展包。
@@ -133,154 +324,6 @@ service EchoService {
 
 目前仅支持基于 zookeeper 的**接口级**服务发现与服务注册，**应用级**服务发现以及服务注册将在后续迭代中支持。
 
-## 开始
-
-[**完整代码**](https://github.com/kitex-contrib/codec-dubbo/tree/main/samples//helloworld/).
-
-### 安装命令行工具
-
-```shell
-# 安装 kitex 命令行工具 (version >= v0.8.0)
-go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
-
-# 安装 thriftgo 命令行工具 (version >= v0.3.3)
-go install github.com/cloudwego/thriftgo@latest
-```
-
-### 生成 kitex stub 代码
-
-```shell
-mkdir ~/kitex-dubbo-demo && cd ~/kitex-dubbo-demo
-go mod init kitex-dubbo-demo
-
-# 编写你所需的 Thrift IDL，此处仅为演示
-cat > api.thrift << EOF
-namespace go hello
-
-struct GreetRequest {
-    1: required string req,
-}(JavaClassName="org.cloudwego.kitex.samples.api.GreetRequest")
-
-struct GreetResponse {
-    1: required string resp,
-}(JavaClassName="org.cloudwego.kitex.samples.api.GreetResponse")
-
-service GreetService {
-    string Greet(1: string req)
-    GreetResponse GreetWithStruct(1: GreetRequest req)
-}
-
-EOF
-
-# 使用 `-protocol Hessian2` 配置项生成 Kitex 脚手架代码
-kitex -module kitex-dubbo-demo -protocol Hessian2 -service GreetService ./api.thrift
-```
-
-**重要提示**:
-
-1. api.thrift 中定义的每个结构体都应该有一个名为 JavaClassName 的注解，并且注解值与 Dubbo Java 中对应的类名必须一致。
-
-### 实现业务逻辑并完成初始化
-
-#### 业务逻辑
-
-```go
-import (
-    "context"
-    hello "github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello"
-)
-
-func (s *GreetServiceImpl) Greet(ctx context.Context, req string) (resp string, err error) {
-	return "Hello " + req, nil
-}
-
-func (s *GreetServiceImpl) GreetWithStruct(ctx context.Context, req *hello.GreetRequest) (resp *hello.GreetResponse, err error) {
-	return &hello.GreetResponse{Resp: "Hello " + req.Req}, nil
-}
-```
-
-实现在 **handler.go** 中定义的接口.
-
-#### 客户端初始化
-
-```go
-import (
-	"context"
-	"github.com/cloudwego/kitex/client"
-	"github.com/cloudwego/kitex/pkg/klog"
-	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"  
-	"github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello"
-	"github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
-)
-
-func main() {
-	cli, err := greetservice.NewClient("helloworld",
-		// 指定想要访问的服务端地址
-		client.WithHostPorts("127.0.0.1:21001"),
-		// 配置 DubboCodec
-		client.WithCodec(
-			dubbo.NewDubboCodec(
-				// 指定想要调用的 Dubbo Interface
-				dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider"),
-			),
-		),
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	resp, err := cli.Greet(context.Background(), "world")
-	if err != nil {
-		klog.Error(err)
-		return
-	}
-	klog.Infof("resp: %s", resp)
-	
-	respWithStruct, err := cli.GreetWithStruct(context.Background(), &hello.GreetRequest{Req: "world"})
-	if err != nil {
-		klog.Error(err)
-		return
-	}
-	klog.Infof("respWithStruct: %s", respWithStruct.Resp)
-}
-```
-
-**重要提示**:
-1. 每个 Dubbo Interface 对应一个 DubboCodec 实例，请不要在多个客户端之间共享同一个实例。
-
-#### 服务端初始化
-
-```go
-import (
-	"github.com/cloudwego/kitex/server"
-	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
-	hello "github.com/kitex-contrib/codec-dubbo/samples/helloworld/kitex/kitex_gen/hello/greetservice"
-	"log"
-	"net"
-)
-
-func main() {
-	// 指定服务端将要监听的地址
-	addr, _ := net.ResolveTCPAddr("tcp", ":21000")
-	svr := hello.NewServer(new(GreetServiceImpl),
-		server.WithServiceAddr(addr),
-		// 配置 DubboCodec
-		server.WithCodec(dubbo.NewDubboCodec(
-			// 配置 Kitex 服务所对应的 Interface. 其他 dubbo 客户端和 kitex 客户端可以通过这个名字进行调用。
-			dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider"),
-		)),
-	)
-
-	err := svr.Run()
-
-	if err != nil {
-		log.Println(err.Error())
-	}
-}
-```
-
-**重要提示**:
-1. 每个 Dubbo Interface 对应一个 DubboCodec 实例，请不要在多个服务端之间共享同一个实例。
 
 ## 服务注册与发现
 
