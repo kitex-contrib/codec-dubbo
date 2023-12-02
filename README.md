@@ -242,7 +242,7 @@ func main() {
 
 4. dubbo-java 不支持对包含 **byte**、**short**、**float** 键值的 Map 类型解码，建议避开 dubbo-java 不兼容的用法，可以在定义接口的响应字段时使用 **struct** 来包裹 map。
 
-** 空值(null) 兼容性**：
+**空值(null)兼容性**：
 
 1. 由于 go 中部分基础类型不支持空值（如：**bool**、**int64**等），不建议 java 端向 go 端不可为空的类型传递 `null` 值。
 
@@ -320,12 +320,9 @@ service EchoService {
  }
 ```
 
-### 服务注册与服务发现
-
-目前仅支持基于 zookeeper 的**接口级**服务发现与服务注册，**应用级**服务发现以及服务注册将在后续迭代中支持。
-
-
 ## 服务注册与发现
+
+> 目前仅支持基于 zookeeper 的**接口级**服务发现与服务注册，**应用级**服务发现以及服务注册计划在后续迭代中支持。
 
 用于该功能的配置分为以下两个层次：
 1. [registry/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/registry/options.go) 与 [resolver/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go) 中的WithXXX函数提供注册中心级别的配置，请使用这些函数生成```registry.Registry```
