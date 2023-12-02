@@ -314,13 +314,11 @@ service EchoService {
  }
 ```
 
-### Service Registry and Service Discovery
-
-Currently, only **Interface-Level** service discovery based on zookeeper is supported.
-**Application-Level** service discovery and service registration will be supported in subsequent iterations.
-
 
 ## Service Registry and Service Discovery
+
+> Currently, only **Interface-Level** service discovery based on zookeeper is supported. **Application-Level** support is planned in a future release.
+
 
 The configurations used for this functionality are divided into the following two levels:
 1. The WithXXX functions in [registry/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/registry/options.go) and [resolver/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go) provide registry-level configurations; use these functions to generate ```registry.Registry```
