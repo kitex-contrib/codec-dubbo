@@ -6,7 +6,7 @@ jobs:
   unit-benchmark-test:
     strategy:
       matrix:
-        go: [ 1.17, 1.18, 1.19 ]
+        go: [ '1.17', '1.18', '1.19', '1.20', '1.21' ]
         os: [ X64, ARM64 ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -25,8 +25,28 @@ jobs:
 #          restore-keys: |
 #            ${{ runner.os }}-go-
 
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 8
+
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.9.4
+
       - name: Unit Test
         run: go test -race -covermode=atomic -coverprofile=coverage.out ./...
+
+      - name: Integrated Test
+        run: |
+          cd ..
+          rm -rf codec-dubbo-tests
+          git clone https://github.com/kitex-contrib/codec-dubbo-tests.git
+          cd codec-dubbo-tests
+          ./run.sh ${{ github.workspace }}
+          cd ${{ github.workspace }}
 
       - name: Benchmark
         run: go test -bench=. -benchmem -run=none ./...
