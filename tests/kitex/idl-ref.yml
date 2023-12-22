@@ -1,3 +1,0 @@
-ref:
-    java.thrift: github.com/kitex-contrib/codec-dubbo/java
-debug: false

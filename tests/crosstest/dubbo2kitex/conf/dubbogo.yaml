@@ -1,7 +1,0 @@
-dubbo:
-  consumer:
-    references:
-      UserProvider:
-        protocol: dubbo # dubbo protocol with hessian2 codec
-        interface: org.apache.dubbo.tests.api.UserProvider # should be consistent with Java class
-        url: "dubbo://127.0.0.1:20000"

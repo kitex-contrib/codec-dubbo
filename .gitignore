@@ -29,8 +29,4 @@ output/*
 .vscode
 
 # Maven generated files
-/tests/dubbo-java/target/
 /samples/helloworld/dubbo/target
-
-# Automatically pulled files
-tests/kitex/java.thrift
