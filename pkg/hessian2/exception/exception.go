@@ -17,9 +17,12 @@
  * limitations under the License.
  */
 
-package hessian2
+package exception
 
-import "github.com/apache/dubbo-go-hessian2/java_exception"
+import (
+	"github.com/apache/dubbo-go-hessian2/java_exception"
+	"github.com/cloudwego/kitex/pkg/kerrors"
+)
 
 type Throwabler interface {
 	java_exception.Throwabler
@@ -27,4 +30,27 @@ type Throwabler interface {
 
 func NewException(detailMessage string) Throwabler {
 	return java_exception.NewException(detailMessage)
+}
+
+// FromError extracts Throwabler from passed err.
+//
+//   - If err is nil, it returns nil and false
+//
+//   - If err is of type *kerrors.DetailedError, it would unwrap err to get the
+//     real cause. Then it would check cause whether implementing Throwabler. If
+//     yes, it returns Throwabler and true.
+//
+//     If not, it checks err whether implementing Throwabler directly. If yes,
+//     it returns Throwabler and true.
+func FromError(err error) (Throwabler, bool) {
+	if err == nil {
+		return nil, false
+	}
+	if detailedErr, ok := err.(*kerrors.DetailedError); ok {
+		err = detailedErr.Unwrap()
+	}
+	if exception, ok := err.(Throwabler); ok {
+		return exception, true
+	}
+	return nil, false
 }

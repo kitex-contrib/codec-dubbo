@@ -22,6 +22,7 @@ package dubbo
 import (
 	"context"
 	"fmt"
+	hessian2_exception "github.com/kitex-contrib/codec-dubbo/pkg/hessian2/exception"
 
 	"github.com/kitex-contrib/codec-dubbo/registries"
 
@@ -182,12 +183,12 @@ func (m *DubboCodec) encodeExceptionPayload(ctx context.Context, message remote.
 	if !ok {
 		return nil, fmt.Errorf("%v exception does not implement Error", data)
 	}
-	if exception, ok := data.(hessian2.Throwabler); ok {
+	if exception, ok := data.(hessian2_exception.Throwabler); ok {
 		if err := encoder.Encode(exception); err != nil {
 			return nil, err
 		}
 	} else {
-		if err := encoder.Encode(hessian2.NewException(errRaw.Error())); err != nil {
+		if err := encoder.Encode(hessian2_exception.NewException(errRaw.Error())); err != nil {
 			return nil, err
 		}
 	}
