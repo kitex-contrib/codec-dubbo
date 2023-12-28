@@ -22,6 +22,8 @@ package exception
 import (
 	"testing"
 
+	"github.com/cloudwego/kitex/pkg/remote"
+
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/stretchr/testify/assert"
 )
@@ -52,6 +54,15 @@ func TestFromError(t *testing.T) {
 		{
 			desc:     "DetailedError wraps Throwabler",
 			inputErr: kerrors.ErrRemoteOrNetwork.WithCause(NewException("FromError test")),
+			expected: func(t *testing.T, exception Throwabler, ok bool) {
+				assert.Equal(t, "java.lang.Exception", exception.JavaClassName())
+				assert.Equal(t, "FromError test", exception.Error())
+				assert.True(t, ok)
+			},
+		},
+		{
+			desc:     "TransError wraps DetailedError, DetailedError wraps Throwabler",
+			inputErr: remote.NewTransError(remote.InternalError, kerrors.ErrRemoteOrNetwork.WithCause(NewException("FromError test"))),
 			expected: func(t *testing.T, exception Throwabler, ok bool) {
 				assert.Equal(t, "java.lang.Exception", exception.JavaClassName())
 				assert.Equal(t, "FromError test", exception.Error())

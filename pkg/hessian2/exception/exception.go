@@ -21,7 +21,6 @@ package exception
 
 import (
 	"github.com/apache/dubbo-go-hessian2/java_exception"
-	"github.com/cloudwego/kitex/pkg/kerrors"
 )
 
 type Throwabler interface {
@@ -36,9 +35,9 @@ func NewException(detailMessage string) Throwabler {
 //
 //   - If err is nil, it returns nil and false
 //
-//   - If err is of type *kerrors.DetailedError, it would unwrap err to get the
-//     real cause. Then it would check cause whether implementing Throwabler. If
-//     yes, it returns Throwabler and true.
+//   - If err implents Unwrap(), it would unwrap err until getting the real cause.
+//     Then it would check cause whether implementing Throwabler. If yes, it returns
+//     Throwabler and true.
 //
 //     If not, it checks err whether implementing Throwabler directly. If yes,
 //     it returns Throwabler and true.
@@ -46,8 +45,12 @@ func FromError(err error) (Throwabler, bool) {
 	if err == nil {
 		return nil, false
 	}
-	if detailedErr, ok := err.(*kerrors.DetailedError); ok {
-		err = detailedErr.Unwrap()
+	for {
+		if wrapper, ok := err.(interface{ Unwrap() error }); ok {
+			err = wrapper.Unwrap()
+		} else {
+			break
+		}
 	}
 	if exception, ok := err.(Throwabler); ok {
 		return exception, true
