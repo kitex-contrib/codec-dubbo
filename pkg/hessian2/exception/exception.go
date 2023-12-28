@@ -31,7 +31,7 @@ type Exception struct {
 	java_exception.Exception
 }
 
-func NewException(detailMessage string) Throwabler {
+func NewException(detailMessage string) *Exception {
 	return &Exception{*java_exception.NewException(detailMessage)}
 }
 
