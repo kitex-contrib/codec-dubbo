@@ -20,9 +20,10 @@
 package exception
 
 import (
+	"testing"
+
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestFromError(t *testing.T) {
