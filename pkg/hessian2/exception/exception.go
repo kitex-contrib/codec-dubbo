@@ -35,7 +35,7 @@ func NewException(detailMessage string) Throwabler {
 //
 //   - If err is nil, it returns nil and false
 //
-//   - If err implents Unwrap(), it would unwrap err until getting the real cause.
+//   - If err implements Unwrap(), it would unwrap err until getting the real cause.
 //     Then it would check cause whether implementing Throwabler. If yes, it returns
 //     Throwabler and true.
 //

@@ -20,6 +20,7 @@
 package exception
 
 import (
+	"io"
 	"testing"
 
 	"github.com/cloudwego/kitex/pkg/remote"
@@ -67,6 +68,14 @@ func TestFromError(t *testing.T) {
 				assert.Equal(t, "java.lang.Exception", exception.JavaClassName())
 				assert.Equal(t, "FromError test", exception.Error())
 				assert.True(t, ok)
+			},
+		},
+		{
+			desc:     "TransError wraps DetailedError, DetailedError wraps non-Throwabler",
+			inputErr: remote.NewTransError(remote.InternalError, kerrors.ErrRemoteOrNetwork.WithCause(io.EOF)),
+			expected: func(t *testing.T, exception Throwabler, ok bool) {
+				assert.Nil(t, exception)
+				assert.False(t, ok)
 			},
 		},
 	}
