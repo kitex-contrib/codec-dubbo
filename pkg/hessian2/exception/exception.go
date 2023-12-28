@@ -27,8 +27,12 @@ type Throwabler interface {
 	java_exception.Throwabler
 }
 
+type Exception struct {
+	java_exception.Exception
+}
+
 func NewException(detailMessage string) Throwabler {
-	return java_exception.NewException(detailMessage)
+	return &Exception{*java_exception.NewException(detailMessage)}
 }
 
 // FromError extracts Throwabler from passed err.
