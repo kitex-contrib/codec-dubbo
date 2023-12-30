@@ -20,8 +20,9 @@
 package java
 
 import (
-	hessian2_exception "github.com/kitex-contrib/codec-dubbo/pkg/hessian2/exception"
 	"time"
+
+	hessian2_exception "github.com/kitex-contrib/codec-dubbo/pkg/hessian2/exception"
 )
 
 type Object = interface{}
