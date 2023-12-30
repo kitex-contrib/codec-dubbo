@@ -20,6 +20,7 @@
 package java
 
 import (
+	hessian2_exception "github.com/kitex-contrib/codec-dubbo/pkg/hessian2/exception"
 	"time"
 )
 
@@ -33,4 +34,10 @@ type Date = time.Time
 
 func NewDate() *Date {
 	return new(Date)
+}
+
+type Exception = hessian2_exception.Exception
+
+func NewException(detailMessage string) *Exception {
+	return hessian2_exception.NewException(detailMessage)
 }
