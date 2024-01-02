@@ -232,7 +232,7 @@ func main() {
 
 2. Using keys of **binary** type in map types is not supported.
 
-3. Since **float32** is not a valid type in Thrift, DubboCodec maps **float**(java) to **float64**(go). You can specify the mapping of **double** to **float** in the IDL with method annotations. For an example, please refer to [api.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/tests/kitex/api.thrift).
+3. Since **float32** is not a valid type in Thrift, DubboCodec maps **float**(java) to **float64**(go). You can specify the mapping of **double** to **float** in the IDL with method annotations. For an example, please refer to [api.thrift](https://github.com/kitex-contrib/codec-dubbo-tests/blob/v0.1.0/code/kitex/api.thrift#L173).
 
 4. dubbo-java does not support decoding map types that contain **byte**, **short**, or **float** key values. It is recommended to avoid practices incompatible with dubbo-java. You can use **struct** to wrap the map when defining response fields for interfaces.
 
@@ -461,7 +461,7 @@ Memory: **192GB**
 ### Benchmark Code
 
 Referring to [dubbo-go-benchmark](https://github.com/dubbogo/dubbo-go-benchmark). Converting dubbo client and dubbo server
-to kitex client and kitex server. Please see [this](https://github.com/kitex-contrib/codec-dubbo/tree/main/tests/benchmark).
+to kitex client and kitex server. Please see [this](https://github.com/kitex-contrib/codec-dubbo-tests/tree/v0.1.0/benchmark).
 
 ### Benchmark Result
 
