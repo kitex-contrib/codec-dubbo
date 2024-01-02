@@ -238,7 +238,7 @@ func main() {
 
 2. 不支持在 map 类型中使用包含和 **binary** 类型的键值。
 
-3. 由于 **float32** 在 thrift 支持的类型，DubboCodec 将 **float**(java) 映射到了 **float64**(go)，可在 idl 中使用方法注解指定 **double** 映射为 **float**，具体可参考 [api.thrift](https://github.com/kitex-contrib/codec-dubbo/blob/main/tests/kitex/api.thrift)。
+3. 由于 **float32** 在 thrift 支持的类型，DubboCodec 将 **float**(java) 映射到了 **float64**(go)，可在 idl 中使用方法注解指定 **double** 映射为 **float**，具体可参考 [api.thrift](https://github.com/kitex-contrib/codec-dubbo-tests/blob/v0.1.0/code/kitex/api.thrift#L173)。
 
 4. dubbo-java 不支持对包含 **byte**、**short**、**float** 键值的 Map 类型解码，建议避开 dubbo-java 不兼容的用法，可以在定义接口的响应字段时使用 **struct** 来包裹 map。
 
@@ -467,7 +467,7 @@ CPU: **Intel(R) Xeon(R) Gold 5118 CPU @ 2.30GHz**
 ### 测试代码
 
 测试代码主要参考 [dubbo-go-benchmark](https://github.com/dubbogo/dubbo-go-benchmark). 将 dubbo 客户端和 dubbo 服务端替换成对应的 kitex 客户端和 kitex 服务端。
-具体实现请看[代码](https://github.com/kitex-contrib/codec-dubbo/tree/main/tests/benchmark)。
+具体实现请看[代码](https://github.com/kitex-contrib/codec-dubbo-tests/tree/v0.1.0/benchmark)。
 
 ### 测试结果
 
