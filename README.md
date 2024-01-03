@@ -320,6 +320,89 @@ service EchoService {
  }
 ```
 
+### 异常处理
+
+**codec-dubbo** 将异常定义为实现了以下接口的错误，你可以像处理错误一样处理 java 中的异常：
+```go
+type Throwabler interface {
+	Error() string
+	JavaClassName() string
+	GetStackTrace() []StackTraceElement
+}
+```
+
+#### 常见异常
+
+**codec-dubbo** 在[pkg/hessian2/exception](https://github.com/kitex-contrib/codec-dubbo/tree/main/pkg/hessian2/exception)目录下提供了java中常见的异常，目前支持 java.lang.Exception ，更多异常将在后续迭代中加入。
+常见异常无需命令行工具的支持，直接引用即可。
+
+##### client端提取异常
+
+```go
+import (
+	hessian2_exception "github.com/kitex-contrib/codec-dubbo/pkg/hessian2/exception"
+)
+
+func main() {
+	resp, err := cli.Greet(context.Background(), true)
+	if err != nil {
+		// FromError 返回 Throwabler
+        exceptionRaw, ok := hessian2_exception.FromError(err)
+        if !ok {
+        // 视作常规错误处理	
+        } else {
+            // 若不关心 exceptionRaw 的具体类型，直接调用 Throwabler 提供的方法即可
+            klog.Errorf("get %s type Exception", exceptionRaw.JavaClassName())
+			
+            // 若想获得 exceptionRaw 的具体类型，需要进行类型转换，但前提是已知该具体类型
+            exception := exceptionRaw.(*hessian2_exception.Exception)
+        }
+    }
+}
+```
+
+##### server端返回异常
+
+```go
+import (
+	hessian2_exception "github.com/kitex-contrib/codec-dubbo/pkg/hessian2/exception"
+)
+
+func (s *GreetServiceImpl) Greet(ctx context.Context, req string) (resp string, err error) {
+    return "", hessian2_exception.NewException("Your detailed message")
+}
+```
+
+#### 自定义异常
+
+java 中的自定义业务异常往往会继承一个基础异常，这里以 CustomizedException 为例，CustomizedException 继承了 java.lang.Exception：
+```java
+public class CustomizedException extends Exception {
+    private final String customizedMessage;
+    public CustomizedException(String customizedMessage) {
+        super();
+        this.customizedMessage = customizedMessage;
+    }
+
+    public String getCustomizedMessage() {
+        return this.customizedMessage;
+    }
+}
+```
+
+为了在 kitex 侧定义与之对应的异常，在 **thrift** 中编写如下定义：
+
+```thrift
+exception CustomizedException {
+    1: required java.Exception exception (thrift.nested="true")
+    2: required string customizedMessage
+}(JavaClassName="org.cloudwego.kitex.samples.api.CustomizedException")
+```
+
+和[其它类型](#其它类型javalangobject-javautildate)一样，需要在使用 **kitex** 脚手架工具生成代码时添加 `-hessian2 java_extension` 参数来拉取拓展包。 
+
+使用方法与[常见异常](#常见异常)一致。
+
 ## 服务注册与发现
 
 > 目前仅支持基于 zookeeper 的**接口级**服务发现与服务注册，**应用级**服务发现以及服务注册计划在后续迭代中支持。
