@@ -23,16 +23,12 @@ import (
 	"github.com/apache/dubbo-go-hessian2/java_exception"
 )
 
-type Throwabler interface {
-	java_exception.Throwabler
-}
+type Throwabler = java_exception.Throwabler
 
-type Exception struct {
-	java_exception.Exception
-}
+type Exception = java_exception.Exception
 
 func NewException(detailMessage string) *Exception {
-	return &Exception{*java_exception.NewException(detailMessage)}
+	return java_exception.NewException(detailMessage)
 }
 
 // FromError extracts Throwabler from passed err.

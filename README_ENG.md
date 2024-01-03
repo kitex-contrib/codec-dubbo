@@ -314,6 +314,91 @@ service EchoService {
  }
 ```
 
+### Exception Handling
+
+**codec-dubbo** defines exceptions as **error** that implement the following interface. You can handle exceptions in Java as you could handle **error** in Go:
+
+```go
+type Throwabler interface {
+	Error() string
+	JavaClassName() string
+	GetStackTrace() []StackTraceElement
+}
+```
+
+#### Common Exceptions
+
+**codec-dubbo** provides commonly used Java exceptions in the [pkg/hessian2/exception](https://github.com/kitex-contrib/codec-dubbo/tree/main/pkg/hessian2/exception) directory. Currently, it supports java.lang.Exception, and more exceptions will be added in subsequent iterations.
+Common exceptions do not require command line tool support and could be directly referenced.
+
+##### Extracting Exception on the Client Side
+
+```go
+import (
+	hessian2_exception "github.com/kitex-contrib/codec-dubbo/pkg/hessian2/exception"
+)
+
+func main() {
+	resp, err := cli.Greet(context.Background(), true)
+	if err != nil {
+        // FromError returns a Throwabler
+        exceptionRaw, ok := hessian2_exception.FromError(err)
+        if !ok {
+        // Treat as a regular error handling	
+        } else {
+            // If you are not concerned with the specific type of exceptionRaw, just call the methods provided by Throwabler
+			klog.Errorf("get %s type Exception", exceptionRaw.JavaClassName())
+
+            // If you want to obtain the specific type of exceptionRaw, you need to perform a type conversion, but this requires knowing the specific type
+			exception := exceptionRaw.(*hessian2_exception.Exception)
+        }
+    }
+
+}
+```
+
+##### Returning Exception on the Server Side
+
+```go
+import (
+	hessian2_exception "github.com/kitex-contrib/codec-dubbo/pkg/hessian2/exception"
+)
+
+func (s *GreetServiceImpl) Greet(ctx context.Context, req string) (resp string, err error) {
+    return "", hessian2_exception.NewException("Your detailed message")
+}
+```
+
+#### Customized Exceptions
+
+Customized business exceptions in Java often inherit a base exception. Here, we use CustomizedException as an example, which inherits from java.lang.Exception:
+
+```java
+public class CustomizedException extends Exception {
+    private final String customizedMessage;
+    public CustomizedException(String customizedMessage) {
+        super();
+        this.customizedMessage = customizedMessage;
+    }
+
+    public String getCustomizedMessage() {
+        return this.customizedMessage;
+    }
+}
+```
+
+To define a corresponding exception on the kitex side, write the following definition in **thrift**:
+
+```thrift
+exception CustomizedException {
+    1: required java.Exception exception (thrift.nested="true")
+    2: required string customizedMessage
+}(JavaClassName="org.cloudwego.kitex.samples.api.CustomizedException")
+```
+
+Like [other types](#other-types--javalangobject-javautildate-), you need to add the `-hessian2 java_extension` parameter when generating code with the **kitex** scaffolding tool to pull the extension package.
+
+The usage is consistent with [Common Exceptions](#common-exceptions).
 
 ## Service Registry and Service Discovery
 
