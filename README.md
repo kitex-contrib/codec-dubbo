@@ -352,13 +352,12 @@ func main() {
         // 视作常规错误处理	
         } else {
             // 若不关心 exceptionRaw 的具体类型，直接调用 Throwabler 提供的方法即可
-			klog.Errorf("get %s type Exception", exceptionRaw.JavaClassName())
+            klog.Errorf("get %s type Exception", exceptionRaw.JavaClassName())
 			
-			// 若想获得 exceptionRaw 的具体类型，需要进行类型转换，但前提是已知该具体类型
-			exception := exceptionRaw.(*hessian2_exception.Exception)
+            // 若想获得 exceptionRaw 的具体类型，需要进行类型转换，但前提是已知该具体类型
+            exception := exceptionRaw.(*hessian2_exception.Exception)
         }
     }
-
 }
 ```
 
