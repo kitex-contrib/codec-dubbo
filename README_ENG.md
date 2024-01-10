@@ -19,11 +19,13 @@ English | [中文](README.md)
 
 ```shell
 # install the latest kitex cmd tool (version >= v0.8.0)
-go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
+go install github.com/cloudwego/kitex/tool/cmd/kitex@a6d5d90
 
-# install thriftgo (version >= v0.3.3)
+# install thriftgo (version >= v0.3.5)
 go install github.com/cloudwego/thriftgo@latest
 ```
+
+> The commit in Kitex is merged but not released yet, so a specific commit of Kitex has to be installed. We'll soon release a new version of Kitex and after that the latest version of Kitex will apply.
 
 ### Kitex Server
 
