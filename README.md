@@ -21,13 +21,14 @@
 
 ```shell
 # 安装 kitex 命令行工具 (version >= v0.8.0)
-go install github.com/cloudwego/kitex/tool/cmd/kitex@a6d5d90
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 
 # 安装 thriftgo 命令行工具 (version >= v0.3.5)
 go install github.com/cloudwego/thriftgo@latest
 ```
 
-> 支持Customized Exception的提交已经合并，但尚未发布，因此需要安装Kitex的特定版本。我们将很快发布Kitex的新版本，之后便可使用@latest进行安装。
+注：支持 Customized Exception 的功能但尚未正式发布，如有需求可安装以下 kitex 版本
+> go install github.com/cloudwego/kitex/tool/cmd/kitex@v0.9.0-rc1
 
 ### Server 端
 
