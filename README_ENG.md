@@ -19,13 +19,15 @@ English | [中文](README.md)
 
 ```shell
 # install the latest kitex cmd tool (version >= v0.8.0)
-go install github.com/cloudwego/kitex/tool/cmd/kitex@a6d5d90
+go install github.com/cloudwego/kitex/tool/cmd/kitex@latest
 
 # install thriftgo (version >= v0.3.5)
 go install github.com/cloudwego/thriftgo@latest
 ```
 
-> The commit in Kitex is merged but not released yet, so a specific commit of Kitex has to be installed. We'll soon release a new version of Kitex and after that the latest version of Kitex will apply.
+Note: Customized Exception is not officially released, but you can install this version of Kitex for a try:
+> go install github.com/cloudwego/kitex/tool/cmd/kitex@v0.9.0-rc1
+
 
 ### Kitex Server
 
