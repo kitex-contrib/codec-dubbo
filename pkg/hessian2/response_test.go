@@ -397,13 +397,14 @@ func TestReflectResponse(t *testing.T) {
 				desc: "[]time.Time",
 				testFunc: func(t *testing.T, expectedErr bool) {
 					var dest []time.Time
-					src := []time.Time{
+					src := []interface{}{
 						time.Unix(1000, 0),
 						time.Unix(1001, 0),
 					}
 					testReflectResponse(t, src, &dest, expectedErr)
-					if !reflect.DeepEqual(src, dest) {
-						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					assert.Equal(t, len(src), len(dest))
+					for i, ptr := range dest {
+						assert.Equal(t, src[i], ptr)
 					}
 				},
 			},
@@ -420,9 +421,6 @@ func TestReflectResponse(t *testing.T) {
 					for i, ptr := range dest {
 						assert.Equal(t, src[i], *ptr)
 					}
-					//if !reflect.DeepEqual(src, dest) {
-					//	t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
-					//}
 				},
 			},
 		}
