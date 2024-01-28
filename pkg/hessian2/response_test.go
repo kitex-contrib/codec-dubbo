@@ -22,6 +22,9 @@ package hessian2
 import (
 	"reflect"
 	"testing"
+	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestReflectResponse(t *testing.T) {
@@ -388,6 +391,38 @@ func TestReflectResponse(t *testing.T) {
 					if !reflect.DeepEqual(src, dest) {
 						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
 					}
+				},
+			},
+			{
+				desc: "[]time.Time",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest []time.Time
+					src := []time.Time{
+						time.Unix(1000, 0),
+						time.Unix(1001, 0),
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					if !reflect.DeepEqual(src, dest) {
+						t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					}
+				},
+			},
+			{
+				desc: "[]*time.Time",
+				testFunc: func(t *testing.T, expectedErr bool) {
+					var dest []*time.Time
+					src := []interface{}{
+						time.Unix(1000, 0),
+						time.Unix(1001, 0),
+					}
+					testReflectResponse(t, src, &dest, expectedErr)
+					assert.Equal(t, len(src), len(dest))
+					for i, ptr := range dest {
+						assert.Equal(t, src[i], *ptr)
+					}
+					//if !reflect.DeepEqual(src, dest) {
+					//	t.Fatalf("src: %+v, dest: %+v, they are not equal", src, dest)
+					//}
 				},
 			},
 		}
