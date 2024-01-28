@@ -136,8 +136,8 @@ func setValue(dest, v reflect.Value) {
 	vType := v.Type()
 	// get the real value and real type
 	if vType.String() == "interface {}" {
-		test := v.Interface()
-		v = reflect.ValueOf(test)
+		realIntf := v.Interface()
+		v = reflect.ValueOf(realIntf)
 		vType = v.Type()
 	}
 	destType := dest.Type()
