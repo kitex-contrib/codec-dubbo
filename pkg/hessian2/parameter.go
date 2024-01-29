@@ -264,6 +264,8 @@ func (p *Parameter) getTypeByValue() string {
 		return "[B"
 	case time.Time:
 		return "java.util.Date"
+	case *time.Time:
+		return "java.util.Date"
 	case []time.Time:
 		return "[Ljava.util.Date"
 	case string:
