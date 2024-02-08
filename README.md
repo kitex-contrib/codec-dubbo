@@ -36,7 +36,7 @@ go install github.com/cloudwego/thriftgo@latest
 
 创建项目目录（以 `demo-server` 为例），并初始化 go module:
 ```bash
-mkdir ~/demo-server && cd ~/demo-server
+mkdir demo-server && cd demo-server
 go mod init demo-server
 ```
 
@@ -77,7 +77,7 @@ go mod tidy
 import (
 	"github.com/cloudwego/kitex/server"
 	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
-	hello "demo-server/helloworld/kitex/kitex_gen/hello/greetservice"
+	hello "demo-server/kitex_gen/hello/greetservice"
 	"log"
 	"net"
 )
