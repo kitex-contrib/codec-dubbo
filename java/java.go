@@ -23,6 +23,7 @@ import (
 	"time"
 
 	hessian2_exception "github.com/kitex-contrib/codec-dubbo/pkg/hessian2/exception"
+	hessian2_math "github.com/kitex-contrib/codec-dubbo/pkg/hessian2/math"
 )
 
 type Object = interface{}
@@ -41,4 +42,16 @@ type Exception = hessian2_exception.Exception
 
 func NewException(detailMessage string) *Exception {
 	return hessian2_exception.NewException(detailMessage)
+}
+
+type BigDecimal = hessian2_math.BigType
+
+func NewBigDecimal(str string) (hessian2_math.BigType, error) {
+	return hessian2_math.NewBigDecimalFromString(str)
+}
+
+type BigInteger = hessian2_math.BigType
+
+func NewBigInteger(str string) (hessian2_math.BigType, error) {
+	return hessian2_math.NewBigIntegerFromString(str)
 }
