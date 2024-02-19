@@ -38,7 +38,7 @@ header: # `header` section is configurations for source codes license header.
       limitations under the License.
     # `pattern` is optional regexp if all the file headers are the same as `license` or the license of `spdx-id` and `copyright-owner`.
     pattern: |
-      Copyright 2023 CloudWeGo Authors
+      Copyright 202[34] CloudWeGo Authors
       
       Licensed to the Apache Software Foundation under one or more contributor
       license agreements. See the NOTICE file distributed with
