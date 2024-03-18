@@ -23,7 +23,7 @@ func main() {
 	)
 	defer p.Shutdown(context.Background())
 
-	addr, _ := net.ResolveTCPAddr("tcp", ":21000")
+	addr, _ := net.ResolveTCPAddr("tcp", ":21001")
 	svr := hello.NewServer(new(GreetServiceImpl),
 		server.WithServiceAddr(addr),
 		server.WithCodec(dubbo.NewDubboCodec(
