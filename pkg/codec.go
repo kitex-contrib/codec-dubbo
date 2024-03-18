@@ -109,6 +109,7 @@ func (m *DubboCodec) encodeRequestPayload(ctx context.Context, message remote.Me
 		Method:          message.RPCInfo().Invocation().MethodName(),
 		Timeout:         message.RPCInfo().Config().RPCTimeout(),
 		Group:           message.RPCInfo().To().DefaultTag(registries.DubboServiceGroupKey, ""),
+		TransInfo:       message.TransInfo(),
 	}
 	methodAnno := m.getMethodAnnotation(message)
 
@@ -272,6 +273,7 @@ func (m *DubboCodec) messageAttachment(ctx context.Context, service *dubbo_spec.
 		service.Path,
 		service.Version,
 		service.Timeout,
+		service.TransInfo,
 	)
 	return e.Encode(attachment)
 }
@@ -450,11 +452,23 @@ func processAttachments(decoder iface.Decoder, message remote.Message) error {
 	}
 
 	if attachments, ok := attachmentsRaw.(map[interface{}]interface{}); ok {
+		transStrMap := map[string]string{}
+		transIntMap := map[uint16]string{}
 		for keyRaw, val := range attachments {
 			if key, ok := keyRaw.(string); ok {
 				message.Tags()[key] = val
+				if v, ok := val.(string); ok {
+					transStrMap[key] = v
+				}
+			}
+			if uint16Key, ok := keyRaw.(uint16); ok {
+				if v, ok := val.(string); ok {
+					transIntMap[uint16Key] = v
+				}
 			}
 		}
+		message.TransInfo().PutTransStrInfo(transStrMap)
+		message.TransInfo().PutTransIntInfo(transIntMap)
 		return nil
 	}
 

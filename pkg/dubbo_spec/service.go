@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/cloudwego/kitex/pkg/remote"
 	"github.com/kitex-contrib/codec-dubbo/pkg/iface"
 )
 
@@ -35,6 +36,7 @@ type Service struct {
 	Method          string
 	Timeout         time.Duration
 	Group           string
+	TransInfo       remote.TransInfo
 }
 
 func (svc *Service) Decode(decoder iface.Decoder) error {
@@ -50,7 +52,6 @@ func (svc *Service) Decode(decoder iface.Decoder) error {
 	if err := decodeString(decoder, &svc.Method, "Method"); err != nil {
 		return err
 	}
-
 	return nil
 }
 

@@ -22,6 +22,8 @@ package dubbo_spec
 import (
 	"strconv"
 	"time"
+
+	"github.com/cloudwego/kitex/pkg/remote"
 )
 
 const (
@@ -32,9 +34,9 @@ const (
 	TIMEOUT_KEY   = "timeout"
 )
 
-type Attachment = map[string]interface{}
+type Attachment = map[interface{}]interface{}
 
-func NewAttachment(path, group, iface, version string, timeout time.Duration) Attachment {
+func NewAttachment(path, group, iface, version string, timeout time.Duration, transInfo remote.TransInfo) Attachment {
 	result := Attachment{}
 	if len(path) > 0 {
 		result[PATH_KEY] = path
@@ -50,6 +52,12 @@ func NewAttachment(path, group, iface, version string, timeout time.Duration) At
 	}
 	if timeout > 0 {
 		result[TIMEOUT_KEY] = strconv.Itoa(int(timeout.Milliseconds()))
+	}
+	for k, v := range transInfo.TransIntInfo() {
+		result[k] = v
+	}
+	for k, v := range transInfo.TransStrInfo() {
+		result[k] = v
 	}
 	return result
 }
