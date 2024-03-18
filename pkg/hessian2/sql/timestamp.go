@@ -17,29 +17,56 @@
  * limitations under the License.
  */
 
-package java
+package sql
 
 import (
 	"time"
 
-	hessian2_exception "github.com/kitex-contrib/codec-dubbo/pkg/hessian2/exception"
-	_ "github.com/kitex-contrib/codec-dubbo/pkg/hessian2/sql"
+	"github.com/apache/dubbo-go-hessian2"
 )
 
-type Object = interface{}
-
-func NewObject() *Object {
-	return new(Object)
+func init() {
+	hessian.RegisterPOJO(&Timestamp{})
+	hessian.SetJavaSqlTimeSerialize(&Timestamp{})
 }
 
-type Date = time.Time
-
-func NewDate() *Date {
-	return new(Date)
+type Timestamp struct {
+	time.Time
 }
 
-type Exception = hessian2_exception.Exception
+func (d *Timestamp) GetTime() time.Time {
+	return d.Time
+}
 
-func NewException(detailMessage string) *Exception {
-	return hessian2_exception.NewException(detailMessage)
+func (d *Timestamp) SetTime(time time.Time) {
+	d.Time = time
+}
+
+func (Timestamp) JavaClassName() string {
+	return "java.sql.Timestamp"
+}
+
+func (d *Timestamp) ValueOf(dateStr string) error {
+	// todo(DMwangnima): change layout
+	date, err := time.Parse("2006-01-02", dateStr)
+	if err != nil {
+		return err
+	}
+	d.Time = date
+	return nil
+}
+
+// nolint
+func (d *Timestamp) Year() int {
+	return d.Time.Year()
+}
+
+// nolint
+func (d *Timestamp) Month() time.Month {
+	return d.Time.Month()
+}
+
+// nolint
+func (d *Timestamp) Day() int {
+	return d.Time.Day()
 }
