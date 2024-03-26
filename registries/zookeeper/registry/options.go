@@ -26,12 +26,12 @@ import (
 )
 
 type Options struct {
-	Servers        []string
-	RegistryGroup  string
-	Username       string
-	Password       string
-	HasRenewLease  bool //
-	SessionTimeout time.Duration
+	Servers         []string
+	RegistryGroup   string
+	Username        string
+	Password        string
+	CloseRenewLease bool //
+	SessionTimeout  time.Duration
 }
 
 func (o *Options) Apply(opts []Option) {
@@ -114,6 +114,6 @@ func WithPassword(password string) Option {
 // https://github.com/kitex-contrib/codec-dubbo/issues/86
 func WithHasRenewLease(isRenew bool) Option {
 	return Option{F: func(o *Options) {
-		o.HasRenewLease = isRenew
+		o.CloseRenewLease = isRenew
 	}}
 }

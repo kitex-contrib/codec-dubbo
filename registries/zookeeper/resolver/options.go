@@ -26,12 +26,12 @@ import (
 )
 
 type Options struct {
-	Servers        []string
-	RegistryGroup  string
-	SessionTimeout time.Duration
-	Username       string
-	Password       string
-	HasRenewLease  bool
+	Servers         []string
+	RegistryGroup   string
+	SessionTimeout  time.Duration
+	Username        string
+	Password        string
+	CloseRenewLease bool
 }
 
 func (o *Options) Apply(opts []Option) {
@@ -112,6 +112,6 @@ func WithPassword(password string) Option {
 // development environment.
 func WithHasRenewLease(isRenew bool) Option {
 	return Option{F: func(o *Options) {
-		o.HasRenewLease = isRenew
+		o.CloseRenewLease = isRenew
 	}}
 }
