@@ -31,6 +31,7 @@ type Options struct {
 	SessionTimeout time.Duration
 	Username       string
 	Password       string
+	HasRenewLease  bool
 }
 
 func (o *Options) Apply(opts []Option) {
@@ -103,5 +104,14 @@ func WithUsername(name string) Option {
 func WithPassword(password string) Option {
 	return Option{F: func(o *Options) {
 		o.Password = password
+	}}
+}
+
+// WithHasRenewLease configures the RenewLease so that .You can control whether to enable
+// the renewal of the Ephemeral node, which is very helpful for debugging the
+// development environment.
+func WithHasRenewLease(isRenew bool) Option {
+	return Option{F: func(o *Options) {
+		o.HasRenewLease = isRenew
 	}}
 }

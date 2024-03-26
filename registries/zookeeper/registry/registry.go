@@ -89,7 +89,11 @@ func (z *zookeeperRegistry) Register(info *registry.Info) error {
 	}
 	ctx, cancel := context.WithCancel(context.Background())
 	z.canceler.add(finalPath, cancel)
-	go z.keepalive(ctx, finalPath, nil)
+
+	if !z.opt.HasRenewLease {
+		go z.keepalive(ctx, finalPath, nil)
+	}
+
 	return nil
 }
 
