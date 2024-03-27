@@ -107,12 +107,9 @@ func WithPassword(password string) Option {
 	}}
 }
 
-// WithoutKeepAlive configures the keepAlive so that .You can control whether to enable
-// the keepalive of the Ephemeral node, which is very helpful for debugging the development environment,
-// default value is true ,meanings.When you do not make any settings, the default value is true,
-// which means keepalive will be executed. If you want to modify and remove keepalive, you can manually
-// set keepAlive to false.
-// https://github.com/kitex-contrib/codec-dubbo/issues/86
+// WithoutKeepAlive configures that **Register** function of zookeeperRegistry would
+// not keep creating Node with same path and content when the session ID between server
+// and zookeeper changes.
 func WithoutKeepAlive(keepAlive bool) Option {
 	return Option{F: func(o *Options) {
 		o.KeepAlive = keepAlive
