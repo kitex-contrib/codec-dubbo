@@ -26,12 +26,12 @@ import (
 )
 
 type Options struct {
-	Servers         []string
-	RegistryGroup   string
-	Username        string
-	Password        string
-	CloseRenewLease bool //
-	SessionTimeout  time.Duration
+	Servers        []string
+	RegistryGroup  string
+	Username       string
+	Password       string
+	RenewNodeLease bool //
+	SessionTimeout time.Duration
 }
 
 func (o *Options) Apply(opts []Option) {
@@ -107,13 +107,13 @@ func WithPassword(password string) Option {
 	}}
 }
 
-// WithHasRenewLease configures the RenewLease so that .You can control whether to enable
+// WithoutRenewNodeLease configures the RenewLease so that .You can control whether to enable
 // the renewal of the Ephemeral node, which is very helpful for debugging the
 // development environment.
 // Default keep here is ,for details please refer to
 // https://github.com/kitex-contrib/codec-dubbo/issues/86
-func WithHasRenewLease(isRenew bool) Option {
+func WithoutRenewNodeLease(renewNodeLease bool) Option {
 	return Option{F: func(o *Options) {
-		o.CloseRenewLease = isRenew
+		o.RenewNodeLease = renewNodeLease
 	}}
 }
