@@ -110,8 +110,8 @@ func WithPassword(password string) Option {
 // WithoutKeepAlive configures that **Register** function of zookeeperRegistry would
 // not keep creating Node with same path and content when the session ID between server
 // and zookeeper changes.
-func WithoutKeepAlive(keepAlive bool) Option {
+func WithoutKeepAlive() Option {
 	return Option{F: func(o *Options) {
-		o.KeepAlive = keepAlive
+		o.KeepAlive = false
 	}}
 }
