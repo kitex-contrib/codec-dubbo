@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 CloudWeGo Authors
+ * Copyright 2024 CloudWeGo Authors
  *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -21,33 +21,6 @@ package hessian2
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/kitex-contrib/codec-dubbo/pkg/iface"
 )
 
-func NewEncoder() iface.Encoder {
-	return hessian.NewEncoder()
-}
-
-func NewDecoder(b []byte) iface.Decoder {
-	return hessian.NewDecoder(b)
-}
-
-type (
-	Encoder struct {
-		hessian.Encoder
-	}
-	Decoder struct {
-		hessian.Decoder
-	}
-)
-
-func Register(pojos []interface{}) {
-	for _, i := range pojos {
-		pojo, ok := i.(hessian.POJOEnum)
-		if ok {
-			hessian.RegisterJavaEnum(pojo)
-		} else {
-			hessian.RegisterPOJO(pojo)
-		}
-	}
-}
+type JavaEnum hessian.JavaEnum
