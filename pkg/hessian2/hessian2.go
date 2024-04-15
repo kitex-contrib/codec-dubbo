@@ -47,7 +47,7 @@ func Register(pojos []interface{}) {
 		if ok {
 			hessian.RegisterJavaEnum(pojo)
 		} else {
-			hessian.RegisterPOJO(pojo)
+			hessian.RegisterPOJO(i.(hessian.POJO))
 		}
 	}
 }

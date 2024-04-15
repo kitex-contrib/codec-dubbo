@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package hessian2
+package enum
 
 import (
 	hessian "github.com/apache/dubbo-go-hessian2"
