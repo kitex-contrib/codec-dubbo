@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 CloudWeGo Authors
+ * Copyright 2023 CloudWeGo Authors
  *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,6 +23,6 @@ import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-const InvalidJavaEnum JavaEnum = -1
+const InvalidJavaEnum = hessian.InvalidJavaEnum
 
 type JavaEnum hessian.JavaEnum
