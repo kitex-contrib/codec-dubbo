@@ -23,6 +23,6 @@ import (
 	hessian "github.com/apache/dubbo-go-hessian2"
 )
 
-const InvalidJavaEnum = hessian.InvalidJavaEnum
+const InvalidJavaEnum JavaEnum = JavaEnum(hessian.InvalidJavaEnum)
 
 type JavaEnum hessian.JavaEnum
