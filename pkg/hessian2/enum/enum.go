@@ -25,4 +25,6 @@ import (
 
 const InvalidJavaEnum JavaEnum = JavaEnum(hessian.InvalidJavaEnum)
 
-type JavaEnum hessian.JavaEnum
+type JavaEnum = hessian.JavaEnum
+
+type _ = hessian.POJOEnum
