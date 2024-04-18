@@ -21,8 +21,10 @@ package dubbo_spec
 
 import (
 	"strconv"
+	"strings"
 	"time"
 
+	"github.com/bytedance/gopkg/cloud/metainfo"
 	"github.com/cloudwego/kitex/pkg/remote"
 )
 
@@ -32,9 +34,11 @@ const (
 	INTERFACE_KEY = "interface"
 	VERSION_KEY   = "version"
 	TIMEOUT_KEY   = "timeout"
+
+	lenPT = len(metainfo.PrefixTransient)
 )
 
-type Attachment = map[interface{}]interface{}
+type Attachment = map[string]interface{}
 
 func NewAttachment(path, group, iface, version string, timeout time.Duration, transInfo remote.TransInfo) Attachment {
 	result := Attachment{}
@@ -53,11 +57,13 @@ func NewAttachment(path, group, iface, version string, timeout time.Duration, tr
 	if timeout > 0 {
 		result[TIMEOUT_KEY] = strconv.Itoa(int(timeout.Milliseconds()))
 	}
-	for k, v := range transInfo.TransIntInfo() {
-		result[k] = v
-	}
 	for k, v := range transInfo.TransStrInfo() {
-		result[k] = v
+		// The prefix needs to be removed
+		if strings.HasPrefix(k, metainfo.PrefixTransient) {
+			result[k[lenPT:]] = v
+		} else {
+			result[k] = v
+		}
 	}
 	return result
 }
