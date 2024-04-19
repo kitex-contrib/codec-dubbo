@@ -25,13 +25,13 @@ import (
 
 	hessian2_exception "github.com/kitex-contrib/codec-dubbo/pkg/hessian2/exception"
 
-	"github.com/kitex-contrib/codec-dubbo/registries"
-
+	"github.com/bytedance/gopkg/cloud/metainfo"
 	"github.com/cloudwego/kitex/pkg/remote"
 	"github.com/cloudwego/kitex/pkg/remote/codec"
 	"github.com/kitex-contrib/codec-dubbo/pkg/dubbo_spec"
 	"github.com/kitex-contrib/codec-dubbo/pkg/hessian2"
 	"github.com/kitex-contrib/codec-dubbo/pkg/iface"
+	"github.com/kitex-contrib/codec-dubbo/registries"
 )
 
 var _ remote.Codec = (*DubboCodec)(nil)
@@ -453,22 +453,17 @@ func processAttachments(decoder iface.Decoder, message remote.Message) error {
 
 	if attachments, ok := attachmentsRaw.(map[interface{}]interface{}); ok {
 		transStrMap := map[string]string{}
-		transIntMap := map[uint16]string{}
 		for keyRaw, val := range attachments {
 			if key, ok := keyRaw.(string); ok {
 				message.Tags()[key] = val
 				if v, ok := val.(string); ok {
-					transStrMap[key] = v
-				}
-			}
-			if uint16Key, ok := keyRaw.(uint16); ok {
-				if v, ok := val.(string); ok {
-					transIntMap[uint16Key] = v
+					// The prefix needs to be added
+					transStrMap[metainfo.PrefixTransient+key] = v
 				}
 			}
 		}
+
 		message.TransInfo().PutTransStrInfo(transStrMap)
-		message.TransInfo().PutTransIntInfo(transIntMap)
 		return nil
 	}
 
