@@ -318,6 +318,37 @@ service EchoService {
  }
 ```
 
+### Protocol Probing
+
+Simultaneous support Dubbo and Thrift protocols, example：
+```
+import (
+	"github.com/cloudwego/kitex/server"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	hello "demo-server/kitex_gen/hello/greetservice"
+	"log"
+	"net"
+)
+
+func main() {
+	addr, _ := net.ResolveTCPAddr("tcp", ":21000")
+	svr := hello.NewServer(new(GreetServiceImpl),
+		server.WithServiceAddr(addr),
+		// 配置 DubboCodec
+		server.WithTransHandlerFactory(dubbo.NewSvrTransHandlerFactory(
+			dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider"),
+		)),
+	)
+
+	err := svr.Run()
+
+	if err != nil {
+		log.Println(err.Error())
+	}
+}
+
+```
+
 ### Exception Handling
 
 **codec-dubbo** defines exceptions as **error** that implement the following interface. You can handle exceptions in Java as you could handle **error** in Go:
