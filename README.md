@@ -323,6 +323,44 @@ service EchoService {
  }
 ```
 
+### 协议嗅探
+
+一个端口支持同时接受 dubbo 和 kitex 原生协议的请求，只需要在初始化 server 的时候加上组件即可，示例如下：
+```
+import (
+	"log"
+	"net"
+
+	"github.com/cloudwego/kitex/server"
+	"github.com/cloudwego/kitex/pkg/remote/trans/detection"
+	"github.com/cloudwego/kitex/pkg/remote/trans/netpoll"
+	"github.com/cloudwego/kitex/pkg/remote/trans/nphttp2"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	hello "demo-server/kitex_gen/hello/greetservice"
+)
+
+func main() {
+	// 指定服务端将要监听的地址
+	addr, _ := net.ResolveTCPAddr("tcp", ":21000")
+	svr := hello.NewServer(new(GreetServiceImpl),
+		server.WithServiceAddr(addr),
+		server.WithTransHandlerFactory(detection.NewSvrTransHandlerFactory(netpoll.NewSvrTransHandlerFactory(),
+			dubbo.NewSvrTransHandlerFactory(
+				// 配置 Kitex 服务所对应的 Java Interface. 其他 dubbo 客户端和 kitex 客户端可以通过这个名字进行调用。
+				dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider")),
+			nphttp2.NewSvrTransHandlerFactory(),
+		)),
+	)
+
+	err := svr.Run()
+
+	if err != nil {
+		log.Println(err.Error())
+	}
+}
+
+```
+
 ### 异常处理
 
 **codec-dubbo** 将异常定义为实现了以下接口的错误，你可以像处理错误一样处理 java 中的异常：
