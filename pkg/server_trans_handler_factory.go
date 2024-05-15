@@ -26,9 +26,7 @@ import (
 
 	"github.com/cloudwego/kitex/pkg/endpoint"
 	"github.com/cloudwego/kitex/pkg/remote"
-	"github.com/cloudwego/kitex/pkg/remote/trans/detection"
 	"github.com/cloudwego/kitex/pkg/remote/trans/netpoll"
-	"github.com/cloudwego/kitex/pkg/remote/trans/nphttp2"
 	cnetpoll "github.com/cloudwego/netpoll"
 
 	"github.com/kitex-contrib/codec-dubbo/pkg/dubbo_spec"
@@ -37,12 +35,10 @@ import (
 // NewSvrTransHandlerFactory the factory expand the implementation of DetectableServerTransHandler for
 // hessian protocol to support the dubbo protocol probing.
 func NewSvrTransHandlerFactory(opts ...Option) remote.ServerTransHandlerFactory {
-	return detection.NewSvrTransHandlerFactory(netpoll.NewSvrTransHandlerFactory(),
-		nphttp2.NewSvrTransHandlerFactory(),
-		&svrTransHandlerFactory{
-			codec:                     NewDubboCodec(opts...),
-			ServerTransHandlerFactory: netpoll.NewSvrTransHandlerFactory(),
-		})
+	return &svrTransHandlerFactory{
+		ServerTransHandlerFactory: netpoll.NewSvrTransHandlerFactory(),
+		codec:                     NewDubboCodec(opts...),
+	}
 }
 
 type svrTransHandlerFactory struct {
@@ -52,11 +48,12 @@ type svrTransHandlerFactory struct {
 	codec remote.Codec
 }
 
+// NewTransHandler the wrapper of ServerTransHandlerFactory.NewTransHandler, replace the codec with dubbo codec when
+// invoke the function NewTransHandler, and than restore it.
 func (f *svrTransHandlerFactory) NewTransHandler(opt *remote.ServerOption) (remote.ServerTransHandler, error) {
 	sourceCodec := opt.Codec
 	opt.Codec = f.codec
 	defer func() {
-		// just set the handler with dubbo codec and restore the source codec
 		opt.Codec = sourceCodec
 	}()
 
@@ -93,6 +90,7 @@ func (svr *svrTransHandler) GracefulShutdown(ctx context.Context) error {
 	}
 	return nil
 }
+
 func (svr *svrTransHandler) SetInvokeHandleFunc(inkHdlFunc endpoint.Endpoint) {
 	if s, ok := svr.ServerTransHandler.(remote.InvokeHandleFuncSetter); ok {
 		s.SetInvokeHandleFunc(inkHdlFunc)

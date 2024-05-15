@@ -323,20 +323,26 @@ service EchoService {
 Simultaneous support Dubbo and Thrift protocols, example：
 ```
 import (
-	"github.com/cloudwego/kitex/server"
-	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
-	hello "demo-server/kitex_gen/hello/greetservice"
 	"log"
 	"net"
+
+	"github.com/cloudwego/kitex/server"
+	"github.com/cloudwego/kitex/pkg/remote/trans/detection"
+	"github.com/cloudwego/kitex/pkg/remote/trans/netpoll"
+	"github.com/cloudwego/kitex/pkg/remote/trans/nphttp2"
+	dubbo "github.com/kitex-contrib/codec-dubbo/pkg"
+	hello "demo-server/kitex_gen/hello/greetservice"
 )
 
 func main() {
 	addr, _ := net.ResolveTCPAddr("tcp", ":21000")
 	svr := hello.NewServer(new(GreetServiceImpl),
 		server.WithServiceAddr(addr),
-		// 配置 DubboCodec
-		server.WithTransHandlerFactory(dubbo.NewSvrTransHandlerFactory(
-			dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider"),
+		server.WithTransHandlerFactory(detection.NewSvrTransHandlerFactory(netpoll.NewSvrTransHandlerFactory(),
+			dubbo.NewSvrTransHandlerFactory(
+				// 配置 Kitex 服务所对应的 Java Interface. 其他 dubbo 客户端和 kitex 客户端可以通过这个名字进行调用。
+				dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider")),
+			nphttp2.NewSvrTransHandlerFactory(),
 		)),
 	)
 
