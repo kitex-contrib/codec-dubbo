@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 CloudWeGo Authors
+ * Copyright 2024 CloudWeGo Authors
  *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -81,7 +81,7 @@ func (svr *svrTransHandler) ProtocolMatch(ctx context.Context, conn net.Conn) (e
 	if header[0] == dubbo_spec.MAGIC_HIGH && header[1] == dubbo_spec.MAGIC_LOW {
 		return nil
 	}
-	return errors.New("error protocol not match hessian")
+	return errors.New("error protocol not match dubbo")
 }
 
 func (svr *svrTransHandler) GracefulShutdown(ctx context.Context) error {

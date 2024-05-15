@@ -340,7 +340,7 @@ func main() {
 		server.WithServiceAddr(addr),
 		server.WithTransHandlerFactory(detection.NewSvrTransHandlerFactory(netpoll.NewSvrTransHandlerFactory(),
 			dubbo.NewSvrTransHandlerFactory(
-				// 配置 Kitex 服务所对应的 Java Interface. 其他 dubbo 客户端和 kitex 客户端可以通过这个名字进行调用。
+                // set the Java interface name corresponding to the Kitex service
 				dubbo.WithJavaClassName("org.cloudwego.kitex.samples.api.GreetProvider")),
 			nphttp2.NewSvrTransHandlerFactory(),
 		)),
