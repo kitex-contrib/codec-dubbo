@@ -282,7 +282,7 @@ service EchoService {
 
 #### 其它类型（java.lang.Object, java.util.Date）
 
-由于 **thrift** 类型的局限性，**kitex** 与 **dubbo-java** 映射时有一些不兼容的类型。 
+由于 **thrift** 类型的局限性，**kitex** 与 **dubbo-java** 映射时有一些不兼容的类型。
 DubboCodec 在 [codec-dubbo/java](https://github.com/kitex-contrib/codec-dubbo/tree/main/java) 包中提供了更多 **thrift** 不支持的 **java** 类型。
 
 为了启用这些类型，你可以在 **Thrift IDL** 中使用 `include "java.thrift"` 导入它们，并且在使用 **kitex** 脚手架工具生成代码时添加 `-hessian2 java_extension` 参数来拉取该拓展包。
@@ -322,6 +322,53 @@ service EchoService {
     string EchoMethodD(1: bool req1, 2: i32 req2) (JavaMethodName="EchoMethod")
  }
 ```
+### 枚举支持
+
+支持Java的枚举类型，需要用户在枚举上加上注解映射到具体的Java类型，您可以在客户端做基本的枚举配置已经对应服务端代码，如下
+
+#### thrift 配置
+```thrift
+
+enum KitexEnum {
+    ONE,
+    TWO,
+    THREE,
+    FOUR,
+    FIVE,
+}(JavaClassName="org.cloudwego.kitex.samples.enumeration.KitexEnum")
+
+service GreetEnumService {
+    KitexEnum GreetEnum(1: KitexEnum req)
+}
+
+```
+#### Dubbo服务侧代码
+```java
+
+package org.cloudwego.kitex.samples.enumeration;
+
+import java.io.Serializable;
+
+public enum KitexEnum implements Serializable {
+
+    ONE("1"),TWO("2"),THREE("3"),FOUR("4"),FIVE("5");
+
+    final String codeStr ;
+
+    KitexEnum(String number) {
+        this.codeStr = number;
+    }
+
+    // 枚举类型的 getter 方法
+    public String getCode() {
+        return this.codeStr;
+    }
+}
+
+```
+**重要提示**
+1. 这里强制您配置JavaClassName来映射具体的Java类型,如果您没有配置可能会导致不可预知的错误
+
 
 ### 协议嗅探
 
@@ -440,7 +487,7 @@ exception CustomizedException {
 }(JavaClassName="org.cloudwego.kitex.samples.api.CustomizedException")
 ```
 
-和[其它类型](#其它类型javalangobject-javautildate)一样，需要在使用 **kitex** 脚手架工具生成代码时添加 `-hessian2 java_extension` 参数来拉取拓展包。 
+和[其它类型](#其它类型javalangobject-javautildate)一样，需要在使用 **kitex** 脚手架工具生成代码时添加 `-hessian2 java_extension` 参数来拉取拓展包。
 
 使用方法与[常见异常](#常见异常)一致。
 
@@ -450,7 +497,7 @@ exception CustomizedException {
 
 用于该功能的配置分为以下两个层次：
 1. [registry/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/registry/options.go) 与 [resolver/options.go](https://github.com/kitex-contrib/codec-dubbo/tree/main/registries/zookeeper/resolver/options.go) 中的WithXXX函数提供注册中心级别的配置，请使用这些函数生成```registry.Registry```
-和```discovery.Resolver```实例。
+   和```discovery.Resolver```实例。
 2. 服务级别的配置由```client.WithTag```与```server.WithRegistryInfo```进行传递，/registries/common.go提供Tag Keys:
 
 |            Tag Key             |           client侧作用            |                server侧作用                 |
@@ -583,7 +630,7 @@ func main() {
 
 ## 性能测试
 
-### 测试环境 
+### 测试环境
 
 CPU: **Intel(R) Xeon(R) Gold 5118 CPU @ 2.30GHz**  
 内存: **192GB**

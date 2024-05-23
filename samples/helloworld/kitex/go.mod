@@ -9,7 +9,7 @@ replace github.com/kitex-contrib/codec-dubbo => ../../../
 require (
 	github.com/apache/thrift v0.16.0
 	github.com/cloudwego/kitex v0.9.0
-	github.com/kitex-contrib/codec-dubbo v0.0.0-20231009160704-aad6a2705290
+	github.com/kitex-contrib/codec-dubbo v0.2.5
 	github.com/kitex-contrib/obs-opentelemetry v0.2.6
 	github.com/pkg/errors v0.9.1
 )

@@ -317,6 +317,52 @@ service EchoService {
     string EchoMethodD(1: bool req1, 2: i32 req2) (JavaMethodName="EchoMethod")
  }
 ```
+### Enumeration support
+
+To support Java enumeration types, users need to add annotations on the enumeration to map it to specific Java types. You can make basic enumeration configurations on the client and correspond to the server code, as follows
+#### Thrift configuration
+```thrift
+
+enum KitexEnum {
+    ONE,
+    TWO,
+    THREE,
+    FOUR,
+    FIVE,
+}(JavaClassName="org.cloudwego.kitex.samples.enumeration.KitexEnum")
+
+service GreetEnumService {
+    KitexEnum GreetEnum(1: KitexEnum req)
+}
+
+```
+#### Dubbo service side code
+```java
+
+package org.cloudwego.kitex.samples.enumeration;
+
+import java.io.Serializable;
+
+public enum KitexEnum implements Serializable {
+
+    ONE("1"),TWO("2"),THREE("3"),FOUR("4"),FIVE("5");
+
+    final String codeStr ;
+
+    KitexEnum(String number) {
+        this.codeStr = number;
+    }
+
+    // Getter methods of enumeration types
+    public String getCode() {
+        return this.codeStr;
+    }
+}
+
+```
+**Important notes:**
+1. This forces you to configure JavaClassName to map specific Java types. If you do not configure it, it may cause unpredictable errors.
+
 
 ### Protocol Probing
 

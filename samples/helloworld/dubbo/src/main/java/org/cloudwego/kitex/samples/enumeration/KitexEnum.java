@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 CloudWeGo Authors
+ * Copyright 2024 CloudWeGo Authors
  *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,37 +17,22 @@
  * limitations under the License.
  */
 
-package hessian2
+package org.cloudwego.kitex.samples.enumeration;
 
-import (
-	hessian "github.com/apache/dubbo-go-hessian2"
-	"github.com/kitex-contrib/codec-dubbo/pkg/iface"
-)
+import java.io.Serializable;
 
-func NewEncoder() iface.Encoder {
-	return hessian.NewEncoder()
-}
+public enum KitexEnum implements Serializable {
 
-func NewDecoder(b []byte) iface.Decoder {
-	return hessian.NewDecoder(b)
-}
+    ONE("1"),TWO("2"),THREE("3"),FOUR("4"),FIVE("5");
 
-type (
-	Encoder struct {
-		hessian.Encoder
-	}
-	Decoder struct {
-		hessian.Decoder
-	}
-)
+    final String codeStr ;
 
-func Register(pojos []interface{}) {
-	for _, i := range pojos {
-		pojo, ok := i.(hessian.POJOEnum)
-		if ok {
-			hessian.RegisterJavaEnum(pojo)
-		} else {
-			hessian.RegisterPOJO(i.(hessian.POJO))
-		}
-	}
+    KitexEnum(String number) {
+        this.codeStr = number;
+    }
+
+    // 枚举类型的 getter 方法
+    public String getCode() {
+        return this.codeStr;
+    }
 }
