@@ -106,14 +106,14 @@ import (
 	codec "github.com/kitex-contrib/codec-dubbo/pkg/iface"
 )
 
-var objects{{ .IDLName}} = []interface{}{ 
+var objects{{.IDLName}} = []interface{}{ 
 {{- range .StructLikes}}
     &{{.Name}}{},
 {{- end}} 
 }
 
 func init() {
-	hessian2.Register(objects{{ .IDLName}} )
+	hessian2.Register(objects{{.IDLName}} )
 }
 
 {{range .Services }}
@@ -127,14 +127,14 @@ func Get{{.Name}}IDLAnnotations() map[string][]string {
 {{- end}}
 
 {{- range .StructLikes}}
-{{template "StructLike" . }}
+{{template "structlike" . }}
 {{- end}}
 
 {{- end}}{{/* define RegisterHessian*/}}
 `
 
 const StructLike = `
-{{define "StructLike"}}
+{{define "structlike"}}
 {{- $TypeName := .Name}}
 func (p *{{$TypeName}}) Encode(e codec.Encoder) error {
 {{- if gt (len .Fields) 0}}
@@ -171,6 +171,15 @@ func (p *{{$TypeName}}) Decode(d codec.Decoder) error {
 	return nil
 } {{/* encode decode */}}
 
-{{template "JavaClassName" .}}
+{{template "javaclassname" .}}
 {{- end}}{{/* define "StructLikeProtocol" */}}
+`
+
+const JavaClassName = `
+{{define "javaclassname"}}
+{{- $TypeName := .Name}}
+func (p *{{$TypeName}}) JavaClassName() string {
+	return "{{.JavaPackage}}.{{$TypeName}}"
+}
+{{- end}}{{/* define "JavaClassName" */}}
 `

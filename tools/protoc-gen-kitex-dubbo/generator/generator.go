@@ -10,9 +10,9 @@ import (
 )
 
 const (
-	filePrexi = "kitex_gen/"
-	fileExt   = "hessian2_ext.go"
-	version   = "v0.0.1"
+	filePrefix = "kitex_gen/"
+	fileExt    = "hessian2_ext.go"
+	version    = "v0.0.1"
 )
 
 type Generator interface {
@@ -20,8 +20,8 @@ type Generator interface {
 }
 
 type generator struct {
-	lang string
-	tpl  *template.Template
+	extLang string
+	tpl     *template.Template
 }
 
 func (g *generator) Generate(gen *protogen.Plugin) error {
@@ -47,7 +47,7 @@ func (g *generator) generateAPIFile(gen *protogen.Plugin, file *protogen.File) e
 	if len(file.Messages) == 0 {
 		return nil
 	}
-	fileName := filePrexi + file.GeneratedFilenamePrefix + "_" + fileExt
+	fileName := filePrefix + file.GeneratedFilenamePrefix + "_" + fileExt
 	genFile := gen.NewGeneratedFile(fileName, "")
 	request := &ExtFile{
 		Version: version,
@@ -61,19 +61,25 @@ func (g *generator) generateAPIFile(gen *protogen.Plugin, file *protogen.File) e
 			request.JavaPackage = *file.Proto.Options.JavaPackage
 		}
 	}
-	for _, message := range file.Messages {
-		s := &ExtStruct{
-			Name:        message.GoIdent.GoName,
-			GoPackage:   request.GoPackage,
-			JavaPackage: request.JavaPackage,
-		}
-		for _, field := range message.Fields {
-			filed := &Field{
-				Name: field.GoName,
+	messages := file.Messages
+	for len(messages) != 0 {
+		var nestedMessages []*protogen.Message
+		for _, message := range messages {
+			s := &StructLike{
+				Name:        message.GoIdent.GoName,
+				GoPackage:   request.GoPackage,
+				JavaPackage: request.JavaPackage,
 			}
-			s.Fields = append(s.Fields, filed)
+			for _, field := range message.Fields {
+				filed := &Field{
+					Name: field.GoName,
+				}
+				s.Fields = append(s.Fields, filed)
+			}
+			request.StructLikes = append(request.StructLikes, s)
+			nestedMessages = append(nestedMessages, message.Messages...)
 		}
-		request.StructLikes = append(request.StructLikes, s)
+		messages = nestedMessages
 	}
 
 	for _, svr := range file.Services {
@@ -95,7 +101,7 @@ func (g *generator) generateAPIFile(gen *protogen.Plugin, file *protogen.File) e
 // generateServiceExt: implements dubbo extension interface for service method args and response
 // ref: https://github.com/cloudwego/kitex/blob/8526b3af30fcd321db268cae59a3545a9c6f237f/tool/internal_pkg/generator/generator.go#L392
 func (g *generator) generateServiceExt(gen *protogen.Plugin, svr *protogen.Service, file *protogen.File) error {
-	fileName := filePrexi + string(file.GoImportPath) + "/" + strings.ToLower(svr.GoName) + "/" + fileExt
+	fileName := filePrefix + string(file.GoImportPath) + "/" + strings.ToLower(svr.GoName) + "/" + fileExt
 	genFile := gen.NewGeneratedFile(fileName, "")
 	rSvr := &ExtService{
 		Version: version,
@@ -103,7 +109,7 @@ func (g *generator) generateServiceExt(gen *protogen.Plugin, svr *protogen.Servi
 		Name:    svr.GoName,
 	}
 	for _, method := range svr.Methods {
-		s := &ExtFunction{
+		s := &Function{
 			Method:     method.GoName,
 			InputType:  method.Input.GoIdent.GoName,
 			OutputType: method.Output.GoIdent.GoName,
@@ -124,10 +130,10 @@ func New(req *protogen.Plugin, lang string) (Generator, error) {
 	tpl := template.New("kitex-dubbo")
 	allTemplates := []string{
 		templates.StructLikes,
-		templates.JavaClassName,
 		templates.Header,
-		templates.StructLikeProtocol,
+		templates.StructLike,
 		templates.Service,
+		templates.JavaClassName,
 	}
 	var err error
 	for _, temp := range allTemplates {
@@ -137,7 +143,7 @@ func New(req *protogen.Plugin, lang string) (Generator, error) {
 		}
 	}
 	return &generator{
-		tpl:  tpl,
-		lang: lang,
+		tpl:     tpl,
+		extLang: lang,
 	}, nil
 }

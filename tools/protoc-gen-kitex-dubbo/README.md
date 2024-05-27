@@ -27,5 +27,5 @@ Usage
 -----
 
 ```
-kitex -type protobuf -protobuf-plugin=kitex-dubbo:ext_lang=java:. -service GreetService  ./api.proto
+kitex -type protobuf -protobuf-plugin=kitex-dubbo::. -service GreetService  ./api.proto
 ```

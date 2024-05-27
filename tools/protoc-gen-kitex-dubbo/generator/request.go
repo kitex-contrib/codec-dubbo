@@ -3,10 +3,12 @@ package generator
 import "google.golang.org/protobuf/compiler/protogen"
 
 type Field struct {
-	Name string
+	Name         string
+	Type         string
+	FunctionName string
 }
 
-type ExtStruct struct {
+type StructLike struct {
 	Name        string
 	Fields      []*Field
 	JavaPackage string
@@ -16,12 +18,12 @@ type ExtStruct struct {
 type ExtService struct {
 	Name        string
 	PkgName     string
-	Functions   []*ExtFunction
+	Functions   []*Function
 	Annotations map[string]string
 	Version     string
 }
 
-type ExtFunction struct {
+type Function struct {
 	Method     string
 	InputType  string
 	OutputType string
@@ -32,7 +34,7 @@ type ExtFile struct {
 	GoPackage   string
 	PkgName     protogen.GoPackageName
 	IDLName     string
-	StructLikes []*ExtStruct
+	StructLikes []*StructLike
 	Services    []*ExtService
 	Version     string
 }
