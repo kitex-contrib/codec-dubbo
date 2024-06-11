@@ -24,6 +24,7 @@ import (
 	"google.golang.org/protobuf/types/pluginpb"
 
 	"github.com/kitex-contrib/codec-dubbo/tools/protoc-gen-kitex-dubbo/generator"
+	_ "github.com/kitex-contrib/codec-dubbo/tools/protoc-gen-kitex-dubbo/templates"
 )
 
 func main() {
